@@ -1,0 +1,1 @@
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/home.controller.binding.dart'; 

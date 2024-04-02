@@ -1,0 +1,1 @@
+export 'package:flutter_talentaku/presentation/home/home.screen.dart';
