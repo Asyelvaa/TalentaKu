@@ -28,13 +28,18 @@ class Nav {
   static List<GetPage> routes = [
     GetPage(
       name: Routes.HOME,
-      page: () => const HomeScreen(),
+      page: () => const ProfilePageScreen(),
       binding: HomeControllerBinding(),
     ),
     GetPage(
       name: Routes.HOME_PAGE,
       page: () => const HomePageScreen(),
       binding: HomePageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE_PAGE,
+      page: () => const ProfilePageScreen(),
+      binding: ProfilePageControllerBinding(),
     ),
   ];
 }
