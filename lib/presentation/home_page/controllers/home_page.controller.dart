@@ -3,7 +3,7 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeController extends GetxController {
+class HomePageController extends GetxController {
   //TODO: Implement HomeController
 
   @override
