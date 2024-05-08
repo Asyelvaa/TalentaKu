@@ -41,5 +41,20 @@ class Nav {
       page: () => const ProfilePageScreen(),
       binding: ProfilePageControllerBinding(),
     ),
+    GetPage(
+      name: Routes.LAPORAN_HARIAN,
+      page: () => const LaporanHarianScreen(),
+      binding: LaporanHarianControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.GRADE,
+      page: () => const GradeScreen(),
+      binding: GradeControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CLASS_DETAIL,
+      page: () => const ClassDetailScreen(),
+      binding: ClassDetailControllerBinding(),
+    ),
   ];
 }

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../infrastructure/theme/theme.dart';
-import '../../home/controllers/home.controller.dart';
 
 class HomeContent extends GetView<HomePageController> {
   final String? title;
