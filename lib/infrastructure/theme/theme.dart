@@ -41,4 +41,9 @@ class AppTextStyle {
     color: AppColor.black,
     fontWeight: FontWeight.w500,
   );
+  static TextStyle tsTextContainer = GoogleFonts.manrope(
+    fontSize: figmaFontsize(16),
+    fontWeight: FontWeight.w800,
+    color: AppColor.black
+  );
 }

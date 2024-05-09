@@ -6,17 +6,17 @@ import '../../../infrastructure/theme/theme.dart';
 
 class ProfileList extends StatelessWidget {
   final String Title;
-  final String Description;
+  final String? Description;
   const ProfileList({
     super.key,
     required this.Title,
-    required this.Description,
+    this.Description,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10, top: 5),
+      padding: EdgeInsets.only(bottom: 10, top: 10),
       width: Get.width,
       decoration: BoxDecoration(
           border:
@@ -30,7 +30,7 @@ class ProfileList extends StatelessWidget {
                 GoogleFonts.manrope(fontWeight: FontWeight.w600, fontSize: 12),
           ),
           Text(
-            Description,
+            Description ?? " Data User ",
             style:
                 GoogleFonts.manrope(fontWeight: FontWeight.w600, fontSize: 16),
           ),
