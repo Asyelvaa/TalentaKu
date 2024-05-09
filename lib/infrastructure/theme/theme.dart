@@ -37,9 +37,14 @@ class AppTextStyle {
     fontSize: figmaFontsize(14),
     fontWeight: FontWeight.w600,
   );
-   static TextStyle tsDeskripsi = GoogleFonts.manrope(
+   static TextStyle tsLittle = GoogleFonts.manrope(
     fontSize: figmaFontsize(12),
     fontWeight: FontWeight.w500,
+  );
+  static TextStyle tsTextContainer = GoogleFonts.manrope(
+    fontSize: figmaFontsize(16),
+    fontWeight: FontWeight.w800,
+    color: AppColor.black
   );
 }
 
