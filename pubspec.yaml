@@ -13,12 +13,13 @@ dependencies:
   google_fonts: ^6.2.0
   iconsax: ^0.0.8
 
-dev_dependencies:
+dev_dependencies: 
   # flutter_lints: ^2.0.0
-  flutter_test:
+  flutter_test: 
     sdk: flutter
 
 flutter:
   # uses-material-design: true
   assets:
-    - assets/
+    - assets/images/
+

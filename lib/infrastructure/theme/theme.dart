@@ -1,7 +1,6 @@
 //COLOR
-import 'dart:ui';
+import "package:flutter/material.dart";
 
-import 'package:flutter/src/painting/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColor {
@@ -30,15 +29,16 @@ figmaFontsize(int fontSize) {
 
 class AppTextStyle {
   static TextStyle tsTitle = GoogleFonts.manrope(
-    fontSize: figmaFontsize(20),
-    fontWeight: FontWeight.w700,
-  );
-  static TextStyle tsNormal = GoogleFonts.manrope(
-    fontSize: figmaFontsize(14),
+    fontSize: figmaFontsize(16),
     fontWeight: FontWeight.w600,
   );
-   static TextStyle tsLittle = GoogleFonts.manrope(
+  static TextStyle tsNormal = GoogleFonts.manrope(
     fontSize: figmaFontsize(12),
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle tsLittle = GoogleFonts.manrope(
+    fontSize: figmaFontsize(10),
+    color: AppColor.black,
     fontWeight: FontWeight.w500,
   );
   static TextStyle tsTextContainer = GoogleFonts.manrope(
@@ -47,4 +47,3 @@ class AppTextStyle {
     color: AppColor.black
   );
 }
-
