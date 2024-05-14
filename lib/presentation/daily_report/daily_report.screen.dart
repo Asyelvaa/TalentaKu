@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/daily_report/controllers/daily_report.controller.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
-import 'package:flutter_talentaku/presentation/laporan_harian/component/report_item.dart';
-import 'package:flutter_talentaku/presentation/laporan_harian/controllers/laporan_harian.controller.dart';
+import 'package:flutter_talentaku/presentation/daily_report/component/report_item.dart';
 
-class LaporanHarianScreen extends GetView<LaporanHarianController> {
-  const LaporanHarianScreen({Key? key}) : super(key: key);
+import '../global_component/text_background.dart';
+
+class DailyReportScreen extends GetView<DailyReportController> {
+  const DailyReportScreen({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,26 +44,17 @@ class LaporanHarianScreen extends GetView<LaporanHarianController> {
                       ),
                       Row(
                         children: [
-                          Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text("Semester 1",
-                                  style: AppTextStyle.tsLittle)),
+                          TextWithBackground(
+                            colorBackground: AppColor.white,
+                            text: "Semester 1",
+                          ),
                           SizedBox(
                             width: 10,
                           ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text("Jumat, 01/03/2024",
-                                style: AppTextStyle.tsLittle),
-                          )
+                          TextWithBackground(
+                            colorBackground: AppColor.white,
+                            text: "Jumat, 01/03/2024",
+                          ),
                         ],
                       ),
                     ],
@@ -90,3 +84,4 @@ class LaporanHarianScreen extends GetView<LaporanHarianController> {
     );
   }
 }
+
