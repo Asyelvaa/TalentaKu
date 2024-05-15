@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
+// ignore: must_be_immutable
 class ClassComponent extends GetView<GradeController> {
   String title;
   String tahun;
