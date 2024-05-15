@@ -79,15 +79,15 @@ class ProfilePageScreen extends StatelessWidget {
                 height: 10,
               ),
               // LAPORAN PEMBELAJRAN
-              TextContainer(
-                color: AppColor.blue200, 
+              TextWithContainer(
+                colorContainer: AppColor.blue200, 
                 text: "Laporan Pembelajaran",
                 icon: Icons.arrow_forward,
               ),
               SizedBox(height: 20),
               // LOGOUT
-              TextContainer(
-                color: AppColor.red, 
+              TextWithContainer(
+                colorContainer: AppColor.red, 
                 text: "Logout",
                 colorText: AppColor.white,
               )

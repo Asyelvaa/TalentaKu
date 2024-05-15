@@ -1,5 +1,6 @@
 //COLOR
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,6 +27,11 @@ class AppColor {
 figmaFontsize(int fontSize) {
   return fontSize * 1.2;
 }
+
+BorderRadius defaultBorderRadius = BorderRadius.circular(12);
+
+final widthScreen = Get.mediaQuery.size.width;
+final heightScreen = Get.mediaQuery.size.height;
 
 class AppTextStyle {
   static TextStyle tsTitle = GoogleFonts.manrope(

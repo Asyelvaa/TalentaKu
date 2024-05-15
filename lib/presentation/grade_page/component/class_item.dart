@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/grade_page/controllers/grade.controller.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
-class ClassComponent extends GetView<GradeController> {
+class ClassItem extends StatelessWidget{
   String title;
-  String tahun;
+  String description;
   String image;
-  ClassComponent({
+  ClassItem({
     super.key,
     required this.image,
     required this.title,
-    required this.tahun,
+    required this.description,
   });
 
   @override
@@ -35,7 +34,7 @@ class ClassComponent extends GetView<GradeController> {
                   style: AppTextStyle.tsNormal,
                 ),
                 Text(
-                  tahun,
+                  description,
                   style: AppTextStyle.tsLittle,
                 ),
                 Spacer(),

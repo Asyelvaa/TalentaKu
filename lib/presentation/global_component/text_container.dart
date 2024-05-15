@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../infrastructure/theme/theme.dart';
 
-class TextContainer extends StatelessWidget {
-  final Color color;
+class TextWithContainer extends StatelessWidget {
+  final Color colorContainer;
   final String text;
   final IconData? icon;
   final Color? colorText;
 
-  const TextContainer({
+  const TextWithContainer({
     super.key,
-    required this.color,
+    required this.colorContainer,
     required this.text,
     this.icon,
     this.colorText
@@ -25,7 +24,7 @@ class TextContainer extends StatelessWidget {
       height: 60,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: color),
+          color: colorContainer),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/laporan_harian/controllers/laporan_harian.controller.dart';
+import 'package:flutter_talentaku/presentation/daily_report/controllers/daily_report.controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
-class ReportItem extends GetView<LaporanHarianController> {
+class ReportItem extends GetView<DailyReportController> {
   final String title;
   final String description;
   final String? indicator;
