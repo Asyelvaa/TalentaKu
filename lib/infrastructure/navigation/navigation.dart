@@ -51,5 +51,15 @@ class Nav {
       page: () => const ClassDetailScreen(),
       binding: ClassDetailControllerBinding(),
     ),
+    GetPage(
+      name: Routes.STYLE_ALBUM,
+      page: () => const StyleAlbumScreen(),
+      binding: StyleAlbumControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADD_EDIT_POST,
+      page: () => const AddEditPostScreen(),
+      binding: AddEditPostControllerBinding(),
+    ),
   ];
 }
