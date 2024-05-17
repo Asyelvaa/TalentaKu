@@ -1,5 +1,6 @@
 //COLOR
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,6 +28,11 @@ figmaFontsize(int fontSize) {
   return fontSize * 1.2;
 }
 
+BorderRadius defaultBorderRadius = BorderRadius.circular(12);
+
+final widthScreen = Get.mediaQuery.size.width;
+final heightScreen = Get.mediaQuery.size.height;
+
 class AppTextStyle {
   static TextStyle tsTitle = GoogleFonts.manrope(
     fontSize: figmaFontsize(16),
@@ -40,5 +46,10 @@ class AppTextStyle {
     fontSize: figmaFontsize(10),
     color: AppColor.black,
     fontWeight: FontWeight.w500,
+  );
+  static TextStyle tsTextContainer = GoogleFonts.manrope(
+    fontSize: figmaFontsize(16),
+    fontWeight: FontWeight.w800,
+    color: AppColor.black
   );
 }

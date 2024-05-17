@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class LaporanHarianController extends GetxController {
+class DailyReportController extends GetxController {
   //TODO: Implement LaporanHarianController
 
   final count = 0.obs;
