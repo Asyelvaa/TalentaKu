@@ -4,4 +4,4 @@ export 'package:flutter_talentaku/presentation/daily_report/daily_report.screen.
 export 'package:flutter_talentaku/presentation/grade_page/grade.screen.dart';
 export 'package:flutter_talentaku/presentation/home_page/home_page.screen.dart';
 export 'package:flutter_talentaku/presentation/profile_page/profile_page.screen.dart';
-export 'package:flutter_talentaku/presentation/style_album/style_album.screen.dart';
+export 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';

@@ -53,7 +53,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.STYLE_ALBUM,
-      page: () => const StyleAlbumScreen(),
+      page: () => const AlbumDetailPage(),
       binding: StyleAlbumControllerBinding(),
     ),
     GetPage(

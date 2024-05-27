@@ -12,6 +12,7 @@ dependencies:
   get: 4.6.6
   google_fonts: ^6.2.1
   iconsax: ^0.0.8
+  readmore: ^3.0.0
 
 dev_dependencies:
   flutter_test:
