@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
 
 import 'package:get/get.dart';
 
