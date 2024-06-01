@@ -24,9 +24,10 @@ class SlideInformation extends StatelessWidget {
       child: Column(
         children: [
           HeaderContent(
-              text: headerContent, imagePath: image),
+              text: headerContent, imageName: image),
           Container(
-            width: Get.width,
+            padding: EdgeInsets.only(left: 20),
+            width: widthScreen,
             height: 100,
             child: ListView.builder(
               shrinkWrap: true,
@@ -54,14 +55,15 @@ class Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(right:12),
       child: Container(
         height: 90,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: AppColor.blue600, width: 2)),
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColor.blue600, width: 1)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -75,7 +77,7 @@ class Content extends StatelessWidget {
                   
                 },
                 child: TextWithBackground(
-                  colorBackground: AppColor.blue600,
+                  colorBackground: AppColor.blue100,
                   text: "Check it",
                 ),
               )

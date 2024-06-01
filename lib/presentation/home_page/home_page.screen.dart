@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/home_page/Component/slide_information.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import 'Component/header_content.dart';
+import '../global_component/back_appbar.dart';
 import 'Component/class_information.dart';
+import 'Component/slide_information.dart';
 import 'controllers/home_page.controller.dart';
 
 class HomePageScreen extends GetView<HomePageController> {
@@ -14,8 +14,9 @@ class HomePageScreen extends GetView<HomePageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: AppBar(
-        title: Text('Home Page'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: BackAppbar(titleAppbar: "My Home"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -28,14 +29,14 @@ class HomePageScreen extends GetView<HomePageController> {
                 dateInfo: '04 April 2024'
               ),
               SlideInformation(
-                headerContent: "Program", 
-                image: "assets/images/tambahan_image.png",
-                contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
+                headerContent: "Program ", 
+                image: "program_tambahan.png",
+                contentTitles: ['Terapi wicara', 'Pijat stimulasi', 'English Special Club', 'Outing Class', 'Catering Sehat'],
               ),
               SlideInformation(
                 headerContent: "Ekstrakulikuler", 
-                image: "assets/images/tambahan2_image.png",
-                contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
+                image: "ekstrakurikuler.png",
+                contentTitles: ['Musik & Tari', 'Kreasi & Gambar', 'Batik Eco Print', 'Cooking', 'Renang'],
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -63,23 +64,23 @@ class HomePageScreen extends GetView<HomePageController> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 150,
+                          width: widthScreen * 0.5,
                           height: 100,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: AppColor.blue700),
                           child: Padding(
                             padding: EdgeInsets.all(20),
-                            child: Text("KB & SD \nSekolah Inklusi Talenta",
+                            child: Text("KB & SD \nInklusi Talenta",
                                 textAlign: TextAlign.start,
-                                style: AppTextStyle.tsNormal),
+                                style: AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Container(
-                          width: 150,
+                          width: widthScreen * 0.5,
                           height: 100,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
@@ -88,7 +89,7 @@ class HomePageScreen extends GetView<HomePageController> {
                             padding: EdgeInsets.all(20),
                             child: Text("Rumah Belajar Anak",
                                 textAlign: TextAlign.start,
-                                style: AppTextStyle.tsNormal),
+                                style: AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
                           ),
                         ),
                       ],
@@ -98,17 +99,14 @@ class HomePageScreen extends GetView<HomePageController> {
               ),
               SlideInformation(
                 headerContent: "Kurikulum", 
-                image: "assets/images/tambahan3_image.png",
+                image: "ekstrakurikuler.png",
                 contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
               ),
               SlideInformation(
                 headerContent: "Kontak&Alamat", 
-                image: "assets/images/tambahan2_images.png",
-                contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
+                image: "ekstrakurikuler.png",
+                contentTitles: ['Whatsapp', 'Email', 'Instagram', 'Alamat'],
               ),
-              HeaderContent(
-                  text: "Kontak&Alamat",
-                  imagePath: "assets/images/tambahan2_images.png"),
             ],
           ),
         ),

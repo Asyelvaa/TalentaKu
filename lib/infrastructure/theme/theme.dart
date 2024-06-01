@@ -29,6 +29,7 @@ figmaFontsize(int fontSize) {
 }
 
 SizedBox defaultHeightSpace = SizedBox(height: 24,);
+SizedBox defaultWidthtSpace = SizedBox(width: 12,);
 BorderRadius defaultBorderRadius = BorderRadius.circular(12);
 
 final widthScreen = Get.mediaQuery.size.width;
