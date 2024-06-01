@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'component/component1.dart';
 import 'controllers/style_album.controller.dart';

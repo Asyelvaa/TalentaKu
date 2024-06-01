@@ -42,7 +42,7 @@ class Nav {
       binding: DailyReportControllerBinding(),
     ),
     GetPage(
-      name: Routes.GRADE,
+      name: Routes.CLASS_PAGE,
       page: () => const GradeScreen(),
       binding: GradeControllerBinding(),
     ),
