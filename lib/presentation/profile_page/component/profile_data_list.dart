@@ -16,7 +16,7 @@ class ProfileList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10, top: 10),
+      padding: EdgeInsets.all(10),
       width: Get.width,
       decoration: BoxDecoration(
           border:
