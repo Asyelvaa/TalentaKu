@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/profile_page/model/user_model.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../infrastructure/theme/theme.dart';
@@ -10,25 +11,27 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user = mockUserList[0];
+
     return Stack(
       children: [
         CircleAvatar(
-          radius: 80,
-          backgroundColor: Colors.red,
-          backgroundImage: AssetImage('assets/images/profilw.png'),
+          radius: 60,
+          backgroundImage: AssetImage(user.photoProfile), 
+          foregroundColor: AppColor.blue400,
         ),
         Positioned(
-          bottom: 15,
-          right: 5,
+          bottom: 0,
+          right: 0,
           child: Container(
-            height: 35,
-            width: 35,
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColor.blue600,
-                border: Border.all(color: Colors.white, width: 1)),
+                border: Border.all(color: AppColor.white, width: 1)),
             child: Icon(
-              Iconsax.edit_25,
+              Iconsax.camera5,
+              size: 20,
               color: AppColor.white,
             ),
           ),
