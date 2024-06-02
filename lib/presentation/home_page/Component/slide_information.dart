@@ -3,7 +3,9 @@ import 'package:flutter_talentaku/presentation/global_component/text_background.
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
+import '../models/program_data.dart';
 import 'header_content.dart';
+import 'home_bottomsheet_information.dart';
 
 class SlideInformation extends StatelessWidget {
   final String headerContent;
@@ -52,8 +54,29 @@ class Content extends StatelessWidget {
     required this.contentTitle,
   });
 
+  void _showProgramDetails(BuildContext context, Program program) {
+    Get.bottomSheet(
+      HomeBottomsheetInformation(
+        informationTitle: program.title,
+        photoList: program.photos,
+        descriptionContent: program.description,
+      ),
+      isScrollControlled: true,
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
+
+    final program = mockProgramData.firstWhere(
+      (program) => program.title == contentTitle,
+      orElse: () => Program(
+        title: 'Not Found',
+        description: 'No description available',
+        photos: [],
+      ),
+    );
+
     return Padding(
       padding: const EdgeInsets.only(right:12),
       child: Container(
@@ -74,7 +97,7 @@ class Content extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  
+                  _showProgramDetails(context, program);
                 },
                 child: TextWithBackground(
                   colorBackground: AppColor.blue100,
