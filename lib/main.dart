@@ -6,6 +6,7 @@ import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   var initialRoute = await Routes.initialRoute;
   runApp(Main(initialRoute));
 }

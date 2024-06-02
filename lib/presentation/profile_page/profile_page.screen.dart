@@ -83,7 +83,7 @@ class ProfilePageScreen extends StatelessWidget {
               IconButtonTemplate(
                 text: "Laporan Pembelajaran", 
                 icon: Icons.arrow_forward, 
-                colorButton: AppColor.blue600,
+                colorButton: AppColor.white,
                 onPressed: () {
                   Get.to(DailyReportScreen());
                 }

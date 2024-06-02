@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../global_component/default_appbar.dart';
 import 'Component/class_information.dart';
+import 'Component/home_kbsd_information.dart';
+import 'Component/home_rba_information.dart';
 import 'Component/slide_information.dart';
+import 'Component/home_visimisi_information.dart';
 import 'controllers/home_page.controller.dart';
 
 class HomePageScreen extends GetView<HomePageController> {
@@ -16,7 +19,7 @@ class HomePageScreen extends GetView<HomePageController> {
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: "My Home"),
+        child: DefaultAppbar(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,56 +45,18 @@ class HomePageScreen extends GetView<HomePageController> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(20),
-                        height: 210,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20)),
-                            border: Border.all(
-                                color: AppColor.blue500, width: 1),
-                            color: AppColor.white),
-                        child: Text("Visi & \nMisi",
-                            textAlign: TextAlign.start,
-                            style: AppTextStyle.tsTitle),
-                      ),
-                    ),
+                    VisiMisiComponent(),
                     SizedBox(
                       width: 10,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          width: widthScreen * 0.5,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: AppColor.blue700),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text("KB & SD \nInklusi Talenta",
-                                textAlign: TextAlign.start,
-                                style: AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
-                          ),
-                        ),
+                        KbSdTalentaComponent(),
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          width: widthScreen * 0.5,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: AppColor.blue700),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text("Rumah Belajar Anak",
-                                textAlign: TextAlign.start,
-                                style: AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
-                          ),
-                        ),
+                        RbaTalentaComponent(),
                       ],
                     ),
                   ],
