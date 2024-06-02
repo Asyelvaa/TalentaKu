@@ -20,7 +20,7 @@ class ClassInformation extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         width: widthScreen,
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: AppColor.white,
@@ -77,7 +77,7 @@ class InformationListItem extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey,
+            color: AppColor.grey,
             width: 1,
           ),
         ),

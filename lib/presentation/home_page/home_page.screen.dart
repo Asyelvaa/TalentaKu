@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../global_component/default_appbar.dart';
 import 'Component/class_information.dart';
 import 'Component/slide_information.dart';
 import 'controllers/home_page.controller.dart';
@@ -16,7 +16,7 @@ class HomePageScreen extends GetView<HomePageController> {
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: "My Home"),
+        child: DefaultAppbar(),
       ),
       body: SingleChildScrollView(
         child: Padding(
