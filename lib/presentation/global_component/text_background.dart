@@ -15,7 +15,7 @@ class TextWithBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(10),

@@ -28,6 +28,8 @@ figmaFontsize(int fontSize) {
   return fontSize * 1.2;
 }
 
+SizedBox defaultHeightSpace = SizedBox(height: 24,);
+SizedBox defaultWidthtSpace = SizedBox(width: 12,);
 BorderRadius defaultBorderRadius = BorderRadius.circular(12);
 
 final widthScreen = Get.mediaQuery.size.width;
@@ -36,7 +38,7 @@ final heightScreen = Get.mediaQuery.size.height;
 class AppTextStyle {
   static TextStyle tsTitle = GoogleFonts.manrope(
     fontSize: figmaFontsize(16),
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.bold,
   );
   static TextStyle tsNormal = GoogleFonts.manrope(
     fontSize: figmaFontsize(12),
@@ -52,4 +54,5 @@ class AppTextStyle {
     fontWeight: FontWeight.w800,
     color: AppColor.black
   );
+
 }

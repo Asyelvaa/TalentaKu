@@ -178,7 +178,7 @@ class _LoginSState extends State<PickimageScreen> {
                                     minWidth: double.infinity,
                                     height: 50,
                                     onPressed: () =>
-                                        Get.toNamed(Routes.GRADE),
+                                        Get.toNamed(Routes.CLASS_PAGE),
                                     color: AppColor.blue600,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),

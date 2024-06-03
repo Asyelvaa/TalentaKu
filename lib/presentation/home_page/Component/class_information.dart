@@ -17,25 +17,27 @@ class ClassInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        width: Get.width,
+        width: widthScreen,
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           color: AppColor.white,
         ),
         child: Column(
           children: [
             // INFORMATION HEADER
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Informasi",
                   style: AppTextStyle.tsTitle,
                 ),
                 TextWithBackground(
-                  colorBackground: AppColor.blue300,
-                  text: "Senin, 04/04/2024",
+                  colorBackground: AppColor.blue100,
+                  text: "Senin, 04/04/2024", 
                 )
               ],
             ),
@@ -71,6 +73,7 @@ class InformationListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width,
+      padding: EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -84,14 +87,16 @@ class InformationListItem extends StatelessWidget {
           CircleAvatar(
             child: Icon(Icons.report),
             backgroundColor: AppColor.blue300,
-            radius: 50,
+            radius: 18,
           ),
+          defaultWidthtSpace,
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(titleInfo, style: AppTextStyle.tsNormal),
               Text(
                 dateInfo,
-                style: AppTextStyle.tsNormal,
+                style: AppTextStyle.tsLittle,
               ),
             ],
           )

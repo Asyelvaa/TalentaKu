@@ -3,7 +3,9 @@ import 'package:flutter_talentaku/presentation/global_component/text_background.
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
+import '../models/program_data.dart';
 import 'header_content.dart';
+import 'home_bottomsheet_information.dart';
 
 class SlideInformation extends StatelessWidget {
   final String headerContent;
@@ -24,9 +26,10 @@ class SlideInformation extends StatelessWidget {
       child: Column(
         children: [
           HeaderContent(
-              text: headerContent, imagePath: image),
+              text: headerContent, imageName: image),
           Container(
-            width: Get.width,
+            padding: EdgeInsets.only(left: 20),
+            width: widthScreen,
             height: 100,
             child: ListView.builder(
               shrinkWrap: true,
@@ -51,17 +54,39 @@ class Content extends StatelessWidget {
     required this.contentTitle,
   });
 
+  void _showProgramDetails(BuildContext context, Program program) {
+    Get.bottomSheet(
+      HomeBottomsheetInformation(
+        informationTitle: program.title,
+        photoList: program.photos,
+        descriptionContent: program.description,
+      ),
+      isScrollControlled: true,
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
+
+    final program = mockProgramData.firstWhere(
+      (program) => program.title == contentTitle,
+      orElse: () => Program(
+        title: 'Not Found',
+        description: 'No description available',
+        photos: [],
+      ),
+    );
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(right:12),
       child: Container(
         height: 90,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: AppColor.blue600, width: 2)),
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColor.blue600, width: 1)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,10 +97,10 @@ class Content extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  
+                  _showProgramDetails(context, program);
                 },
                 child: TextWithBackground(
-                  colorBackground: AppColor.blue600,
+                  colorBackground: AppColor.blue100,
                   text: "Check it",
                 ),
               )

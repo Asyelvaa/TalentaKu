@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
 class HeaderContent extends StatelessWidget {
   final String text;
-  final String imagePath;
+  final String imageName;
 
   const HeaderContent({
     Key? key,
     required this.text,
-    required this.imagePath,
+    required this.imageName,
   }) : super(key: key);
 
   @override
@@ -25,16 +26,13 @@ class HeaderContent extends StatelessWidget {
             padding: EdgeInsets.only(left: 30),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColor.blue300),
+                color: AppColor.blue600),
             child: Center(
               child: Text(text,
-                  style: GoogleFonts.manrope(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 18,
-                      color: AppColor.white)),
+                  style: AppTextStyle.tsTitle. copyWith(color: AppColor.white)),
             ),
           ),
-          Positioned(left: 40, bottom: 20, child: Image.asset(imagePath)),
+          Positioned(left: 40, bottom: 20,  child: Image.asset('assets/images/$imageName', scale: 4,)),
         ],
       ),
     );
