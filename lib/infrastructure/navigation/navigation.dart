@@ -6,6 +6,7 @@ import 'package:flutter_talentaku/presentation/album_page/album_detail_page.scre
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
+import '../../presentation/global_component/navigation_menu.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';
 
@@ -18,7 +19,7 @@ class EnvironmentsBadge extends StatelessWidget {
     return env != Environments.PRODUCTION
         ? Banner(
             location: BannerLocation.topStart,
-            message: env!,  
+            message: env!,
             color: env == Environments.QAS ? Colors.blue : Colors.purple,
             child: child,
           )
@@ -26,42 +27,46 @@ class EnvironmentsBadge extends StatelessWidget {
   }
 }
 
-  class Nav {
-    static List<GetPage> routes = [
-      GetPage(
-        name: Routes.HOME_PAGE,
-        page: () => const HomePageScreen(),
-        binding: HomePageControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.PROFILE_PAGE,
-        page: () => const ProfilePageScreen(),
-        binding: ProfilePageControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.DAILY_REPORT,
-        page: () => const DailyReportScreen(),
-        binding: DailyReportControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.CLASS_PAGE,
-        page: () => ClassScreen(),
-        binding: GradeControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.CLASS_DETAIL,
-        page: () => const ClassDetailScreen(),
-        binding: ClassDetailControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.STYLE_ALBUM,
-        page: () => const StyleAlbumScreen(),
-        binding: StyleAlbumControllerBinding(),
-      ),
-      GetPage(
-        name: Routes.ADD_EDIT_POST,
-        page: () => const AddEditPostScreen(),
-        binding: AddEditPostControllerBinding(),
-      ),
-    ];
-  }
+class Nav {
+  static List<GetPage> routes = [
+    GetPage(
+      name: Routes.NAVBAR,
+      page: () => NavbarMenu(),
+    ),
+    GetPage(
+      name: Routes.HOME_PAGE,
+      page: () => const HomePageScreen(),
+      binding: HomePageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE_PAGE,
+      page: () => const ProfilePageScreen(),
+      binding: ProfilePageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.DAILY_REPORT,
+      page: () => const DailyReportScreen(),
+      binding: DailyReportControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CLASS_PAGE,
+      page: () => ClassScreen(),
+      binding: GradeControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CLASS_DETAIL,
+      page: () => const ClassDetailScreen(),
+      binding: ClassDetailControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.STYLE_ALBUM,
+      page: () => const StyleAlbumScreen(),
+      binding: StyleAlbumControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADD_EDIT_POST,
+      page: () => const AddEditPostScreen(),
+      binding: AddEditPostControllerBinding(),
+    ),
+  ];
+}

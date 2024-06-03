@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/theme.dart';
 
-
 class IconButtonTemplate extends StatelessWidget {
   final String text;
   final IconData? icon;
@@ -22,16 +21,11 @@ class IconButtonTemplate extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(colorButton),
-        padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
-          EdgeInsets.symmetric(vertical: 16, horizontal: 24)
-        ),
-        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
-          )
-        )
-      ),
+          backgroundColor: MaterialStateProperty.all<Color>(colorButton),
+          padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+              EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
+          shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -39,7 +33,10 @@ class IconButtonTemplate extends StatelessWidget {
             text,
             style: AppTextStyle.tsTitle.copyWith(color: AppColor.white),
           ),
-          Icon(icon, color: Colors.white,),
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
         ],
       ),
     );
