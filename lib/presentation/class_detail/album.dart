@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 
 class StyleAlbum extends StatelessWidget {
   const StyleAlbum({super.key});

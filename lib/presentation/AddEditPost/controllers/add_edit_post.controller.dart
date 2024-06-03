@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_talentaku/presentation/AddEditPost/component/card1.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

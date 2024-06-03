@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../presentation/style_album/controllers/style_album.controller.dart';
+import '../../../../presentation/album_page/controllers/style_album.controller.dart';
 
 class StyleAlbumControllerBinding extends Bindings {
   @override

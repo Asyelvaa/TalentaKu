@@ -3,10 +3,7 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
 import 'package:get/get.dart';
 
-import 'component/component1.dart';
-import 'controllers/style_album.controller.dart';
-
-class StyleAlbumScreen extends GetView<StyleAlbumController> {
+class StyleAlbumScreen extends StatelessWidget {
   const StyleAlbumScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,12 +31,12 @@ class StyleAlbumScreen extends GetView<StyleAlbumController> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Container(
-                    child: component1(
-                        Foto: "assets/images/mobil.png",
-                        description:
-                            "Description Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-                  );
+                  // return Container(
+                  //   child: component1(
+                  //       Foto: "assets/images/mobil.png",
+                  //       description:
+                  //           "Description Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+                  // );
                 },
               ),
             ),
