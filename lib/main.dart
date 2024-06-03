@@ -8,7 +8,7 @@ import 'infrastructure/navigation/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var initialRoute = await Routes.initialRoute;
-  runApp(Main(initialRoute));
+  runApp(Main(initialRoute as String));
 }
 
 class Main extends StatelessWidget {

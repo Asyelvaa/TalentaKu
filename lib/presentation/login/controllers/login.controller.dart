@@ -48,7 +48,7 @@ class LoginController extends GetxController {
 
         final bool success = responseData['success'];
         if (success) {
-          Get.toNamed(Routes.PICKIMAGE);
+          // Get.toNamed(Routes.);
         } else {
           final String errorMessage = responseData['message'] ?? 'Login gagal';
           Get.snackbar('Error', errorMessage);
