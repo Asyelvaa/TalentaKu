@@ -4,6 +4,7 @@ class ClassModel {
   final String teacher;
   final String description;
   final List<String> students;
+  bool isActive;
 
   ClassModel({
     required this.id,
@@ -11,6 +12,7 @@ class ClassModel {
     required this.teacher,
     required this.description,
     required this.students,
+    this.isActive = true,
   }); 
 
   factory ClassModel.fromJson(Map<String, dynamic> json) {

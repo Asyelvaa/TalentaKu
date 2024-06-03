@@ -6,6 +6,7 @@ class UserModel {
   final String photoProfile;
   final String address;
   final String role;
+  final List<String>? classes;
 
   UserModel({
     required this.id,
@@ -15,6 +16,7 @@ class UserModel {
     required this.photoProfile,
     required this.address,
     required this.role,
+    this.classes,
   }); 
 
 }
@@ -28,6 +30,7 @@ List<UserModel> mockUserList = [
     photoProfile: "assets/images/student.png",
     address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
     role: "teacher",
+    classes: ["Kelompok Singa", "Kelompok Harimau", "Kelompok Beruang"]
   ),
   UserModel(
     id: "2",
@@ -37,5 +40,6 @@ List<UserModel> mockUserList = [
     photoProfile: "assets/images/student.png",
     address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
     role: "student",
+    classes: []
   ),
 ];

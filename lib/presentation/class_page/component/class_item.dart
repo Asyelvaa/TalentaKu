@@ -18,14 +18,14 @@ class ClassItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(Routes.STYLE_ALBUM), // Ensure this route exists
+      onTap: () => Get.toNamed(Routes.CLASS_DETAIL), 
       child: Container(
-        margin: EdgeInsets.only(top: 10),
-        width: Get.width,
-        height: 130,
+        margin: EdgeInsets.only(top: 12),
+        width: widthScreen,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16), color: AppColor.blue100),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -63,7 +63,7 @@ class ClassItem extends StatelessWidget {
                 ],
               ),
             ),
-            Image.asset("assets/images/abc.png"),
+            Image.asset("assets/images/abc.png", scale: 1.5,),
           ],
         ),
       ),

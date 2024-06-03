@@ -2,7 +2,7 @@ class Routes {
   static Future<String> get initialRoute async {
     // TODO: implement method
 
-    return HOME_PAGE;
+    return CLASS_PAGE;
 
   }
 
