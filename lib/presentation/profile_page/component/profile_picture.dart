@@ -13,7 +13,7 @@ class ProfilePicture extends StatelessWidget {
     return Stack(
       children: [
         CircleAvatar(
-          radius: 80,
+          radius: 70,
           backgroundColor: Colors.red,
           backgroundImage: AssetImage('assets/images/profilw.png'),
         ),

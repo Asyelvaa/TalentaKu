@@ -18,7 +18,7 @@ class ProfileDataContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      width: Get.width,
+      width: widthScreen * 0.4,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
           border: Border.all(width: 2, color: AppColor.blue400),
@@ -26,24 +26,18 @@ class ProfileDataContainer extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-              padding: EdgeInsets.only(top: 5, left: 20),
-              child: Icon(icon)),
+              padding: EdgeInsets.only(top: 5, left: 15), child: Icon(icon)),
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 20, right: 10),
-                child: Text(
-                  title,
-                  style:AppTextStyle.tsLittle.copyWith(color: Colors.grey)
-                ),
+                padding: EdgeInsets.only(top: 15, right: 10),
+                child: Text(title,
+                    style: AppTextStyle.tsLittle.copyWith(color: Colors.grey)),
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    dataUser ?? "Data User",
-                    style: AppTextStyle.tsNormal
-                  )
-              )
+                  padding: EdgeInsets.only(),
+                  child: Text(dataUser ?? "Data User",
+                      style: AppTextStyle.tsNormal))
             ],
           ),
         ],

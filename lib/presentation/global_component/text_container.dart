@@ -9,13 +9,12 @@ class TextWithContainer extends StatelessWidget {
   final IconData? icon;
   final Color? colorText;
 
-  const TextWithContainer({
-    super.key,
-    required this.colorContainer,
-    required this.text,
-    this.icon,
-    this.colorText
-  });
+  const TextWithContainer(
+      {super.key,
+      required this.colorContainer,
+      required this.text,
+      this.icon,
+      this.colorText});
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +22,13 @@ class TextWithContainer extends StatelessWidget {
       width: Get.width,
       height: 60,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: colorContainer),
+          borderRadius: BorderRadius.circular(10), color: colorContainer),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              text,
-              style: AppTextStyle.tsTextContainer.copyWith(color: colorText)
-            ),
+            Text(text, style: AppTextStyle.tsTitle.copyWith(color: colorText)),
             Icon(icon)
           ],
         ),

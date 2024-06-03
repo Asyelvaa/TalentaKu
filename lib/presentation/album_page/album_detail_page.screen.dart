@@ -21,15 +21,14 @@ class AlbumDetailPage extends GetView<StyleAlbumController> {
         title: "Judul Foto Kegiatan",
         datePost: "May, 05 2024",
       ),
-       PostCardModel(
+      PostCardModel(
         photo: "assets/images/mobil.png",
         description:
-            "Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor commodo",
+            "Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor commodo anjung anjai mabar slemek",
         title: "Judul Foto Kegiatan",
         datePost: "May, 05 2024",
       ),
     ];
-    
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -59,7 +58,6 @@ class AlbumDetailPage extends GetView<StyleAlbumController> {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return PostCard(
-
                     postCardModel: cards[index],
                   );
                 },

@@ -45,8 +45,8 @@ class ProfilePageScreen extends StatelessWidget {
                     icon: Icons.abc,
                     dataUser: "123456",
                   ),
-                  SizedBox( 
-                    width: 20,
+                  SizedBox(
+                    width: 10,
                   ),
                   ProfileDataContainer(
                     title: "Kelompok",
@@ -74,20 +74,20 @@ class ProfilePageScreen extends StatelessWidget {
               ProfileList(
                 Title: "Mulai di RBA",
                 Description: "1 Januari 2024 ",
-              ),             
+              ),
               SizedBox(
                 height: 10,
               ),
               // LAPORAN PEMBELAJRAN
               TextWithContainer(
-                colorContainer: AppColor.blue200, 
+                colorContainer: AppColor.blue200,
                 text: "Laporan Pembelajaran",
                 icon: Icons.arrow_forward,
               ),
               SizedBox(height: 20),
               // LOGOUT
               TextWithContainer(
-                colorContainer: AppColor.red, 
+                colorContainer: AppColor.red,
                 text: "Logout",
                 colorText: AppColor.white,
               )
@@ -98,9 +98,3 @@ class ProfilePageScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-

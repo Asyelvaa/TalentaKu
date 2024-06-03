@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
 
 import 'package:get/get.dart';
+
+import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
@@ -61,6 +62,16 @@ class Nav {
       name: Routes.ADD_EDIT_POST,
       page: () => const AddEditPostScreen(),
       binding: AddEditPostControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.LOGIN,
+      page: () => const LoginScreen(),
+      binding: LoginControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PICKIMAGE,
+      page: () => const PickimageScreen(),
+      binding: PickimageControllerBinding(),
     ),
   ];
 }
