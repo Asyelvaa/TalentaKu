@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/AddEditPost/component/card1.dart';
+import 'package:flutter_talentaku/presentation/edit_post_page/component/card1.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 

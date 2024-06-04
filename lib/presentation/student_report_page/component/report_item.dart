@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/daily_report/controllers/daily_report.controller.dart';
+import 'package:flutter_talentaku/presentation/student_report_page/controllers/daily_report.controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 

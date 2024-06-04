@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
-import 'package:flutter_talentaku/presentation/class_detail/controllers/class_detail.controller.dart';
+import '../controllers/class_detail.controller.dart';
 
 
 class ProfileNameAvatar extends GetView<ClassDetailController> {

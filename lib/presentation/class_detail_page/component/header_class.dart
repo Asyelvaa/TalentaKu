@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/class_detail/component/profile_name_avatar.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/profile_name_avatar.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';

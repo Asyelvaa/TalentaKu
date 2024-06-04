@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import 'package:flutter/widgets.dart';
+// import 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/controllers_bindings.dart';
 // import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 // import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 // import 'package:get/get.dart';
@@ -8,7 +8,7 @@
 
 // import 'controllers/pickimage.controller.dart';
 
-// class PickimageScreen extends StatefulWidget {
+// class PickimageScreen extends GetView<PickimageControllerBinding> {
 //   const PickimageScreen({Key? key}) : super(key: key);
 
 //   @override

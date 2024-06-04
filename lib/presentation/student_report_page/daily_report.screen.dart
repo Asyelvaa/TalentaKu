@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/daily_report/controllers/daily_report.controller.dart';
+import 'package:flutter_talentaku/presentation/student_report_page/controllers/daily_report.controller.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
-import 'package:flutter_talentaku/presentation/daily_report/component/report_item.dart';
+import 'package:flutter_talentaku/presentation/student_report_page/component/report_item.dart';
 
 import '../global_component/text_background.dart';
 

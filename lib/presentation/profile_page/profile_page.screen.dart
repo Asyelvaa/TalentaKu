@@ -1,12 +1,12 @@
-import 'package:flutter_talentaku/presentation/global_component/back_appbar.dart';
-import 'package:flutter_talentaku/presentation/profile_page/component/profile_data_container.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:flutter_talentaku/presentation/profile_page/controllers/profile_page.controller.dart';
 import 'package:get/get.dart';
-
-import '../daily_report/daily_report.screen.dart';
+import 'package:get_storage/get_storage.dart';
+import '../student_report_page/daily_report.screen.dart';
+import '../global_component/back_appbar.dart';
+import '../../infrastructure/theme/theme.dart';
 import '../global_component/icon_button_template.dart';
+import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
 import 'model/user_model.dart';
@@ -16,7 +16,7 @@ class ProfilePageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = mockUserList[0];
+    final ProfilePageController controller = Get.put(ProfilePageController());
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -36,10 +36,30 @@ class ProfilePageScreen extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              // USERNAME
-              Text(user.name, style: AppTextStyle.tsTitle),
-              Text(user.role,
-                  style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
+              Obx(() {
+                final UserModel user =
+                    Get.find<ProfilePageController>().user.value;
+                if (controller.isLoading.value == true) {
+                  return Column(
+                    children: [
+                      Text('Loading...', style: AppTextStyle.tsTitle),
+                      Text('Loading...',
+                          style: AppTextStyle.tsNormal
+                              .copyWith(color: AppColor.blue600)),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Text(controller.userData['name'],
+                          style: AppTextStyle.tsTitle),
+                      Text(controller.role[0],
+                          style: AppTextStyle.tsNormal
+                              .copyWith(color: AppColor.blue600)),
+                    ],
+                  );
+                }
+              }),
               defaultHeightSpace,
               // NIS & KELOMPOK
               Container(
@@ -50,52 +70,77 @@ class ProfilePageScreen extends StatelessWidget {
                     ProfileDataContainer(
                       title: "NIS",
                       icon: Icons.library_books_outlined,
-                      dataUser: "123456",
+                      dataUser: controller.user.value.nomorInduk,
                     ),
                     ProfileDataContainer(
                       title: "Kelompok",
                       icon: Icons.portrait_rounded,
-                      dataUser: "Gajah",
+                      dataUser: controller.user.value.grades,
                     ),
                   ],
                 ),
               ),
               defaultHeightSpace,
               //LIST INFORMATION USER
-              ProfileList(
-                Title: "Nama Lengkap",
-                Description: user.name,
-              ),
-              ProfileList(
-                Title: "Tampat,Tanggal Lahir",
-                Description: user.birthDate,
-              ),
-              ProfileList(
-                Title: "Alamat",
-                Description: user.address,
-              ),
-              ProfileList(
-                Title: "Mulai di RBA",
-                Description: "1 Januari 2024 ",
-              ),             
+              Obx(() => controller.isLoading.value
+                  ? Column(
+                      children: [
+                        ProfileList(
+                          Title: "Nama Lengkap",
+                          Description: "Loading...",
+                        ),
+                        ProfileList(
+                          Title: "Tampat, Tanggal Lahir",
+                          Description: "Loading...",
+                        ),
+                        ProfileList(
+                          Title: "Alamat",
+                          Description: "Loading...",
+                        ),
+                        ProfileList(
+                          Title: "Mulai di RBA",
+                          Description: "Loading...",
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        ProfileList(
+                          Title: "Nama Lengkap",
+                          Description: controller.userData['name'],
+                        ),
+                        ProfileList(
+                          Title: "Tampat, Tanggal Lahir",
+                          Description: controller.userData['birth_information'],
+                        ),
+                        ProfileList(
+                          Title: "Alamat",
+                          Description: controller.userData['address'],
+                        ),
+                        ProfileList(
+                          Title: "Mulai di RBA",
+                          Description: '-',
+                        ),
+                      ],
+                    )),
               defaultHeightSpace,
-              // LAPORAN PEMBELAJRAN
+              // LAPORAN PEMBELAJARAN
               IconButtonTemplate(
-                text: "Laporan Pembelajaran", 
-                icon: Icons.arrow_forward, 
+                text: "Laporan Pembelajaran",
+                icon: Icons.arrow_forward,
                 colorButton: AppColor.white,
                 onPressed: () {
                   Get.to(DailyReportScreen());
-                }
+                },
               ),
               defaultHeightSpace,
               // LOGOUT
               IconButtonTemplate(
-                text: "Logout", 
+                text: "Logout",
                 colorButton: AppColor.red,
                 onPressed: () {
-                  Get.off(ProfilePageScreen());
-                }
+                  controller.logout();
+                },
               )
             ],
           ),

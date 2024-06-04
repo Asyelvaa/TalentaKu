@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/class_detail/component/class_appbar.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/class_appbar.dart';
 import 'package:get/get.dart';
 
 import 'component/album/content_album.dart';
@@ -24,7 +24,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
       body: Column(
         children: [
           // HEADER
-          HeaderClass(),
+          HeaderClass(),  
           // BODY
           Container(
             child: TabBar(
@@ -47,8 +47,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                 ContentAlbum(),
               ],
             ),
-          ),
-          
+          ),      
         ],
       ),
     ));
