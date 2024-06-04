@@ -30,7 +30,9 @@ List<UserModel> mockUserList = [
     photoProfile: "assets/images/student.png",
     address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
     role: "teacher",
-    classes: ["Kelompok Singa", "Kelompok Harimau", "Kelompok Beruang"]
+    classes: 
+    ["Kelompok Singa", "Kelompok Harimau", "Kelompok Beruang"]
+    // []
   ),
   UserModel(
     id: "2",

@@ -21,49 +21,28 @@ class ClassItem extends StatelessWidget {
       onTap: () => Get.toNamed(Routes.CLASS_DETAIL), 
       child: Container(
         margin: EdgeInsets.only(top: 12),
+        padding: EdgeInsets.all(20),
         width: widthScreen,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16), color: AppColor.blue100),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyle.tsNormal,
-                  ),
-                  Text(
-                    description,
-                    style: AppTextStyle.tsLittle,
-                  ),
-                  Spacer(),
-                  Stack(
-                    children: [
-                      Container(
-                        width: Get.width * 0.4,
-                        height: 40,
-                        child: ListView.builder(
-                          itemCount: 3,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return CircleAvatar(
-                              radius: 15,
-                              backgroundImage: AssetImage(image),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyle.tsNormal,
+                ),
+                Text(
+                  description,
+                  style: AppTextStyle.tsLittle,
+                ),
+                
+              ],
             ),
-            Image.asset("assets/images/abc.png", scale: 1.5,),
+            Image.asset("assets/images/abc.png", scale: 2,),
           ],
         ),
       ),

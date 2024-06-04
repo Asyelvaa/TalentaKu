@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/theme.dart';
 
-
 class IconButtonTemplate extends StatelessWidget {
   final String text;
   final IconData? icon;
@@ -37,7 +36,10 @@ class IconButtonTemplate extends StatelessWidget {
             text,
             style: AppTextStyle.tsTitle.copyWith(color: AppColor.white),
           ),
-          Icon(icon, color: Colors.white,),
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
         ],
       ),
     );

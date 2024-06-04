@@ -105,6 +105,7 @@ class ClassScreen extends GetView<ClassController> {
             return ListView.builder(
               itemCount: currentUser.value.classes!.length,
               itemBuilder: (context, index) {
+                // return Text(currentUser.value.classes![index]);
                 return ClassItem(
                   title: currentUser.value.classes![index],
                   description: "7-9 tahun",

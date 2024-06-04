@@ -16,20 +16,23 @@ class ProfileNameAvatar extends GetView<ClassDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 25,
-          backgroundImage: AssetImage(profile),
-        ),
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            name,
-            style: AppTextStyle.tsNormal
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      width: widthScreen * 0.2,
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundImage: AssetImage(profile),
           ),
-        )
-      ],
+          Text(
+            name,
+            style: AppTextStyle.tsLittle.copyWith(color: AppColor.white), 
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          )
+        ],
+      ),
     );
   }
 }

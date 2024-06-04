@@ -13,38 +13,46 @@ class HeaderClass extends StatelessWidget {
   Widget build(BuildContext context) {
 
     List<Map<String, dynamic>> _profileData = [];
-
+    _profileData = [
+      {
+        'name': 'Sekar Annisa',
+        'profileImageUrl': 'assets/images/student.png',
+      },
+      {
+        'name': 'Jane Smith',
+        'profileImageUrl': 'assets/images/student.png',
+      },
+      {
+        'name': 'John Doe',
+        'profileImageUrl': 'assets/images/student.png',
+      },
+      {
+        'name': 'Jane Doe',
+        'profileImageUrl': 'assets/images/student.png',
+      },
+    ];
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(left: 30),
+      height: 90,
+      width: widthScreen,
       decoration: BoxDecoration(
           color: AppColor.blue600,
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Container(
-              width: Get.width,
-              height: 100,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _profileData.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  final profile = _profileData[index];
-                  return ProfileNameAvatar(
-                    name: profile['name'],
-                    profile: profile['profileImageUrl'],
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24))),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _profileData.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final profile = _profileData[index];
+            return ProfileNameAvatar(
+              name: profile['name'],
+              profile: profile['profileImageUrl'],
+            );
+          },
+        ),
       ),
     );
   }

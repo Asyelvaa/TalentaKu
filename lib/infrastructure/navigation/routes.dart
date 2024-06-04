@@ -1,18 +1,20 @@
+class NavigationMenu {
+  final String route;
+  NavigationMenu(this.route);
+}
+
 class Routes {
   static Future<String> get initialRoute async {
-    // TODO: implement method
-
-    return CLASS_PAGE;
-
+    
+    return NAVBAR;
   }
 
-  static const ADD_EDIT_POST = '/add-edit-post';
-  static const CLASS_DETAIL = '/class-detail';
-  static const DAILY_REPORT = '/daily-report';
-  static const CLASS_PAGE = '/grade';
-  static const HOME_PAGE = '/home-page';
-  static const LOGIN = '/login';
-  static const PROFILE_PAGE = '/profile-page';
-  static const STYLE_ALBUM = '/style-album';
-  static const PICKIMAGE = '/pickimage';
+  static const String HOME_PAGE = '/home';
+  static const String PROFILE_PAGE = '/profile';
+  static const String DAILY_REPORT = '/daily-report';
+  static const String CLASS_PAGE = '/class';
+  static const String CLASS_DETAIL = '/class-detail';
+  static const String STYLE_ALBUM = '/style-album';
+  static const String ADD_EDIT_POST = '/add-edit-post';
+  static const String NAVBAR = '/global_component';
 }
