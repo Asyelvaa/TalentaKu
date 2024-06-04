@@ -1,41 +1,46 @@
 class UserModel {
-  final String id;
+  final int id;
   final String name;
   final String email;
-  final String birthDate;
-  final String photoProfile;
+  final String? emailVerifiedAt;
+  final String nomorInduk;
   final String address;
-  final String role;
+  final String birthDate;
+  final String? photo;
+  final String createdAt;
+  final String updatedAt;
+  final List<String> roles;
+  final String grades;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
-    required this.birthDate,
-    required this.photoProfile,
+    required this.emailVerifiedAt,
+    required this.nomorInduk,
     required this.address,
-    required this.role,
-  }); 
+    required this.birthDate,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.roles,
+    required this.grades,
+    this.photo,
+  });
 
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      emailVerifiedAt: json['email_verified_at'],
+      nomorInduk: json['nomor_induk'],
+      address: json['address'],
+      birthDate: json['birth_date'],
+      photo: json['photo'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      roles: List<String>.from(json['roles']),
+      grades: json['grades'],
+    );
+  }
 }
-
-List<UserModel> mockUserList = [
-  UserModel(
-    id: "1",
-    name: "Sekar Annisa",
-    email: "sekar@example.com",
-    birthDate: "1990-05-15",
-    photoProfile: "assets/images/student.png",
-    address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
-    role: "teacher",
-  ),
-  UserModel(
-    id: "2",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    birthDate: "1985-08-22",
-    photoProfile: "assets/images/student.png",
-    address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
-    role: "student",
-  ),
-];

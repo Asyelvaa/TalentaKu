@@ -6,9 +6,10 @@ class NavigationMenu {
 class Routes {
   static Future<String> get initialRoute async {
     // Return an instance of NavigationMenu with the desired route
-    return NAVBAR;
+    return LoginScreen;
   }
 
+  static const String LoginScreen = '/login';
   static const String HOME_PAGE = '/home';
   static const String PROFILE_PAGE = '/profile';
   static const String DAILY_REPORT = '/daily-report';

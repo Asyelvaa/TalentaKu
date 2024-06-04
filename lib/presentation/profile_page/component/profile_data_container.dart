@@ -21,25 +21,23 @@ class ProfileDataContainer extends StatelessWidget {
       width: widthScreen * 0.35,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-          border: Border.all(width:1.5, color: AppColor.blue400),
+          border: Border.all(width: 1.5, color: AppColor.blue500),
           borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(icon, size: 24,),
+            Icon(
+              icon,
+              size: 24,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style:AppTextStyle.tsLittle.copyWith(color: Colors.grey)
-                ),
-                Text(
-                  dataUser ?? "Data User",
-                  style: AppTextStyle.tsNormal
-                )
+                Text(title,
+                    style: AppTextStyle.tsLittle.copyWith(color: Colors.grey)),
+                Text(dataUser ?? "Data User", style: AppTextStyle.tsNormal)
               ],
             ),
           ],

@@ -1,14 +1,31 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
+
+import '../../profile_page/model/user_model.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final box = GetStorage();
+  final user = UserModel(
+    id: 0,
+    name: '',
+    email: '',
+    emailVerifiedAt: '',
+    nomorInduk: '',
+    address: '',
+    birthDate: '',
+    photo: '',
+    createdAt: '',
+    updatedAt: '',
+    roles: [],
+    grades: '',
+  ).obs;
   final isLoading = false.obs;
 
   @override
@@ -23,7 +40,7 @@ class LoginController extends GetxController {
     final password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      Get.snackbar('Gagagl','Email dan Password tidak boleh kosong');
+      Get.snackbar('Gagal', 'Email dan Password tidak boleh kosong');
       return;
     }
 
@@ -41,25 +58,28 @@ class LoginController extends GetxController {
         }),
       );
 
-      isLoading.value = false;
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        final success = responseData['success'];
 
-        final bool success = responseData['success'];
         if (success) {
-          // Get.toNamed(Routes.);
+          final userData = responseData['data']; // Adjusted to 'data'
+          box.write('username', userData['user']);
+          box.write('token', userData['token']);
+          Get.offAllNamed(Routes.NAVBAR);
         } else {
           final String errorMessage = responseData['message'] ?? 'Login gagal';
           Get.snackbar('Error', errorMessage);
         }
       } else {
-        print('Gagal untuk login. Status code: ${response.statusCode}');
         Get.snackbar(
-            'Error', 'Gagagl untuk login. Status code: ${response.statusCode}');
+            'Error', 'Gagal untuk login. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error during login: $error');
+      print('Error occurred during login: $error');
       Get.snackbar('Error', 'An error occurred during login');
     } finally {
       isLoading.value = false;

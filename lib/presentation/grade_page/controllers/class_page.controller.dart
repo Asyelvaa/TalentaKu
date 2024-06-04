@@ -15,15 +15,15 @@ import '../../profile_page/model/user_model.dart';
       classes.remove(className);
       archivedClasses.add(className);
     }
-    var currentUser = UserModel(
-    id: "1",
-    name: "Sekar Annisa",
-    email: "sekar@example.com",
-    birthDate: "1990-05-15",
-    photoProfile: "assets/images/student.png",
-    address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
-    role: "teacher",
-  ).obs;
+  //   var currentUser = UserModel(
+  //   id: "1",
+  //   name: "Sekar Annisa",
+  //   email: "sekar@example.com",
+  //   birthDate: "1990-05-15",
+  //   photoProfile: "assets/images/student.png",
+  //   address: "Kuman rt 9 rw 1, kec. Batang, kab. Batang",
+  //   role: "teacher",
+  // ).obs;
   
     final count = 0.obs;
     @override
