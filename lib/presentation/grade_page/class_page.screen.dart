@@ -43,7 +43,7 @@ class ClassScreen extends GetView<ClassController> {
                   child: Column(
                     children: [
                       Text('Anda Belum Bergabung Dalam Kelas'),
-                      if (classController.currentUser.value.role == 'teacher')
+                      //if (classController.currentUser.value.role == 'teacher')
                         InkWell(
                           onTap: () => _showAddClassBottomSheet(context),
                           child: Container(

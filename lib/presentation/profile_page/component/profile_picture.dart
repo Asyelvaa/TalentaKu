@@ -11,13 +11,13 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = mockUserList[0];
+   // final UserModel user = mockUserList[0];
 
     return Stack(
       children: [
         CircleAvatar(
           radius: 60,
-          backgroundImage: AssetImage(user.photoProfile), 
+          //backgroundImage: AssetImage(user.photoProfile), 
           foregroundColor: AppColor.blue400,
         ),
         Positioned(
