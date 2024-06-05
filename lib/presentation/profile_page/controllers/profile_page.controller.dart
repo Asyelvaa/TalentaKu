@@ -58,10 +58,10 @@ class ProfilePageController extends GetxController {
         role.value = jsonData['roles'];
         isLoading.value = false;
       } else {
-        throw Exception("memeekekek");
+        throw Exception("Haloo");
       }
     } catch (e) {
-      throw Exception('koonntoooolll');
+      throw Exception('Haii');
     }
   }
 
