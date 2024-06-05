@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/global_component/default_appbar.dart';
 import 'package:flutter_talentaku/presentation/profile_page/controllers/profile_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../domain/models/user_model.dart';
 import '../student_report_page/daily_report.screen.dart';
 import '../global_component/back_appbar.dart';
 import '../../infrastructure/theme/theme.dart';
@@ -9,7 +11,6 @@ import '../global_component/icon_button_template.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
-import 'model/user_model.dart';
 
 class ProfilePageScreen extends StatelessWidget {
   const ProfilePageScreen({super.key});
@@ -22,7 +23,7 @@ class ProfilePageScreen extends StatelessWidget {
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: "My Profile"),
+        child: DefaultAppbar(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -38,7 +39,7 @@ class ProfilePageScreen extends StatelessWidget {
               ),
               Obx(() {
                 final UserModel user =
-                    Get.find<ProfilePageController>().user.value;
+                    Get.put(ProfilePageController()).user.value;
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -123,16 +124,16 @@ class ProfilePageScreen extends StatelessWidget {
                         ),
                       ],
                     )),
-              defaultHeightSpace,
+              // defaultHeightSpace,
               // LAPORAN PEMBELAJARAN
-              IconButtonTemplate(
-                text: "Laporan Pembelajaran",
-                icon: Icons.arrow_forward,
-                colorButton: AppColor.white,
-                onPressed: () {
-                  Get.to(DailyReportScreen());
-                },
-              ),
+              // IconButtonTemplate(
+              //   text: "Laporan Pembelajaran",
+              //   icon: Icons.arrow_forward,
+              //   colorButton: AppColor.white,
+              //   onPressed: () {
+              //     Get.to(DailyReportScreen());
+              //   },
+              // ),
               defaultHeightSpace,
               // LOGOUT
               IconButtonTemplate(

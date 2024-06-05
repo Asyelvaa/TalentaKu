@@ -10,15 +10,9 @@ class ClassModel {
     required this.name,
     required this.teacher,
     required this.description,
-    this.isActive = true,
+    required this.isActive,
   }); 
 
-  factory ClassModel.fromJson(Map<String, dynamic> json) {
-    return ClassModel(
-      id: json['id'],
-      name: json['name'],
-      teacher: json['teacher'],
-      description: json['description'],
-    );
-  }
+
+
 }

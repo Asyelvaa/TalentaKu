@@ -58,7 +58,7 @@ class JoinClassBottomsheets extends GetView<ClassController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
-                          controller: controller.classController,
+                          // controller: controller.classController,
                           decoration: InputDecoration(
                             hintText: 'Nama Kelas',
                             hintStyle: AppTextStyle.tsNormal,
@@ -76,7 +76,7 @@ class JoinClassBottomsheets extends GetView<ClassController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
-                          controller: controller.classController,
+                          // controller: controller.classController,
                           decoration: InputDecoration(
                             hintText: 'Pilih Siswa',
                             hintStyle: AppTextStyle.tsNormal,

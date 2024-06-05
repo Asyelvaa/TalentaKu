@@ -15,6 +15,7 @@ class AddClassBottomSheet extends GetView<ClassController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ClassController());
+
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -58,7 +59,7 @@ class AddClassBottomSheet extends GetView<ClassController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
-                          controller: controller.classController,
+                          controller: controller.classNameController,
                           decoration: InputDecoration(
                             hintText: 'Nama Kelas',
                             hintStyle: AppTextStyle.tsNormal,
@@ -76,7 +77,7 @@ class AddClassBottomSheet extends GetView<ClassController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
-                          controller: controller.classController,
+                          // controller: controller.,
                           decoration: InputDecoration(
                             hintText: 'Pilih Siswa',
                             hintStyle: AppTextStyle.tsNormal,
@@ -110,7 +111,11 @@ class AddClassBottomSheet extends GetView<ClassController> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Get.back();
+                      onAddClass(
+                      controller.classNameController.text,
+                      // descriptionController.text,
+                    );
+                    Get.back();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.blue600,

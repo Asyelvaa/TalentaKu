@@ -21,44 +21,77 @@ class ClassScreen extends GetView<ClassController> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: DefaultAppbar(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Obx(() {
-          final currentUser = controller.currentUser.value;
-          if (currentUser.grades.isEmpty){
-            return Container(
-              height: heightScreen,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
-                  Text('Anda Belum Bergabung \nDalam Kelas', 
-                    style: AppTextStyle.tsTitle.copyWith(color: AppColor.blue800), textAlign: TextAlign.center,
-                  ),
-                  ButtonClassForm(),                          
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: heightScreen,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: 
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              defaultHeightSpace,
+              Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
+              Text('Anda Belum Bergabung \nDalam Kelas', 
+                style: AppTextStyle.tsTitle.copyWith(color: AppColor.blue800), textAlign: TextAlign.center,
               ),
-            );
-          }
-          else {
-            return Column(
-              children: [
-                ButtonClassForm(),
-                ListView.builder(
-                  itemCount: currentUser.grades.length,
-                  itemBuilder: (context, index) {
-                    // return Text(currentUser.value.classes![index]);
-                    return ClassItem(
-                      title: currentUser.grades[index],
-                      description: "7-9 tahun",
-                      image: "assets/images/tambahan2_images.png",
-                    );
-                  },
-                ),
-              ],
-            );
-          }          
-        }
+              defaultHeightSpace,
+              ButtonClassForm(),
+              Expanded(
+                child: ClassItem()
+              ),
+            ],
+          ),
+          // Obx(() {
+          //   final currentUser = controller.currentUser.value;
+          //   if (currentUser.grades.isEmpty){
+          //     return Container(
+          //       height: heightScreen,
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
+          //           Text('Anda Belum Bergabung \nDalam Kelas', 
+          //             style: AppTextStyle.tsTitle.copyWith(color: AppColor.blue800), textAlign: TextAlign.center,
+          //           ),
+          //           defaultHeightSpace,
+          //           ButtonClassForm(), 
+          //           Expanded(
+          //             child: ListView.builder(
+          //               itemCount: currentUser.grades.length,
+          //               itemBuilder: (context, index) {
+          //                 // return Text(currentUser.value.classes![index]);
+          //                 return ClassItem(
+          //                   title: currentUser.grades[index],
+          //                   description: "7-9 tahun",
+          //                   image: "assets/images/tambahan2_images.png",
+          //                 );
+          //               },
+          //             ),
+          //           )                                          
+          //         ],
+          //       ),
+          //     );
+          //   }
+          //   else {
+          //     return Column(
+          //       children: [
+          //         ButtonClassForm(),
+          //         ListView.builder(
+          //           itemCount: currentUser.grades.length,
+          //           itemBuilder: (context, index) {
+          //             // return Text(currentUser.value.classes![index]);
+          //             return ClassItem(
+          //               title: currentUser.grades[index],
+          //               description: "7-9 tahun",
+          //               image: "assets/images/tambahan2_images.png",
+          //             );
+          //           },
+          //         ),
+          //       ],
+          //     );
+          //   }          
+          // }
+          // ),
         ),
       ),
     );

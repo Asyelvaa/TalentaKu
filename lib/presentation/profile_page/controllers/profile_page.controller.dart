@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../model/user_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../domain/models/user_model.dart';
 
 class ProfilePageController extends GetxController {
   final box = GetStorage();

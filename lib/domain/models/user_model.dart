@@ -10,7 +10,7 @@ class UserModel {
   final String createdAt;
   final String updatedAt;
   final List<String> roles;
-  final String grades;
+  String grades;
 
   UserModel({
     required this.id,

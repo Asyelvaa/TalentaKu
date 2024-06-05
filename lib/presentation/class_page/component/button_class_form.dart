@@ -15,9 +15,11 @@ class ButtonClassForm extends GetView<ClassController> {
       context: context,
       builder: (context) {
         return AddClassBottomSheet(
-          onAddClass: (newClass) {
-            // controller.addClass(newClass);
-          },
+          onAddClass: (name) {},
+          // onAddClass: (name, teacher, description){
+          //   controller.addClass(name, teacher, description);
+          
+          // },
         );
       },
     );
@@ -38,21 +40,22 @@ class ButtonClassForm extends GetView<ClassController> {
   
   @override
   Widget build(BuildContext context) {
+    final currentUser = controller.currentUser.value;
     return GestureDetector(
-      // onTap: (){
-      //   if (controller.currentUser.value.role == 'teacher') {
-      //     _showAddClassBottomSheet(context);
-      //   } else if (controller.currentUser.value.role == 'student') {
-      //     _showJoinClassBottomSheet(context);
-      //   }
-      // },
+      onTap: (){
+        if (currentUser.roles == 'Guru KB' || currentUser.roles == 'Guru SD') {
+          _showAddClassBottomSheet(context);
+        } else if (currentUser == 'students') {
+          _showJoinClassBottomSheet(context);
+        }
+      },
       child: Container(
         width: Get.width,
         decoration: BoxDecoration(
           color: AppColor.blue100,
           borderRadius: BorderRadius.circular(12),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
