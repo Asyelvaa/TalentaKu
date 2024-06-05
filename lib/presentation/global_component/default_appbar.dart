@@ -13,27 +13,25 @@ class DefaultAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
+    final String username = box.read('username');
     return AppBar(
       leading: Padding(
         padding: const EdgeInsets.only(left: 20, top: 4, bottom: 4),
         child: Image.asset('assets/images/logo_talentaku.png'),
       ),
-      title: Obx(() {
-        final UserModel user = Get.find<LoginController>().user.value;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Selamat Pagi, ${box.read('username')}',
-              style: AppTextStyle.tsNormal,
-            ),
-            Text(
-              'Semangat buat hari ini yaa..',
-              style: AppTextStyle.tsLittle,
-            ),
-          ],
-        );
-      }),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Selamat Pagi, $username',
+            style: AppTextStyle.tsNormal,
+          ),
+          Text(
+            'Semangat buat hari ini yaa..',
+            style: AppTextStyle.tsLittle,
+          ),
+        ],
+      ),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 20),

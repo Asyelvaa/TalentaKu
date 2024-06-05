@@ -28,18 +28,34 @@ class HomePageScreen extends GetView<HomePageController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ClassInformation(
-                titleInfo: "Laporan harian Erina", 
-                dateInfo: '04 April 2024'
-              ),
+                  titleInfo: "Laporan harian Erina", dateInfo: '04 April 2024'),
+              Obx(() => controller.isLoading.value
+                  ? SlideInformation(
+                      headerContent: "Loading.... ",
+                      image: "program_tambahan.png",
+                      contentTitles: [
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...'
+                      ],
+                    )
+                  : SlideInformation(
+                      headerContent: "Programs ",
+                      image: "program_tambahan.png",
+                      contentTitles: controller.contentTitles.value,
+                    )),
               SlideInformation(
-                headerContent: "Program ", 
-                image: "program_tambahan.png",
-                contentTitles: ['Terapi wicara', 'Pijat stimulasi', 'English Special Club', 'Outing Class', 'Catering Sehat'],
-              ),
-              SlideInformation(
-                headerContent: "Ekstrakulikuler", 
+                headerContent: "Ekstrakulikuler",
                 image: "ekstrakurikuler.png",
-                contentTitles: ['Musik & Tari', 'Kreasi & Gambar', 'Batik Eco Print', 'Cooking', 'Renang'],
+                contentTitles: [
+                  'Musik & Tari',
+                  'Kreasi & Gambar',
+                  'Batik Eco Print',
+                  'Cooking',
+                  'Renang'
+                ],
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -63,15 +79,27 @@ class HomePageScreen extends GetView<HomePageController> {
                 ),
               ),
               SlideInformation(
-                headerContent: "Kurikulum", 
+                headerContent: "Kurikulum",
                 image: "ekstrakurikuler.png",
                 contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
               ),
-              SlideInformation(
-                headerContent: "Kontak&Alamat", 
-                image: "ekstrakurikuler.png",
-                contentTitles: ['Whatsapp', 'Email', 'Instagram', 'Alamat'],
-              ),
+              Obx(() => controller.isLoading.value
+                  ? SlideInformation(
+                      headerContent: "Loading....",
+                      image: "ekstrakurikuler.png",
+                      contentTitles: [
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...'
+                      ],
+                    )
+                  : SlideInformation(
+                      headerContent: "Kontak & Alamat",
+                      image: "ekstrakurikuler.png",
+                      contentTitles: controller.contentTitles.value,
+                    )),
             ],
           ),
         ),
@@ -79,4 +107,3 @@ class HomePageScreen extends GetView<HomePageController> {
     );
   }
 }
-

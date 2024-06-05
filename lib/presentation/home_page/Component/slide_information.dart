@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/global_component/text_background.dart';
+import 'package:flutter_talentaku/presentation/home_page/controllers/home_page.controller.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
@@ -7,13 +8,15 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-class SlideInformation extends StatelessWidget {
+class SlideInformation extends GetView<HomePageController> {
   final String headerContent;
-  final List<String> contentTitles;
+  final List<dynamic> contentTitles;
+  final void Function()? onTap;
   final String image;
 
   const SlideInformation({
     super.key,
+    this.onTap,
     required this.headerContent,
     required this.image,
     required this.contentTitles,
@@ -25,8 +28,7 @@ class SlideInformation extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         children: [
-          HeaderContent(
-              text: headerContent, imageName: image),
+          HeaderContent(text: headerContent, imageName: image),
           Container(
             padding: EdgeInsets.only(left: 20),
             width: widthScreen,
@@ -36,7 +38,12 @@ class SlideInformation extends StatelessWidget {
               itemCount: contentTitles.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Content(contentTitle: contentTitles[index]);
+                return GestureDetector(
+                    onTap: onTap,
+                    child: Content(
+                      contentTitle: contentTitles[index],
+                      index: index,
+                    ));
               },
             ),
           ),
@@ -46,10 +53,12 @@ class SlideInformation extends StatelessWidget {
   }
 }
 
-class Content extends StatelessWidget {
+class Content extends GetView<HomePageController> {
   final String contentTitle;
+  final int index;
 
   const Content({
+    required this.index,
     super.key,
     required this.contentTitle,
   });
@@ -57,17 +66,16 @@ class Content extends StatelessWidget {
   void _showProgramDetails(BuildContext context, Program program) {
     Get.bottomSheet(
       HomeBottomsheetInformation(
-        informationTitle: program.title,
+        informationTitle: controller.programs[index]['name'],
         photoList: program.photos,
-        descriptionContent: program.description,
+        descriptionContent: controller.programs[index]['desc'],
       ),
       isScrollControlled: true,
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
-
     final program = mockProgramData.firstWhere(
       (program) => program.title == contentTitle,
       orElse: () => Program(
@@ -78,23 +86,20 @@ class Content extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.only(right:12),
+      padding: const EdgeInsets.only(right: 12),
       child: Container(
         height: 90,
         decoration: BoxDecoration(
-          color: AppColor.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColor.blue600, width: 1)),
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColor.blue600, width: 1)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                contentTitle,
-                style: AppTextStyle.tsNormal
-              ),
+              Text(contentTitle, style: AppTextStyle.tsNormal),
               GestureDetector(
                 onTap: () {
                   _showProgramDetails(context, program);

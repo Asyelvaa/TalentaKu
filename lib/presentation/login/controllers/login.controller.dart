@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
-
 import '../../profile_page/model/user_model.dart';
 
 class LoginController extends GetxController {
@@ -66,10 +65,10 @@ class LoginController extends GetxController {
         final success = responseData['success'];
 
         if (success) {
-          final userData = responseData['data']; // Adjusted to 'data'
+          final userData = responseData['data'];
           box.write('username', userData['user']);
           box.write('token', userData['token']);
-          Get.offAllNamed(Routes.NAVBAR);
+          Get.offAllNamed(Routes.PICK_IMAGE);
         } else {
           final String errorMessage = responseData['message'] ?? 'Login gagal';
           Get.snackbar('Error', errorMessage);
