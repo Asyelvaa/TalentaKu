@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:flutter_talentaku/presentation/global_component/back_appbar.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,20 +33,9 @@ class AlbumDetailPage extends GetView<StyleAlbumController> {
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          'Post',
-          style: GoogleFonts.manrope(
-            fontSize: 20,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: BackAppbar(titleAppbar: 'Post Album',)
       ),
       body: Container(
         padding: EdgeInsets.all(15),
