@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'controllers/pickimage.controller.dart';
 
 class PickImageScreen extends GetView<PickimageController> {
-  const PickImageScreen({Key? key}) : super(key: key);
+  PickImageScreen({Key? key}) : super(key: key);
+
+  final box = GetStorage();
+  final String username = GetStorage().read('username');
 
   @override
   Widget build(BuildContext context) {
@@ -73,25 +77,67 @@ class PickImageScreen extends GetView<PickimageController> {
                                             FileImage(controller.image!.value!),
                                       )
                                     : CircleAvatar(
-                                        radius: 70,
+                                        radius: 60,
                                       );
                               },
                             ),
                             Positioned(
-                              child: IconButton(
-                                iconSize: 20,
-                                color: AppColor.black,
-                                onPressed: () =>
-                                    controller.pickImage(ImageSource.gallery),
-                                icon: Icon(Icons.add_a_photo),
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.pickImage(ImageSource.gallery);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColor.blue600,
+                                    border: Border.all(
+                                        color: AppColor.white, width: 1),
+                                  ),
+                                  child: Icon(
+                                    Iconsax.camera5,
+                                    size: 20,
+                                    color: AppColor.white,
+                                  ),
+                                ),
                               ),
-                              bottom: -10,
-                              left: 80,
-                            )
+                            ),
                           ],
                         ),
                       ),
                       SizedBox(height: 20),
+                      Center(
+                        child: Container(
+                          width: 257,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            color: AppColor.white,
+                            border: Border(
+                              bottom: BorderSide(
+                                width: 2,
+                                color: AppColor.blue700,
+                                strokeAlign: BorderSide.strokeAlignInside,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              username,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Center(
                         child: SizedBox(
                           width: 257,
@@ -101,7 +147,7 @@ class PickImageScreen extends GetView<PickimageController> {
                             onPressed: () => controller.uploadImageToApi(),
                             color: AppColor.blue600,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             elevation: 0,
                             child: Row(

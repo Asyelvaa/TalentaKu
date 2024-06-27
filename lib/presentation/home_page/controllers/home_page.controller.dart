@@ -15,8 +15,11 @@ class HomePageController extends GetxController {
   final userData = {}.obs;
   final role = [].obs;
 
-  final contentTitles = [].obs;
+  final desc = [].obs;
 
+  final contentTitles = [].obs;
+  final contact = [].obs;
+  final contactandinformation = [].obs;
   final programs = [].obs;
   var isLoading = false.obs;
   var user = UserModel(
@@ -80,57 +83,42 @@ class HomePageController extends GetxController {
         throw Exception("Haloo");
       }
     } catch (e) {
+      print(e);
       throw Exception('Haii');
     }
   }
 
-  // Future<void> fetchContactAndAddress() async {
-  //   isLoading.value = true;
-  //   final url = "https://talentaku.site/api/information";
-  //   var headers = {
-  //     'Accept': 'Application/json',
-  //   };
-  //   try {
-  //     final response = await http.get(Uri.parse(url), headers: headers);
+  Future<void> fetchContactAndInformation() async {
+    isLoading.value = true;
+    final url = "https://talentaku.site/api/information";
+    var headers = {
+      'Accept': 'Application/json',
+    };
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
 
-  //     if (response.statusCode == 200) {
-  //       final List<dynamic> jsonData = json.decode(response.body);
-
-  //       contentTitles.clear();
-  //       for (var item in jsonData) {
-  //         print('Item: $item');
-  //         try {
-  //           if (item is Map &&
-  //               item.containsKey('title') &&
-  //               item.containsKey('desc')) {
-              
-  //             final title = item['title'];
-  //             final desc = item['desc']['desc']
-  //                 .join("\n");
-  //             contentTitles.add("$title: $desc");
-  //           } else {
-  //             throw Exception(
-  //                 "Format data tidak sesuai untuk item kontak dan alamat: $item");
-  //           }
-  //         } catch (e) {
-  //           print('Kesalahan saat memproses item: $e');
-  //           throw e; 
-  //         }
-  //       }
-  //       isLoading.value = false;
-  //     } else {
-  //       throw Exception(
-  //           "Gagal mengambil kontak dan alamat. Kode status: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Gagal mengambil kontak dan alamat: $e');
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        final items = jsonData['information'];
+        for (var item in items) {
+          contact.add(item['title']);
+          desc.add(item['desc']);
+          contactandinformation.add(item);
+        }
+        isLoading.value = false;
+      } else {
+        throw Exception("Haloo");
+      }
+    } catch (e) {
+      throw Exception('Haii');
+    }
+  }
 
   @override
   void onInit() {
     fetchUser();
     fetchProgram();
+    fetchContactAndInformation();
     // fetchContactAndAddress();
     super.onInit();
   }

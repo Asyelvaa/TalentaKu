@@ -37,7 +37,7 @@ class ClassInformation extends StatelessWidget {
                 ),
                 TextWithBackground(
                   colorBackground: AppColor.blue100,
-                  text: "Senin, 04/04/2024", 
+                  text: "Senin, 04/04/2024",
                 )
               ],
             ),
@@ -48,7 +48,8 @@ class ClassInformation extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: 2,
                 itemBuilder: (context, index) {
-                  return InformationListItem(titleInfo: titleInfo, dateInfo: dateInfo);
+                  return InformationListItem(
+                      titleInfo: titleInfo, dateInfo: dateInfo);
                 },
               ),
             )
