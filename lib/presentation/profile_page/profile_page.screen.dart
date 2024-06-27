@@ -141,7 +141,7 @@ class ProfilePageScreen extends StatelessWidget {
                 onPressed: () {
                   controller.logout();
                 },
-              )
+              ),
             ],
           ),
         ),

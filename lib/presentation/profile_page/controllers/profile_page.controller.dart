@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../model/user_model.dart';
@@ -82,7 +83,25 @@ class ProfilePageController extends GetxController {
     );
   }
 
-  void logout() {
-    box.erase();
+Future<void> logout() async {
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/auth/logout";
+    var headers = {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        box.erase();
+        Get.offAllNamed(Routes.LoginScreen);
+      } else {
+        throw Exception("Failed to log out");
+      }
+    } catch (e) {
+      throw Exception('Error during logout');
+    }
   }
 }
+

@@ -67,7 +67,7 @@ class LoginController extends GetxController {
         if (success) {
           final userData = responseData['data'];
           box.write('username', userData['user']);
-          box.write('token', userData['token']);
+          box.write('token', responseData['token']);
           Get.offAllNamed(Routes.PICK_IMAGE);
         } else {
           final String errorMessage = responseData['message'] ?? 'Login gagal';

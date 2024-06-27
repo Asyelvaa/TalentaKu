@@ -8,20 +8,18 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-class SlideContact extends GetView<HomePageController> {
+class SlideInformation extends GetView<HomePageController> {
   final String headerContent;
   final List<dynamic> contentTitles;
-  final List<dynamic> contentDesc;
   final void Function()? onTap;
   final String image;
 
-  const SlideContact({
+  const SlideInformation({
     super.key,
     this.onTap,
     required this.headerContent,
     required this.image,
     required this.contentTitles,
-    required this.contentDesc,
   });
 
   @override
@@ -40,21 +38,15 @@ class SlideContact extends GetView<HomePageController> {
               itemCount: contentTitles.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                String contentDescription;
-                if (index < contentDesc.length) {
-                  contentDescription = contentDesc[index];
-                } else {
-                  contentDescription = 'Tidak ada deskripsi';
-                }
-
-                return Content(
-                  contentTitle: contentTitles[index],
-                  contentDesc: contentDescription,
-                  index: index,
-                );
+                return GestureDetector(
+                    onTap: onTap,
+                    child: Content(
+                      contentTitle: contentTitles[index],
+                      index: index,
+                    ));
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -63,13 +55,11 @@ class SlideContact extends GetView<HomePageController> {
 
 class Content extends GetView<HomePageController> {
   final String contentTitle;
-  final String contentDesc;
   final int index;
 
   const Content({
     required this.index,
     super.key,
-    required this.contentDesc,
     required this.contentTitle,
   });
 
@@ -104,15 +94,20 @@ class Content extends GetView<HomePageController> {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColor.blue600, width: 1)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(contentTitle, style: AppTextStyle.tsNormal),
-              Text(
-                contentDesc,
-                style: AppTextStyle.tsNormal,
+              GestureDetector(
+                onTap: () {
+                  _showProgramDetails(context, program);
+                },
+                child: TextWithBackground(
+                  colorBackground: AppColor.blue100,
+                  text: "Check it",
+                ),
               )
             ],
           ),

@@ -5,14 +5,25 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'controllers/login.controller.dart';
 
-class LoginScreen extends GetView<LoginController> {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Inisialisasi LoginController
-    final LoginController loginController = Get.put(LoginController());
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  late LoginController loginController;
+  bool _obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loginController = Get.put(LoginController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.blue200,
       body: SingleChildScrollView(
@@ -85,19 +96,31 @@ class LoginScreen extends GetView<LoginController> {
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: loginController.passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 18, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: AppColor.blue500),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: AppColor.blue400),
                               ),
                               labelText: "Masukan pin anda",
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                                child: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 30),
