@@ -10,8 +10,6 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
 
-    final LoginController loginController = Get.put(LoginController());
-
     return Scaffold(
       backgroundColor: AppColor.blue200,
       body: SingleChildScrollView(
@@ -53,12 +51,12 @@ class LoginScreen extends GetView<LoginController> {
                         child: Column(
                           children: [
                             CustomTextFormField(
-                              loginController: loginController.emailController,
+                              loginController: controller.emailController,
                               labelText: "Masukkan email anda",
                             ),
                             const SizedBox(height: 10),
                             CustomTextFormField(
-                              loginController: loginController.passwordController,
+                              loginController: controller.passwordController,
                               isPassword: true,
                               labelText: "Masukkan pin anda",
                             ),
@@ -69,15 +67,15 @@ class LoginScreen extends GetView<LoginController> {
                                 child: MaterialButton(
                                   minWidth: double.infinity,
                                   height: 50,
-                                  onPressed: loginController.isLoading.value
+                                  onPressed: controller.isLoading.value
                                       ? null
-                                      : loginController.login,
+                                      : controller.login,
                                   color: AppColor.blue600,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   elevation: 0,
-                                  child: loginController.isLoading.value
+                                  child: controller.isLoading.value
                                       ? CircularProgressIndicator(
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(

@@ -4,34 +4,20 @@ import 'package:get/get.dart';
 import '../../../domain/models/class_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
-import '../../class_detail_page/class_detail.screen.dart';
+import '../controllers/class_page.controller.dart';
 
-class ClassItem extends StatelessWidget {
+class ClassItem extends GetView<ClassController> {
 
   ClassItem({Key? key, }) : super(key: key);
   @override
-  final List<ClassModel> _classItems = [
-  ClassModel(
-    id: '1',
-    name: 'Kelompok Pelangi',
-    teacher : 'Anita Fauzah',
-    description: 'Kelas KB',
-    isActive: true , 
-  ),
-  ClassModel(
-    id: '2',
-    name: 'Kelompok Gajah',
-    teacher : 'Anita Fauzah',
-    description: 'Kelas SD',
-    isActive: false, 
-  ),
-];
 
   Widget build(BuildContext context) { 
-     return ListView.builder(
-      itemCount: _classItems.length,
+     return Obx(() {
+      final RxList<GradeModel> classItems = controller.gradesList; 
+      return ListView.builder(
+      itemCount: classItems.length,
       itemBuilder: (context, index) {
-        final ClassModel classItem = _classItems[index];
+        final GradeModel classItem = classItems[index];
         return InkWell(
           onTap: () => Get.toNamed(
               Routes.CLASS_DETAIL,
@@ -43,7 +29,11 @@ class ClassItem extends StatelessWidget {
             width: widthScreen,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: classItem.isActive ? AppColor.blue200 : Colors.grey[200],
+              border: Border.all(
+                color: AppColor.blue200,
+                width: 1,
+              ),
+              // color: classItem.isActive ? AppColor.blue200 : Colors.grey[200],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,13 +46,13 @@ class ClassItem extends StatelessWidget {
                       style: AppTextStyle.tsNormal,
                     ),
                     Text(
-                      classItem.description,
+                      classItem.desc,
                       style: AppTextStyle.tsLittle,
                     ),
-                    Text(
-                      classItem.isActive ? '' : 'Archived Class',
-                      style: AppTextStyle.tsLittle,
-                    )
+                  //   Text(
+                  //     classItem.isActive ? '' : 'Archived Class',
+                  //     style: AppTextStyle.tsLittle,
+                  //   )
                   ],
                 ),
                 Image.asset(
@@ -75,5 +65,6 @@ class ClassItem extends StatelessWidget {
         );
       },
     );
+     });
   }
 }

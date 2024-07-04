@@ -5,16 +5,14 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';
 
 class AddClassBottomSheet extends GetView<ClassController> {
-  final Function(String) onAddClass;
 
   const AddClassBottomSheet({
     Key? key,
-    required this.onAddClass,
+    
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ClassController());
 
     return Container(
       padding: EdgeInsets.all(20),
@@ -49,13 +47,13 @@ class AddClassBottomSheet extends GetView<ClassController> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Kode Kelas', style: AppTextStyle.tsLittle),
-                        Text('098UYT4D')
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text('Kode Kelas', style: AppTextStyle.tsLittle),
+                    //     Text('098UYT4D')
+                    //   ],
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
@@ -73,22 +71,56 @@ class AddClassBottomSheet extends GetView<ClassController> {
                           ),
                       ),
                     ),
-                    Text('Pilih siswa atau bagikan kode kelas untuk menambahkan member kelas', style: AppTextStyle.tsLittle,),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
-                          // controller: controller.,
+                          controller: controller.classDescController,
                           decoration: InputDecoration(
-                            hintText: 'Pilih Siswa',
+                            hintText: 'Deskripsi Kelas',
                             hintStyle: AppTextStyle.tsNormal,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: AppColor.blue200, width: 1)
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.blue200),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.blue600, width: 2.0),
                             ),
                             contentPadding: EdgeInsets.all(8),
                           ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: TextField(
+                          controller: controller.classLevelController,
+                          decoration: InputDecoration(
+                            hintText: 'Level Kelas',
+                            hintStyle: AppTextStyle.tsNormal,
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.blue200),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.blue600, width: 2.0),
+                            ),
+                            contentPadding: EdgeInsets.all(8),
+                          ),
+                      ),
+                    ),
+                    // Text('Pilih siswa atau bagikan kode kelas untuk menambahkan member kelas', style: AppTextStyle.tsLittle,),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 12),
+                    //   child: TextField(
+                    //       // controller: controller.,
+                    //       decoration: InputDecoration(
+                    //         hintText: 'Pilih Siswa',
+                    //         hintStyle: AppTextStyle.tsNormal,
+                    //         border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           borderSide: BorderSide(color: AppColor.blue200, width: 1)
+                    //         ),
+                    //         contentPadding: EdgeInsets.all(8),
+                    //       ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),   
@@ -111,10 +143,11 @@ class AddClassBottomSheet extends GetView<ClassController> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      onAddClass(
-                      controller.classNameController.text,
-                      // descriptionController.text,
-                    );
+                    controller.createNewClass({
+                      'name': controller.classNameController.text,
+                      'desc': controller.classDescController.text,
+                      'level': controller.classLevelController.text,
+                    });
                     Get.back();
                     },
                     style: ElevatedButton.styleFrom(

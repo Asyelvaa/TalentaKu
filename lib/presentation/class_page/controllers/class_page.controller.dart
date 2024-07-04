@@ -3,60 +3,35 @@ import 'package:get/get.dart';
 
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/user_model.dart';
-import '../../profile_page/controllers/profile_page.controller.dart';
+import '../../../infrastructure/dal/services/api_services.dart';
 
 class ClassController extends GetxController {
-
+  final ApiService apiService = ApiService();
   final TextEditingController classNameController = TextEditingController();
-  final TextEditingController teacherNameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController(); 
+  final TextEditingController classDescController = TextEditingController(); 
+  final TextEditingController classLevelController = TextEditingController(); 
+  final TextEditingController classCodeController = TextEditingController(); 
+  var isLoading = false.obs;
 
-  var classes = <ClassModel>[].obs;
-  var joinedClasses = <ClassModel>[].obs;
-  var archivedClasses = <ClassModel>[].obs;
-
-  late final ProfilePageController userController;
-  var currentUser = UserModel(
+  RxList<GradeModel> gradesList = <GradeModel>[].obs;
+  RxString message = ''.obs;
+  Rx<UserModel> currentUser = UserModel(
     id: 0,
     name: '',
     email: '',
-    emailVerifiedAt: '',
-    nomorInduk: '',
+    identificationNumber: '',
     address: '',
     birthDate: '',
-    createdAt: '',
-    updatedAt: '',
+    photo: '',
     roles: [],
-    grades: '',
+    grades: [],
   ).obs;
-  
-  List<ClassModel> mockupGrades = [];
 
-  final count = 0.obs;
   @override
   void onInit() {
+    // fetchCurrentUser();
+    fetchGrades();
     super.onInit();
-    userController = Get.put(ProfilePageController());
-    userController.fetchUser().then((value) {
-      currentUser.value = userController.user.value;
-      mockupGrades = [
-        ClassModel(
-          id: '1',
-          name: 'Kelompok Gajah',
-          teacher: currentUser.value.name,
-          description: 'Kelas KB',
-          isActive: true,
-        ),
-        ClassModel(
-          id: '2',
-          name: 'Kelas Singa',
-          teacher: currentUser.value.name,
-          description: 'Kelas SD',
-          isActive: false,
-        ),
-      ];
-      
-    });
   }
 
   @override
@@ -69,25 +44,76 @@ class ClassController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
-  void addClass(String name, String teacher, String description, bool isActive) {
-    String newClassId = (classes.length + 1).toString();
-    ClassModel newClass = ClassModel(
-      id: newClassId,
-      name: name,
-      teacher: teacher,
-      description: description,
-      isActive: isActive
-    );
-    classes.add(newClass);
+  //  void fetchCurrentUser() async {
+  //   try {
+  //     UserModel user = await apiService.getCurrentUser();
+  //     currentUser.value = user;
+
+  //     List<GradeModel> updatedGrades = [];
+  //     for (var grade in user.grades) {
+  //       final matchedGrade = gradesList.firstWhere(
+  //         (element) => element.id == grade.id,
+  //         orElse: () => grade,
+  //       );
+  //       updatedGrades.add(matchedGrade);
+  //     }
+  //     currentUser.update((val) {
+  //       val?.grades = updatedGrades;
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching current user: $e');
+  //   }
+  // }
+
+  Future<void> fetchGrades() async {
+    try {
+      List<GradeModel> grades = await apiService.getGrades();
+      gradesList.assignAll(grades);
+      print('Grades: $grades');
+
+      if (currentUser.value.id != 0) {
+      List<GradeModel> updatedGrades = [];
+      for (var grade in currentUser.value.grades) {
+        final matchedGrade = gradesList.firstWhere(
+          (element) => element.id == grade.id,
+          orElse: () => grade,
+        );
+        updatedGrades.add(matchedGrade);
+      }
+      currentUser.update((val) {
+        val?.grades = updatedGrades;
+      });
+    }
+
+    } catch (e) {
+      print('Error fetching grades: $e');
+    }
   }
 
-  void joinClass(String classCode) {
-    ClassModel? classToJoin = classes.firstWhereOrNull((cls) => cls.id == classCode);
-    if (classToJoin != null && !joinedClasses.contains(classToJoin)) {
-      joinedClasses.add(classToJoin);
-    } else {
-      Get.snackbar('Error', 'Class not found or already joined');
+  Future<void> createNewClass(Map<String, dynamic> classData) async {
+    isLoading.value = true;
+    try {
+      final result = await apiService.createClass(classData);
+      print(result);
+      await fetchGrades();
+      
+    } catch (e) {
+      print('Error creating class: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> joinNewClass(String uniqueCode) async {
+    isLoading.value = true;
+    try {
+      final result = await apiService.joinClass(uniqueCode);
+      await fetchGrades();
+      
+    } catch (e) {
+      print('Error joining class: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

@@ -1,30 +1,26 @@
+import 'package:flutter_talentaku/domain/models/class_model.dart';
+
 class UserModel {
-  final int id;
-  final String name;
-  final String email;
-  final String? emailVerifiedAt;
-  final String nomorInduk;
-  final String address;
-  final String birthDate;
-  final String? photo;
-  final String createdAt;
-  final String updatedAt;
-  final List<String> roles;
-  String grades;
+  int id;
+  String name;
+  String email;
+  String identificationNumber;
+  String address;
+  String birthDate;
+  String? photo;
+  List<String> roles;
+  List<GradeModel> grades;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
-    required this.emailVerifiedAt,
-    required this.nomorInduk,
+    required this.identificationNumber,
     required this.address,
     required this.birthDate,
-    required this.createdAt,
-    required this.updatedAt,
+    this.photo,
     required this.roles,
     required this.grades,
-    this.photo,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -32,15 +28,28 @@ class UserModel {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      emailVerifiedAt: json['email_verified_at'],
-      nomorInduk: json['nomor_induk'],
+      identificationNumber: json['nomor_induk'],
       address: json['address'],
       birthDate: json['birth_date'],
       photo: json['photo'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
       roles: List<String>.from(json['roles']),
-      grades: json['grades'],
+      grades: (json['grades'] as List)
+          .map((gradeJson) => GradeModel.fromJson(gradeJson))
+          .toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'identificationNumber': identificationNumber,
+      'address': address,
+      'birthDate': birthDate,
+      'photo': photo,
+      'roles': roles,
+      'grades': grades.map((grade) => grade.toJson()).toList(),
+    };
   }
 }

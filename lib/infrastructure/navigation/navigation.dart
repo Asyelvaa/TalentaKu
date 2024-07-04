@@ -32,19 +32,26 @@ class Nav {
     GetPage(
       name: Routes.LoginScreen,
       page: () => LoginScreen(),
+      binding: LoginControllerBinding(),
     ),
     GetPage(
-      name: Routes.NAVBAR,
-      page: () => NavbarMenu(),
+      name: Routes.PICK_IMAGE,
+      page: () => PickImageScreen(),
+      binding: PickimageControllerBinding(),
     ),
+    GetPage(name: Routes.NAVBAR, page: () => NavbarMenu(), bindings: [
+      HomePageControllerBinding(),
+      ProfilePageControllerBinding(),
+      ClassDetailControllerBinding(),
+    ]),
     GetPage(
       name: Routes.HOME_PAGE,
-      page: () => const HomePageScreen(),
+      page: () => HomePageScreen(),
       binding: HomePageControllerBinding(),
     ),
     GetPage(
       name: Routes.PROFILE_PAGE,
-      page: () =>  ProfilePageScreen(),
+      page: () => ProfilePageScreen(),
       binding: ProfilePageControllerBinding(),
     ),
     GetPage(

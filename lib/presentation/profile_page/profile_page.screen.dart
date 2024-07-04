@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/global_component/default_appbar.dart';
-import 'package:flutter_talentaku/presentation/profile_page/controllers/profile_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 import '../../domain/models/user_model.dart';
-import '../student_report_page/daily_report.screen.dart';
-import '../global_component/back_appbar.dart';
 import '../../infrastructure/theme/theme.dart';
+import '../../infrastructure/navigation/routes.dart';
+import '../global_component/default_appbar.dart';
 import '../global_component/icon_button_template.dart';
+import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
 
-class ProfilePageScreen extends StatelessWidget {
+class ProfilePageScreen extends GetView<ProfilePageController> {
   const ProfilePageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ProfilePageController controller = Get.put(ProfilePageController());
-
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
@@ -38,8 +36,7 @@ class ProfilePageScreen extends StatelessWidget {
                 height: 10,
               ),
               Obx(() {
-                final UserModel user =
-                    Get.put(ProfilePageController()).user.value;
+                final UserModel user = controller.user.value;
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -52,11 +49,8 @@ class ProfilePageScreen extends StatelessWidget {
                 } else {
                   return Column(
                     children: [
-                      Text(controller.userData['name'],
-                          style: AppTextStyle.tsTitle),
-                      Text(controller.role[0],
-                          style: AppTextStyle.tsNormal
-                              .copyWith(color: AppColor.blue600)),
+                      Text(user.name, style: AppTextStyle.tsTitle),
+                      Text(user.roles.join(", "), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
                     ],
                   );
                 }
@@ -71,12 +65,12 @@ class ProfilePageScreen extends StatelessWidget {
                     ProfileDataContainer(
                       title: "NIS",
                       icon: Icons.library_books_outlined,
-                      dataUser: controller.user.value.nomorInduk,
+                      dataUser: controller.user.value.identificationNumber,
                     ),
                     ProfileDataContainer(
                       title: "Kelompok",
                       icon: Icons.portrait_rounded,
-                      dataUser: controller.user.value.grades,
+                      dataUser: controller.user.value.grades.join(", "),
                     ),
                   ],
                 ),
@@ -140,13 +134,41 @@ class ProfilePageScreen extends StatelessWidget {
                 text: "Logout",
                 colorButton: AppColor.red,
                 onPressed: () {
-                  controller.logout();
+                   _showLogoutConfirmationDialog(context, controller);
                 },
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+   void _showLogoutConfirmationDialog(BuildContext context, ProfilePageController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Konfirmasi Logout"),
+          content: Text("Apakah Anda yakin ingin keluar?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Batal"),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.logout();
+                Navigator.of(context).popUntil(ModalRoute.withName(Routes.LoginScreen));
+              },
+              child: Text("Logout"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

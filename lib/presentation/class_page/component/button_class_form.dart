@@ -11,30 +11,16 @@ class ButtonClassForm extends GetView<ClassController> {
     super.key,
   });
   void _showAddClassBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AddClassBottomSheet(
-          onAddClass: (name) {},
-          // onAddClass: (name, teacher, description){
-          //   controller.addClass(name, teacher, description);
-          
-          // },
-        );
-      },
+    Get.bottomSheet(
+      AddClassBottomSheet(),
+      isScrollControlled: true,
     );
   }
 
-  void _showJoinClassBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return JoinClassBottomsheets(
-          onJoinClass: (classCode) {
-            // controller.joinclass(classCode);
-          },
-        );
-      },
+   void _showJoinClassBottomSheet(BuildContext context) {
+    Get.bottomSheet(
+      JoinClassBottomsheets(),
+      isScrollControlled: true,
     );
   }
   
@@ -43,9 +29,9 @@ class ButtonClassForm extends GetView<ClassController> {
     final currentUser = controller.currentUser.value;
     return GestureDetector(
       onTap: (){
-        if (currentUser.roles == 'Guru KB' || currentUser.roles == 'Guru SD') {
+        if (currentUser.roles.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
           _showAddClassBottomSheet(context);
-        } else if (currentUser == 'students') {
+        } else {
           _showJoinClassBottomSheet(context);
         }
       },

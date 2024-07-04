@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../domain/models/class_model.dart';
 import '../../../domain/models/user_model.dart';
 
 class ProfilePageController extends GetxController {
@@ -17,15 +19,12 @@ class ProfilePageController extends GetxController {
     id: 0,
     name: '',
     email: '',
-    emailVerifiedAt: '',
-    nomorInduk: '',
+    identificationNumber: '',
     address: '',
     birthDate: '',
     photo: '',
-    createdAt: '',
-    updatedAt: '',
     roles: [],
-    grades: '',
+    grades: [],
   ).obs;
 
   @override
@@ -59,31 +58,50 @@ class ProfilePageController extends GetxController {
         role.value = jsonData['roles'];
         isLoading.value = false;
       } else {
-        throw Exception("memeekekek");
+        throw Exception("Haloo");
       }
     } catch (e) {
-      throw Exception('koonntoooolll');
+      throw Exception('Haii');
     }
   }
 
   void loadUserData() {
+    List<String> storedGrades = (box.read('grades') ?? []).cast<String>();
+    List<GradeModel> grades = storedGrades
+        .map((gradeJson) => GradeModel.fromJson(jsonDecode(gradeJson)))
+        .toList();
     user.value = UserModel(
       id: box.read('id') ?? 0,
       name: box.read('name') ?? '',
       email: box.read('email') ?? '',
-      emailVerifiedAt: box.read('emailVerifiedAt') ?? '',
-      nomorInduk: box.read('nis') ?? '',
+      identificationNumber: box.read('nis') ?? '',
       address: box.read('address') ?? '',
       birthDate: box.read('birthDate') ?? '',
       photo: box.read('photo') ?? '',
-      createdAt: box.read('createdAt') ?? '',
-      updatedAt: box.read('updatedAt') ?? '',
       roles: (box.read('roles') ?? []).cast<String>(),
-      grades: box.read('grades') ?? '',
+      grades: grades,
     );
   }
 
-  void logout() {
-    box.erase();
+Future<void> logout() async {
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/auth/logout";
+    var headers = {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        box.erase();
+        Get.offAllNamed(Routes.LoginScreen);
+      } else {
+        throw Exception("Failed to log out");
+      }
+    } catch (e) {
+      throw Exception('Error during logout');
+    }
   }
 }
+
