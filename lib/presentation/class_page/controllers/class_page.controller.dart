@@ -104,6 +104,7 @@ class ClassController extends GetxController {
     }
   }
 
+  // GABISA BEJIR
   Future<void> joinNewClass(String uniqueCode) async {
     isLoading.value = true;
     try {

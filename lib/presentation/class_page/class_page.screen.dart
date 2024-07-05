@@ -16,7 +16,6 @@ class ClassScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ClassController());
-
     return Scaffold(
       backgroundColor: AppColor.background, 
       appBar: PreferredSize(
@@ -45,7 +44,7 @@ class ClassScreen extends StatelessWidget {
         } else{
           return SingleChildScrollView(
           child: Container(
-            height: heightScreen,
+            height: double.maxFinite,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: 
             Column(

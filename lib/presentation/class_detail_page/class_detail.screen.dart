@@ -21,7 +21,10 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
         backgroundColor: AppColor.background,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
-          child: ClassAppbar(titleAppbar: classItem.name),
+          child: ClassAppbar(
+            titleAppbar: classItem.name,
+            grade: classItem,
+          ),
         ),
       body: Column(
         children: [

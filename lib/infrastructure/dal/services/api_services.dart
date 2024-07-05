@@ -131,7 +131,38 @@ class ApiService {
     }
   }
 
+  Future<GradeModel> getDetailClass(int id) async {
+    try {
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/grades/$id'),
+        headers: headers,
+      );
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      print(token);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body)['grades'];
+        GradeModel grade = GradeModel.fromJson(data);
+        return grade;
+      } else {
+        throw Exception('Failed to load grades: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading grades: $e');
+      throw Exception('Failed to load grades: $e');
+    }
+  }
+
+
 }
+
 // class Client {
 //   final Dio _dio;
 

@@ -15,6 +15,8 @@ class ClassItem extends GetView<ClassController> {
      return Obx(() {
       final RxList<GradeModel> classItems = controller.gradesList; 
       return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: classItems.length,
       itemBuilder: (context, index) {
         final GradeModel classItem = classItems[index];
