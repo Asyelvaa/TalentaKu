@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/user_model.dart';
 import '../../../infrastructure/dal/services/api_services.dart';
-import '../../../infrastructure/dal/services/user_service.dart';
 
 class ClassController extends GetxController {
   final ApiService apiService = ApiService();

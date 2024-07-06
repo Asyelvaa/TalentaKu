@@ -7,6 +7,7 @@ import '../../infrastructure/theme/theme.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../global_component/default_appbar.dart';
 import '../global_component/icon_button_template.dart';
+import '../student_report_page/daily_report.screen.dart';
 import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
@@ -17,6 +18,47 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
   @override
   Widget build(BuildContext context) {
+    final ProfilePageController controller = Get.put(ProfilePageController());
+
+    Future<void> _showLogoutConfirmationDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Konfirmasi Logout",
+              style: AppTextStyle.tsTitle,
+            ),
+            content: Text(
+              "Apakah Anda yakin ingin logout?",
+              style: AppTextStyle.tsNormal,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  "Batal",
+                  style: AppTextStyle.tsNormal,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Logout",
+                  style: AppTextStyle.tsNormal,
+                ),
+                onPressed: () {
+                  controller.logout();
+                  Get.back();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
@@ -120,54 +162,27 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     )),
               // defaultHeightSpace,
               // LAPORAN PEMBELAJARAN
-              // IconButtonTemplate(
-              //   text: "Laporan Pembelajaran",
-              //   icon: Icons.arrow_forward,
-              //   colorButton: AppColor.white,
-              //   onPressed: () {
-              //     Get.to(DailyReportScreen());
-              //   },
-              // ),
+              IconButtonTemplate(
+                text: "Laporan Pembelajaran",
+                icon: Icons.arrow_forward,
+                colorButton: AppColor.background,
+                onPressed: () {
+                  Get.to(DailyReportScreen());
+                },
+              ),
               defaultHeightSpace,
               // LOGOUT
               IconButtonTemplate(
                 text: "Logout",
                 colorButton: AppColor.red,
                 onPressed: () {
-                   _showLogoutConfirmationDialog(context, controller);
+                  _showLogoutConfirmationDialog();
                 },
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-   void _showLogoutConfirmationDialog(BuildContext context, ProfilePageController controller) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Konfirmasi Logout"),
-          content: Text("Apakah Anda yakin ingin keluar?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Batal"),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.logout();
-                Navigator.of(context).popUntil(ModalRoute.withName(Routes.LoginScreen));
-              },
-              child: Text("Logout"),
-            ),
-          ],
-        );
-      },
     );
   }
 

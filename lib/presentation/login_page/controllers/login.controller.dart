@@ -74,8 +74,7 @@ class LoginController extends GetxController {
           Get.snackbar('Error', errorMessage);
         }
       } else {
-        Get.snackbar(
-            'Error', 'Gagal untuk login. Status code: ${response.statusCode}');
+        Get.snackbar('Error', 'Maaf NIS Anda tidak terdaftar di aplikasi ini');
       }
     } catch (error) {
       print('Error occurred during login: $error');

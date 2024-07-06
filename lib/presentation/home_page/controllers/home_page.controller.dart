@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:flutter_talentaku/presentation/home_page/models/information_data.dart';
 import 'package:flutter_talentaku/presentation/home_page/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:http/http.dart' as http;
 
 class HomePageController extends GetxController {
@@ -16,7 +15,7 @@ class HomePageController extends GetxController {
   final role = [].obs;
 
   final desc = [].obs;
-
+  final informationList = <Information>[].obs;
   final contentTitles = [].obs;
   final contact = [].obs;
   final contactandinformation = [].obs;
@@ -51,14 +50,13 @@ class HomePageController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         userData.value = jsonData['user'];
-        print(userData);
         role.value = jsonData['roles'];
         isLoading.value = false;
       } else {
-        throw Exception("Haloo");
+        throw Exception("Failed to fetch user data");
       }
     } catch (e) {
-      throw Exception('Haii');
+      throw Exception('Error fetching user data: $e');
     }
   }
 
@@ -80,11 +78,11 @@ class HomePageController extends GetxController {
         }
         isLoading.value = false;
       } else {
-        throw Exception("Haloo");
+        throw Exception("Failed to fetch programs");
       }
     } catch (e) {
       print(e);
-      throw Exception('Haii');
+      throw Exception('Error fetching programs: $e');
     }
   }
 
@@ -107,88 +105,95 @@ class HomePageController extends GetxController {
         }
         isLoading.value = false;
       } else {
-        throw Exception("Haloo");
+        throw Exception("Failed to fetch contact and information");
       }
     } catch (e) {
-      throw Exception('Haii');
+      throw Exception('Error fetching contact and information: $e');
     }
   }
+
+   Future<void> fetchInformationList() async {
+    isLoading.value = true;
+    final url = "https://talentaku.site/api/information/list";
+    var headers = {
+      'Accept': 'Application/json',
+    };
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        final List<Information> list = List<Information>.from(
+          jsonData.map((x) => Information.fromJson(x)),
+        );
+        informationList.assignAll(list);
+        isLoading.value = false;
+      } else {
+        throw Exception("Failed to fetch information list");
+      }
+    } catch (e) {
+      print("Error fetching information list: $e");
+      throw Exception('Error fetching information list: $e');
+    }
+  }
+
 
   @override
   void onInit() {
     fetchUser();
     fetchProgram();
     fetchContactAndInformation();
-    // fetchContactAndAddress();
+    fetchInformationList();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   Future<void> showBottomSheet() async {
     Get.bottomSheet(
-        backgroundColor: AppColor.background,
-        isScrollControlled: true,
-        Container(
-          width: double.infinity,
-          height: Get.height * 0.6,
-          padding: EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Text(
-                "Terapi Wicara",
-                style: GoogleFonts.manrope(
-                    fontWeight: FontWeight.w600, fontSize: 16),
+      backgroundColor: AppColor.background,
+      isScrollControlled: true,
+      Container(
+        width: double.infinity,
+        height: Get.height * 0.6,
+        padding: EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Text(
+              "Terapi Wicara",
+              style: GoogleFonts.manrope(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
               ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //       // borderRadius: BorderRadius.circular(10),
-              //       image: DecorationImage(
-              //           image: AssetImage("assets/images/wacara.png"),
-              //           fit: BoxFit.fill)),
-              // ),
-              SizedBox(
-                height: 15,
+            ),
+            SizedBox(height: 15),
+            Image.asset("assets/images/wacara.png"),
+            SizedBox(height: 20),
+            Text(
+              "This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.",
+              style: GoogleFonts.manrope(
+                fontWeight: FontWeight.normal,
+                fontSize: 12,
               ),
-              Image.asset("assets/images/wacara.png"),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.",
-                style: GoogleFonts.manrope(
-                    fontWeight: FontWeight.normal, fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColor.blue300,
-                  ),
-                  child: Text("kembali"),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 5),
+            GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColor.blue300,
                 ),
-              )
-            ],
-          ),
-        ));
+                child: Text("Kembali"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

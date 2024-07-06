@@ -73,8 +73,7 @@ class PickImageScreen extends GetView<PickimageController> {
                                 return controller.image.value != null
                                     ? CircleAvatar(
                                         radius: 70,
-                                        backgroundImage:
-                                            FileImage(controller.image!.value!),
+                                        backgroundImage: FileImage(controller.image!.value!),
                                       )
                                     : CircleAvatar(
                                         radius: 60,
@@ -93,8 +92,7 @@ class PickImageScreen extends GetView<PickimageController> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColor.blue600,
-                                    border: Border.all(
-                                        color: AppColor.white, width: 1),
+                                    border: Border.all(color: AppColor.white, width: 1),
                                   ),
                                   child: Icon(
                                     Iconsax.camera5,
@@ -139,38 +137,50 @@ class PickImageScreen extends GetView<PickimageController> {
                         height: 20,
                       ),
                       Center(
-                        child: SizedBox(
-                          width: 257,
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 50,
-                            onPressed: () => controller.uploadImageToApi(),
-                            color: AppColor.blue600,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Lanjut",
-                                  style: GoogleFonts.manrope(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                    color: Colors.white,
+                        child: Obx(() {
+                          return controller.isLoading.value
+                              ? CircularProgressIndicator(color: AppColor.white,)
+                              : SizedBox(
+                                  width: 257,
+                                  child: MaterialButton(
+                                    minWidth: double.infinity,
+                                    height: 50,
+                                    onPressed: () {
+                                      if (controller.image.value != null) {
+                                        controller.uploadImageToApi();
+                                      } else {
+                                        // Handle case where no image is selected
+                                        print("No image selected");
+                                        Get.offNamed(Routes.NAVBAR); // Navigate to home page
+                                      }
+                                    },
+                                    color: AppColor.blue600,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    elevation: 0,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Lanjut",
+                                          style: GoogleFonts.manrope(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Icon(
+                                          size: 20,
+                                          Icons.arrow_forward_ios_rounded,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 5),
-                                Icon(
-                                  size: 20,
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                                );
+                        }),
                       ),
                     ],
                   ),
