@@ -83,7 +83,7 @@ class ProfilePageController extends GetxController {
     );
   }
 
-Future<void> logout() async {
+  Future<void> logout() async {
     final token = box.read('token');
     final url = "https://talentaku.site/api/auth/logout";
     var headers = {
@@ -104,4 +104,3 @@ Future<void> logout() async {
     }
   }
 }
-

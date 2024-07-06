@@ -36,8 +36,13 @@ class ProfileDataContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: AppTextStyle.tsLittle.copyWith(color: Colors.grey)),
-                Text(dataUser ?? "Data User", style: AppTextStyle.tsNormal)
+                    style:
+                        AppTextStyle.tsLittle.copyWith(color: AppColor.black)),
+                Text(
+                  dataUser ?? "Data User",
+                  style: AppTextStyle.tsNormal,
+                  selectionColor: AppColor.black,
+                )
               ],
             ),
           ],

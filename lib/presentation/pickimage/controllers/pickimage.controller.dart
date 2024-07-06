@@ -16,6 +16,7 @@ class PickimageController extends GetxController {
   final RxString email = RxString("");
   Rx<File?> image = Rx<File?>(null);
   final box = GetStorage();
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -40,6 +41,7 @@ class PickimageController extends GetxController {
   }
 
   Future<void> uploadImageToApi() async {
+    isLoading.value = true; // Set loading status to true
     final token = box.read('token');
     var headers = {
       'Accept': 'application/json',
@@ -48,12 +50,23 @@ class PickimageController extends GetxController {
     var uri = Uri.parse('https://talentaku.site/api/user/update-photo');
     var request = http.MultipartRequest('POST', uri);
 
-    var multipart = await http.MultipartFile.fromPath(
-        'file', image!.value!.path,
-        filename: path.basename(image.value!.path));
-    request.headers.addAll(headers);
-    request.files.add(multipart);
+    if (image.value != null) {
+      var multipart = await http.MultipartFile.fromPath(
+          'file', image!.value!.path,
+          filename: path.basename(image.value!.path));
+      request.headers.addAll(headers);
+      request.files.add(multipart);
+    } else {
+      // Handle case where no image is selected
+      print("No image selected");
+      isLoading.value = false; // Set loading status to false
+      Get.offNamed(Routes.NAVBAR); // Navigate to home page without uploading image
+      return;
+    }
+
     var response = await request.send();
+
+    isLoading.value = false; // Set loading status to false
 
     if (response.statusCode == 200) {
       print("Image uploaded successfully");
