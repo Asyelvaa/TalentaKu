@@ -35,7 +35,10 @@ class ClassAppbar extends GetView<ClassDetailController> {
             switch (value) {
               case 0 : Get.toNamed('/laporan-harian'); break;
               case 1 : 
-              Get.bottomSheet(EditClassBottomSheet(grade: grade));
+              Get.bottomSheet(
+                EditClassBottomSheet(grade: grade),
+                isScrollControlled: true,
+              );
               case 2 : Get.toNamed('/add-member-class'); break;
             }
           },

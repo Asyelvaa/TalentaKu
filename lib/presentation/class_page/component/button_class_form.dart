@@ -31,8 +31,10 @@ class ButtonClassForm extends GetView<ClassController> {
       onTap: (){
         if (currentUser.roles.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
           _showAddClassBottomSheet(context);
-        } else {
+        } else if (currentUser.roles.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
           _showJoinClassBottomSheet(context);
+        } else {
+          Get.snackbar("Anda tidak memiliki role akses", "Anda tidak memiliki akses untuk membuat kelas");
         }
       },
       child: Container(

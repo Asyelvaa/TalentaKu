@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/user_model.dart';
 import '../../../infrastructure/dal/services/api_services.dart';
+import '../../../infrastructure/dal/services/user_service.dart';
 
 class ClassController extends GetxController {
   final ApiService apiService = ApiService();
@@ -44,26 +46,51 @@ class ClassController extends GetxController {
     super.onClose();
   }
 
-  //  void fetchCurrentUser() async {
-  //   try {
-  //     UserModel user = await apiService.getCurrentUser();
-  //     currentUser.value = user;
+  // var currentUser = Rxn<UserModel>();
+  // final UserService userService = UserService();
+  // Future<void> fetchCurrentUser() async {
+  //   isLoading.value = true;
+  //   final token = GetStorage().read('token');
 
-  //     List<GradeModel> updatedGrades = [];
-  //     for (var grade in user.grades) {
-  //       final matchedGrade = gradesList.firstWhere(
-  //         (element) => element.id == grade.id,
-  //         orElse: () => grade,
-  //       );
-  //       updatedGrades.add(matchedGrade);
+  //   try {
+  //     if (token != null) {
+  //       final user = await apiService.getCurrentUser(token);
+  //       userData.value = user;
+  //       await userService.saveUser(user);
+  //     } else {
+  //       throw Exception('No token found');
   //     }
-  //     currentUser.update((val) {
-  //       val?.grades = updatedGrades;
-  //     });
   //   } catch (e) {
-  //     print('Error fetching current user: $e');
+  //     print('Error: $e');
+  //   } finally {
+  //     isLoading.value = false;
   //   }
   // }
+  // void loadUserFromStorage() {
+  //   userData.value = userService.getUser();
+  // }
+
+   void fetchCurrentUser() async {
+    // final token = GetStorage().read('token');
+    try {
+      UserModel user = await apiService.getCurrentUser();
+      currentUser.value = user;
+
+      List<GradeModel> updatedGrades = [];
+      for (var grade in user.grades) {
+        final matchedGrade = gradesList.firstWhere(
+          (element) => element.id == grade.id,
+          orElse: () => grade,
+        );
+        updatedGrades.add(matchedGrade);
+      }
+      currentUser.update((val) {
+        val?.grades = updatedGrades;
+      });
+    } catch (e) {
+      print('Error fetching current user: $e');
+    }
+  }
 
   Future<void> fetchGrades() async {
     try {
