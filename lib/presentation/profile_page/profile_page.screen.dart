@@ -18,11 +18,50 @@ class ProfilePageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProfilePageController controller = Get.put(ProfilePageController());
 
+    Future<void> _showLogoutConfirmationDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Konfirmasi Logout",
+              style: AppTextStyle.tsTitle,
+            ),
+            content: Text(
+              "Apakah Anda yakin ingin logout?",
+              style: AppTextStyle.tsNormal,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  "Batal",
+                  style: AppTextStyle.tsNormal,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Logout",
+                  style: AppTextStyle.tsNormal,
+                ),
+                onPressed: () {
+                  controller.logout();
+                  Get.back();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: "My Profile"),
+        child: BackAppbar(titleAppbar: "Profile"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -128,7 +167,7 @@ class ProfilePageScreen extends StatelessWidget {
               IconButtonTemplate(
                 text: "Laporan Pembelajaran",
                 icon: Icons.arrow_forward,
-                colorButton: AppColor.white,
+                colorButton: AppColor.background,
                 onPressed: () {
                   Get.to(DailyReportScreen());
                 },
@@ -139,7 +178,7 @@ class ProfilePageScreen extends StatelessWidget {
                 text: "Logout",
                 colorButton: AppColor.red,
                 onPressed: () {
-                  controller.logout();
+                  _showLogoutConfirmationDialog();
                 },
               ),
             ],

@@ -4,10 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../models/information_data.dart';
 
-class HomePopupInformation extends StatelessWidget {
+class HomePopupKbSd extends StatelessWidget {
   final Information information;
 
-  const HomePopupInformation({super.key, required this.information});
+  const HomePopupKbSd({super.key, required this.information});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class HomePopupInformation extends StatelessWidget {
                                     style: AppTextStyle.tsNormal),
                                 SizedBox(height: 4),
                                 ...content.desc
-                                    .map((desc) => Text(desc,
+                                    .map((desc) => Text('- ${desc}',
                                         style: AppTextStyle.tsLittle))
                                     .toList(),
                               ],

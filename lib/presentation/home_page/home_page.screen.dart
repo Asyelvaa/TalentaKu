@@ -69,11 +69,11 @@ class HomePageScreen extends GetView<HomePageController> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        KbSdTalentaComponent(),
+                        Container(height:100, child: KbSdTalentaComponent()),
                         SizedBox(
                           height: 10,
                         ),
-                        RbaTalentaComponent(),
+                        Container(height:100, child: RbaTalentaComponent()),
                       ],
                     ),
                   ],
