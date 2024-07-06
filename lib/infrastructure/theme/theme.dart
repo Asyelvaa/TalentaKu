@@ -42,7 +42,7 @@ class AppTextStyle {
   );
   static TextStyle tsNormal = GoogleFonts.manrope(
     fontSize: figmaFontsize(12),
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
   );
   static TextStyle tsLittle = GoogleFonts.manrope(
     fontSize: figmaFontsize(10),
