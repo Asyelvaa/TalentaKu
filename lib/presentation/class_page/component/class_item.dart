@@ -32,10 +32,10 @@ class ClassItem extends GetView<ClassController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: AppColor.blue200,
-                width: 1,
+                color: AppColor.blue100,
+                width: 1
               ),
-              // color: classItem.isActive ? AppColor.blue200 : Colors.grey[200],
+              color: classItem.isactive.toLowerCase() == '1' ? AppColor.blue200 : Colors.grey[200],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,10 +51,10 @@ class ClassItem extends GetView<ClassController> {
                       classItem.desc,
                       style: AppTextStyle.tsLittle,
                     ),
-                  //   Text(
-                  //     classItem.isActive ? '' : 'Archived Class',
-                  //     style: AppTextStyle.tsLittle,
-                  //   )
+                    Text(
+                      classItem.isactive.toLowerCase() == '1' ? '' : 'Archived Class',
+                      style: AppTextStyle.tsLittle,
+                    )
                   ],
                 ),
                 Image.asset(

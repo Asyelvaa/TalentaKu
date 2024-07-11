@@ -8,10 +8,10 @@ import '../../../infrastructure/dal/services/api_services.dart';
 
 class ClassController extends GetxController {
   final ApiService apiService = ApiService();
-  final TextEditingController classNameController = TextEditingController();
-  final TextEditingController classDescController = TextEditingController(); 
-  final TextEditingController classLevelController = TextEditingController(); 
-  final TextEditingController classCodeController = TextEditingController(); 
+  final classNameController = TextEditingController();
+  final classDescController = TextEditingController(); 
+  final classLevelController = TextEditingController(); 
+  final classCodeController = TextEditingController(); 
   var isLoading = false.obs;
 
   RxList<GradeModel> gradesList = <GradeModel>[].obs;
@@ -22,7 +22,7 @@ class ClassController extends GetxController {
     email: '',
     identificationNumber: '',
     address: '',
-    birthDate: '',
+    birthInformation: '',
     photo: '',
     roles: [],
     grades: [],
@@ -69,31 +69,31 @@ class ClassController extends GetxController {
   //   userData.value = userService.getUser();
   // }
 
-   void fetchCurrentUser() async {
-    // final token = GetStorage().read('token');
-    try {
-      UserModel user = await apiService.getCurrentUser();
-      currentUser.value = user;
+  //  void fetchCurrentUser() async {
+  //   final token = GetStorage().read('token');
+  //   try {
+  //     UserModel user = await apiService.getCurrentUser();
+  //     currentUser.value = user;
 
-      List<GradeModel> updatedGrades = [];
-      for (var grade in user.grades) {
-        final matchedGrade = gradesList.firstWhere(
-          (element) => element.id == grade.id,
-          orElse: () => grade,
-        );
-        updatedGrades.add(matchedGrade);
-      }
-      currentUser.update((val) {
-        val?.grades = updatedGrades;
-      });
-    } catch (e) {
-      print('Error fetching current user: $e');
-    }
-  }
+  //     List<GradeModel> updatedGrades = [];
+  //     for (var grade in user.grades) {
+  //       final matchedGrade = gradesList.firstWhere(
+  //         (element) => element.id == grade.id,
+  //         orElse: () => grade,
+  //       );
+  //       updatedGrades.add(matchedGrade);
+  //     }
+  //     currentUser.update((val) {
+  //       val?.grades = updatedGrades;
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching current user: $e');
+  //   }
+  // }
 
   Future<void> fetchGrades() async {
     try {
-      List<GradeModel> grades = await apiService.getGrades();
+      List<GradeModel> grades = await apiService.getGradesTeacher();
       gradesList.assignAll(grades);
       print('Grades: $grades');
 
@@ -116,10 +116,14 @@ class ClassController extends GetxController {
     }
   }
 
-  Future<void> createNewClass(Map<String, dynamic> classData) async {
+  Future<void> createNewClass() async {
+    final name = classNameController.text.trim();
+    final desc = classDescController.text.trim();
+    final levelId = int.parse(classLevelController.text.trim());
+    print('$name, $desc, $levelId');
     isLoading.value = true;
     try {
-      final result = await apiService.createClass(classData);
+      final result = await apiService.createClass(name, desc, levelId);
       print(result);
       await fetchGrades();
       

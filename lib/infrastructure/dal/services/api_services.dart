@@ -18,7 +18,62 @@ class ApiService {
   ApiService._internal();
   final box = GetStorage();
 
-  Future<UserModel> getCurrentUser() async {
+  Future<Map<String, dynamic>> login(String email, password) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/login'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (error) {
+      throw Exception('Failed to login: $error');
+    }
+  }
+
+  Future<Map<String, dynamic>> uploadImageToApi(String filePath) async {
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var uri = Uri.parse('$baseUrl/user/update-photo');
+    var request = http.MultipartRequest('POST', uri);
+
+    var multipart = await http.MultipartFile.fromPath(
+      'file', filePath,
+      filename: path.basename(filePath));
+    request.headers.addAll(headers);
+    request.files.add(multipart);
+    try {
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        return {'success': true, 'message': 'Image uploaded successfully'};
+      } else {
+        return {'success': false, 'message': responseBody.body};
+      }
+    } catch (e) {
+      print('Error occurred during image upload: $e');
+      return {
+        'success': false,
+        'message': 'An error occurred during image upload'
+      };
+    }
+  }
+  
+  Future<Map<String, dynamic>> getCurrentUser() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -35,7 +90,12 @@ class ApiService {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        return UserModel.fromJson(jsonDecode(response.body));
+        // final decodedBody = jsonDecode(response.body);
+        // return UserModel.fromJson(decodedBody);
+        // return UserModel.fromJson(jsonDecode(response.body)); 
+        // return jsonDecode(response.body); 
+        final jsonData = json.decode(response.body);
+        return jsonData;
       } else {
         throw Exception('Failed to load current user: ${response.statusCode}');
       }
@@ -54,7 +114,6 @@ class ApiService {
   //   };
   //   try {
   //     final response = await http.get(Uri.parse(url), headers: headers);
-
   //     if (response.statusCode == 200) {
   //       final jsonData = json.decode(response.body);
   //       userData.value = jsonData['user'];
@@ -69,7 +128,7 @@ class ApiService {
   //   }
   // }
 
-  Future<List<GradeModel>> getGrades() async {
+  Future<List<GradeModel>> getGradesTeacher() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -78,7 +137,7 @@ class ApiService {
       };
 
       final response = await http.get(
-        Uri.parse('$baseUrl/grades'),
+        Uri.parse('$baseUrl/grades/teacher'),
         headers: headers,
       );
       print('Response status: ${response.statusCode}');
@@ -99,8 +158,7 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> createClass(
-      Map<String, dynamic> classData) async {
+  Future<Map<String, dynamic>> createClass(String name, String desc, int levelId) async {
     try {
       final token = box.read('token');
       var headers = {
@@ -111,10 +169,13 @@ class ApiService {
       final response = await http.post(
         Uri.parse('$baseUrl/grades'),
         headers: headers,
-        body: jsonEncode(classData),
+        body: jsonEncode({
+          'name': name,
+          'desc': desc,
+          'level_id': levelId,
+        }),
       );
 
-      print('Request body: ${jsonEncode(classData)}');
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -213,49 +274,6 @@ class ApiService {
     }
   }
 
-  ///////
-  Future<Map<String, dynamic>> login(String email, password) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/login'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-      );
-
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        final success = responseData['success'];
-
-        if (success) {
-          return {
-            'success': true,
-            'data': responseData['data'],
-            'token': responseData['token']
-          };
-        } else {
-          final String errorMessage = responseData['message'] ?? 'Login failed';
-          return {'success': false, 'message': errorMessage};
-        }
-      } else {
-        return {
-          'success': false,
-          'message': 'Login failed. Status code: ${response.statusCode}'
-        };
-      }
-    } catch (error) {
-      print('Error occurred during login: $error');
-      return {'success': false, 'message': 'An error occurred during login.'};
-    }
-  }
-
   Future<void> logout() async {
     final token = box.read('token');
     final url = "$baseUrl/auth/logout";
@@ -273,37 +291,6 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error during logout');
-    }
-  }
-
-  Future<Map<String, dynamic>> uploadImageToApi(String filePath) async {
-    final token = box.read('token');
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
-    var uri = Uri.parse('$baseUrl/user/update-photo');
-    var request = http.MultipartRequest('POST', uri);
-
-    var multipart = await http.MultipartFile.fromPath('file', filePath,
-        filename: path.basename(filePath));
-    request.headers.addAll(headers);
-    request.files.add(multipart);
-    try {
-      var response = await request.send();
-      var responseBody = await http.Response.fromStream(response);
-
-      if (response.statusCode == 200) {
-        return {'success': true, 'message': 'Image uploaded successfully'};
-      } else {
-        return {'success': false, 'message': responseBody.body};
-      }
-    } catch (e) {
-      print('Error occurred during image upload: $e');
-      return {
-        'success': false,
-        'message': 'An error occurred during image upload'
-      };
     }
   }
 

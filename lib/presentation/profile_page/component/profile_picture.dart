@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,16 +14,29 @@ class ProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     final PickimageController controller = Get.put(PickimageController());
 
-    return Obx(() {
-      return Stack(
+    return Stack(
         children: [
-          CircleAvatar(
-            radius: 60,
-            backgroundImage: controller.image.value != null
-                ? FileImage(controller.image.value!)
-                : AssetImage('assets/default_profile.png') as ImageProvider,
-            foregroundColor: AppColor.blue400,
-          ),
+          Obx(
+            () {
+              return controller.image.value != null
+              ? CircleAvatar(
+                radius: 60,
+                // backgroundImage:  FileImage(controller.image.value!)
+                backgroundImage:  FileImage(controller.profileImage)
+              )
+              : CircleAvatar( 
+                  radius: 60,
+                  backgroundColor: AppColor.blue600,
+                  child: Text(
+                  controller.username.substring(2).toUpperCase(),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    color: AppColor.white
+                  ),
+                )                        
+              );
+            }),
           Positioned(
             bottom: 0,
             right: 0,
@@ -47,6 +61,5 @@ class ProfilePicture extends StatelessWidget {
           ),
         ],
       );
-    });
   }
 }

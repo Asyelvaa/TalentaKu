@@ -47,13 +47,6 @@ class AddClassBottomSheet extends GetView<ClassController> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Column(
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text('Kode Kelas', style: AppTextStyle.tsLittle),
-                    //     Text('098UYT4D')
-                    //   ],
-                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: TextField(
@@ -105,22 +98,6 @@ class AddClassBottomSheet extends GetView<ClassController> {
                           ),
                       ),
                     ),
-                    // Text('Pilih siswa atau bagikan kode kelas untuk menambahkan member kelas', style: AppTextStyle.tsLittle,),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(vertical: 12),
-                    //   child: TextField(
-                    //       // controller: controller.,
-                    //       decoration: InputDecoration(
-                    //         hintText: 'Pilih Siswa',
-                    //         hintStyle: AppTextStyle.tsNormal,
-                    //         border: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(10),
-                    //           borderSide: BorderSide(color: AppColor.blue200, width: 1)
-                    //         ),
-                    //         contentPadding: EdgeInsets.all(8),
-                    //       ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),   
@@ -141,15 +118,12 @@ class AddClassBottomSheet extends GetView<ClassController> {
                     ),
                     child: Text('Kembali', style: AppTextStyle.tsNormal.copyWith(fontWeight: FontWeight.bold)),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                    controller.createNewClass({
-                      'name': controller.classNameController.text,
-                      'desc': controller.classDescController.text,
-                      'level': controller.classLevelController.text,
-                    });
-                    Get.back();
-                    },
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.createNewClass();
+                      // print('${controller.classNameController.text}, ${controller.classDescController.text}, ${controller.classLevelController.text}'); 
+                      Get.back();
+                      },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.blue600,
                       shape: RoundedRectangleBorder(

@@ -29,7 +29,9 @@ class HomePageScreen extends GetView<HomePageController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ClassInformation(
-                  titleInfo: "Laporan harian Erina", dateInfo: '04 April 2024'),
+                  titleInfo: "Laporan harian Erina", 
+                  dateInfo: '04 April 2024'
+              ),
               Obx(() => controller.isLoading.value
                   ? SlideInformation(
                       headerContent: "Loading.... ",
