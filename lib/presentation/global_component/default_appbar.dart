@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../infrastructure/theme/theme.dart';
-import '../login/controllers/login.controller.dart';
+import '../login_page/controllers/login.controller.dart';
 import '../profile_page/model/user_model.dart';
 
 class DefaultAppbar extends StatelessWidget {

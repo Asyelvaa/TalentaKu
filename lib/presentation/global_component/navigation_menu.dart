@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/grade_page/class_page.screen.dart';
 import 'package:flutter_talentaku/presentation/home_page/home_page.screen.dart';
 import 'package:flutter_talentaku/presentation/profile_page/profile_page.screen.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../infrastructure/theme/theme.dart';
+import '../class_page/class_page.screen.dart';
 
 class NavbarMenu extends StatelessWidget {
   const NavbarMenu({Key? key}) : super(key: key);

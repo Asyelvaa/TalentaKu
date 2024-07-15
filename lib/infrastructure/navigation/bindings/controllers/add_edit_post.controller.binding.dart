@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../presentation/AddEditPost/controllers/add_edit_post.controller.dart';
+import '../../../../presentation/edit_post_page/controllers/add_edit_post.controller.dart';
 
 class AddEditPostControllerBinding extends Bindings {
   @override

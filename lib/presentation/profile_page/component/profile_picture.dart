@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../infrastructure/theme/theme.dart';
-import '../../pickimage/controllers/pickimage.controller.dart';
+import '../../login_pick_image/controllers/login_pick_image.controller.dart';
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({super.key});

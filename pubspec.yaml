@@ -7,15 +7,17 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  dio: ^5.4.3+1
   flutter:
     sdk: flutter
   get: 4.6.6
-  google_fonts: ^6.2.1
-  iconsax: ^0.0.8
-  readmore: ^3.0.0
-  persistent_bottom_nav_bar: ^5.0.2
   get_storage: any
+  google_fonts: ^6.2.1
+  http: ^1.2.1
+  iconsax: ^0.0.8
   image_picker: ^1.1.2
+  persistent_bottom_nav_bar: ^5.0.2
+  readmore: ^3.0.0
 
 dev_dependencies:
   flutter_test:

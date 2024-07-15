@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/profile_page/controllers/profile_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../daily_report/daily_report.screen.dart';
-import '../global_component/back_appbar.dart';
+
+import '../../domain/models/user_model.dart';
 import '../../infrastructure/theme/theme.dart';
+import '../../infrastructure/navigation/routes.dart';
+import '../global_component/default_appbar.dart';
 import '../global_component/icon_button_template.dart';
+import '../student_report_page/daily_report.screen.dart';
+import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
-import 'model/user_model.dart';
 
-class ProfilePageScreen extends StatelessWidget {
+class ProfilePageScreen extends GetView<ProfilePageController> {
   const ProfilePageScreen({super.key});
 
   @override
@@ -61,7 +63,7 @@ class ProfilePageScreen extends StatelessWidget {
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: "Profile"),
+        child: DefaultAppbar(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,8 +78,7 @@ class ProfilePageScreen extends StatelessWidget {
                 height: 10,
               ),
               Obx(() {
-                final UserModel user =
-                    Get.find<ProfilePageController>().user.value;
+                final UserModel user = controller.user.value;
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -90,11 +91,8 @@ class ProfilePageScreen extends StatelessWidget {
                 } else {
                   return Column(
                     children: [
-                      Text(controller.userData['name'],
-                          style: AppTextStyle.tsTitle),
-                      Text(controller.role[0],
-                          style: AppTextStyle.tsNormal
-                              .copyWith(color: AppColor.blue600)),
+                      Text(user.name, style: AppTextStyle.tsTitle),
+                      Text(user.roles.join(", "), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
                     ],
                   );
                 }
@@ -109,12 +107,12 @@ class ProfilePageScreen extends StatelessWidget {
                     ProfileDataContainer(
                       title: "NIS",
                       icon: Icons.library_books_outlined,
-                      dataUser: controller.user.value.nomorInduk,
+                      dataUser: controller.user.value.identificationNumber,
                     ),
                     ProfileDataContainer(
                       title: "Kelompok",
                       icon: Icons.portrait_rounded,
-                      dataUser: controller.user.value.grades,
+                      dataUser: controller.user.value.grades.join(", "),
                     ),
                   ],
                 ),
@@ -162,7 +160,7 @@ class ProfilePageScreen extends StatelessWidget {
                         ),
                       ],
                     )),
-              defaultHeightSpace,
+              // defaultHeightSpace,
               // LAPORAN PEMBELAJARAN
               IconButtonTemplate(
                 text: "Laporan Pembelajaran",
@@ -187,4 +185,5 @@ class ProfilePageScreen extends StatelessWidget {
       ),
     );
   }
+
 }

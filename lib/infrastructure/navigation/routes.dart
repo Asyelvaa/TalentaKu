@@ -5,7 +5,6 @@ class NavigationMenu {
 
 class Routes {
   static Future<String> get initialRoute async {
-    // Return an instance of NavigationMenu with the desired route
     return LoginScreen;
   }
 
