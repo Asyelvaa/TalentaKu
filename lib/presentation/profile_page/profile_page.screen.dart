@@ -38,7 +38,7 @@ class ProfilePageScreen extends StatelessWidget {
                   style: AppTextStyle.tsNormal,
                 ),
                 onPressed: () {
-                  Get.back();
+                  Get.back();   
                 },
               ),
               TextButton(
