@@ -20,9 +20,22 @@ class ProfilePageController extends GetxController {
   @override
   void onInit() {
     fetchUser();
+    // getUserData();
     // loadUserData();
     super.onInit();
   }
+
+  // Future<void> getUserData() async  {
+  //   try {
+  //     isLoading.value = true;
+  //     var data = await ApiService().getUserData();
+  //     currentUser.value = data;
+  //     print('User data: ${currentUser.value}');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // } 
+  
 
   Future<void> fetchUser() async {
     try {

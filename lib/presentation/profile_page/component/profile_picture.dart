@@ -21,8 +21,8 @@ class ProfilePicture extends StatelessWidget {
               return controller.image.value != null
               ? CircleAvatar(
                 radius: 60,
-                // backgroundImage:  FileImage(controller.image.value!)
-                backgroundImage:  FileImage(controller.profileImage)
+                backgroundImage:  FileImage(controller.image.value!)
+                // backgroundImage:  FileImage(controller.profileImage)
               )
               : CircleAvatar( 
                   radius: 60,

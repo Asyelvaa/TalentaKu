@@ -70,9 +70,9 @@ class Nav {
       binding: ClassDetailControllerBinding(),
     ),
     GetPage(
-      name: Routes.ADD_EDIT_POST,
-      page: () => const AddEditPostScreen(),
-      binding: AddEditPostControllerBinding(),
+      name: Routes.ALBUM_FORM_PAGE,
+      page: () => const AlbumFormScreen(),
+      binding: AlbumFormControllerBinding(),
     ),
   ];
 }

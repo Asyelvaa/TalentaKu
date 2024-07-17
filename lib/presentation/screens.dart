@@ -1,4 +1,4 @@
-export 'package:flutter_talentaku/presentation/edit_post_page/add_edit_post.screen.dart';
+export 'package:flutter_talentaku/presentation/album_form_page/album_form.screen.dart';
 export 'package:flutter_talentaku/presentation/class_detail_page/class_detail.screen.dart';
 export 'package:flutter_talentaku/presentation/student_report_page/daily_report.screen.dart';
 export 'package:flutter_talentaku/presentation/class_page/class_page.screen.dart';

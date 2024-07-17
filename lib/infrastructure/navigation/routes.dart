@@ -16,6 +16,6 @@ class Routes {
   static const String CLASS_PAGE = '/class'; 
   static const String CLASS_DETAIL = '/class-detail';
   static const String STYLE_ALBUM = '/style-album';
-  static const String ADD_EDIT_POST = '/add-edit-post';
+  static const String ALBUM_FORM_PAGE = '/album-form-page';
   static const String NAVBAR = '/global_component';
 }

@@ -8,8 +8,21 @@ import 'package:get_storage/get_storage.dart';
 class ClassDetailController extends GetxController {
   //TODO: Implement ClassActiveController
   final ApiService apiService = ApiService();
+  late String gradeId;
 
-  final count = 0.obs;
+  var grade = GradeModel(
+    name: '',
+    desc: '',
+    level: '',
+    uniqueCode: '',
+    teacherId: 0,
+    updatedAt: '',
+    createdAt: '',
+    id: 0,
+    member: [],
+    isactive: '',
+  ).obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -24,21 +37,6 @@ class ClassDetailController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
-
-  var grade = GradeModel(
-    name: '',
-    desc: '',
-    level: '',
-    uniqueCode: '',
-    teacherId: 0,
-    updatedAt: '',
-    createdAt: '',
-    id: 0,
-    member: [],
-    isactive: '',
-  ).obs;
 
   void fetchGradeDetails() async {
     try {

@@ -1,8 +1,11 @@
 // import 'package:dio/dio.dart';
 import 'dart:convert';
+import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
+import 'package:mime/mime.dart';
 
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/user_model.dart';
@@ -103,8 +106,34 @@ class ApiService {
       throw Exception('Failed to load current user: $e');
     }
   }
+  Future<UserModel> getUserData() async {
+    try {
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 
-  // Future<void> fetchUser() async {
+      final response = await http.get(
+        Uri.parse('$baseUrl/user'),
+        headers: headers,
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return UserModel.fromJson(jsonDecode(response.body)); 
+      } else {
+        throw Exception('Failed to load current user: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to load current user: $e');
+    }
+  }
+
+  //
+  //   Future<void> fetchUser() async {
   //   isLoading.value = true;
   //   final token = box.read('token');
   //   final url = "https://talentaku.site/api/user";
@@ -337,6 +366,50 @@ class ApiService {
         'success': false,
         'message': 'An error occurred during fetch information'
       };
+    }
+  }
+
+  Future<Map<String, dynamic>> postAlbum({
+    required String gradeId,
+    required String desc,
+    required List<File> media,
+  }) async {
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/grades/$gradeId/albums'));
+    request.fields['desc'] = desc;
+    request.headers.addAll(headers);
+    
+    for (var file in media ) {
+      final mimeType = lookupMimeType(file.path);
+      if (mimeType != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'media[]',
+          file.path,
+          contentType: MediaType.parse(mimeType),
+        ));
+        
+      }
+    }
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      print(token);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to create album: ${response.body}');
+      }    
+    } catch (e) {
+      print('Error in postAlbum: $e');
+      rethrow;
     }
   }
 }

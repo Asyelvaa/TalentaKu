@@ -128,6 +128,8 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     children: [
                       Text(controller.username, style: AppTextStyle.tsTitle),
                       Text(controller.roles.join(', '), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
+                      // Text(controller.currentUser.value!.name, style: AppTextStyle.tsTitle),
+                      // Text(controller.currentUser.value!.roles.join(', '), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
                     ],
                   );
                 }
@@ -142,6 +144,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     ProfileDataContainer(
                       title: "NIS",
                       // icon: Icons.library_books_outlined,
+                      // dataUser: controller.currentUser.value!.identificationNumber ?? '-',
                       dataUser: controller.userData['identification_number'],
                     ),
                     ProfileDataContainer(
@@ -181,14 +184,19 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                         ProfileList(
                           Title: "Nama Lengkap",
                           Description: controller.userData['name'],
+                          // Description: controller.currentUser.value!.name,
                         ),
                         ProfileList(
                           Title: "Tampat, Tanggal Lahir",
                           Description: controller.userData['birth_information'],
+                          // Description: controller.currentUser.value!.birthInformation,
+
                         ),
                         ProfileList(
                           Title: "Alamat",
                           Description: controller.userData['address'],
+                          // Description: controller.currentUser.value!.address,
+
                         ),
                         ProfileList(
                           Title: "Mulai di RBA",

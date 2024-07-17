@@ -13,14 +13,13 @@ class PickimageController extends GetxController {
   final ApiService apiService = ApiService();
   final box = GetStorage();
   final username = GetStorage().read('dataUser')?['username'];
-  final profileImage = GetStorage().read('profile_image_path');
   Rx<File?> image = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
   @override 
   void onInit() {
     super.onInit();
-    // _loadStoredImage();
+    _loadStoredImage(); 
     print(username);
   }
   
@@ -28,12 +27,12 @@ class PickimageController extends GetxController {
     
   }
 
-  // void _loadStoredImage() {
-  //   String? storedImagePath = box.read('profile_image_path');
-  //   if (storedImagePath != null) {
-  //     image.value = File(storedImagePath);
-  //   }
-  // }
+  void _loadStoredImage() {
+    String? storedImagePath = box.read('profile_image_path');
+    if (storedImagePath != null) {
+      image.value = File(storedImagePath);
+    }
+  }
 
   Future<void> pickImage(ImageSource source) async {
     final _image = await ImagePicker().pickImage(source: source);

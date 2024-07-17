@@ -15,6 +15,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
   @override
   Widget build(BuildContext context) {
     final GradeModel classItem = Get.arguments as GradeModel;
+    controller.gradeId = classItem.id.toString();
     return  DefaultTabController(
       length: 3,
       child: Scaffold(

@@ -1,23 +1,8 @@
 import 'package:get/get.dart';
 
-class StyleAlbumController extends GetxController {
-  //TODO: Implement StyleAlbumController
+class AlbumController extends GetxController {
+  
+  void uploadPhotoVideo() {
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -40,17 +40,33 @@ class UserModel {
   // }
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final user = json['user'];
+    final grades = json['grades'];
+    final roles = json['roles'];
+
     return UserModel(
-    id: json['user']['id'],
-    name: json['user']['name'],
-    email: json['user']['email'], 
-    identificationNumber: json['user']['identification_number'],
-    address: json['user']['address'],
-    birthInformation: json['user']['birth_information'],
-    photo: json['user']['photo'],
-    roles: List<String>.from(json['roles'] ?? []),
-    grades: _parseGrades(json['grades']),
-  );
+      id: user['id'],
+      name: user['name'],
+      email: user['email'], 
+      identificationNumber: user['identification_number'],
+      address: user['address'],
+      birthInformation: user['birth_information'],
+      photo: user['photo'],
+      roles: List<String>.from(roles),
+      grades: _parseGrades(grades),
+    );
+
+  //   return UserModel(
+  //   id: json['user']['id'],
+  //   name: json['user']['name'],
+  //   email: json['user']['email'], 
+  //   identificationNumber: json['user']['identification_number'],
+  //   address: json['user']['address'],
+  //   birthInformation: json['user']['birth_information'],
+  //   photo: json['user']['photo'],
+  //   roles: List<String>.from(json['roles'] ?? []),
+  //   grades: _parseGrades(json['grades']),
+  // );
   }
 
   static List<GradeModel> _parseGrades(dynamic gradesJson) {
