@@ -7,10 +7,12 @@ import '../../../infrastructure/dal/services/api_services.dart';
 
 
 class AlbumFormController extends GetxController {
-  late final String gradeId;
-  final ImagePicker _picker = ImagePicker();
-  final TextEditingController descriptionController = TextEditingController();
+
   final ApiService apiService = ApiService();
+  final ImagePicker _picker = ImagePicker();
+
+  late final String gradeId;
+  final TextEditingController descriptionController = TextEditingController();
   final RxList<File> selectedMedia = <File>[].obs;
   final RxInt currentPage = 0.obs;
   late PageController pageController;
@@ -18,12 +20,11 @@ class AlbumFormController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final dynamic args = Get.arguments;
-    gradeId = args is String ? args : '';
-    pageController = PageController();
-    pageController.addListener(() {
-      currentPage.value = pageController.page!.round();
-    });
+    gradeId = Get.arguments is String ? Get.arguments : '';
+    pageController = PageController()
+      ..addListener(() {
+        currentPage.value = pageController.page!.round();
+      });
   }
 
   @override
@@ -35,14 +36,29 @@ class AlbumFormController extends GetxController {
   void nextPage() {
     if (pageController.hasClients && currentPage.value < selectedMedia.length - 1) {
       currentPage.value++;
-      pageController.animateToPage(currentPage.value, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      pageController.animateToPage(
+        currentPage.value, 
+        duration: Duration(milliseconds: 300), 
+        curve: Curves.easeInOut
+      );
     }
   }
 
   void previousPage() {
     if (pageController.hasClients && currentPage.value > 0) {
       currentPage.value--;
-      pageController.animateToPage(currentPage.value, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      pageController.animateToPage(
+        currentPage.value, 
+        duration: Duration(milliseconds: 300), 
+        curve: Curves.easeInOut
+      );
+    }
+  }
+
+  void removeMedia(File file) {
+    selectedMedia.remove(file);
+    if (currentPage.value >= selectedMedia.length) {
+      currentPage.value = selectedMedia.length - 1;
     }
   }
 
@@ -57,7 +73,8 @@ class AlbumFormController extends GetxController {
     }
   }
 
-  Future<void> uploadAlbumPost(gradeId) async {
+  Future<void> uploadAlbumPost(gradeId, void Function(bool) onResult) async {
+    bool success = false;
     try {
       print('Starting uploadAlbumPost');
       print('Description: ${descriptionController.text}');
@@ -73,23 +90,15 @@ class AlbumFormController extends GetxController {
       print(response);
 
       if (response['success']) {
-       Get.snackbar('success', 'uploaded successfully');
-      }
-    }  on SocketException catch (socketException) {
-      Get.snackbar('Error', 'Network error uploading album post');
-      print('SocketException uploading album post: ${socketException.message}');
-    } on HttpException catch (httpException) {
-      Get.snackbar('Error', 'HTTP error uploading album post');
-      print('HttpException uploading album post: ${httpException.message}');
-    } on FormatException catch (formatException) {
-      Get.snackbar('Error', 'Format error uploading album post');
-      print('FormatException uploading album post: ${formatException.message}');
-    } catch (e, stackTrace) {
+        Get.snackbar('success', 'uploaded successfully');
+        success = true;
+      } 
+    } catch (e) {
       Get.snackbar('Error', 'Error uploading album post');
       print('Error uploading album post: $e');
-      print('Stack trace: $stackTrace');
     } finally {
       print('uploadAlbumPost finished');
+      onResult(success);
     }
   } 
 

@@ -11,6 +11,30 @@ import 'controllers/album_form.controller.dart';
 class AlbumFormScreen extends GetView<AlbumFormController> {
   const AlbumFormScreen({Key? key}) : super(key: key);
 
+  Future<void> _confirmRemoveMedia(int index) async {
+    final result = await Get.dialog<bool>(
+      AlertDialog(
+        title: Text('Hapus Media'),
+        content: Text('Anda yakin ingin menghapus ini?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: false),
+            child: Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () => Get.back(result: true),
+            child: Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      controller.selectedMedia.removeAt(index);
+      controller.update();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final String gradeId = Get.arguments as String;
@@ -29,33 +53,54 @@ class AlbumFormScreen extends GetView<AlbumFormController> {
                 // SELECTED MEDIA
                 Obx(() {
                   if (controller.selectedMedia.isEmpty) {
-                    return Text(
-                      'Belum ada foto / video yang dipilih',
-                      style: AppTextStyle.tsNormal
+                    return Container(
+                      height: heightScreen * 0.4,
+                      width: widthScreen,
+                      color: AppColor.grey,
+                      child: Center(
+                        child: Text(
+                          'Belum ada foto / video yang dipilih',
+                          style: AppTextStyle.tsNormal
+                        ),
+                      ),
                     );
                   } else {
                     return Column(
                       children: [
                         Container(
-                          color: AppColor.grey,
                           height: heightScreen * 0.4,
-                          child: ListView.builder(
+                          width: widthScreen ,
+                          child: PageView.builder(
                             controller: controller.pageController,
                             scrollDirection: Axis.horizontal,
                             itemCount: controller.selectedMedia.length,
                             itemBuilder: (context, index) {
                               final file = controller.selectedMedia[index];
-                              return Padding( 
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: file.path.endsWith('.mp4')
-                                    ? AspectRatio(
-                                        aspectRatio: 1.0, // Adjust aspect ratio for videos
-                                        child: Icon(Icons.video_library),
-                                      )
-                                    : Image.file(
-                                        file,
-                                        fit: BoxFit.contain,
-                                      ),
+                              return Stack(
+                                children: [
+                                  Container(
+                                    height: heightScreen * 0.4,
+                                    width: widthScreen, 
+                                    color: AppColor.grey,
+                                    child : file.path.endsWith('.mp4')
+                                      ? AspectRatio(
+                                          aspectRatio: 1.0, 
+                                          child: Icon(Icons.video_library),
+                                        )
+                                      : Image.file(
+                                          file,
+                                          fit: BoxFit.scaleDown,
+                                        )
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: IconButton(
+                                      icon: Icon(Icons.cancel, color: AppColor.black, size: 24,),
+                                      onPressed: () => _confirmRemoveMedia(index),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           ),
@@ -124,8 +169,12 @@ class AlbumFormScreen extends GetView<AlbumFormController> {
                 SizedBox(height: 12,),
                 // BUTTON UPLOAD
                 ElevatedButton(
-                  onPressed: () {
-                    controller.uploadAlbumPost(gradeId);
+                  onPressed: () async {
+                  await controller.uploadAlbumPost(gradeId, (bool success) {
+                    if(success) {
+                      Get.back();
+                    }
+                    });
                   }, 
                   child: Center(
                     child: Text(
