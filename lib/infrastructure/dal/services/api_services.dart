@@ -1,6 +1,7 @@
 // import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_talentaku/domain/models/album_model.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -412,38 +413,38 @@ class ApiService {
       rethrow;
     }
   }
+
+  Future<List<Album>> fetchAlbum(gradeId) async {
+    box.read('token');
+
+    try {
+      final token = box.read('token');
+      final url = Uri.parse('$baseUrl/grades/$gradeId/albums');
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      // print('Request URL: $url');
+      // print('Response Status Code: ${response.statusCode}');
+      // print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          List<dynamic> albumsJson = jsonResponse['data'];
+          return albumsJson.map((albumJson) => Album.fromJson(albumJson)).toList();
+        } else {
+          throw Exception('Failed to load albums');
+        }
+      } else {
+        throw Exception('Failed to load albums');
+      }
+    } catch (e) {
+      throw Exception('Failed to load albums: $e');
+    }
+  }
 }
-
-// class Client {
-//   final Dio _dio;
-
-//    Client(this._dio) {
-//     _dio.options.baseUrl = 'https://talentaku.site/api';
-//     _dio.options.connectTimeout = Duration(seconds: 5); 
-//     _dio.options.receiveTimeout = Duration(seconds: 3);
-//     _dio.interceptors.add(ApiInterceptors());
-//   }
-
-//   Dio get dio => _dio;
-// }
-
-// class ApiInterceptors extends Interceptor {
-  
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     print('REQUEST[${options.method}] => PATH: ${options.path}');
-//     return super.onRequest(options, handler);
-//   }
-
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
-//     return super.onResponse(response, handler);
-//   }
-
-//   @override
-//   void onError(DioError err, ErrorInterceptorHandler handler) {
-//     print('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
-//     return super.onError(err, handler);
-//   }
-// }

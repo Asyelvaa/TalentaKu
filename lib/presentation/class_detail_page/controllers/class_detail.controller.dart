@@ -1,14 +1,16 @@
-import 'dart:ffi';
-
 import 'package:flutter_talentaku/domain/models/class_model.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
+import '../../../domain/models/album_model.dart';
 
 class ClassDetailController extends GetxController {
-  //TODO: Implement ClassActiveController
   final ApiService apiService = ApiService();
+
+  var albums = <Album>[].obs;
+  var isLoading = true.obs;
   late String gradeId;
+  final GradeModel classItem = Get.arguments as GradeModel;
 
   var grade = GradeModel(
     name: '',
@@ -26,16 +28,8 @@ class ClassDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    gradeId = classItem.id.toString();
+    fetchAlbums();
   }
 
   void fetchGradeDetails() async {
@@ -53,5 +47,24 @@ class ClassDetailController extends GetxController {
     grade.update((val) {
       val!.isactive = isActive ? 'active' : 'inactive';
     });
+  }
+
+  void fetchAlbums() async {
+    try {
+      isLoading(true);
+      var fetchedAlbums = await apiService.fetchAlbum(gradeId);
+      albums.assignAll(fetchedAlbums);
+      for (var album in albums) {
+        print('Album: ${album.desc}');
+        print('Album media: ');
+        for (var media in album.media) {
+          print('Media: ${media.filePath}');
+        }        
+      }
+    } catch (e) {
+      print('Error fetching albums: $e');
+    } finally {
+      isLoading(false);
+    }
   }
 }
