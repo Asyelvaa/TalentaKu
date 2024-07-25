@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
 
 import '../../config.dart';
-import '../../presentation/screens.dart';
 import '../../presentation/global_component/navigation_menu.dart';
+import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';
 
@@ -56,7 +56,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.DAILY_REPORT,
-      page: () => const DailyReportScreen(),
+      page: () =>  DailyReportScreen(),
       binding: DailyReportControllerBinding(),
     ),
     GetPage(
@@ -73,6 +73,11 @@ class Nav {
       name: Routes.ADD_EDIT_POST,
       page: () => const AddEditPostScreen(),
       binding: AddEditPostControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.STUDENT_REPORT_FORM,
+      page: () => const StudentReportFormScreen(),
+      binding: StudentReportFormControllerBinding(),
     ),
   ];
 }

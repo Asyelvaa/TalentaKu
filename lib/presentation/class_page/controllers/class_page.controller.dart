@@ -93,7 +93,7 @@ class ClassController extends GetxController {
 
   Future<void> fetchGrades() async {
     try {
-      List<GradeModel> grades = await apiService.getGrades();
+      List<GradeModel> grades = await apiService.getGradesTeacher();
       gradesList.assignAll(grades);
       print('Grades: $grades');
 

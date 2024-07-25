@@ -40,7 +40,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                   style: AppTextStyle.tsNormal,
                 ),
                 onPressed: () {
-                  Get.back();   
+                  Get.back();
                 },
               ),
               TextButton(
@@ -92,7 +92,9 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                   return Column(
                     children: [
                       Text(user.name, style: AppTextStyle.tsTitle),
-                      Text(user.roles.join(", "), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
+                      Text(user.roles.join(", "),
+                          style: AppTextStyle.tsNormal
+                              .copyWith(color: AppColor.blue600)),
                     ],
                   );
                 }
@@ -167,7 +169,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 icon: Icons.arrow_forward,
                 colorButton: AppColor.background,
                 onPressed: () {
-                  Get.to(DailyReportScreen());
+                  Get.toNamed(Routes.DAILY_REPORT);
                 },
               ),
               defaultHeightSpace,
@@ -185,5 +187,4 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
       ),
     );
   }
-
 }

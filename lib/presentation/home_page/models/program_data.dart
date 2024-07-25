@@ -8,6 +8,10 @@ class Program {
     required this.description,
     required this.photos,
   });
+
+  get id => null;
+
+  get categoryId => null;
 }
 
 List<Program> mockProgramData = [

@@ -45,7 +45,7 @@ class HomePageScreen extends GetView<HomePageController> {
                   : SlideInformation(
                       headerContent: "Programs ",
                       image: "program_tambahan.png",
-                      contentTitles: controller.contentTitles.value,
+                      contentTitles: controller.contentTitles,
                     )),
               SlideInformation(
                 headerContent: "Ekstrakulikuler",
@@ -69,11 +69,11 @@ class HomePageScreen extends GetView<HomePageController> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(height:100, child: KbSdTalentaComponent()),
+                        Container(height: 100, child: KbSdTalentaComponent()),
                         SizedBox(
                           height: 10,
                         ),
-                        Container(height:100, child: RbaTalentaComponent()),
+                        Container(height: 100, child: RbaTalentaComponent()),
                       ],
                     ),
                   ],

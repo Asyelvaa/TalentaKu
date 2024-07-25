@@ -69,7 +69,9 @@ class ApiService {
   //   }
   // }
 
-  Future<List<GradeModel>> getGrades() async {
+  
+
+  Future<List<GradeModel>> getGradesTeacher() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -78,7 +80,7 @@ class ApiService {
       };
 
       final response = await http.get(
-        Uri.parse('$baseUrl/grades'),
+        Uri.parse('$baseUrl/grades/teacher'),
         headers: headers,
       );
       print('Response status: ${response.statusCode}');

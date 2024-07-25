@@ -33,7 +33,7 @@ class ClassAppbar extends GetView<ClassDetailController> {
           icon: Icon(Icons.more_vert_rounded, color: AppColor.white),
           onSelected: (value) {
             switch (value) {
-              case 0 : Get.toNamed('/laporan-harian'); break;
+              case 0 : Get.toNamed('/student-report-form'); break;
               case 1 : 
               Get.bottomSheet(
                 EditClassBottomSheet(grade: grade),
