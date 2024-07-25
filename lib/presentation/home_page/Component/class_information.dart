@@ -46,7 +46,7 @@ class ClassInformation extends StatelessWidget {
               width: Get.width,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 2,
+                itemCount: 1,
                 itemBuilder: (context, index) {
                   return InformationListItem(
                       titleInfo: titleInfo, dateInfo: dateInfo);

@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 class HomePageController extends GetxController {
   final box = GetStorage();
+  var userRole = <String>[].obs; 
 
   final userData = {}.obs;
   final role = [].obs;
@@ -35,30 +36,31 @@ class HomePageController extends GetxController {
     final username = box.read('username');
     return username;
   }
+  
 
-  Future<void> fetchUser() async {
-    isLoading.value = true;
-    final token = box.read('token');
-    final url = "https://talentaku.site/api/user";
-    var headers = {
-      'Accept': 'Application/json',
-      'Authorization': 'Bearer $token'
-    };
-    try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+  // Future<void> fetchUser() async {
+  //   isLoading.value = true;
+  //   final token = box.read('token');
+  //   final url = "https://talentaku.site/api/user";
+  //   var headers = {
+  //     'Accept': 'Application/json',
+  //     'Authorization': 'Bearer $token'
+  //   };
+  //   try {
+  //     final response = await http.get(Uri.parse(url), headers: headers);
 
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        userData.value = jsonData['user'];
-        role.value = jsonData['roles'];
-        isLoading.value = false;
-      } else {
-        throw Exception("Failed to fetch user data");
-      }
-    } catch (e) {
-      throw Exception('Error fetching user data: $e');
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       final jsonData = json.decode(response.body);
+  //       userData.value = jsonData['user'];
+  //       role.value = jsonData['roles'];
+  //       isLoading.value = false;
+  //     } else {
+  //       throw Exception("Failed to fetch user data");
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error fetching user data: $e');
+  //   }
+  // }
 
   Future<void> fetchProgram() async {
     isLoading.value = true;
@@ -140,13 +142,21 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() {
-    fetchUser();
+    // fetchUser();
     fetchProgram();
     fetchContactAndInformation();
     fetchInformationList();
     super.onInit();
+    fetchCurrentUser();
   }
-
+  
+  void fetchCurrentUser() {
+    final box = GetStorage();
+    Map<String, dynamic>? dataUser = box.read('dataUser');
+    if (dataUser != null) {
+      userRole.value = List<String>.from(dataUser['role']);
+    }
+  }
   Future<void> showBottomSheet() async {
     Get.bottomSheet(
       backgroundColor: AppColor.background,

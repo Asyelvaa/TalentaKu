@@ -8,14 +8,16 @@ class Routes {
     return LoginScreen;
   }
 
-  static const String LoginScreen = '/login';
-  static const String PICK_IMAGE = '/pickimage';
-  static const String HOME_PAGE = '/home';
-  static const String PROFILE_PAGE = '/profile';
-  static const String DAILY_REPORT = '/daily-report';
-  static const String CLASS_PAGE = '/class'; 
+  static const String ALBUM_FORM_PAGE = '/album-form-page';
   static const String CLASS_DETAIL = '/class-detail';
-  static const String STYLE_ALBUM = '/style-album';
-  static const String ADD_EDIT_POST = '/add-edit-post';
+  static const String CLASS_PAGE = '/class';
+  static const String DAILY_REPORT = '/daily-report';
+  static const String HOME_PAGE = '/home';
+  static const String LoginScreen = '/login';
   static const String NAVBAR = '/global_component';
+  static const String PICK_IMAGE = '/pickimage';
+  static const String PROFILE_PAGE = '/profile';
+  static const String STYLE_ALBUM = '/style-album';
+  static const TASK_PAGE = '/task-page';
+  static const ASSIGNMENT_PAGE = '/assignment-page';
 }

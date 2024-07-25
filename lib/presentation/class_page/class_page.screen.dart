@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../domain/models/class_model.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../global_component/default_appbar.dart';
-import '../profile_page/model/user_model.dart';
 import 'component/button_class_form.dart';
 import 'component/class_item.dart';
 import 'controllers/class_page.controller.dart';

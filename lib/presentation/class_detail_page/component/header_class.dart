@@ -15,21 +15,14 @@ class HeaderClass extends StatelessWidget {
     List<Map<String, dynamic>> _profileData = [];
     _profileData = [
       {
-        'name': 'Sekar Annisa',
+        'name': 'Anita Fauzah',
         'profileImageUrl': 'assets/images/student.png',
       },
       {
-        'name': 'Jane Smith',
+        'name': 'Dimas Prayoga',
         'profileImageUrl': 'assets/images/student.png',
       },
-      {
-        'name': 'John Doe',
-        'profileImageUrl': 'assets/images/student.png',
-      },
-      {
-        'name': 'Jane Doe',
-        'profileImageUrl': 'assets/images/student.png',
-      },
+      
     ];
     return Container(
       height: 90,

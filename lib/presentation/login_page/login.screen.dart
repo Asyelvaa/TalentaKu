@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
+
+import '../../infrastructure/theme/theme.dart';
 import '../global_component/custom_textFormField.dart';
 import 'controllers/login.controller.dart';
 
