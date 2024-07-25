@@ -8,19 +8,21 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-class SlideInformation extends GetView<HomePageController> {
+import 'package:flutter/material.dart';
+
+class SlideInformation extends StatelessWidget {
   final String headerContent;
-  final List<dynamic> contentTitles;
+  final List<String> contentTitles; // Pastikan parameter ini ada
   final void Function()? onTap;
   final String image;
 
   const SlideInformation({
-    super.key,
-    this.onTap,
+    Key? key,
     required this.headerContent,
-    required this.image,
     required this.contentTitles,
-  });
+    this.onTap,
+    required this.image,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class SlideInformation extends GetView<HomePageController> {
           HeaderContent(text: headerContent, imageName: image),
           Container(
             padding: EdgeInsets.only(left: 20),
-            width: widthScreen,
+            width: double.infinity,
             height: 100,
             child: ListView.builder(
               shrinkWrap: true,
@@ -39,11 +41,12 @@ class SlideInformation extends GetView<HomePageController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                    onTap: onTap,
-                    child: Content(
-                      contentTitle: contentTitles[index],
-                      index: index,
-                    ));
+                  onTap: onTap,
+                  child: Content(
+                    contentTitle: contentTitles[index],
+                    index: index,
+                  ),
+                );
               },
             ),
           ),
@@ -52,6 +55,7 @@ class SlideInformation extends GetView<HomePageController> {
     );
   }
 }
+
 
 class Content extends GetView<HomePageController> {
   final String contentTitle;
@@ -68,7 +72,7 @@ class Content extends GetView<HomePageController> {
       HomeBottomsheetInformation(
         informationTitle: controller.programs[index]['name'],
         photoList: program.photos,
-        descriptionContent: controller.programs[index]['desc'],
+        descriptionContent: controller.programs[index]['desc'], programId: 1,
       ),
       isScrollControlled: true,
     );

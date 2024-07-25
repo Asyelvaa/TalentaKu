@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 import '../models/program_data.dart';
+import 'edit_program.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
@@ -73,48 +74,44 @@ class Content extends GetView<HomePageController> {
     required this.contentTitle,
   });
 
-  void _showProgramDetails(BuildContext context, Program program) {
-    Get.bottomSheet(
-      HomeBottomsheetInformation(
-        informationTitle: controller.programs[index]['name'],
-        photoList: program.photos,
-        descriptionContent: controller.programs[index]['desc'],
+  void _showEditPopup(BuildContext context) {
+    final program = controller.programs[index];
+    Get.dialog(
+      EditProgramPopup(
+        programId: program['id'],
+        initialName: program['name'],
+        initialDesc: program['desc'],
+        initialPhoto: program['photo'],
+        initialCategoryId: int.parse(program['category_id']),
       ),
-      isScrollControlled: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final program = mockProgramData.firstWhere(
-      (program) => program.title == contentTitle,
-      orElse: () => Program(
-        title: 'Not Found',
-        description: 'No description available',
-        photos: [],
-      ),
-    );
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 12),
-      child: Container(
-        height: 90,
-        decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColor.blue600, width: 1)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(contentTitle, style: AppTextStyle.tsNormal),
-              Text(
-                contentDesc,
-                style: AppTextStyle.tsNormal,
-              )
-            ],
+    return GestureDetector(
+      onLongPress: () => _showEditPopup(context),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 12),
+        child: Container(
+          height: 90,
+          decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColor.blue600, width: 1)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(contentTitle, style: AppTextStyle.tsNormal),
+                Text(
+                  contentDesc,
+                  style: AppTextStyle.tsNormal,
+                )
+              ],
+            ),
           ),
         ),
       ),

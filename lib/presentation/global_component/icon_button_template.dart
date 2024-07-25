@@ -21,10 +21,10 @@ class IconButtonTemplate extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all<Color>(colorButton),
-        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+        backgroundColor: MaterialStateProperty.all<Color>(colorButton),
+        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
-        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           )

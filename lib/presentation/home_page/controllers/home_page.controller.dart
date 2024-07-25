@@ -17,8 +17,8 @@ class HomePageController extends GetxController {
 
   final desc = [].obs;
   final informationList = <Information>[].obs;
-  final contentTitles = [].obs;
-  final contact = [].obs;
+  final contentTitles = <String>[].obs;
+  final contact = <String>[].obs;
   final contactandinformation = [].obs;
   final programs = [].obs;
   var isLoading = false.obs;
@@ -38,30 +38,6 @@ class HomePageController extends GetxController {
   }
   
 
-  // Future<void> fetchUser() async {
-  //   isLoading.value = true;
-  //   final token = box.read('token');
-  //   final url = "https://talentaku.site/api/user";
-  //   var headers = {
-  //     'Accept': 'Application/json',
-  //     'Authorization': 'Bearer $token'
-  //   };
-  //   try {
-  //     final response = await http.get(Uri.parse(url), headers: headers);
-
-  //     if (response.statusCode == 200) {
-  //       final jsonData = json.decode(response.body);
-  //       userData.value = jsonData['user'];
-  //       role.value = jsonData['roles'];
-  //       isLoading.value = false;
-  //     } else {
-  //       throw Exception("Failed to fetch user data");
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error fetching user data: $e');
-  //   }
-  // }
-
   Future<void> fetchProgram() async {
     isLoading.value = true;
     final url = "https://talentaku.site/api/programs";
@@ -74,6 +50,8 @@ class HomePageController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         final items = jsonData['programs'];
+        contentTitles.clear();
+        programs.clear();
         for (var item in items) {
           contentTitles.add(item['name']);
           programs.add(item);
@@ -85,6 +63,70 @@ class HomePageController extends GetxController {
     } catch (e) {
       print(e);
       throw Exception('Error fetching programs: $e');
+    }
+  }
+
+  Future<void> updateProgram(
+      int id, String name, String desc, String photo, int categoryId) async {
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/programs/6";
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var body = jsonEncode({
+      'name': name,
+      'desc': desc,
+      'photo': photo,
+      'category_id': categoryId.toString(),
+    });
+
+    try {
+      final response =
+          await http.post(Uri.parse(url), headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print("Update Success: ${responseData['message']}");
+        
+      } else {
+        final responseData = json.decode(response.body);
+        throw Exception(
+            'Error: ${responseData['message']}'); 
+      }
+    } catch (e) {
+      print('Error updating program: $e');
+      throw Exception('Error updating program: $e');
+    }
+  }
+
+  Future<void> deleteProgram(int id) async {
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/programs/6";
+    var headers = {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        fetchProgram();
+        Get.snackbar('Success', 'Program deleted successfully');
+      } else if (response.statusCode == 404) {
+        throw Exception("Program not found");
+      } else {
+        throw Exception("Failed to delete program");
+      }
+    } catch (e) {
+      print('Error deleting program: $e');
+      Get.snackbar('Error', 'Failed to delete program: $e');
+      throw Exception('Error deleting program: $e');
     }
   }
 
@@ -114,7 +156,7 @@ class HomePageController extends GetxController {
     }
   }
 
-   Future<void> fetchInformationList() async {
+  Future<void> fetchInformationList() async {
     isLoading.value = true;
     final url = "https://talentaku.site/api/information/list";
     var headers = {
@@ -138,7 +180,6 @@ class HomePageController extends GetxController {
       throw Exception('Error fetching information list: $e');
     }
   }
-
 
   @override
   void onInit() {

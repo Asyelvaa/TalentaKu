@@ -6,4 +6,5 @@ export 'package:flutter_talentaku/presentation/home_page/home_page.screen.dart';
 export 'package:flutter_talentaku/presentation/login_page/login.screen.dart';
 export 'package:flutter_talentaku/presentation/login_pick_image/login_pick_image.screen.dart';
 export 'package:flutter_talentaku/presentation/profile_page/profile_page.screen.dart';
+export 'package:flutter_talentaku/presentation/student_report_form/student_report_form.screen.dart';
 export 'package:flutter_talentaku/presentation/student_report_page/daily_report.screen.dart';

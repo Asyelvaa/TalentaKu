@@ -211,7 +211,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 icon: Icons.arrow_forward,
                 colorButton: AppColor.blue600,
                 onPressed: () {
-                  Get.to(DailyReportScreen());
+                  Get.toNamed(Routes.DAILY_REPORT);
                 },
               ),
               defaultHeightSpace,
@@ -229,5 +229,4 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
       ),
     );
   }
-
 }

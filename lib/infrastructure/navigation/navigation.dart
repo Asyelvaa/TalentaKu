@@ -56,7 +56,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.DAILY_REPORT,
-      page: () => const DailyReportScreen(),
+      page: () =>  DailyReportScreen(),
       binding: DailyReportControllerBinding(),
     ),
     GetPage(
@@ -78,6 +78,11 @@ class Nav {
       name: Routes.ASSIGNMENT_PAGE,
       page: () => const AssignmentPageScreen(),
       binding: AssignmentPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.STUDENT_REPORT_FORM,
+      page: () => const StudentReportFormScreen(),
+      binding: StudentReportFormControllerBinding(),
     ),
   ];
 }

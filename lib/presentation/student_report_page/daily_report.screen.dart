@@ -9,7 +9,7 @@ import '../global_component/back_appbar.dart';
 import '../global_component/text_background.dart';
 
 class DailyReportScreen extends GetView<DailyReportController> {
-  const DailyReportScreen({Key? key}) : super(key: key);
+  DailyReportScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,21 +48,31 @@ class DailyReportScreen extends GetView<DailyReportController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Row(
-                          children: [
-                            TextWithBackground(
-                              colorBackground: AppColor.white,
-                              text: "Semester 1",
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            TextWithBackground(
-                              colorBackground: AppColor.white,
-                              text: "Jumat, 01/03/2024",
-                            ),
-                          ],
-                        ),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (controller.reportData.isEmpty) {
+                            return Center(
+                                child: Text('tidak ada data yang ditampilkan'));
+                          } else {
+                            final data = controller.reportData['data'];
+                            return Row(
+                              children: [
+                                TextWithBackground(
+                                  colorBackground: AppColor.white,
+                                  text: "Semester ${data['semester_id']}",
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                TextWithBackground(
+                                  colorBackground: AppColor.white,
+                                  text: "${data['created']}",
+                                ),
+                              ],
+                            );
+                          }
+                        }),
                       ],
                     ),
                   ),

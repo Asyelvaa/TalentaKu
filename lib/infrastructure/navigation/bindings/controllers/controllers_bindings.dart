@@ -8,3 +8,4 @@ export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/login.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/pickimage.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/profile_page.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/student_report_form.controller.binding.dart'; 
