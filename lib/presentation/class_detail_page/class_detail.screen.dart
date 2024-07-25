@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/domain/models/task_model.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/class_appbar.dart';
 import 'package:get/get.dart';
 
 import '../../domain/models/class_model.dart';
+import 'controllers/class_detail_arguments.dart';
 import 'component/album/content_album.dart';
 import 'component/beranda/content_beranda.dart';
 import 'component/header_class.dart';
@@ -14,8 +16,10 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
   const ClassDetailScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final GradeModel classItem = Get.arguments as GradeModel;
-    controller.gradeId = classItem.id.toString();
+
+    // final args = Get.arguments as ClassDetailArguments;
+    final classItem = Get.arguments as GradeModel;
+
     return  DefaultTabController(
       length: 3,
       child: Scaffold(

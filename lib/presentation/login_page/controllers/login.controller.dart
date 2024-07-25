@@ -63,6 +63,7 @@ class LoginController extends GetxController {
         box.write('token', token);
         Map<String, dynamic>? dataUser = box.read('dataUser');
         print(dataUser);
+        print(token);
         Get.offAllNamed(Routes.PICK_IMAGE);
       }
     } catch (e) {

@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_talentaku/domain/models/album_model.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -9,6 +10,7 @@ import 'package:path/path.dart' as path;
 import 'package:mime/mime.dart';
 
 import '../../../domain/models/class_model.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../domain/models/user_model.dart';
 
 class ApiService {
@@ -189,21 +191,24 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> createClass(String name, String desc, int levelId) async {
-    try {
-      final token = box.read('token');
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', 
+    };
 
+    final body = jsonEncode({
+      'name': name,
+      'desc': desc,
+      'level_id': levelId,
+    });
+
+    try {
       final response = await http.post(
         Uri.parse('$baseUrl/grades'),
         headers: headers,
-        body: jsonEncode({
-          'name': name,
-          'desc': desc,
-          'level_id': levelId,
-        }),
+        body: body
       );
 
       print('Response status: ${response.statusCode}');
@@ -447,4 +452,85 @@ class ApiService {
       throw Exception('Failed to load albums: $e');
     }
   }
+
+  Future<List<Task>> fetchTask(String gradeId) async {
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final response = await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks'));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((task) => Task.fromJson(task)).toList();
+    } else {
+      throw Exception('Failed to load class:${response.statusCode}');
+    }
+  }
+
+  Future<Task> getDetailTask(String gradeId, String taskId) async {
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks/$taskId'));
+    if (response.statusCode == 200) {
+      return Task.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load tasks');
+    }
+  }
+
+  Future<Map<String, dynamic>> createTask(
+    Map<String, String> fields, 
+    List<File> files, 
+    List<String> links, 
+    String gradeId
+  ) async {
+    final token = box.read('token');
+    // box.read()
+    print(token);
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/grades/$gradeId/tasks'));
+    request.headers.addAll(headers);
+
+    fields.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+    for (var i = 0; i < links.length; i++) {
+      request.fields['links[$i]'] = links[i];
+    }
+
+    for (var file in files) {
+      request.files.add(
+        http.MultipartFile(
+          'media[]',
+          file.readAsBytes().asStream(),
+          file.lengthSync(),
+          filename: file.path.split('/').last,
+          contentType: MediaType('application', 'octet-stream'),
+        ),
+      );
+    }
+    
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to create task: ${response.body}');
+      }    
+    } catch (e) {
+      print('Error in cretae task: $e');
+      rethrow;
+    }
+  } 
 }

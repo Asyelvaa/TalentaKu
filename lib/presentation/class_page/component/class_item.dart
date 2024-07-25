@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/models/class_model.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../../class_detail_page/controllers/class_detail_arguments.dart';
 import '../controllers/class_page.controller.dart';
 
 class ClassItem extends GetView<ClassController> {
@@ -23,7 +25,7 @@ class ClassItem extends GetView<ClassController> {
         return InkWell(
           onTap: () => Get.toNamed(
               Routes.CLASS_DETAIL,
-              arguments: classItem,
+              arguments: classItem
           ),
           child: Container(
             margin: EdgeInsets.only(top: 12),
@@ -43,14 +45,8 @@ class ClassItem extends GetView<ClassController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      classItem.name,
-                      style: AppTextStyle.tsNormal,
-                    ),
-                    Text(
-                      classItem.desc,
-                      style: AppTextStyle.tsLittle,
-                    ),
+                    Text( classItem.name, style: AppTextStyle.tsNormal,),
+                    Text( classItem.desc,style: AppTextStyle.tsLittle,),
                     Text(
                       classItem.isactive.toLowerCase() == '1' ? '' : 'Archived Class',
                       style: AppTextStyle.tsLittle,

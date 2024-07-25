@@ -27,16 +27,15 @@ class ButtonClassForm extends GetView<ClassController> {
   
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final List<String> userRole = (box.read('roles') ?? []).cast<String>();
+    // final List<String> userRole = (GetStorage().read('role') ?? []).cast<String>();
     return GestureDetector(
       onTap: (){
-        if (userRole.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
+        if (controller.userRole.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
           _showAddClassBottomSheet(context);
-        } else if (userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
+        } else if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
           _showJoinClassBottomSheet(context);
         } else {
-          Get.snackbar("Anda tidak memiliki role akses", "Anda tidak memiliki akses untuk membuat kelas");
+          Get.snackbar("Gagal", "Anda tidak memiliki role akses");
         }
       },
       child: Container(

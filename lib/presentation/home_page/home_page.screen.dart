@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/home_page/Component/slide_information.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../global_component/default_appbar.dart';
@@ -28,10 +29,11 @@ class HomePageScreen extends GetView<HomePageController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ClassInformation(
-                  titleInfo: "Laporan harian Erina", 
-                  dateInfo: '04 April 2024'
-              ),
+              if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD'))
+                ClassInformation(
+                  titleInfo: "Laporan harian Dimas",
+                  dateInfo: '04 April 2024',
+                ),
               Obx(() => controller.isLoading.value
                   ? SlideInformation(
                       headerContent: "Loading.... ",

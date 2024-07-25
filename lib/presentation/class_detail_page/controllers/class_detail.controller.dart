@@ -1,16 +1,19 @@
 import 'package:flutter_talentaku/domain/models/class_model.dart';
+import 'package:flutter_talentaku/domain/models/task_model.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/models/album_model.dart';
+import 'class_detail_arguments.dart';
 
 class ClassDetailController extends GetxController {
+
   final ApiService apiService = ApiService();
 
-  var albums = <Album>[].obs;
+  RxList<Album> albums = <Album>[].obs;
+  RxList<Task> tasks = <Task>[].obs;
   var isLoading = true.obs;
-  late String gradeId;
-  final GradeModel classItem = Get.arguments as GradeModel;
+  late GradeModel classItem;
 
   var grade = GradeModel(
     name: '',
@@ -28,8 +31,12 @@ class ClassDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    gradeId = classItem.id.toString();
+    // Retrieve arguments
+    // final arguments = Get.arguments as ClassDetailArguments;
+    classItem = Get.arguments as GradeModel;
+
     fetchAlbums();
+    // fetchTasks();
   }
 
   void fetchGradeDetails() async {
@@ -52,7 +59,7 @@ class ClassDetailController extends GetxController {
   void fetchAlbums() async {
     try {
       isLoading(true);
-      var fetchedAlbums = await apiService.fetchAlbum(gradeId);
+      var fetchedAlbums = await apiService.fetchAlbum(classItem.id);
       albums.assignAll(fetchedAlbums);
       for (var album in albums) {
         print('Album: ${album.desc}');
@@ -67,4 +74,18 @@ class ClassDetailController extends GetxController {
       isLoading(false);
     }
   }
+
+  // void fetchTasks() async {
+  //   try {
+  //     isLoading(true);
+  //     var fetchedTasks = await ApiService().fetchTask(classItem.id.toString());
+  //     if (fetchedTasks != null) {
+  //       tasks.assignAll(fetchedTasks);
+  //     } else {
+  //       tasks.clear();
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 }
