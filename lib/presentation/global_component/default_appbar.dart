@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../login_page/controllers/login.controller.dart';
-import '../profile_page/model/user_model.dart';
 
 class DefaultAppbar extends StatelessWidget {
   const DefaultAppbar({
@@ -13,7 +12,8 @@ class DefaultAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
-    final String username = box.read('username');
+    final username = GetStorage().read('dataUser')?['username'];
+
     return AppBar(
       leading: Padding(
         padding: const EdgeInsets.only(left: 20, top: 4, bottom: 4),
@@ -23,7 +23,7 @@ class DefaultAppbar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Selamat Pagi, $username',
+            'Halo, $username',
             style: AppTextStyle.tsNormal,
           ),
           Text(

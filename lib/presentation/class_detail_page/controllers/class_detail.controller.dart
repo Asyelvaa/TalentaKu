@@ -1,31 +1,19 @@
-import 'dart:ffi';
-
 import 'package:flutter_talentaku/domain/models/class_model.dart';
+import 'package:flutter_talentaku/domain/models/task_model.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
+import '../../../domain/models/album_model.dart';
+import 'class_detail_arguments.dart';
 
 class ClassDetailController extends GetxController {
-  //TODO: Implement ClassActiveController
+
   final ApiService apiService = ApiService();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  RxList<Album> albums = <Album>[].obs;
+  RxList<Task> tasks = <Task>[].obs;
+  var isLoading = true.obs;
+  late GradeModel classItem;
 
   var grade = GradeModel(
     name: '',
@@ -39,6 +27,17 @@ class ClassDetailController extends GetxController {
     member: [],
     isactive: '',
   ).obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Retrieve arguments
+    // final arguments = Get.arguments as ClassDetailArguments;
+    classItem = Get.arguments as GradeModel;
+
+    fetchAlbums();
+    // fetchTasks();
+  }
 
   void fetchGradeDetails() async {
     try {
@@ -56,4 +55,37 @@ class ClassDetailController extends GetxController {
       val!.isactive = isActive ? 'active' : 'inactive';
     });
   }
+
+  void fetchAlbums() async {
+    try {
+      isLoading(true);
+      var fetchedAlbums = await apiService.fetchAlbum(classItem.id);
+      albums.assignAll(fetchedAlbums);
+      for (var album in albums) {
+        print('Album: ${album.desc}');
+        print('Album media: ');
+        for (var media in album.media) {
+          print('Media: ${media.filePath}');
+        }        
+      }
+    } catch (e) {
+      print('Error fetching albums: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // void fetchTasks() async {
+  //   try {
+  //     isLoading(true);
+  //     var fetchedTasks = await ApiService().fetchTask(classItem.id.toString());
+  //     if (fetchedTasks != null) {
+  //       tasks.assignAll(fetchedTasks);
+  //     } else {
+  //       tasks.clear();
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 }

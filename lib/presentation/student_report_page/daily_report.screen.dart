@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/presentation/student_report_page/component/report_item.dart';
 
+import '../global_component/back_appbar.dart';
 import '../global_component/text_background.dart';
 
 class DailyReportScreen extends GetView<DailyReportController> {
@@ -13,8 +14,12 @@ class DailyReportScreen extends GetView<DailyReportController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: PreferredSize(
+      //     preferredSize: Size.fromHeight(kToolbarHeight),
+      //     child: BackAppbar(titleAppbar: '')
+      //   ),
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(onPressed: () {Get.back();}, icon: Icon(Icons.arrow_back, color: AppColor.white,)),
         backgroundColor: AppColor.blue600,
       ),
       body: SingleChildScrollView(

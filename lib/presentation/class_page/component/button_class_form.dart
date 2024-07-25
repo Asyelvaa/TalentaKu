@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';
@@ -26,15 +27,15 @@ class ButtonClassForm extends GetView<ClassController> {
   
   @override
   Widget build(BuildContext context) {
-    final currentUser = controller.currentUser.value;
+    // final List<String> userRole = (GetStorage().read('role') ?? []).cast<String>();
     return GestureDetector(
       onTap: (){
-        if (currentUser.roles.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
+        if (controller.userRole.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
           _showAddClassBottomSheet(context);
-        } else if (currentUser.roles.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
+        } else if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
           _showJoinClassBottomSheet(context);
         } else {
-          Get.snackbar("Anda tidak memiliki role akses", "Anda tidak memiliki akses untuk membuat kelas");
+          Get.snackbar("Gagal", "Anda tidak memiliki role akses");
         }
       },
       child: Container(

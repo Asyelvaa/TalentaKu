@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 class HomePageController extends GetxController {
   final box = GetStorage();
+  var userRole = <String>[].obs; 
 
   final userData = {}.obs;
   final role = [].obs;
@@ -35,6 +36,7 @@ class HomePageController extends GetxController {
     final username = box.read('username');
     return username;
   }
+  
 
   Future<void> fetchProgram() async {
     isLoading.value = true;
@@ -181,12 +183,21 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() {
+    // fetchUser();
     fetchProgram();
     fetchContactAndInformation();
     fetchInformationList();
     super.onInit();
+    fetchCurrentUser();
   }
-
+  
+  void fetchCurrentUser() {
+    final box = GetStorage();
+    Map<String, dynamic>? dataUser = box.read('dataUser');
+    if (dataUser != null) {
+      userRole.value = List<String>.from(dataUser['role']);
+    }
+  }
   Future<void> showBottomSheet() async {
     Get.bottomSheet(
       backgroundColor: AppColor.background,

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/models/class_model.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../../class_detail_page/controllers/class_detail_arguments.dart';
 import '../controllers/class_page.controller.dart';
 
 class ClassItem extends GetView<ClassController> {
@@ -23,7 +25,7 @@ class ClassItem extends GetView<ClassController> {
         return InkWell(
           onTap: () => Get.toNamed(
               Routes.CLASS_DETAIL,
-              arguments: classItem,
+              arguments: classItem
           ),
           child: Container(
             margin: EdgeInsets.only(top: 12),
@@ -32,10 +34,10 @@ class ClassItem extends GetView<ClassController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: AppColor.blue200,
-                width: 1,
+                color: AppColor.blue100,
+                width: 1
               ),
-              // color: classItem.isActive ? AppColor.blue200 : Colors.grey[200],
+              color: classItem.isactive.toLowerCase() == '1' ? AppColor.blue200 : Colors.grey[200],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,18 +45,12 @@ class ClassItem extends GetView<ClassController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text( classItem.name, style: AppTextStyle.tsNormal,),
+                    Text( classItem.desc,style: AppTextStyle.tsLittle,),
                     Text(
-                      classItem.name,
-                      style: AppTextStyle.tsNormal,
-                    ),
-                    Text(
-                      classItem.desc,
+                      classItem.isactive.toLowerCase() == '1' ? '' : 'Archived Class',
                       style: AppTextStyle.tsLittle,
-                    ),
-                  //   Text(
-                  //     classItem.isActive ? '' : 'Archived Class',
-                  //     style: AppTextStyle.tsLittle,
-                  //   )
+                    )
                   ],
                 ),
                 Image.asset(

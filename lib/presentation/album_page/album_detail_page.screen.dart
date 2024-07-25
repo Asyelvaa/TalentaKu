@@ -9,7 +9,7 @@ import 'component/post_card.dart';
 import 'controllers/style_album.controller.dart';
 import 'model/post_card_model.dart';
 
-class AlbumDetailPage extends GetView<StyleAlbumController> {
+class AlbumDetailPage extends GetView<AlbumController> {
   const AlbumDetailPage({Key? key}) : super(key: key);
 
   @override
