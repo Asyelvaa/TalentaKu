@@ -12,6 +12,7 @@ import 'package:mime/mime.dart';
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/user_model.dart';
+import '../../../presentation/student_report_page/model/reportModel.dart';
 
 class ApiService {
   static final ApiService _singleton = ApiService._internal();
@@ -134,6 +135,8 @@ class ApiService {
       throw Exception('Failed to load current user: $e');
     }
   }
+
+  
 
   //
   //   Future<void> fetchUser() async {
@@ -540,4 +543,29 @@ class ApiService {
       rethrow;
     }
   } 
+  Future<List<ReportModel>> fetchReports(int id, int gradeId) async {
+    final uri = Uri.parse('$baseUrl/grades/1/student-report/?id=$id&grade_id=$gradeId');
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final response = await http.get(
+      uri,
+      headers:headers
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      
+      if (jsonData['status'] == 'success' && jsonData.containsKey('data')) {
+        final List<dynamic> data = jsonData['data'];
+        return data.map((item) => ReportModel.fromJson(item)).toList();
+      } else {
+        throw Exception('Data field is missing or invalid');
+      }
+    } else {
+      throw Exception('Server error: ${response.statusCode}');
+    }
+  }
 }

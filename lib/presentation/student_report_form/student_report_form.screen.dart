@@ -202,7 +202,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                 return Center(child: CircularProgressIndicator());
               }
               if (controller.students.isEmpty) {
-                return Center(child: Text("No students found"));
+                return Center(child: Text("Tidak ada murid"));
               }
               return Wrap(
                 spacing: 10,
