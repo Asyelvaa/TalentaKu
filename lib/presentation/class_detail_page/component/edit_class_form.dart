@@ -9,44 +9,10 @@ import '../../global_component/text_background.dart';
 import 'profile_name_avatar.dart';
 
 class EditClassBottomSheet extends GetView<ClassDetailController> {
-  const EditClassBottomSheet({Key? key, required this.grade}) : super(key: key);
-  final GradeModel grade;
+  const EditClassBottomSheet({Key? key, }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   decoration: BoxDecoration(
-    //     color: AppColor.white,
-    //   ),
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Text('Nama Kelas: ${grade.name}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 8),
-    //       Text('Kode Kelas: ${grade.uniqueCode}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 8),
-    //       Text('Deskripsi: ${grade.desc}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 8),
-    //       Text('Level: ${grade.level}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 8),
-    //       Text('Pengajar: ${grade.teacherId}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 8),
-    //       Text('Status Aktif: ${grade.isactive}', style: AppTextStyle.tsNormal),
-    //       SizedBox(height: 16),
-    //       Text('Anggota Kelas:', style: AppTextStyle.tsNormal),
-    //       ListView.builder(
-    //         shrinkWrap: true,
-    //         itemCount: grade.member.length,
-    //         itemBuilder: (context, index) {
-    //           final member = grade.member[index];
-    //           return ProfileNameAvatar(
-    //             name: member.name,
-    //             profile: member.photo,
-    //           );
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
+    final grade = controller.grade.value;
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       padding: EdgeInsets.all(20),
@@ -78,6 +44,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
               scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -92,6 +59,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               colorBackground: AppColor.blue200, 
                               text: grade.uniqueCode
                               ),
+                              SizedBox(width: 4,),
                             Icon(
                               Icons.copy_rounded,
                               size: 20,
@@ -99,49 +67,55 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                           ],
                         ),
                         Text('Nama Kelas', style: AppTextStyle.tsNormal),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: TextField(
-                            // controller: controller.classNameController,
-                            decoration: InputDecoration(
-                              hintText: grade.name,
-                              hintStyle: AppTextStyle.tsNormal,
-                              border: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: AppColor.blue200),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppColor.blue600, width: 1),
-                              ),
+                        TextField(
+                          controller: controller.classNameController,
+                          decoration: InputDecoration(
+                            hintText: grade.name,
+                            hintStyle: AppTextStyle.tsNormal,
+                            border: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColor.blue200),
                             ),
-                          ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColor.blue600, width: 1),
+                            ),
+                          ),                  
                         ),
                         Text('Deskripsi Kelas', style: AppTextStyle.tsNormal),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: TextField(
-                            // controller: controller.classDescController,
-                            decoration: InputDecoration(
-                              hintText: grade.desc,
-                              hintStyle: AppTextStyle.tsNormal,
-                              border: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: AppColor.blue200),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppColor.blue600, width: 1),
-                              ),
+                        TextField(
+                          controller: controller.classDescController,
+                          decoration: InputDecoration(
+                            hintText: grade.desc,
+                            hintStyle: AppTextStyle.tsNormal,
+                            border: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColor.blue200),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColor.blue600, width: 1),
                             ),
                           ),
                         ),
+                        Text('Level Kelas', style: AppTextStyle.tsNormal),
+                        TextField(
+                          controller: controller.classLevelController,
+                          decoration: InputDecoration(
+                            hintText: grade.level.toString(),
+                            hintStyle: AppTextStyle.tsNormal,
+                            border: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColor.blue200),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColor.blue600, width: 1),
+                            ),
+                          ),
+                        ),                        
                         Row(children: [
-                          Text('Level',style: AppTextStyle.tsNormal),
-                          Text('${grade.level}' ,style: AppTextStyle.tsNormal),
-                        ],),
-                        Row(children: [
-                          Text('Guru Kelas',style: AppTextStyle.tsNormal),
+                          Text('Guru Kelas : ',style: AppTextStyle.tsNormal),
                           Text('${grade.teacherId}' ,style: AppTextStyle.tsNormal),
                         ],),
                         Text('Anggota Kelas', style: AppTextStyle.tsNormal),
@@ -150,9 +124,12 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                           itemCount: grade.member.length,
                           itemBuilder: (context, index) {
                             final member = grade.member[index];
-                            return ProfileNameAvatar(
-                              name: member.name,
-                              profile: member.photo,
+                            return ListTile(
+                              title: Text(member.name, style: AppTextStyle.tsLittle,),
+                              leading: CircleAvatar(
+                                backgroundColor: AppColor.blue100,
+                                child: Text(member.name[0]),
+                              ),
                             );
                           },
                         ),
@@ -161,9 +138,8 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Archive Class',
+                              Text('Active Class',
                                   style: AppTextStyle.tsNormal),
-                              Text(grade.isactive),
                               Switch(
                                 value: grade.isactive == "active",
                                 onChanged: (value) {
@@ -202,7 +178,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Get.back();
+                  // controller.updateGradeDetails();
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.blue600,

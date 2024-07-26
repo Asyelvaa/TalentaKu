@@ -15,7 +15,7 @@ class ClassController extends GetxController {
   final classCodeController = TextEditingController(); 
   var isLoading = false.obs;
 
-  RxList<GradeModel> gradesList = <GradeModel>[].obs;
+  // RxList<GradeModel> gradesList = <GradeModel>[].obs;
   RxString message = ''.obs;
   Rx<UserModel> currentUser = UserModel(
     id: 0,
@@ -30,6 +30,7 @@ class ClassController extends GetxController {
   ).obs;
 
    var userRole = <String>[].obs; 
+   var gradeList = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
@@ -100,29 +101,48 @@ class ClassController extends GetxController {
   // }
 
   Future<void> fetchGrades() async {
+     var grades;
     try {
-      List<GradeModel> grades = await apiService.getGradesTeacher();
-      gradesList.assignAll(grades);
-      print('Grades: $grades');
-
-      if (currentUser.value.id != 0) {
-      List<GradeModel> updatedGrades = [];
-      for (var grade in currentUser.value.grades) {
-        final matchedGrade = gradesList.firstWhere(
-          (element) => element.id == grade.id,
-          orElse: () => grade,
-        );
-        updatedGrades.add(matchedGrade);
+      isLoading(true);
+      fetchCurrentUser();
+       if (userRole.any((role) => role.contains('Guru'))) {
+        grades = await ApiService().getGradesTeacher();
+      } else if (userRole.any((role) => role.contains('Murid'))) {
+        grades = await ApiService().getGradesStudent();
       }
-      currentUser.update((val) {
-        val?.grades = updatedGrades;
-      });
-    }
-
-    } catch (e) {
-      print('Error fetching grades: $e');
+      
+      if (grades != null) {
+        gradeList.assignAll(grades);
+      }
+    } finally {
+      isLoading(false);
     }
   }
+
+  // Future<void> fetchGrades() async {
+  //   try {
+  //     List<GradeModel> grades = await apiService.getGradesTeacher();
+  //     gradesList.assignAll(grades);
+  //     print('Grades: $grades');
+
+  //     if (currentUser.value.id != 0) {
+  //     List<GradeModel> updatedGrades = [];
+  //     for (var grade in currentUser.value.grades) {
+  //       final matchedGrade = gradesList.firstWhere(
+  //         (element) => element.id == grade.id,
+  //         orElse: () => grade,
+  //       );
+  //       updatedGrades.add(matchedGrade);
+  //     }
+  //     currentUser.update((val) {
+  //       val?.grades = updatedGrades;
+  //     });
+  //   }
+
+  //   } catch (e) {
+  //     print('Error fetching grades: $e');
+  //   }
+  // }
 
   Future<void> createNewClass() async {
     final name = classNameController.text;

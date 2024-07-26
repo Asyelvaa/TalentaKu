@@ -10,7 +10,7 @@ import '../../../infrastructure/theme/theme.dart';
 
 class ClassAppbar extends GetView<ClassDetailController> {
   final String titleAppbar;
-  final GradeModel grade;
+  final Map<String, dynamic> grade;
   const ClassAppbar({
     super.key,
     required this.titleAppbar,
@@ -36,10 +36,10 @@ class ClassAppbar extends GetView<ClassDetailController> {
               case 0 : Get.toNamed('/student-report-form'); break;
               case 1 : 
               Get.bottomSheet(
-                EditClassBottomSheet(grade: grade),
+                EditClassBottomSheet(),
                 isScrollControlled: true,
               );
-              case 2 : Get.toNamed('/add-member-class'); break;
+              // case 2 : Get.toNamed('/add-member-class'); break;
             }
           },
           itemBuilder: (context) => [
@@ -51,10 +51,10 @@ class ClassAppbar extends GetView<ClassDetailController> {
               value: 1,
               child: Text('Edit Class'),
             ),
-            PopupMenuItem(
-              value: 2,
-              child: Text('Tambah Siswa'),
-            ),
+            // PopupMenuItem(
+            //   value: 2,
+            //   child: Text('Tambah Siswa'),
+            // ),
           ]
         )
       ],

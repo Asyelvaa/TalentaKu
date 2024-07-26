@@ -13,6 +13,7 @@ class ProfilePageController extends GetxController {
   final userData = {}.obs;
   final role = [].obs;
   // final grade = [].obs;
+  var userRole = <String>[].obs; 
 
   final username = GetStorage().read('dataUser')?['username'];
   final roles = GetStorage().read('dataUser')?['role'];
@@ -23,6 +24,7 @@ class ProfilePageController extends GetxController {
     // getUserData();
     // loadUserData();
     super.onInit();
+    fetchCurrentUser();
   }
 
   // Future<void> getUserData() async  {
@@ -36,6 +38,13 @@ class ProfilePageController extends GetxController {
   //   }
   // } 
   
+  void fetchCurrentUser() {
+    final box = GetStorage();
+    Map<String, dynamic>? dataUser = box.read('dataUser');
+    if (dataUser != null) {
+      userRole.value = List<String>.from(dataUser['role']);
+    }
+  }
 
   Future<void> fetchUser() async {
     try {

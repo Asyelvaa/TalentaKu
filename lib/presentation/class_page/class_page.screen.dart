@@ -22,7 +22,7 @@ class ClassScreen extends StatelessWidget {
         child: DefaultAppbar(),
       ),
       body: Obx(() {
-        if (controller.gradesList.isEmpty) {
+        if (controller.gradeList.isEmpty) {
           return Container(
             height: heightScreen,
             padding: const EdgeInsets.symmetric(horizontal: 20),

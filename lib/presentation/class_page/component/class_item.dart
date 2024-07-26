@@ -14,13 +14,13 @@ class ClassItem extends GetView<ClassController> {
 
   Widget build(BuildContext context) { 
      return Obx(() {
-      final RxList<GradeModel> classItems = controller.gradesList; 
+      final RxList<Map<String,dynamic>> classItems = controller.gradeList; 
       return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: classItems.length,
       itemBuilder: (context, index) {
-        final GradeModel classItem = classItems[index];
+        final Map<String,dynamic> classItem = classItems[index];
         return InkWell(
           onTap: () => Get.toNamed(
               Routes.CLASS_DETAIL,
@@ -36,7 +36,7 @@ class ClassItem extends GetView<ClassController> {
                 color: AppColor.blue100,
                 width: 1
               ),
-              color: classItem.isactive.toLowerCase() == '1' ? AppColor.blue200 : Colors.grey[200],
+              color: classItem['isactive'].toLowerCase() == '1' ? AppColor.blue200 : Colors.grey[200],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,10 +44,10 @@ class ClassItem extends GetView<ClassController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text( classItem.name, style: AppTextStyle.tsNormal,),
-                    Text( classItem.desc,style: AppTextStyle.tsLittle,),
+                    Text( classItem['name'], style: AppTextStyle.tsNormal,),
+                    Text( classItem['desc'],style: AppTextStyle.tsLittle,),
                     Text(
-                      classItem.isactive.toLowerCase() == '1' ? '' : 'Archived Class',
+                      classItem['isactive'].toLowerCase() == '1' ? '' : 'Archived Class',
                       style: AppTextStyle.tsLittle,
                     )
                   ],

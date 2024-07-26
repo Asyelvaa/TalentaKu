@@ -13,7 +13,7 @@ class GradeModel {
   String isactive;
 
   GradeModel({
-    required this.name,
+    required this.name, 
     required this.desc,
     required this.level,
     required this.uniqueCode,
@@ -29,9 +29,9 @@ class GradeModel {
     return GradeModel(
       name: json['name'] ?? '',
       desc: json['desc'] ?? '',
-      level: json['level'] ?? '',
+      level: json['level']['id'] ?? 0,
       uniqueCode: json['unique_code'] ?? '',
-      teacherId: json['teacher_id'] ?? 0,
+      teacherId: json['teacher']['id'] ?? 0,
       updatedAt: json['updated_at'] ?? '',
       createdAt: json['created_at'] ?? '',
       id: json['id'] ?? 0,

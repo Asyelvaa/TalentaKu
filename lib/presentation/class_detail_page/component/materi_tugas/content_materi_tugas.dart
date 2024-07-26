@@ -20,7 +20,7 @@ class ContentMateriTugas extends GetView<ClassDetailController> {
               onTap: () => Get.to(() => AssignemntFormPageScreen(), 
               arguments: {
                 'task' : null,
-                'gradeId': controller.classItem.id.toString()}
+                'gradeId': controller.classItem['id'].toString()}
                 ),
               // arguments: AssignmentArguments(gradeId: controller.classItem.id.toString()),),
               child: Padding(
@@ -60,7 +60,7 @@ class ContentMateriTugas extends GetView<ClassDetailController> {
                           title: task.title,
                           tenggat: 'Tenggat: ${task.endDate}',
                           task: task,
-                          gradeId: controller.classItem.id.toString(),
+                          gradeId: controller.classItem['id'].toString(),
                         );
                       },
                       childCount: controller.tasks.length,
