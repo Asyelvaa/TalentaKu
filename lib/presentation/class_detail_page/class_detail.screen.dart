@@ -17,7 +17,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
 
     // final args = Get.arguments as ClassDetailArguments;
-    final classItem = Get.arguments as GradeModel;
+    final classItem = Get.arguments as Map<String,dynamic>;
 
     return  DefaultTabController(
       length: 3,
@@ -26,7 +26,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: ClassAppbar(
-            titleAppbar: classItem.name,
+            titleAppbar: classItem['name'],
             grade: classItem,
           ),
         ),

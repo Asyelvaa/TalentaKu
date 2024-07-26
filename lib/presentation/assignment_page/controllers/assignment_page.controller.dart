@@ -25,6 +25,8 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   late final String gradeId;
   late Task? task;
 
+  final score = ''.obs;
+
   @override
   void onInit() {
     super.onInit();

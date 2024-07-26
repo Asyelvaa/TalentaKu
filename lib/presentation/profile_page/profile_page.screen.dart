@@ -12,6 +12,7 @@ import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
+import '../student_report_page/report_list_page.dart';
 
 class ProfilePageScreen extends GetView<ProfilePageController> {
   const ProfilePageScreen({super.key});
@@ -206,14 +207,16 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     )),
               defaultHeightSpace,
               // LAPORAN PEMBELAJARAN
-              IconButtonTemplate(
+              if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) 
+                IconButtonTemplate(
                 text: "Laporan Pembelajaran",
                 icon: Icons.arrow_forward,
                 colorButton: AppColor.blue600,
                 onPressed: () {
-                  Get.toNamed(Routes.DAILY_REPORT);
+                  Get.to(() => ReportListPage());
+                  // Get.toNamed(Routes.DAILY_REPORT);
                 },
-              ),
+              ),              
               defaultHeightSpace,
               // LOGOUT
               IconButtonTemplate(

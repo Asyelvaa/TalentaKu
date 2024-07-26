@@ -3,6 +3,7 @@ import 'package:flutter_talentaku/presentation/class_detail_page/component/profi
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
+import '../controllers/class_detail.controller.dart';
 
 class HeaderClass extends StatelessWidget {
   const HeaderClass({
@@ -11,21 +12,10 @@ class HeaderClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ClassDetailController());
 
-    List<Map<String, dynamic>> _profileData = [];
-    _profileData = [
-      {
-        'name': 'Anita Fauzah',
-        'profileImageUrl': 'assets/images/student.png',
-      },
-      {
-        'name': 'Dimas Prayoga',
-        'profileImageUrl': 'assets/images/student.png',
-      },
-      
-    ];
     return Container(
-      height: 90,
+      height: 100,
       width: widthScreen,
       decoration: BoxDecoration(
           color: AppColor.blue600,
@@ -33,19 +23,21 @@ class HeaderClass extends StatelessWidget {
               bottomLeft: Radius.circular(24),
               bottomRight: Radius.circular(24))),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _profileData.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            final profile = _profileData[index];
-            return ProfileNameAvatar(
-              name: profile['name'],
-              profile: profile['profileImageUrl'],
-            );
-          },
-        ),
+        padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+        child: Obx(() {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.classMembers.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final profile = controller.classMembers[index];
+              return ProfileNameAvatar(
+                name: profile.name,
+                profile: profile.photo,
+              );
+            },
+          );
+        }),
       ),
     );
   }

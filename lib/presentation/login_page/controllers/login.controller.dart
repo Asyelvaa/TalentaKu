@@ -45,6 +45,7 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
+    print({email, password});
 
     try {
       final response = await apiService.login(email, password);
@@ -68,6 +69,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       dialogError('Pengguna tidak terdaftar');
+      print(e);
     } finally {
       isLoading.value = false;
     }

@@ -114,14 +114,14 @@ class ContentTugas extends GetView<AssignmentPageController> {
         //     ),
         //   ),
         // ),
-        Divider(),
-        Row(
-          children: [
-            Icon(Icons.people, size: 24,),
-            defaultWidthtSpace,
-            Text('Komentas Kelas', style: AppTextStyle.tsLittle)
-          ],
-        )
+        // Divider(),
+        // Row(
+        //   children: [
+        //     Icon(Icons.people, size: 24,),
+        //     defaultWidthtSpace,
+        //     Text('Komentas Kelas', style: AppTextStyle.tsLittle)
+        //   ],
+        // )
       ],
     );
   }

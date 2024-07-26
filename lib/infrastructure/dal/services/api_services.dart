@@ -37,7 +37,9 @@ class ApiService {
           'password': password,
         }),
       );
-
+      print(response.statusCode);
+      print(response.body);
+      print({email, password});
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -163,7 +165,7 @@ class ApiService {
   //   }
   // }
 
-  Future<List<GradeModel>> getGradesTeacher() async {
+  Future<List<Map<String, dynamic>>> getGradesTeacher() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -180,15 +182,40 @@ class ApiService {
       print(token);
 
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(response.body)['grades'];
-        List<GradeModel> grades =
-            data.map((json) => GradeModel.fromJson(json)).toList();
-        return grades;
+        List<dynamic> data = json.decode(response.body)['grades'];
+      return List<Map<String, dynamic>>.from(data);
+        // List<dynamic> data = jsonDecode(response.body)['grades'];
+        // List<GradeModel> grades =
+        //     data.map((json) => GradeModel.fromJson(json)).toList();
+        // return grades;
       } else {
         throw Exception('Failed to load grades: ${response.statusCode}');
       }
     } catch (e) {
       print('Error loading grades: $e');
+      throw Exception('Failed to load grades: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGradesStudent() async {
+    try {
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/grades/student'),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body)['grades'];
+        return List<Map<String, dynamic>>.from(data);
+      } else {
+        throw Exception('Failed to load grades: ${response.statusCode}');
+      }
+    } catch (e) {
       throw Exception('Failed to load grades: $e');
     }
   }
@@ -256,7 +283,7 @@ class ApiService {
     }
   }
 
-  Future<GradeModel> getDetailClass(int id) async {
+  Future<GradeModel> getDetailClass(String id) async {
     try {
       final token = box.read('token');
       var headers = {
@@ -273,9 +300,12 @@ class ApiService {
       print(token);
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body)['grades'];
-        GradeModel grade = GradeModel.fromJson(data);
-        return grade;
+        final jsonResponse = jsonDecode(response.body);
+        final data = jsonResponse['data'];
+      return GradeModel.fromJson(data);
+        // Map<String, dynamic> data = jsonDecode(response.body)['grades'];
+        // GradeModel grade = GradeModel.fromJson(data);
+        // return grade;
       } else {
         throw Exception('Failed to load grades: ${response.statusCode}');
       }
