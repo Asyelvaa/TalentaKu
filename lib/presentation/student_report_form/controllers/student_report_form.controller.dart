@@ -114,8 +114,8 @@ class StudentReportFormController extends GetxController {
     required int studentId,
   }) async {
     try {
-      final url = 'https://talentaku.site/api/grades/3/student-report';
-      final token = box.read('token');
+      final url = 'https://talentaku.site/api/grades/1/student-report/?id=1&grade_id=1';
+      final token = box.read('token');  
 
       var headers = {
         'Accept': 'application/json',
@@ -163,7 +163,7 @@ class StudentReportFormController extends GetxController {
       if (response.statusCode == 201) {
         Get.snackbar('Success', 'Report has been submitted',
             backgroundColor: AppColor.blue100);
-        Get.offAllNamed(Routes.HOME_PAGE);
+        Get.offAllNamed(Routes.NAVBAR);
         print(formData);
       } else {
         Get.snackbar('Error', 'Failed to submit report: ${response.statusCode}',
