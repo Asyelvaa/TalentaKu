@@ -24,7 +24,7 @@ class FormSection extends StatelessWidget {
       String? selectedOption = controller.selectedOptions[sectionTitle];
 
       return Container(
-        height: 200,
+        height: 180,
         width: 325,
         decoration: BoxDecoration(
           border: Border.all(width: 1.5, color: AppColor.blue500),
