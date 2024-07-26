@@ -462,12 +462,19 @@ class ApiService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    final response = await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks'));
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    final response = await http.get(
+      Uri.parse('$baseUrl/grades/$gradeId/tasks'),
+      headers: headers
+    );
+   
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((task) => Task.fromJson(task)).toList();
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (jsonResponse.containsKey('data')) {
+        List tasksData = jsonResponse['data'];
+        return tasksData.map((task) => Task.fromJson(task)).toList();
+      } else {
+        throw Exception('Invalid response format: "data" key not found');
+      }
     } else {
       throw Exception('Failed to load class:${response.statusCode}');
     }

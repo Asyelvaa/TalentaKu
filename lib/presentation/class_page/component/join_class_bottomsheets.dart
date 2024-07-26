@@ -109,9 +109,7 @@ class JoinClassBottomsheets extends GetView<ClassController> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                    controller.joinNewClass(
-                      controller.classCodeController.text
-                    );
+                    controller.joinNewClass();
                     Get.back();
                     },
                     style: ElevatedButton.styleFrom(
