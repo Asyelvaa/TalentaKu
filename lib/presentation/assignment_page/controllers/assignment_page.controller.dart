@@ -20,17 +20,20 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   var isLinkInputVisible = false.obs;
 
   RxList<Task> taskList = <Task>[].obs;
- 
+  
   late TabController tabController;
   late final String gradeId;
+  late Task? task;
 
   @override
   void onInit() {
     super.onInit();
     fetchCurrentUser();
-    gradeId = Get.arguments as String;
-    print(gradeId);
+    final arguments = Get.arguments as Map<String, dynamic>;
+    task = arguments['task'] as Task?;
+    gradeId = arguments['gradeId'] as String;
     tabController = TabController(length: 2, vsync: this);
+    fetchTasks();
   }
 
   void fetchCurrentUser() {
@@ -47,6 +50,14 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
       selectedFiles.add(File(pickedFile.path));
     }
   }
+
+   
+  // void selectImage() async {
+  //   final List<XFile>? selectedImage = await _picker.pickMultiImage();
+  //   if (selectedImage != null) {
+  //     imageFileList.addAll(selectedImage);
+  //   } 
+  // }
 
   void addLink() {
     isLinkInputVisible.value = true;
@@ -72,13 +83,6 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
       }
     });
   }
- 
-  // void selectImage() async {
-  //   final List<XFile>? selectedImage = await _picker.pickMultiImage();
-  //   if (selectedImage != null) {
-  //     imageFileList.addAll(selectedImage);
-  //   } 
-  // }
 
   Future<void> createTask() async {
     fetchCurrentUser();
@@ -103,6 +107,11 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
       await ApiService().createTask(fields, selectedFiles, links, gradeId); 
       print('success');
       Get.snackbar('Success', 'Task created successfully');
+      titleController.clear();
+      descController.clear();
+      selectedDate.value = null;
+      Get.back();
+      await fetchTasks();
     } catch(e) {
       print('failed');
       Get.snackbar('Failed', 'Failed to create task: $e');

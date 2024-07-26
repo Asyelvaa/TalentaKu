@@ -2,23 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../domain/models/task_model.dart';
 import '../../../../infrastructure/theme/theme.dart';
 import '../../../assignment_page/assignment_page.screen.dart';
+import '../../controllers/class_detail.controller.dart';
 
-class MateriItem extends StatelessWidget {
+class MateriItem extends GetView<ClassDetailController> {
   final String title;
   final String tenggat;
+  final Task task;
+  final String gradeId;
   const MateriItem({
     super.key,
     required this.title,
-    required this.tenggat
+    required this.tenggat,
+    required this.task,
+    required this.gradeId
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(AssignmentPageScreen());
+        Get.to(() => AssignmentPageScreen(), 
+        arguments: {
+          'task': task,
+          'gradeId' : gradeId
+        });
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 12),

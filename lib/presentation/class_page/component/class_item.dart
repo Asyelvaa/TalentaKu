@@ -5,7 +5,6 @@ import '../../../domain/models/class_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
-import '../../class_detail_page/controllers/class_detail_arguments.dart';
 import '../controllers/class_page.controller.dart';
 
 class ClassItem extends GetView<ClassController> {

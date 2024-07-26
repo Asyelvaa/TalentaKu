@@ -1,15 +1,16 @@
 import 'package:flutter_talentaku/domain/models/class_model.dart';
+import 'package:flutter_talentaku/domain/models/member_class_model.dart';
 import 'package:flutter_talentaku/domain/models/task_model.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/models/album_model.dart';
-import 'class_detail_arguments.dart';
 
 class ClassDetailController extends GetxController {
 
   final ApiService apiService = ApiService();
 
+  RxList<MemberClassModel> classMembers = <MemberClassModel>[].obs;
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> tasks = <Task>[].obs;
   var isLoading = true.obs;
@@ -31,19 +32,19 @@ class ClassDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Retrieve arguments
-    // final arguments = Get.arguments as ClassDetailArguments;
     classItem = Get.arguments as GradeModel;
 
     fetchAlbums();
-    // fetchTasks();
+    fetchGradeDetails();
+    fetchTasks();
   }
 
-  void fetchGradeDetails() async {
+  Future<void> fetchGradeDetails() async {
     try {
-      GradeModel fetchDetailClass = await apiService.getDetailClass(grade.value.id);
-      print('Detail class: $fetchDetailClass' );
-      
+      GradeModel gradeDetail = await apiService.getDetailClass(grade.value.id);
+      print('Detail class: $gradeDetail' );
+      classMembers.assignAll(gradeDetail.member);
+      print(classMembers);
     } catch (e) {
       print('Error fetching grade details: $e');
     }
@@ -75,17 +76,18 @@ class ClassDetailController extends GetxController {
     }
   }
 
-  // void fetchTasks() async {
-  //   try {
-  //     isLoading(true);
-  //     var fetchedTasks = await ApiService().fetchTask(classItem.id.toString());
-  //     if (fetchedTasks != null) {
-  //       tasks.assignAll(fetchedTasks);
-  //     } else {
-  //       tasks.clear();
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
+  void fetchTasks() async {
+    try {
+      isLoading(true);
+      var fetchedTasks = await ApiService().fetchTask(classItem.id.toString());
+      print(fetchedTasks);
+      if (fetchedTasks != null) {
+        tasks.assignAll(fetchedTasks);
+      } else {
+        tasks.clear();
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
 }

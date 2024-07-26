@@ -147,8 +147,13 @@ class ClassController extends GetxController {
     }
   }
 
-  // GABISA BEJIR
-  Future<void> joinNewClass(String uniqueCode) async {
+  Future<void> joinNewClass() async {
+    final uniqueCode = classCodeController.text;
+    if (uniqueCode.isEmpty) {
+      print('Unique code is required');
+      return;
+    }
+
     isLoading.value = true;
     try {
       final result = await apiService.joinClass(uniqueCode);

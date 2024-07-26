@@ -8,15 +8,17 @@ import 'component/content_nilai.dart';
 import 'component/content_tugas.dart';
 import 'controllers/assignment_page.controller.dart';
 
-class AssignmentPageScreen extends GetView<AssignmentPageController> {
+class AssignmentPageScreen extends StatelessWidget {
   const AssignmentPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AssignmentPageController());
+    var task = controller.task!;
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
-            child: BackAppbar(titleAppbar: 'Judul Tugas')),
+            child: BackAppbar(titleAppbar: task.title)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(

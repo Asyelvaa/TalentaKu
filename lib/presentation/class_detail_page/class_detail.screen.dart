@@ -4,7 +4,6 @@ import 'package:flutter_talentaku/presentation/class_detail_page/component/class
 import 'package:get/get.dart';
 
 import '../../domain/models/class_model.dart';
-import 'controllers/class_detail_arguments.dart';
 import 'component/album/content_album.dart';
 import 'component/beranda/content_beranda.dart';
 import 'component/header_class.dart';
