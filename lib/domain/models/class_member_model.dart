@@ -1,16 +1,16 @@
-class MemberClassModel {
+class ClassMemberModel {
   int id;
   String name;
   String photo;
 
-  MemberClassModel({
+  ClassMemberModel({
     required this.id,
     required this.name,
     required this.photo,
     
   });
-  factory MemberClassModel.fromJson(Map<String, dynamic> json) {
-    return MemberClassModel(
+  factory ClassMemberModel.fromJson(Map<String, dynamic> json) {
+    return ClassMemberModel(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',

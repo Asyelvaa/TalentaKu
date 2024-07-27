@@ -1,0 +1,206 @@
+import 'dart:convert';
+
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../domain/models/class_model.dart';
+
+class ApiServiceClass {
+  static final ApiServiceClass _singleton = ApiServiceClass._internal();
+  static const String baseUrl = 'https://talentaku.site/api';
+
+  factory ApiServiceClass() {
+    return _singleton;
+  }
+
+  ApiServiceClass._internal();
+  final box = GetStorage();
+
+  Future<Map<String, dynamic>> createClass(
+    String name, 
+    String desc, 
+    int levelId
+    ) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', 
+    };
+    final body = jsonEncode({
+      'name': name,
+      'desc': desc,
+      'level_id': levelId,
+    });
+
+    try {
+      var response = await http.post(Uri.parse(url),headers: headers,body: body);
+
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to create class: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error creating class: $e');
+      throw Exception('Failed to create class: $e');
+    }
+  }
+
+  Future<void> joinClass(String uniqueCode) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/join";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    final body = jsonEncode({
+      'unique_code': uniqueCode
+    });
+    try {
+      var response = await http.post(Uri.parse(url),headers: headers,body: body);
+      
+      if (response.statusCode == 201) {
+        print('Joined class successfully');
+      } else {
+        throw Exception('Failed to join class:${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error creating class: $e');
+      throw Exception('Failed to join class: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> updateClass(
+    String name, 
+    String desc, 
+    int levelId
+    ) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', 
+    };
+    final body = jsonEncode({
+      'name': name,
+      'desc': desc,
+      'level_id': levelId,
+    });
+
+    try {
+      var response = await http.post(Uri.parse(url),headers: headers,body: body);
+
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to update class: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error creating class: $e');
+      throw Exception('Failed to update class: $e');
+    }
+  }
+
+  Future<void> classStatus(int gradeId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/toggle-active";
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', 
+    };
+
+    try {
+      var response = await http.post(Uri.parse(url),headers: headers,);
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data['status'] == 'success') {
+          if (data['data']['isactive']) {
+            print('Grade has been successfully activated.');
+          } else {
+            print('Grade has been successfully deactivated.');
+          }
+        } else {
+          print('Failed: ${data['message']}');
+        }
+      } else {
+        print('Failed: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<GradeModel> getDetailClass(int gradeId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      var response = await http.get(Uri.parse(url),headers: headers,);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final data = jsonResponse['data'];
+        return GradeModel.fromJson(data);
+      } else {
+        throw Exception('Failed to load grades: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading grades: $e');
+      throw Exception('Failed to load grades: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGradesTeacher() async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/teacher";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      var response = await http.get(Uri.parse(url),headers: headers,);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body)['grades'];
+        return List<Map<String, dynamic>>.from(data);
+      } else {
+        throw Exception('Failed to load grades: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading grades: $e');
+      throw Exception('Failed to load grades: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGradesStudent() async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/student";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      var response = await http.get(Uri.parse(url),headers: headers,);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body)['grades'];
+        return List<Map<String, dynamic>>.from(data);
+      } else {
+        throw Exception('Failed to load grades: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading grades: $e');
+      throw Exception('Failed to load grades: $e');
+    }
+  }
+
+  // DELETE MEMBER
+}

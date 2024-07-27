@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/domain/models/class_model.dart';
-import 'package:flutter_talentaku/domain/models/member_class_model.dart';
+import 'package:flutter_talentaku/domain/models/class_member_model.dart';
 import 'package:flutter_talentaku/domain/models/task_model.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
 import 'package:get/get.dart';
