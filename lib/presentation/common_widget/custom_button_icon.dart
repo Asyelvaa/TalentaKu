@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/theme.dart';
 
-class IconButtonTemplate extends StatelessWidget {
+class CustomButtonWithIcon extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final IconData icon;
   final Color colorButton;
+  final Color colorText;
+  final Color colorIcon;
   final VoidCallback onPressed;
 
-  const IconButtonTemplate({
+  const CustomButtonWithIcon({
     Key? key,
     required this.text,
-    this.icon,
+    required this.icon,
     required this.colorButton,
+    required this.colorText,
+    required this.colorIcon,
     required this.onPressed,
   }) : super(key: key);
 
@@ -21,12 +25,13 @@ class IconButtonTemplate extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(colorButton),
-        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+        backgroundColor: WidgetStateProperty.all(colorButton),
+        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            
+            borderRadius: defaultBorderRadius,
           )
       )),
       child: Row(
@@ -34,11 +39,11 @@ class IconButtonTemplate extends StatelessWidget {
         children: [
           Text(
             text,
-            style: AppTextStyle.tsTitle.copyWith(color: AppColor.white),
+            style: AppTextStyle.tsTitleBold(colorText),
           ),
           Icon(
             icon,
-            color: Colors.white,
+            color: colorIcon,
           ),
         ],
       ),

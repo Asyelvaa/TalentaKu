@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_task.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/models/task_model.dart';
-import '../../../infrastructure/dal/services/api_services.dart';
 
 class AssignmentPageController extends GetxController  with GetSingleTickerProviderStateMixin {
 
@@ -106,7 +106,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     };
 
     try {
-      await ApiService().createTask(fields, selectedFiles, links, gradeId); 
+      await ApiServiceTask().createTask(fields, selectedFiles, links, gradeId); 
       print('success');
       Get.snackbar('Success', 'Task created successfully');
       titleController.clear();
@@ -122,7 +122,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
 
   Future<void> fetchTasks() async {
     try {
-      taskList.assignAll(await ApiService().fetchTask(gradeId));
+      taskList.assignAll(await ApiServiceTask().getAllTask(gradeId));
     } catch(e) {
       print('failed');
       Get.snackbar('Failed', 'Failed to fetch tasks: $e');

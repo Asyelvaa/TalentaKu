@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_album.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../infrastructure/dal/services/api_services.dart';
 
 
 class AlbumFormController extends GetxController {
 
-  final ApiService apiService = ApiService();
+  final ApiServiceAlbum apiService = ApiServiceAlbum();
   final ImagePicker _picker = ImagePicker();
 
   late final String gradeId;
@@ -81,7 +81,7 @@ class AlbumFormController extends GetxController {
       print('Selected Media: ${selectedMedia.map((file) => file.path).toList()}');
       print('Grade ID: $gradeId');
 
-      final response = await apiService.postAlbum(
+      final response = await apiService.createAlbum(
         desc: descriptionController.text,
         media: selectedMedia,
         gradeId: gradeId

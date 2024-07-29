@@ -1,4 +1,5 @@
-import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_class.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_report.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -49,7 +50,7 @@ class DailyReportController extends GetxController {
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      final reports = await ApiService().fetchReports(1, 1);
+      final reports = await ApiServiceReport().getAllReportStudent(1, 1);
       reportData.value = reports;
     } catch (e) {
       errorMessage.value = 'Error: $e';

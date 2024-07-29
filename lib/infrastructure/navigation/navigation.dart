@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
 
 import '../../config.dart';
-import '../../presentation/global_component/navigation_menu.dart';
+import '../../presentation/common_widget/navigation_menu.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';

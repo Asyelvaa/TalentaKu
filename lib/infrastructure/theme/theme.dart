@@ -29,6 +29,11 @@ figmaFontsize(int fontSize) {
 }
 
 SizedBox defaultHeightSpace = SizedBox(height: 24,);
+SizedBox spaceHeightLarge = SizedBox(height: 24);
+SizedBox spaceHeightNormal = SizedBox(height: 20);
+SizedBox spaceHeightSmall = SizedBox(height: 12);
+SizedBox spaceHeightExtraSmall = SizedBox(height: 8);
+
 SizedBox defaultWidthtSpace = SizedBox(width: 12,);
 BorderRadius defaultBorderRadius = BorderRadius.circular(12);
 
@@ -36,6 +41,37 @@ final widthScreen = Get.mediaQuery.size.width;
 final heightScreen = Get.mediaQuery.size.height;
 
 class AppTextStyle {
+  static TextStyle tsTitleBold(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(16),
+    fontWeight: FontWeight.bold,
+    color: color,
+  );}
+  static TextStyle tsBodyRegular(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(14),
+    fontWeight: FontWeight.normal,
+    color: color,
+  );}
+  static TextStyle tsBodyBold(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(14),
+    fontWeight: FontWeight.bold,
+    color: color,
+  );}
+  static TextStyle tsSmallRegular(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(12),
+    fontWeight: FontWeight.normal,
+    color: color,
+  );}
+  static TextStyle tsSmallBold(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(12),
+    fontWeight: FontWeight.bold,
+    color: color,
+  );}
+
   static TextStyle tsTitle = GoogleFonts.manrope(
     fontSize: figmaFontsize(16),
     fontWeight: FontWeight.bold,
@@ -54,5 +90,10 @@ class AppTextStyle {
     fontWeight: FontWeight.w800,
     color: AppColor.black
   );
+
+}
+
+class AppImage {
+  static const String logoTalentaku = 'assets/images/logo_talentaku.png';
 
 }

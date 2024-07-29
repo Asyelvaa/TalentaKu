@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'component/content_nilai.dart';
 import 'component/content_tugas.dart';
 import 'controllers/assignment_page.controller.dart';

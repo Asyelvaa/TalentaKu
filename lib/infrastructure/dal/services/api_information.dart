@@ -4,15 +4,15 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 
-class ApiServiceUser {
-  static final ApiServiceUser _singleton = ApiServiceUser._internal();
+class ApiServiceInformation {
+  static final ApiServiceInformation _singleton = ApiServiceInformation._internal();
   static const String baseUrl = 'https://talentaku.site/api';
 
-  factory ApiServiceUser() {
+  factory ApiServiceInformation() {
     return _singleton;
   }
 
-  ApiServiceUser._internal();
+  ApiServiceInformation._internal();
   final box = GetStorage();
 
   Future<Map<String, dynamic>> fetchProgram() async {

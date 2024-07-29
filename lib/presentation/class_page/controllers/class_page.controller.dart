@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_class.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/user_model.dart';
-import '../../../infrastructure/dal/services/api_services.dart';
 
 class ClassController extends GetxController {
-  final ApiService apiService = ApiService();
+  final ApiServiceClass apiService = ApiServiceClass();
   final classNameController = TextEditingController();
   final classDescController = TextEditingController(); 
   final classLevelController = TextEditingController(); 
@@ -106,9 +106,9 @@ class ClassController extends GetxController {
       isLoading(true);
       fetchCurrentUser();
        if (userRole.any((role) => role.contains('Guru'))) {
-        grades = await ApiService().getGradesTeacher();
+        grades = await apiService.getGradesTeacher();
       } else if (userRole.any((role) => role.contains('Murid'))) {
-        grades = await ApiService().getGradesStudent();
+        grades = await apiService.getGradesStudent();
       }
       
       if (grades != null) {

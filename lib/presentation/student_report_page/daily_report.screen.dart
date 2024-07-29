@@ -5,8 +5,8 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/presentation/student_report_page/component/report_item.dart';
 import 'package:flutter_talentaku/presentation/student_report_page/controllers/daily_report.controller.dart';
 
-import '../global_component/back_appbar.dart';
-import '../global_component/text_background.dart';
+import '../common_widget/back_appbar.dart';
+import '../common_widget/text_background.dart';
 
 class DailyReportScreen extends GetView<DailyReportController> {
   DailyReportScreen({Key? key}) : super(key: key);

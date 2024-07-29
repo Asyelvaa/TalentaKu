@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
-import 'package:flutter_talentaku/presentation/global_component/back_appbar.dart';
+import 'package:flutter_talentaku/presentation/common_widget/back_appbar.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

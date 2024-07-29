@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/global_component/text_background.dart';
+import 'package:flutter_talentaku/presentation/common_widget/text_background.dart';
 import 'package:flutter_talentaku/presentation/home_page/controllers/home_page.controller.dart';
 import 'package:get/get.dart';
 

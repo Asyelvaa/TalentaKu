@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/custom_textFormField.dart';
+import '../common_widget/custom_textFormField.dart';
 import 'controllers/login.controller.dart';
 
 class LoginScreen extends GetView<LoginController> {

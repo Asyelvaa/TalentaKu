@@ -6,15 +6,15 @@ import 'package:http/http.dart' as http;
 import '../../../presentation/student_report_page/model/reportModel.dart';
 
 
-class ApiServiceClass {
-  static final ApiServiceClass _singleton = ApiServiceClass._internal();
+class ApiServiceReport {
+  static final ApiServiceReport _singleton = ApiServiceReport._internal();
   static const String baseUrl = 'https://talentaku.site/api';
 
-  factory ApiServiceClass() {
+  factory ApiServiceReport() {
     return _singleton;
   }
 
-  ApiServiceClass._internal();
+  ApiServiceReport._internal();
   final box = GetStorage();
 
 

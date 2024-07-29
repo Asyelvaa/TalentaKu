@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/default_appbar.dart';
+import '../common_widget/default_appbar.dart';
 import 'Component/class_information.dart';
 import 'Component/home_kbsd_information.dart';
 import 'Component/home_rba_information.dart';

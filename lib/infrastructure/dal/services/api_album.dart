@@ -8,15 +8,15 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../../domain/models/album_model.dart';
 
-class ApiServiceClass {
-  static final ApiServiceClass _singleton = ApiServiceClass._internal();
+class ApiServiceAlbum {
+  static final ApiServiceAlbum _singleton = ApiServiceAlbum._internal();
   static const String baseUrl = 'https://talentaku.site/api';
 
-  factory ApiServiceClass() {
+  factory ApiServiceAlbum() {
     return _singleton;
   }
 
-  ApiServiceClass._internal();
+  ApiServiceAlbum._internal();
   final box = GetStorage();
 
   Future<Map<String, dynamic>> createAlbum({

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
-import '../global_component/text_background.dart';
+import '../common_widget/back_appbar.dart';
+import '../common_widget/text_background.dart';
 import 'component/score_box.dart';
 import 'controllers/assignment_page.controller.dart';
 

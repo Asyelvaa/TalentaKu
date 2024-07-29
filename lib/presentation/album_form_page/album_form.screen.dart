@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/album_form_page/component/upload_option_bottomsheet.dart';
-import 'package:flutter_talentaku/presentation/global_component/icon_button_template.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_button_icon.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'controllers/album_form.controller.dart';
 
 class AlbumFormScreen extends GetView<AlbumFormController> {

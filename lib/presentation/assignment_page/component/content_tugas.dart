@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
 
-import '../../global_component/text_background.dart';
+import '../../common_widget/text_background.dart';
 import '../controllers/assignment_page.controller.dart';
 
 class ContentTugas extends GetView<AssignmentPageController> {

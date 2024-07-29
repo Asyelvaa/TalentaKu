@@ -134,7 +134,7 @@ class ApiServiceClass {
     }
   }
 
-  Future<GradeModel> getDetailClass(int gradeId) async {
+  Future<GradeModel> getDetailClass(String gradeId) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId";
     final headers = {

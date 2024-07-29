@@ -5,7 +5,7 @@ import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'controllers/daily_report.controller.dart';
 
 class ReportListPage extends StatelessWidget {

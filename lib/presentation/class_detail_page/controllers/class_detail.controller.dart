@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/domain/models/class_model.dart';
 import 'package:flutter_talentaku/domain/models/class_member_model.dart';
 import 'package:flutter_talentaku/domain/models/task_model.dart';
-import 'package:flutter_talentaku/infrastructure/dal/services/api_services.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_album.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_class.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_task.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +17,9 @@ import '../../student_report_form/model/Student.dart';
 
 class ClassDetailController extends GetxController {
 
-  final ApiService apiService = ApiService();
+  final ApiServiceClass apiService = ApiServiceClass();
 
-  RxList<MemberClassModel> classMembers = <MemberClassModel>[].obs;
+  RxList<ClassMemberModel> classMembers = <ClassMemberModel>[].obs;
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> tasks = <Task>[].obs;
   var isLoading = true.obs;
@@ -80,7 +82,7 @@ class ClassDetailController extends GetxController {
   void fetchAlbums() async {
     try {
       isLoading(true);
-      var fetchedAlbums = await apiService.fetchAlbum(classItem['id']);
+      var fetchedAlbums = await ApiServiceAlbum().getAllAlbum(classItem['id']);
       albums.assignAll(fetchedAlbums);
       for (var album in albums) {
         print('Album: ${album.desc}');
@@ -99,7 +101,7 @@ class ClassDetailController extends GetxController {
   void fetchTasks() async {
     try {
       isLoading(true);
-      var fetchedTasks = await ApiService().fetchTask(classItem['id'].toString());
+      var fetchedTasks = await ApiServiceTask().getAllTask(classItem['id'].toString());
       print(fetchedTasks);
       if (fetchedTasks != null) {
         tasks.assignAll(fetchedTasks);

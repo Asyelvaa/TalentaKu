@@ -51,6 +51,7 @@ class ApiServiceUser {
       final response = await http.post(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         box.erase();
+        print('loging out user');
       } else {
         throw Exception("Failed to log out");
       }
