@@ -81,14 +81,9 @@ class ClassDetailController extends GetxController {
     try {
       isLoading(true);
       var fetchedAlbums = await ApiServiceAlbum().getAllAlbum(classItem['id']);
+      fetchedAlbums.sort((a, b) => b.date!.compareTo(a.date!));
       albums.assignAll(fetchedAlbums);
-      for (var album in albums) {
-        print('Album: ${album.desc}');
-        print('Album media: ');
-        for (var media in album.media) {
-          print('Media: ${media.filePath}');
-        }        
-      }
+      print(albums);
     } catch (e) {
       print('Error fetching albums: $e');
     } finally {

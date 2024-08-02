@@ -73,6 +73,7 @@ class ApiServiceAlbum {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
         if (jsonResponse['status'] == 'success') {
           List<dynamic> albumsJson = jsonResponse['data'];
           return albumsJson.map((albumJson) => Album.fromJson(albumJson)).toList();

@@ -5,6 +5,9 @@ import 'package:flutter_talentaku/infrastructure/dal/services/api_album.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../infrastructure/theme/theme.dart';
+import '../../class_detail_page/controllers/class_detail.controller.dart';
+
 
 class AlbumFormController extends GetxController {
 
@@ -73,8 +76,8 @@ class AlbumFormController extends GetxController {
     }
   }
 
-  Future<void> uploadAlbumPost(gradeId, void Function(bool) onResult) async {
-    bool success = false;
+  Future<void> uploadAlbumPost(gradeId) async {
+    final controller = Get.put(ClassDetailController());
     try {
       print('Starting uploadAlbumPost');
       print('Description: ${descriptionController.text}');
@@ -89,18 +92,44 @@ class AlbumFormController extends GetxController {
 
       print(response);
 
-      if (response['success']) {
+      if (response['message'] == 'success') {
+        controller.fetchAlbums();
+        Get.back();
         Get.snackbar('success', 'uploaded successfully');
-        success = true;
       } 
     } catch (e) {
       Get.snackbar('Error', 'Error uploading album post');
       print('Error uploading album post: $e');
     } finally {
       print('uploadAlbumPost finished');
-      onResult(success);
     }
   } 
+   void dialogSuccess(String message) {
+    Get.snackbar(
+      'Berhasil',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor:AppColor.blue100,
+      colorText: AppColor.black,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
+  }
+
+  void dialogError(String message) {
+    Get.snackbar(
+      'Gagal',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red[600],
+      colorText: Colors.white,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
+  }
+
 
 }
 

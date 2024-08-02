@@ -40,7 +40,7 @@ class HomePageController extends GetxController {
 
   Future<void> fetchProgram() async {
     isLoading.value = true;
-    final url = "https://talentaku.site/api/programs";
+    final url = "https://talentaku.site/api/programs/category/1";
     var headers = {
       'Accept': 'Application/json',
     };
@@ -49,7 +49,7 @@ class HomePageController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        final items = jsonData['programs'];
+        final items = jsonData['data'];
         contentTitles.clear();
         programs.clear();
         for (var item in items) {

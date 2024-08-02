@@ -50,7 +50,8 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
-
+    // print(email);
+    // print(password);
     try {
       final response = await apiService.login(email, password);
       if (response['success']) {
