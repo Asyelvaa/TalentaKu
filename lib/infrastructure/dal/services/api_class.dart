@@ -33,7 +33,7 @@ class ApiServiceClass {
       'desc': desc,
       'level_id': levelId,
     });
-
+    print(token);
     try {
       var response = await http.post(Uri.parse(url),headers: headers,body: body);
 
@@ -75,10 +75,11 @@ class ApiServiceClass {
   Future<Map<String, dynamic>> updateClass(
     String name, 
     String desc, 
-    int levelId
+    int levelId,
+    int gradeId
     ) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades";
+    final url = "$baseUrl/grades/$gradeId";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -134,7 +135,7 @@ class ApiServiceClass {
     }
   }
 
-  Future<GradeModel> getDetailClass(String gradeId) async {
+  Future<GradeModel> getDetailClass(int gradeId) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId";
     final headers = {
@@ -169,7 +170,7 @@ class ApiServiceClass {
       var response = await http.get(Uri.parse(url),headers: headers,);
 
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)['grades'];
+        List<dynamic> data = json.decode(response.body)['data'];
         return List<Map<String, dynamic>>.from(data);
       } else {
         throw Exception('Failed to load grades: ${response.statusCode}');
@@ -182,16 +183,17 @@ class ApiServiceClass {
 
   Future<List<Map<String, dynamic>>> getGradesStudent() async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/student";
+    final url = "$baseUrl/grades/member";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
     try {
       var response = await http.get(Uri.parse(url),headers: headers,);
-
+      print(response);
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)['grades'];
+        List<dynamic> data = json.decode(response.body)['data'];
         return List<Map<String, dynamic>>.from(data);
       } else {
         throw Exception('Failed to load grades: ${response.statusCode}');

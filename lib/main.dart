@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import 'infrastructure/navigation/navigation.dart';
@@ -8,7 +7,7 @@ import 'infrastructure/navigation/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var initialRoute = await Routes.initialRoute;
-  runApp(Main(initialRoute));
+  runApp(Main(initialRoute))
 }
 
 class Main extends StatelessWidget {

@@ -16,7 +16,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    autoLogin();
+    // autoLogin();
+    // login();
     super.onInit();
   }
   @override
@@ -28,7 +29,7 @@ class LoginController extends GetxController {
 
   Future<void> autoLogin() async {
     final box = GetStorage();
-    if(box.read("token") != null) {
+    if(box.read("token")) {
       final dataUser = box.read("dataUser") as Map<String, dynamic>;
       final token = dataUser["token"];
       if(token != null) {
@@ -53,15 +54,15 @@ class LoginController extends GetxController {
     try {
       final response = await apiService.login(email, password);
       if (response['success']) {
-        final data = response['data'];
+        final data = response['data'];  
         final token = response['token'];
         box.write(
           'dataUser', {
             'email': email,
             'password': password,
-            'username': data['user'],
+            'username': data['name'],
             'id' : data['id'],
-            'role': List<String>.from(data['role']),
+            'role': List<String>.from(data['roles']),
           }
         );
         box.write('token', token);

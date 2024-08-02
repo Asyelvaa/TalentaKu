@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../domain/models/class_model.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/default_appbar.dart';
 import 'component/button_class_form.dart';
@@ -18,11 +17,14 @@ class ClassScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background, 
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: Size.fromHeight(heightScreen * 0.075),
         child: DefaultAppbar(),
       ),
       body: Obx(() {
-        if (controller.gradeList.isEmpty) {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        } 
+        else if (controller.gradeList.isEmpty) {
           return Container(
             height: heightScreen,
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -33,7 +35,8 @@ class ClassScreen extends StatelessWidget {
                 defaultHeightSpace,
                 Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
                 Text('Anda Belum Bergabung \nDalam Kelas', 
-                  style: AppTextStyle.tsTitle.copyWith(color: AppColor.blue800), textAlign: TextAlign.center,
+                  style: AppTextStyle.tsTitleBold(AppColor.blue800),
+                  textAlign: TextAlign.center,
                 ),
                 defaultHeightSpace,
                 ButtonClassForm(),
@@ -49,8 +52,9 @@ class ClassScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                defaultHeightSpace,
+                spaceHeightNormal,
                 ButtonClassForm(),
+                spaceHeightNormal,
                 Expanded(
                   child: ClassItem()
                 ),

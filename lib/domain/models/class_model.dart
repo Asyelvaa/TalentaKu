@@ -1,28 +1,28 @@
 import 'package:flutter_talentaku/domain/models/class_member_model.dart';
 
 class GradeModel {
-  final String name;
-  final String desc;
-  final String level;
-  final String uniqueCode;
-  final int teacherId;
-  final String updatedAt;
-  final String createdAt;
-  final int id;
-  final List<ClassMemberModel> member;
-  String isactive;
+  String? name;
+  String? desc;
+  int? level;
+  String? uniqueCode;
+  int? teacherId;
+  String? updatedAt;
+  String? createdAt;
+  int? id;
+  List<ClassMemberModel>? member;
+  String? isactive;
 
   GradeModel({
-    required this.name, 
-    required this.desc,
-    required this.level,
-    required this.uniqueCode,
-    required this.teacherId,
-    required this.updatedAt,
-    required this.createdAt,
-    required this.id,
-    required this.member,
-    required this.isactive,
+    this.name, 
+    this.desc,
+    this.level,
+    this.uniqueCode,
+    this.teacherId,
+    this.updatedAt,
+    this.createdAt,
+    this.id,
+    this.member,
+    this.isactive,
   });
 
   factory GradeModel.fromJson(Map<String, dynamic> json) {
@@ -53,7 +53,7 @@ class GradeModel {
       'updated_at': updatedAt,
       'created_at': createdAt,
       'id': id,
-      'members': member.map((e) => e.toJson()).toList(),
+      'members': member!.map((e) => e.toJson()).toList(),
       'isactive': isactive,
 
     };

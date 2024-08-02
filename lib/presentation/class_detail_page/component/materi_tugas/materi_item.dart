@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,12 +56,19 @@ class MateriItem extends GetView<ClassDetailController> {
                     backgroundColor: AppColor.blue100,
                     radius: 16,
                   ),
-                  SizedBox(width: 8,),
-                  Text(title,
-                      style: AppTextStyle.tsLittle
-                  ),
-                  SizedBox(width: 8,),
-                  Text(tenggat, style: AppTextStyle.tsLittle,)
+                  defaultWidthtSpace,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [                    
+                    AutoSizeText(
+                      title,
+                      style: AppTextStyle.tsSmallBold(AppColor.black),
+                      minFontSize: 12,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
+                  ],)                  
                 ],
               ),
             ),

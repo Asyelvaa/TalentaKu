@@ -12,7 +12,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
   const EditClassBottomSheet({Key? key, }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final grade = controller.grade.value;
+    final grade = controller.dataClass.value;
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       padding: EdgeInsets.all(20),
@@ -57,7 +57,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                             Expanded(child: Text('Kode Kelas', style: AppTextStyle.tsNormal)),
                             TextWithBackground(
                               colorBackground: AppColor.blue200, 
-                              text: grade.uniqueCode
+                              text: grade.uniqueCode!
                               ),
                               SizedBox(width: 4,),
                             Icon(
@@ -121,9 +121,9 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                         Text('Anggota Kelas', style: AppTextStyle.tsNormal),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: grade.member.length,
+                          itemCount: grade.member!.length,
                           itemBuilder: (context, index) {
-                            final member = grade.member[index];
+                            final member = grade.member![index];
                             return ListTile(
                               title: Text(member.name, style: AppTextStyle.tsLittle,),
                               leading: CircleAvatar(

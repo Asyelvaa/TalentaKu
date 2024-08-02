@@ -8,3 +8,4 @@ export 'package:flutter_talentaku/presentation/login_pick_image/login_pick_image
 export 'package:flutter_talentaku/presentation/profile_page/profile_page.screen.dart';
 export 'package:flutter_talentaku/presentation/student_report_form/student_report_form.screen.dart';
 export 'package:flutter_talentaku/presentation/student_report_page/daily_report.screen.dart';
+export 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';

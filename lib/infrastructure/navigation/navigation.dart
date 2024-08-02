@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';
 
 import 'package:get/get.dart';
 
@@ -56,7 +57,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.DAILY_REPORT,
-      page: () =>  DailyReportScreen(),
+      page: () => DailyReportScreen(),
       binding: DailyReportControllerBinding(),
     ),
     GetPage(
@@ -83,6 +84,11 @@ class Nav {
       name: Routes.STUDENT_REPORT_FORM,
       page: () => const StudentReportFormScreen(),
       binding: StudentReportFormControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.SUBMISSION_PAGE,
+      page: () => const SubmissionCompletePageScreem(),
+      binding: SubmissionPageControllerBinding(),
     ),
   ];
 }

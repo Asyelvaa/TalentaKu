@@ -31,7 +31,7 @@ class ProfilePicture extends StatelessWidget {
                   backgroundColor: AppColor.blue600,
                   child: Text(
                   controller.username.substring(2).toUpperCase(),
-                  style: AppTextStyle.tsSmallBold(AppColor.black)
+                  style: AppTextStyle.tsSmallBold(AppColor.white)
                   )                 
               );
             }),

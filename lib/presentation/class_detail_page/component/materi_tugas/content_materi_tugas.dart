@@ -11,36 +11,41 @@ class ContentMateriTugas extends GetView<ClassDetailController> {
 
   @override
   Widget build(BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: CustomScrollView(
-                slivers: [
-          SliverToBoxAdapter(
-            child: GestureDetector(
-              onTap: () => Get.to(() => AssignemntFormPageScreen(), 
-              arguments: {
-                'task' : null,
-                'gradeId': controller.classItem['id'].toString()}
-                ),
-              // arguments: AssignmentArguments(gradeId: controller.classItem.id.toString()),),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColor.blue100,
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: CustomScrollView(
+        slivers: [
+          Obx(() {
+            var roles = controller.currentUser.value.roles;
+            if (roles != null && roles.any((role) => role.startsWith('Guru'))) {
+              return SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () => Get.to(() => AssignemntFormPageScreen(),
+                      arguments: {
+                        'task': null,
+                        'gradeId': controller.classItem['id'].toString()
+                      }),
+                  // arguments: AssignmentArguments(gradeId: controller.classItem.id.toString()),),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: AppColor.blue100,
+                      ),
+                      child: Text('Upload Task / Material',
+                          style: AppTextStyle.tsSmallBold(AppColor.black)),
+                    ),
                   ),
-                  child: Text(
-                    'Upload Task / Material',
-                    style: AppTextStyle.tsLittle
-                  ),
                 ),
-              ),
-            ),
-          ),
-          Obx((){
+              );
+            } else {
+              return SliverToBoxAdapter(child: Container());
+            }
+          }),
+          Obx(() {
             if (controller.isLoading.value) {
               return SliverToBoxAdapter(
                 child: Center(child: CircularProgressIndicator()),
@@ -53,23 +58,23 @@ class ContentMateriTugas extends GetView<ClassDetailController> {
               print(controller.tasks.length);
               // controller.tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
               return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        var task = controller.tasks[index];
-                        return MateriItem(
-                          title: task.title,
-                          tenggat: 'Tenggat: ${task.endDate}',
-                          task: task,
-                          gradeId: controller.classItem['id'].toString(),
-                        );
-                      },
-                      childCount: controller.tasks.length,
-                    ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    var task = controller.tasks[index];
+                    return MateriItem(
+                      title: task.title!,
+                      tenggat: 'Tenggat: ${task.endDate}',
+                      task: task,
+                      gradeId: controller.classItem['id'].toString(),
+                    );
+                  },
+                  childCount: controller.tasks.length,
+                ),
               );
             }
           })
-                ],
-              ),
-        );
+        ],
+      ),
+    );
   }
 }

@@ -27,7 +27,6 @@ class ApiServiceUser {
       'email': email,
       'password': password,
     });
-    
     try {
       final response = await http.post(Uri.parse(url), headers: headers, body: body);
       if (response.statusCode == 200) {

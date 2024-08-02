@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../domain/models/class_model.dart';
-import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';
@@ -10,33 +8,44 @@ import '../controllers/class_page.controller.dart';
 class ClassItem extends GetView<ClassController> {
 
   ClassItem({Key? key, }) : super(key: key);
-  @override
 
   Widget build(BuildContext context) { 
-     return Obx(() {
-      final RxList<Map<String,dynamic>> classItems = controller.gradeList; 
-      return ListView.builder(
+    final activeClasses = controller.activeClasses;
+    final inactiveClasses = controller.inactiveClasses;
+
+    return ListView(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: classItems.length,
-      itemBuilder: (context, index) {
-        final Map<String,dynamic> classItem = classItems[index];
-        return InkWell(
-          onTap: () => Get.toNamed(
-              Routes.CLASS_DETAIL,
-              arguments: classItem
+      children: [
+        ...activeClasses.map((classItem) => buildClassItem(context, classItem)).toList(),
+        spaceHeightNormal,
+        if (inactiveClasses.isNotEmpty)
+          Text(
+            'Arsip Kelas :',
+            style: AppTextStyle.tsBodyBold(AppColor.black),
           ),
-          child: Container(
-            margin: EdgeInsets.only(top: 12),
+          spaceHeightExtraSmall,
+        ...inactiveClasses.map((classItem) => buildClassItem(context, classItem)).toList(),
+      ],
+    );
+  }
+
+   Widget buildClassItem(BuildContext context, Map<String, dynamic> classItem) {
+    return InkWell(
+      onTap: () => Get.toNamed(
+        Routes.CLASS_DETAIL,
+        arguments: classItem,
+      ),
+      child: Column(
+        children: [
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            width: widthScreen,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColor.blue100,
-                width: 1
-              ),
-              color: classItem['isactive'].toLowerCase() == '1' ? AppColor.blue200 : Colors.grey[200],
+              color: classItem['is_active_status'].toLowerCase() == 'active'
+                  ? AppColor.blue100
+                  : Colors.grey[200],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,12 +53,14 @@ class ClassItem extends GetView<ClassController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text( classItem['name'], style: AppTextStyle.tsNormal,),
-                    Text( classItem['desc'],style: AppTextStyle.tsLittle,),
                     Text(
-                      classItem['isactive'].toLowerCase() == '1' ? '' : 'Archived Class',
-                      style: AppTextStyle.tsLittle,
-                    )
+                      classItem['name'],
+                      style: AppTextStyle.tsBodyBold(AppColor.black),
+                    ),
+                    Text(
+                      classItem['desc'],
+                      style: AppTextStyle.tsSmallRegular(AppColor.black),
+                    ),                    
                   ],
                 ),
                 Image.asset(
@@ -59,9 +70,9 @@ class ClassItem extends GetView<ClassController> {
               ],
             ),
           ),
-        );
-      },
+          spaceHeightExtraSmall
+        ],
+      ),
     );
-     });
   }
 }

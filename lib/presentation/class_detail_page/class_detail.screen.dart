@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/domain/models/task_model.dart';
-import 'package:flutter_talentaku/presentation/class_detail_page/component/class_appbar.dart';
 import 'package:get/get.dart';
 
-import '../../domain/models/class_model.dart';
+import 'component/header_class.dart';
+import 'component/class_appbar.dart';
 import 'component/album/content_album.dart';
 import 'component/beranda/content_beranda.dart';
-import 'component/header_class.dart';
-import '../../infrastructure/theme/theme.dart';
 import 'component/materi_tugas/content_materi_tugas.dart';
+import '../../infrastructure/theme/theme.dart';
 import 'controllers/class_detail.controller.dart';
  
 class ClassDetailScreen extends GetView<ClassDetailController> {
@@ -16,9 +14,8 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
   @override
   Widget build(BuildContext context) {
 
-    // final args = Get.arguments as ClassDetailArguments;
-    final classItem = Get.arguments as Map<String,dynamic>;
-
+    final classItem = controller.classItem;
+    final dataClass = controller.dataClass.value;
     return  DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -31,23 +28,14 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
           ),
         ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // HEADER
-          HeaderClass(),  
-          // BODY
-          // if (!classItem.isActive) // Show message if class is archived
-          //     Container(
-          //       decoration: BoxDecoration(
-          //         color: AppColor.red,
-          //         borderRadius: BorderRadius.circular(12)
-          //       ),
-          //       padding: const EdgeInsets.all(12),
-          //       margin: EdgeInsets.all(12),
-          //       child: Text(
-          //         'Class has been archived by your teacher. You can’t add or edit anything',
-          //       style: AppTextStyle.tsLittle.copyWith(color: AppColor.white), // Customize the style of the message
-          //       ),
-          //     ),
+          HeaderClass(
+            // className: controller.dataClass.value.name!,
+            // classDesc: controller.dataClass.value.desc!
+            // className: classItem['name'],
+            // classDesc: classItem['desc'],
+          ),
           Container(
             child: TabBar(
               dividerColor: AppColor.background,

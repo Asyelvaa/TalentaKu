@@ -19,9 +19,12 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: loginController,
       obscureText: isPassword,
+      style: AppTextStyle.tsBodyRegular(AppColor.black),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
-            vertical: 12, horizontal: 10),
+            vertical: heightScreen * 0.02, 
+            horizontal: widthScreen * 0.05
+        ),
         enabledBorder: OutlineInputBorder(
             borderSide:
                 BorderSide(color: AppColor.grey),
@@ -34,6 +37,7 @@ class CustomTextFormField extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: BorderSide(color: AppColor.blue500),
         ),
+        fillColor: AppColor.white,
         suffixIcon: isPassword
             ? Icon(
                   Icons.visibility_off_outlined,
@@ -42,7 +46,7 @@ class CustomTextFormField extends StatelessWidget {
             )
             : null,
         labelText:labelText,
-        labelStyle: AppTextStyle.tsLittle,
+        labelStyle: AppTextStyle.tsSmallRegular(AppColor.black),
       ),
     );
   }

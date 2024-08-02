@@ -1,80 +1,78 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/domain/models/class_model.dart';
-import 'package:flutter_talentaku/domain/models/class_member_model.dart';
-import 'package:flutter_talentaku/domain/models/task_model.dart';
-import 'package:flutter_talentaku/infrastructure/dal/services/api_album.dart';
-import 'package:flutter_talentaku/infrastructure/dal/services/api_class.dart';
-import 'package:flutter_talentaku/infrastructure/dal/services/api_task.dart';
+import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../domain/models/album_model.dart';
-import '../../../infrastructure/theme/theme.dart';
-import '../../student_report_form/model/Student.dart';
+import '../../../domain/models/task_model.dart';
+import '../../../domain/models/class_model.dart';
+import '../../../domain/models/class_member_model.dart';
+import '../../../domain/models/user_model.dart';
+import '../../../infrastructure/dal/services/api_album.dart';
+import '../../../infrastructure/dal/services/api_class.dart';
+import '../../../infrastructure/dal/services/api_task.dart';
 
 class ClassDetailController extends GetxController {
 
   final ApiServiceClass apiService = ApiServiceClass();
 
+  Rx<GradeModel> dataClass = GradeModel().obs; 
   RxList<ClassMemberModel> classMembers = <ClassMemberModel>[].obs;
+  Rx<UserModel> currentUser = UserModel().obs;
+
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> tasks = <Task>[].obs;
-  var isLoading = true.obs;
   late Map<String,dynamic> classItem;
 
-   final TextEditingController classNameController = TextEditingController();
+  final TextEditingController classNameController = TextEditingController();
   final TextEditingController classDescController = TextEditingController();
   final TextEditingController classLevelController = TextEditingController();
 
-  var grade = GradeModel(
-    name: '',
-    desc: '',
-    level: '',
-    uniqueCode: '',
-    teacherId: 0,
-    updatedAt: '',
-    createdAt: '',
-    id: 0,
-    member: [],
-    isactive: '',
-  ).obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
+    inituser();
     classItem = Get.arguments as Map<String,dynamic>;
     print(classItem['id']);
     fetchAlbums();
     fetchGradeDetails();
     fetchTasks();
-
-    classNameController.text = grade.value.name;
-    classDescController.text = grade.value.desc;
-    classLevelController.text = grade.value.level.toString();
-
   }
 
 
+  Future<void> inituser() async {
+    await getUserData();
+    print(currentUser.value.name);
+  }
+
+  Future<void> getUserData() async  {
+    try {
+      isLoading.value = true;
+      var data = await ApiServiceUser().getUserData();
+      currentUser.value = data;
+      print('User data: ${currentUser.value.name}');
+    } finally {
+      isLoading.value = false;
+    }
+  } 
 
   Future<void> fetchGradeDetails() async {
     try {
-      GradeModel gradeDetail = await apiService.getDetailClass(classItem['id'].toString());
-      grade.value = gradeDetail;
-      classMembers.assignAll(gradeDetail.member);
+      GradeModel gradeDetail = await apiService.getDetailClass(classItem['id']);
+      dataClass.value = gradeDetail;
+      classMembers.assignAll(gradeDetail.member!);
 
-      print('Detail class: $gradeDetail');
-      print('Class members: $classMembers');
+      print('Detail class: ${gradeDetail.name}');
+      print('Class members: ${classMembers.length}');
     } catch (e) {
       print('Error fetching grade details: $e');
     }
   }
 
   void toggleActiveStatus(bool isActive) async {
-    await apiService.classStatus(grade.value.id);
-    grade.update((val) {
+    await apiService.classStatus(dataClass.value.id!);
+    dataClass.update((val) {
       val!.isactive = isActive ? 'active' : 'inactive';
     });
   }
@@ -112,6 +110,29 @@ class ClassDetailController extends GetxController {
       isLoading(false);
     }
   }
+
+  // Update
+  // Future<void> updateClass() async {
+  //   try{
+  //     await apiService.updateClass(
+  //       classNameController.text,
+  //       classDescController.text,
+  //       int.parse(classLevelController.text),
+  //       gradeId
+  //     );
+  //   } catch (e) {
+  //     print('Error updating class: $e');
+  //   } 
+  // }
+
+  // isActive
+  // {{localhost}}api/grades/1/toggle-active
+
+  // Delete Member 
+  // {{localhost}}api/grades/1/members/7
+
+  // Show by ID
+
 
   // Future<void> updateGradeDetails({String? name, String? desc, int? levelId}) async {
   //   try {
