@@ -4,7 +4,7 @@ import 'package:flutter_talentaku/presentation/common_widget/back_appbar.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_downloader/image_downloader.dart';
+// import 'package:image_downloader/image_downloader.dart';
 import '../../domain/models/album_model.dart';
 import 'component/post_card.dart';
 import 'controllers/style_album.controller.dart';

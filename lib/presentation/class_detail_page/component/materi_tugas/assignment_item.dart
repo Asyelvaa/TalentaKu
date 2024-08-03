@@ -11,13 +11,13 @@ import '../../controllers/class_detail.controller.dart';
 class MateriItem extends GetView<ClassDetailController> {
   final String title;
   final String tenggat;
-  final Task task;
+  final String taskId;
   final String gradeId;
   const MateriItem({
     super.key,
     required this.title,
     required this.tenggat,
-    required this.task,
+    required this.taskId,
     required this.gradeId
   });
 
@@ -27,7 +27,7 @@ class MateriItem extends GetView<ClassDetailController> {
       onTap: () {
         Get.to(() => AssignmentPageScreen(), 
         arguments: {
-          'task': task,
+          'taskId': taskId,
           'gradeId' : gradeId
         });
       },

@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 import '../../../domain/models/task_model.dart';
+import '../../../domain/models/task_student_model.dart';
 
 class ApiServiceTask {
   static final ApiServiceTask _singleton = ApiServiceTask._internal();
@@ -190,7 +191,7 @@ class ApiServiceTask {
   }
 
   // SHOW ALL TASK BY GRADE
-  Future<List<Task>> getAllTask(String gradeId) async {
+  Future<List<Task>> getAllTaskTeacher(String gradeId) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId/tasks";
     var headers = {
@@ -198,7 +199,6 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     final response = await http.get(Uri.parse(url),headers: headers);
-   
     if (response.statusCode == 200) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
       if (jsonResponse.containsKey('data')) {
@@ -212,6 +212,29 @@ class ApiServiceTask {
     }
   }
 
+  Future<List<TaskStudentModel>> getAllTaskStudent(String gradeId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/tasks";
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final response = await http.get(Uri.parse(url),headers: headers);
+    print(response.body);
+    print(url);
+    if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (jsonResponse.containsKey('data')) {
+        List tasksData = jsonResponse['data'];
+        return tasksData.map((task) => TaskStudentModel.fromJson(task)).toList();
+      } else {
+        throw Exception('Invalid response format: "data" key not found');
+      }
+    } else {
+      throw Exception('Failed to load class:${response.statusCode}');
+    }
+  } 
+
   // SHOW TASK BY ID
   Future<Task> getDetailTask(String gradeId, String taskId) async {
     final token = box.read('token');
@@ -221,12 +244,31 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     var response = await http.get(Uri.parse(url), headers: headers);
+    print(url);
+    print(headers);
     if (response.statusCode == 200) {
-      return Task.fromJson(jsonDecode(response.body));
+      final json = jsonDecode(response.body);
+      return Task.fromJson(json['data']);
     } else {
       throw Exception('Failed to load tasks');
     }
   }
+
+  // Future<TaskStudentModel> getDetailTaskStudent(String gradeId, String taskId) async {
+  //   final token = box.read('token');
+  //   final url = "$baseUrl/grades/$gradeId/tasks/$taskId";
+  //   var headers = {
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   };
+  //   var response = await http.get(Uri.parse(url), headers: headers);
+  //   if (response.statusCode == 200) {
+  //     final json = jsonDecode(response.body);
+  //     return TaskStudentModel.fromJson(json['data']);
+  //   } else {
+  //     throw Exception('Failed to load tasks');
+  //   }
+  // }
 
   // SHOW SUBMISSION BY ID
   Future<SubmissionDetailModel> getSubmissionById(String gradeId, String taskId, String completionsId) async {

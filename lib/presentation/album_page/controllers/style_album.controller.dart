@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:image_downloader/image_downloader.dart';
+// import 'package:image_downloader/image_downloader.dart';
 
 import '../../../domain/models/album_model.dart';
 
@@ -46,7 +46,7 @@ class AlbumController extends GetxController {
   Future<void> saveAllMedia() async {
     try {
       for (var media in mediaList) {
-        await ImageDownloader.downloadImage(media.filePath!);
+        // await ImageDownloader.downloadImage(media.filePath!);
       }
       Get.snackbar('Success', 'All media saved to gallery');
     } catch (e) {

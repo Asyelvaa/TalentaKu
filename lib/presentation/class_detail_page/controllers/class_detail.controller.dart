@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../domain/models/album_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/class_member_model.dart';
+import '../../../domain/models/task_student_model.dart';
 import '../../../domain/models/user_model.dart';
 import '../../../infrastructure/dal/services/api_album.dart';
 import '../../../infrastructure/dal/services/api_class.dart';
@@ -20,7 +22,8 @@ class ClassDetailController extends GetxController {
   Rx<UserModel> currentUser = UserModel().obs;
 
   RxList<Album> albums = <Album>[].obs;
-  RxList<Task> tasks = <Task>[].obs;
+  RxList<Task> teacherTasks = <Task>[].obs;
+  RxList<TaskStudentModel> studentTasks = <TaskStudentModel>[].obs;
   late Map<String,dynamic> classItem;
 
   final TextEditingController classNameController = TextEditingController();
@@ -28,16 +31,18 @@ class ClassDetailController extends GetxController {
   final TextEditingController classLevelController = TextEditingController();
 
   var isLoading = true.obs;
-
+    late final List<String> userRole;
+    
   @override
   void onInit() {
     super.onInit();
+    userRole = GetStorage().read('dataUser')['role'];
     inituser();
     classItem = Get.arguments as Map<String,dynamic>;
     print(classItem['id']);
     fetchAlbums();
     fetchGradeDetails();
-    fetchTasks();
+    fetchAllTask();
   }
 
 
@@ -91,18 +96,21 @@ class ClassDetailController extends GetxController {
     }
   }
 
-  void fetchTasks() async {
+  Future<void> fetchAllTask() async {
+    var taskList;
     try {
       isLoading(true);
-      var fetchedTasks = await ApiServiceTask().getAllTask(classItem['id'].toString());
-      print(fetchedTasks);
-      if (fetchedTasks != null) {
-        tasks.assignAll(fetchedTasks);
-      } else {
-        tasks.clear();
+      if (userRole.any((role) => role.contains('Guru'))) {
+        taskList =  ApiServiceTask().getAllTaskTeacher(classItem['id'].toString());
+        teacherTasks.assignAll(await taskList);
+        print(teacherTasks);
+      } else if (userRole.any((role) => role.contains('Murid'))) {
+        taskList =  ApiServiceTask().getAllTaskStudent(classItem['id'].toString());
+        studentTasks.assignAll(await taskList);
+        print(studentTasks);
       }
-    } finally {
-      isLoading(false);
+    } catch(e) {
+      print('failed fetch task: $e');
     }
   }
 

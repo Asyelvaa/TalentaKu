@@ -1,55 +1,47 @@
 class Task {
-  String title;
-  String startDate;
-  String endDate;
-  List<String> desc;
-  List<Media> media;
-  List<Link> links;
-  int teacherId;
-  int gradeId;
-  // DateTime updatedAt;
-  // DateTime createdAt;
-  int id;
+  String? title;
+  String? startDate;
+  String? endDate;
+  List<String>? desc;
+  List<Media>? media;
+  List<Link>? links;
+  int? teacherId;
+  int? gradeId;
+  int? id;
 
   Task({
-    required this.title,
-    required this.startDate,
-    required this.endDate,
-    required this.desc,
-    required this.media,
-    required this.links,
-    required this.teacherId,
-    required this.gradeId,
-    // required this.updatedAt,
-    // required this.createdAt,
-    required this.id,
+     this.title,
+     this.startDate,
+     this.endDate,
+     this.desc,
+     this.media,
+     this.links,
+     this.teacherId,
+     this.gradeId,
+     this.id,
   });
   
    factory Task.fromJson(Map<String, dynamic> json) => Task(
-        title: json["title"],
-        startDate: json["start_date"],
-        endDate: json["end_date"],
-        desc: List<String>.from(json["desc"]),
-        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
-        links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
-        teacherId: json["teacher"]["id"],
-        gradeId: json["grade"]["id"],
-        // updatedAt: DateTime.parse(json["updated_at"]),
-        // createdAt: DateTime.parse(json["created_at"]),
-        id: json["id"],
-      );
+    title: json["title"] as String?,
+    startDate: json["start_date"] as String?,
+    endDate: json["end_date"] as String?,
+    desc: (json["desc"] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
+    media: (json["media"] as List<dynamic>?)?.map((x) => Media.fromJson(x)).toList() ?? [],
+    links: (json["links"] as List<dynamic>?)?.map((x) => Link.fromJson(x)).toList() ?? [],
+    teacherId: json["teacher"]?["id"] as int?,
+    gradeId: json["grade"]?["id"] as int?,
+    id: json["id"] as int?,
+  );
 
   Map<String, dynamic> toJson() => {
         "title": title,
         "start_date": startDate,
         "end_date": endDate,
         "desc": desc,
-        "media": List<dynamic>.from(media.map((x) => x.toJson())),
-        "links": List<dynamic>.from(links.map((x) => x.toJson())),
+        "media": media?.map((x) => x.toJson()).toList(),
+        "links": links?.map((x) => x.toJson()).toList(),
         "teacher_id": teacherId,
         "grade_id": gradeId,
-        // "updated_at": updatedAt.toIso8601String(),
-        // "created_at": createdAt.toIso8601String(),
         "id": id,
       };
 }

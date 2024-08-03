@@ -2,47 +2,52 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../../common_widget/text_background.dart';
 import '../controllers/assignment_page.controller.dart';
 import 'circular_icon_button.dart';
 
 class ContentAssignment extends GetView<AssignmentPageController> {
-  const ContentAssignment({super.key});
+  ContentAssignment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var task = controller.task!;
     return SingleChildScrollView(
       child: Padding(
-          padding: EdgeInsets.symmetric(vertical: heightScreen * 0.02),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextWithBackground(
-                  colorBackground: AppColor.grey,
-                  text: 'Tengggat : ${task.endDate}'),
-              spaceHeightNormal,
-              Text(
-                task.title,
-                style: AppTextStyle.tsBodyBold(AppColor.black),
-                textAlign: TextAlign.justify,
-              ),
-              spaceHeightExtraSmall,
-              Text(
-                task.desc.join('\n'),
-                style: AppTextStyle.tsSmallRegular(AppColor.black),
-                textAlign: TextAlign.justify,
-              ),
-              spaceHeightNormal,
-              Obx(() {
-                if (controller.isLoading.value){
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                else if (controller.task!.media.isNotEmpty) {
-                  return Column(
+        padding: EdgeInsets.symmetric(vertical: Get.height * 0.02),
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (controller.taskDetail.value == null) {
+            return Center(
+              child: Text("Task not found"),
+            );
+          } else {
+            final task = controller.taskDetail.value!;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextWithBackground(
+                    colorBackground: AppColor.grey,
+                    text: 'Tengggat : ${task.endDate}'),
+                spaceHeightNormal,
+                Text(
+                  task.title!,
+                  style: AppTextStyle.tsBodyBold(AppColor.black),
+                  textAlign: TextAlign.justify,
+                ),
+                spaceHeightExtraSmall,
+                Text(
+                  task.desc!.join('\n'),
+                  style: AppTextStyle.tsSmallRegular(AppColor.black),
+                  textAlign: TextAlign.justify,
+                ),
+                spaceHeightNormal,
+                if (task.media!.isNotEmpty)
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -53,9 +58,9 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: task.media.length,
+                        itemCount: task.media!.length,
                         itemBuilder: (context, index) {
-                          final media = task.media[index];
+                          final media = task.media![index];
                           return GestureDetector(
                             onTap: () {
                               // Handle media tap
@@ -79,20 +84,10 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                         },
                       ),
                     ],
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
-              spaceHeightNormal,
-              Obx(() {
-                 if (controller.isLoading.value){
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                else if (controller.task!.links.isNotEmpty) {
-                  return Column(
+                  ),
+                spaceHeightNormal,
+                if (task.links!.isNotEmpty)
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -103,9 +98,9 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: task.links.length,
+                        itemCount: task.links!.length,
                         itemBuilder: (context, index) {
-                          final link = task.links[index];
+                          final link = task.links![index];
                           return GestureDetector(
                             onTap: () {
                               // Handle link tap
@@ -132,57 +127,56 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                         },
                       ),
                     ],
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
-              spaceHeightNormal,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      await controller.deleteTask(task.id.toString());
-                    },
-                    child: Center(
-                      child: Text(
-                        'Hapus Tugas',
-                        style: AppTextStyle.tsSmallBold(AppColor.white),
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size.fromHeight(44),
-                      elevation: 0,
-                      backgroundColor: AppColor.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // await controller.updateTask();
-                    },
-                    child: Center(
-                      child: Text(
-                        'Edit Tugas',
-                        style: AppTextStyle.tsSmallBold(AppColor.white),
+                spaceHeightNormal,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        await controller.deleteTask(task.id.toString());
+                      },
+                      child: Center(
+                        child: Text(
+                          'Hapus Tugas',
+                          style: AppTextStyle.tsSmallBold(AppColor.white),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromHeight(44),
+                        elevation: 0,
+                        backgroundColor: AppColor.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size.fromHeight(44),
-                      elevation: 0,
-                      backgroundColor: AppColor.blue600,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                    ElevatedButton(
+                      onPressed: () async {
+                        // await controller.updateTask();
+                      },
+                      child: Center(
+                        child: Text(
+                          'Edit Tugas',
+                          style: AppTextStyle.tsSmallBold(AppColor.white),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromHeight(44),
+                        elevation: 0,
+                        backgroundColor: AppColor.blue600,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          )),
+                  ],
+                ),
+              ],
+            );
+          }
+        }),
+      ),
     );
   }
 }

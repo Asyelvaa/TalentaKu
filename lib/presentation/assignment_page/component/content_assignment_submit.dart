@@ -14,7 +14,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
 
   @override
   Widget build(BuildContext context) {
-    var task = controller.task!;
+    var task = controller.taskDetail.value!;
     return SingleChildScrollView(
       child: Padding(
           padding: EdgeInsets.symmetric(vertical: heightScreen * 0.02, horizontal: widthScreen * 0.05),
@@ -26,13 +26,13 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                   text: 'Tengggat : ${task.endDate}'),
               spaceHeightNormal,
               Text(
-                task.title,
+                task.title!,
                 style: AppTextStyle.tsBodyBold(AppColor.black),
                 textAlign: TextAlign.justify,
               ),
               spaceHeightExtraSmall,
               Text(
-                task.desc.join('\n'),
+                task.desc!.join('\n'),
                 style: AppTextStyle.tsSmallRegular(AppColor.black),
                 textAlign: TextAlign.justify,
               ),
@@ -43,7 +43,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                     child: CircularProgressIndicator(),
                   );
                 }
-                else if (controller.task!.media.isNotEmpty) {
+                else if (task.media!.isNotEmpty) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -55,9 +55,9 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: task.media.length,
+                        itemCount: task.media!.length,
                         itemBuilder: (context, index) {
-                          final media = task.media[index];
+                          final media = task.media![index];
                           return GestureDetector(
                             onTap: () {
                               // Handle media tap
@@ -93,7 +93,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                     child: CircularProgressIndicator(),
                   );
                 }
-                else if (controller.task!.links.isNotEmpty) {
+                else if (task.links!.isNotEmpty) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,9 +105,9 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: task.links.length,
+                        itemCount: task.links!.length,
                         itemBuilder: (context, index) {
-                          final link = task.links[index];
+                          final link = task.links![index];
                           return GestureDetector(
                             onTap: () {
                               // Handle link tap
@@ -122,7 +122,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      link.url,
+                                      link.url!,
                                       style: AppTextStyle.tsSmallRegular(AppColor.black),
                                       textAlign: TextAlign.justify,
                                     ),
@@ -164,8 +164,8 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
               spaceHeightExtraSmall,
               ElevatedButton(
                 onPressed: () async {
-                  await controller.submitTask(task.id.toString());
-                  print('submit task with id ${task.id}');
+                  await controller.submitTask(task.id!.toString());
+                  print('submit task with id ${task.id!}');
                 },
                 child: Center(
                   child: Text(

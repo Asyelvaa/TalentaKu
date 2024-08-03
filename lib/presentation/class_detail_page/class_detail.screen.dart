@@ -5,7 +5,7 @@ import 'component/header_class.dart';
 import 'component/class_appbar.dart';
 import 'component/album/content_album.dart';
 import 'component/beranda/content_beranda.dart';
-import 'component/materi_tugas/content_materi_tugas.dart';
+import 'component/materi_tugas/content_assignment.dart';
 import '../../infrastructure/theme/theme.dart';
 import 'controllers/class_detail.controller.dart';
  
@@ -15,7 +15,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
 
     final classItem = controller.classItem;
-    final dataClass = controller.dataClass.value;
+    // final dataClass = controller.dataClass.value;
     return  DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -53,7 +53,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
             child: TabBarView(
               children: [
                 ContentBeranda(),
-                ContentMateriTugas(),
+                ContentAssignment(),
                 ContentAlbum(),
               ],
             ),

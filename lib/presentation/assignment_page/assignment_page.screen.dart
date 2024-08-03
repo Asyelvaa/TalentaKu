@@ -12,7 +12,6 @@ class AssignmentPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AssignmentPageController());
-    var task = controller.task!;
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -49,7 +48,7 @@ class AssignmentPageScreen extends StatelessWidget {
                     children:
                          [
                             ContentAssignment(),
-                            ContentScoring(taskId: task.id.toString(),),
+                            ContentScoring(taskId: controller.taskId),
                           ],
                   ),
                 ),

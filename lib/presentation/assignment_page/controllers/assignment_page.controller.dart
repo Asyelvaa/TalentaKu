@@ -9,85 +9,52 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/models/submission_detail_model.dart';
 import '../../../domain/models/task_model.dart';
-import '../../../domain/models/user_model.dart';
-import '../../../infrastructure/dal/services/api_user.dart';
+import '../../../domain/models/task_student_model.dart';
+import '../../class_detail_page/controllers/class_detail.controller.dart';
 
 class AssignmentPageController extends GetxController  with GetSingleTickerProviderStateMixin {
 
   var isLoading = true.obs;
 
-  Rx<UserModel> currentUser = UserModel().obs;
-  RxList<Task> taskList = <Task>[].obs;
-  RxList<SubmissionDetailModel> submissionsWithNullScore = <SubmissionDetailModel>[].obs;
-  RxList<SubmissionDetailModel> submissionsWithScore = <SubmissionDetailModel>[].obs;
-  // Rx<Task> task = Task().obs;
-  final selectedDate = Rxn<DateTime>();
-
+  RxList<Task> teacherTaskList = <Task>[].obs;
+  RxList<TaskStudentModel> studentTaskList = <TaskStudentModel>[].obs;
+  Rxn<Task> taskDetail = Rxn<Task>();
+  final controller = Get.put(ClassDetailController());
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
+  final selectedDate = Rxn<DateTime>();
   var links = <String>[].obs;
   var picker = ImagePicker();
   var selectedFiles = <File>[].obs;
-  var submissionFiles = <File>[].obs;
   var isLinkInputVisible = false.obs;
+
+  RxList<SubmissionDetailModel> submissionsWithNullScore = <SubmissionDetailModel>[].obs;
+  RxList<SubmissionDetailModel> submissionsWithScore = <SubmissionDetailModel>[].obs;
+  var submissionFiles = <File>[].obs;
   var score = ''.obs;
 
   late TabController tabController;
   late final String gradeId;
-  // late String taskId;
-  late Task? task;
-
+  late final String taskId;
   late final List<String> userRole;
 
   @override
   void onInit() {
     super.onInit();
     userRole = GetStorage().read('dataUser')['role'];
-    inituser();
-    fetchCurrentUser();
-
     tabController = TabController(length: 2, vsync: this);
 
     final arguments = Get.arguments as Map<String, dynamic>;
-    task = arguments['task'] as Task?;
+    taskId = arguments['taskId'] as String;
     gradeId = arguments['gradeId'] as String;
-    fetchTasks();
-    if (task != null) {
-      fetchTasks();
-      fetchSubmissionsWithNullScore(task!.id.toString());
-      fetchSubmissionsWithScore(task!.id.toString());
-      print(task!.id);
-    } else {
-      print("Task is null. Cannot fetch submissions.");
-    }
+    print('taskId: $taskId');
+    fetchTaskDetails();
+    fetchSubmissionsWithNullScore(taskId);
+    fetchSubmissionsWithScore(taskId);
+    
   }
 
-  
-  // CURRENT USER
-  Future<void> inituser() async {
-    await getUserData();
-    print(currentUser.value.name);
-  }
-
-  Future<void> getUserData() async  {
-    try {
-      isLoading.value = true;
-      var data = await ApiServiceUser().getUserData();
-      currentUser.value = data;
-      print('User data: ${currentUser.value.name}');
-    } finally {
-      isLoading.value = false;
-    }
-  } 
-
-  void fetchCurrentUser() {
-    final box = GetStorage();
-    Map<String, dynamic>? dataUser = box.read('dataUser');
-    if (dataUser != null) {
-      print(dataUser);
-    }
-  }
 
   // CREATE TASK
   Future<void> pickMedia(ImageSource source) async {
@@ -97,9 +64,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     }
   }
 
-  void addLink() {
-    isLinkInputVisible.value = true;
-  }
+  void addLink() {isLinkInputVisible.value = true;}
 
   void submitLink() {
     if (linkController.text.isNotEmpty) {
@@ -123,7 +88,6 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   }
 
   Future<void> createTask() async {
-    fetchCurrentUser();
     final title = titleController.text;
     final desc = descController.text;
     final endDate = selectedDate.value != null
@@ -148,7 +112,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
       descController.clear();
       selectedDate.value = null;
       Get.back();
-      await fetchTasks(); 
+      controller.fetchAllTask();
       dialogSuccess('Berhasil membuat tugas');
     } catch(e) {
       print('failed');
@@ -160,11 +124,11 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
 
   // DELETE TASK 
   Future<void> deleteTask(String taskId) async {
-    print(gradeId);
-    print(taskId);
+    
+    print('Deleting task with id $taskId in $gradeId');
     try {
-      final message = await ApiServiceTask().deleteTask(gradeId, taskId);
-      fetchTasks();
+      await ApiServiceTask().deleteTask(gradeId, taskId);
+      controller.fetchAllTask();
       Get.back();
       print('Task with id $taskId deleted');
       dialogSuccess('Task successfuly deleted');
@@ -184,8 +148,6 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
         taskId,
         submissionFiles
       );
-      print(submissionFiles.toString());
-      print(taskId);
       print('Task submitted successfully with ID: ${taskId}');
       Get.back();
       dialogSuccess('Tugas Berhasil Dikumpulkan');
@@ -199,31 +161,22 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     }
   }
 
-  // SHOW ALL TASK BY GRADE
-  Future<void> fetchTasks() async {
+  // SHOW TASK BY ID
+  
+  Future<void> fetchTaskDetails() async {
+    isLoading.value = true;
     try {
-      taskList.assignAll(await ApiServiceTask().getAllTask(gradeId));
-    } catch(e) {
-      print('failed');
-      Get.snackbar('Failed', 'Failed to fetch tasks: $e');
+      final taskDetails = await ApiServiceTask().getDetailTask(gradeId, taskId);
+      taskDetail.value = taskDetails;
+      print(taskDetail);
+      print(taskDetail.value!.title);
+    } catch (e) {
+      print("Error fetching task details: $e"); 
+    } finally {
+      isLoading.value = false;
     }
   }
-
-  // SHOW TASK BY ID
-  // Future<void> fetchTaskDetail(String taskId) async {
-  //   isLoading.value = true;
-  //   print(taskId);
-  //   try {
-  //     task.value = await ApiServiceTask().getDetailTask(gradeId, taskId);
-  //     print(task.value.title);
-  //   } catch (e) {
-  //     // Handle error appropriately
-  //     print('Error fetching task details: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
+  
   // SHOW SUBMISSION NULL SCORE 
  Future<void> fetchSubmissionsWithNullScore(String taskId) async {
   isLoading.value = true;
