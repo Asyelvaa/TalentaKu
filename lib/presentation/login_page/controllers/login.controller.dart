@@ -23,11 +23,11 @@ class LoginController extends GetxController {
 
   Future<void> autoLogin() async {
     final box = GetStorage();
-    if(box.read("token") != null) {
+    if (box.read("token") != null) {
       final dataUser = box.read("dataUser") as Map<String, dynamic>;
       final token = dataUser["token"];
-      if(token != null) {
-        // use token to verify auto-login 
+      if (token != null) {
+        // use token to verify auto-login
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME_PAGE);
       }
@@ -52,15 +52,13 @@ class LoginController extends GetxController {
       if (response['success']) {
         final data = response['data'];
         final token = response['token'];
-        box.write(
-          'dataUser', {
-            'email': email,
-            'password': password,
-            'username': data['user'],
-            'id' : data['id'],
-            'role': List<String>.from(data['role']),
-          }
-        );
+        box.write('dataUser', {
+          'email': email,
+          'password': password,
+          'username': data['name'],
+          'id': data['id'],
+          'role': List<String>.from(data['roles']),
+        } );
         box.write('token', token);
         Map<String, dynamic>? dataUser = box.read('dataUser');
         print(dataUser);
@@ -87,5 +85,4 @@ class LoginController extends GetxController {
       duration: Duration(seconds: 3),
     );
   }
-  
 }

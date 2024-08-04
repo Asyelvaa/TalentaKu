@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';

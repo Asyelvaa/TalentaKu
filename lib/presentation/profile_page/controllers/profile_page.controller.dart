@@ -1,105 +1,85 @@
+import 'dart:convert';
+
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../domain/models/user_model.dart';
-import '../../../infrastructure/dal/services/api_services.dart';
-import '../../../infrastructure/navigation/routes.dart';
 
 class ProfilePageController extends GetxController {
-  
   final box = GetStorage();
-  var isLoading = false.obs;
-  var currentUser = Rxn<UserModel>();
+
   final userData = {}.obs;
   final role = [].obs;
-  // final grade = [].obs;
-  var userRole = <String>[].obs; 
 
-  final username = GetStorage().read('dataUser')?['username'];
-  final roles = GetStorage().read('dataUser')?['role'];
+  var isLoading = false.obs;
+  var user = UserModel(
+    id: 0,
+    name: '',
+    email: '',
+    identificationNumber: '',
+    address: '',
+    photo: '',
+    roles: [],
+    grades: [],
+    birthInformation: '',
+  ).obs;
 
   @override
   void onInit() {
     fetchUser();
-    // getUserData();
-    // loadUserData();
     super.onInit();
-    fetchCurrentUser();
   }
 
-  // Future<void> getUserData() async  {
-  //   try {
-  //     isLoading.value = true;
-  //     var data = await ApiService().getUserData();
-  //     currentUser.value = data;
-  //     print('User data: ${currentUser.value}');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // } 
-  
-  void fetchCurrentUser() {
-    final box = GetStorage();
-    Map<String, dynamic>? dataUser = box.read('dataUser');
-    if (dataUser != null) {
-      userRole.value = List<String>.from(dataUser['role']);
-    }
+  String getUsername() {
+    final username = box.read('username');
+    return username;
   }
 
   Future<void> fetchUser() async {
+    isLoading.value = true;
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/user";
+    var headers = {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
     try {
-    final fetchedUser = await ApiService().getCurrentUser();
-    // currentUser.value = UserModel.fromJson(fetchedUser);
-    // print('User data: ${currentUser.value}');
-    userData.value = fetchedUser['user'];
-    role.value = List<String>.from(fetchedUser['roles']);
-    // grade.value = List<String>.from(fetchedUser['grades']);
-    // print('User data: ${userData.value}');
-    // print('Roles: ${role.value}');
-    // currentUser.value = fetchedUser;
-    // print(fetchedUser.toJson());
-    } catch (e){
-      print('failed load user data: $e');
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+        userData.value = jsonData;
+        print(userData);
+        role.value = jsonData['roles'];
+        isLoading.value = false;
+      } else {
+        throw Exception("Haloo");
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-  // Future<void> fetchUser() async {
-  //   try {
-  //     final fetchedUser = await ApiService().getCurrentUser();
-  //     if(fetchedUser != null) {
-
-  //       box.write('fetchedUser', fetchedUser.toJson());
-  //       box.write('fetchedRoles', fetchedUser.roles);
-  //       box.write('fetchedGrades', fetchedUser.grades.map((grade) => grade.toJson()).toList());
-
-  //       currentUser.value = fetchedUser;
-
-  //       Map<String, dynamic>? storedUser = box.read('fetchedUser');
-  //       final storedRoles = box.read('fetchedRoles');
-  //       final storedGrades = box.read('fetchedGrades');
-  //       print({
-  //         'storedUser': storedUser,
-  //         'storedRoles': storedRoles,
-  //         'storedGrades': storedGrades,
-  //       });
-
-  //     }
-  //   } catch (e) {
-  //     print('failed load user data: $e');
-  //   }
-  // }
-
-  // UserModel? loadUserData() {
-  //   var userData = box.read('user');
-  //   if (userData != null) {
-  //     return UserModel.fromJson(userData);
-  //   }
-  //   return null;
-  // }
-
   Future<void> logout() async {
-    await ApiService().logout();
-    box.erase();
-    Get.offAllNamed(Routes.LoginScreen);
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/auth/logout";
+    var headers = {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        box.erase();
+        Get.offAllNamed(Routes.LoginScreen);
+      } else {
+        throw Exception("Failed to log out");
+      }
+    } catch (e) {
+      throw Exception('Error during logout');
+    }
   }
 }

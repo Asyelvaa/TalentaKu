@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/home_page/Component/slide_information.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../global_component/default_appbar.dart';

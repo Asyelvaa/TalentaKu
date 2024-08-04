@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../domain/models/class_model.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../global_component/default_appbar.dart';
 import 'component/button_class_form.dart';

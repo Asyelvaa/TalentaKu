@@ -2,18 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:get/get_connect/connect.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../model/Student.dart';
-import 'dart:convert';
-import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 
 class StudentReportFormController extends GetxController {
@@ -62,7 +58,7 @@ class StudentReportFormController extends GetxController {
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> grades = jsonResponse['grades'];
+        final List<dynamic> grades = jsonResponse['data'];
         students.clear();
 
         for (var grade in grades) {

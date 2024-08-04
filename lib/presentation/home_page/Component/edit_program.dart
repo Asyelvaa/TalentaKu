@@ -34,51 +34,132 @@ class EditProgramPopup extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: "Name"),
-              ),
-              TextField(
-                controller: descController,
-                decoration: InputDecoration(labelText: "Description"),
-              ),
-              TextField(
-                controller: photoController,
-                decoration: InputDecoration(labelText: "Photo URL"),
-              ),
-              TextField(
-                controller: categoryIdController,
-                decoration: InputDecoration(labelText: "Category ID"),
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  try {
-                    Get.find<HomePageController>().updateProgram(
-                      programId,
-                      nameController.text,
-                      descController.text,
-                      photoController.text,
-                      int.parse(categoryIdController.text),
-                    );
-                    Navigator.of(context).pop();
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                },
-                child: Text("Update"),
-              ),
-            ],
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColor.grey,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Edit Program",
+                    style: AppTextStyle.tsTitle.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: heightScreen * 0.05,
+                ),
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: "Nama Program",
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: descController,
+                  decoration: InputDecoration(
+                    labelText: "Deskripsi Program",
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: photoController,
+                  decoration: InputDecoration(
+                    labelText: "Photo URL",
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: heightScreen * 0.05,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      try {
+                        Get.find<HomePageController>().updateProgram(
+                          programId,
+                          nameController.text,
+                          descController.text,
+                          photoController.text,
+                          int.parse(categoryIdController.text),
+                        );
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        print('Error: $e');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColor.blue600,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    ),
+                    child: Text(
+                      "Update",
+                      style: AppTextStyle.tsNormal,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

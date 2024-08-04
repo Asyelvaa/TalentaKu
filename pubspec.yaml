@@ -6,6 +6,7 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
+  cupertino_calendar_picker: ^1.1.2
   cupertino_icons: ^1.0.2
   dio: ^5.4.3+1
   flutter:
@@ -13,12 +14,15 @@ dependencies:
   get: 4.6.6
   get_storage: any
   google_fonts: ^6.2.1
-  http: ^1.2.1
+  http: ^1.2.2
+  http_parser: any
   iconsax: ^0.0.8
   image_picker: ^1.1.2
+  intl: ^0.18.1
+  mime: any
+  path: any
   persistent_bottom_nav_bar: ^5.0.2
   readmore: ^3.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
