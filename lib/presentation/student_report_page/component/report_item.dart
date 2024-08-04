@@ -1,96 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/student_report_page/controllers/daily_report.controller.dart';
+import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../infrastructure/theme/theme.dart';
-
-class ReportItem extends GetView<DailyReportController> {
+class ReportItem extends StatelessWidget {
   final String title;
-  final String description;
-  final String? indicator;
-  const ReportItem({
-    super.key,
+  final dynamic data;
+  final String fieldName;
+  final String fieldPoint;
+
+  ReportItem({
     required this.title,
-    required this.description,
-    this.indicator,
+    required this.data,
+    required this.fieldName,
+    required this.fieldPoint,
   });
 
   @override
   Widget build(BuildContext context) {
-    Widget reportWidget(String description, String point) {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 220,
-                  child: Text(
-                    description,
-                    style: GoogleFonts.manrope(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                ),
-                SizedBox(
-                  width: widthScreen * 0.01,
-                  height: heightScreen * 0.01,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppColor.blue600,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    point,
-                    style: GoogleFonts.manrope(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      );
-    }
+    Map<dynamic, dynamic> dataMap = data[0];
+    List<dynamic> arrayKegiatan = dataMap[fieldName];
+    String point = fieldName == 'catatan' ? '' : dataMap[fieldPoint];
+
+    // for (var item in datas) {
+    //   if (title == "Kegiatan Awal") {
+    //     arrayKegiatan.add(item['kegiatan_awal']);
+    //   } else if (title == "Kegiatan Inti") {
+    //     arrayKegiatan.add(item['kegiatan_inti']);
+    //   } else if (title == "Snack") {
+    //     arrayKegiatan.add(item['snack']);
+    //   } else if (title == "Inklusi") {
+    //     arrayKegiatan.add(item['inklusi']);
+    //   }
+    // }
+    // if (title == "Kegiatan Awal") {
+    //   point = data['awal_point'];
+    // } else if (title == "Kegiatan Inti") {
+    //   point = data['inti_point'];
+    // } else if (title == "Snack") {
+    //   point = data['snack_point'];
+    // } else if (title == "Inklusi") {
+    //   point = data['inklusi_point'];
+    // }
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
-      child: ExpansionTile(
-        title: Text(title),
-        children: [
-          Obx(() => controller.isLoading.value
-              ? CircularProgressIndicator()
-              : ListView.builder(
-                  itemCount: controller.reportData.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final data = controller.reportData[index];
-                    if (title == "Kegiatan Awal") {
-                      return reportWidget(
-                          data['kegiatan_awal'], data['awal_point']);
-                    } else if (title == "Kegiatan Inti") {
-                      return reportWidget(
-                          data['kegiatan_inti'], data['inti_point']);
-                    } else if (title == "Snack") {
-                      return reportWidget(data['snack'], data['snack_point']);
-                    } else if (title == "Kegiatan Inklusi") {
-                      return reportWidget(
-                          data['inklusi'], data['iklusi_point']);
-                    } else if (title == "Catatan") {
-                      return reportWidget(data['catatan'], 'muncul');
-                    }
-                    return Container();
-                  }))
-        ],
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(22),
       ),
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+          hintColor: Colors.transparent,
+          unselectedWidgetColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          title: Text(
+            title,
+            style: AppTextStyle.tsNormal,
+          ),
+          children: arrayKegiatan!.map<Widget>((report) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(22),
+              ),
+              child: Column(
+                children: [
+                  reportWidget(
+                    report ?? 'N/A',
+                    point ?? 'N/A',
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: AppColor.black,
+                    height: 1,
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget reportWidget(String fieldName, String fieldPoint) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: Get.width * 0.6,
+          child: Text(
+            fieldName,
+            style: AppTextStyle.tsNormal,
+            maxLines: 3,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: AppColor.blue500, borderRadius: BorderRadius.circular(12)),
+          child: Text(
+            fieldPoint,
+            style: AppTextStyle.tsLittle.copyWith(color: AppColor.white),
+          ),
+        ),
+      ],
     );
   }
 }

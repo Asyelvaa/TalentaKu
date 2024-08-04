@@ -3,7 +3,6 @@ import 'package:flutter_talentaku/presentation/home_page/controllers/home_page.c
 import 'package:get/get.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../models/information_data.dart';
-import 'home_popup_infromation.dart';
 import 'home_popup_kbsd.dart';
 
 class KbSdTalentaComponent extends GetView<HomePageController> {

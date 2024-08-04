@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/domain/models/class_model.dart';
@@ -14,16 +15,20 @@ import '../../../infrastructure/theme/theme.dart';
 import '../../student_report_form/model/Student.dart';
 
 class ClassDetailController extends GetxController {
-
   final ApiService apiService = ApiService();
 
   RxList<MemberClassModel> classMembers = <MemberClassModel>[].obs;
   RxList<Album> albums = <Album>[].obs;
+  
   RxList<Task> tasks = <Task>[].obs;
+    final RxList<Student> selectedStudents = <Student>[].obs;
   var isLoading = true.obs;
-  late Map<String,dynamic> classItem;
-
-   final TextEditingController classNameController = TextEditingController();
+  late Map<String, dynamic> classItem;
+  final box = GetStorage();
+  final RxList<Student> students = <Student>[].obs;
+    final username = GetStorage().read('dataUser')?['username'];
+  Rx<File?> image = Rx<File?>(null);
+  final TextEditingController classNameController = TextEditingController();
   final TextEditingController classDescController = TextEditingController();
   final TextEditingController classLevelController = TextEditingController();
 
@@ -43,23 +48,32 @@ class ClassDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    classItem = Get.arguments as Map<String,dynamic>;
+    classItem = Get.arguments as Map<String, dynamic>;
     print(classItem['id']);
     fetchAlbums();
     fetchGradeDetails();
     fetchTasks();
+    fetchStudentsFromApi();
+        _loadStoredImage(); 
+    print(username);
+    
 
     classNameController.text = grade.value.name;
     classDescController.text = grade.value.desc;
     classLevelController.text = grade.value.level.toString();
-
   }
 
-
+    void _loadStoredImage() {
+    String? storedImagePath = box.read('profile_image_path');
+    if (storedImagePath != null) {
+      image.value = File(storedImagePath);
+    }
+  }
 
   Future<void> fetchGradeDetails() async {
     try {
-      GradeModel gradeDetail = await apiService.getDetailClass(classItem['id'].toString());
+      GradeModel gradeDetail =
+          await apiService.getDetailClass(classItem['id'].toString());
       grade.value = gradeDetail;
       classMembers.assignAll(gradeDetail.member);
 
@@ -87,7 +101,7 @@ class ClassDetailController extends GetxController {
         print('Album media: ');
         for (var media in album.media) {
           print('Media: ${media.filePath}');
-        }        
+        }
       }
     } catch (e) {
       print('Error fetching albums: $e');
@@ -96,17 +110,60 @@ class ClassDetailController extends GetxController {
     }
   }
 
+  void fetchStudentsFromApi() async {
+    isLoading.value = true;
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    final url = 'https://talentaku.site/api/grades/teacher';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final List<dynamic> grades = jsonResponse['data'];
+        students.clear();
+
+        for (var grade in grades) {
+          if (grade['members'] != null) {
+            final List<dynamic> members = grade['members'];
+            students.addAll(
+                members.map((member) => Student.fromJson(member)).toList());
+          }
+        }
+
+        print("Fetched students data: ${students}");
+      } else {
+        Get.snackbar(
+            'Error', 'Failed to fetch students: ${response.statusCode}',
+            backgroundColor: AppColor.red);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+  void toggleSelection(Student student) {
+    if (selectedStudents.contains(student)) {
+      selectedStudents.remove(student);
+    } else {
+      selectedStudents.add(student);
+    }
+  }
+
   void fetchTasks() async {
     try {
       isLoading(true);
-      var fetchedTasks = await ApiService().fetchTask(classItem['id'].toString());
+      var fetchedTasks =
+          await ApiService().fetchTask(classItem['id'].toString());
       print(fetchedTasks);
-      if (fetchedTasks != null) {
-        tasks.assignAll(fetchedTasks);
-      } else {
-        tasks.clear();
-      }
-    } finally {
+      tasks.assignAll(fetchedTasks);
+        } finally {
       isLoading(false);
     }
   }
@@ -122,7 +179,7 @@ class ClassDetailController extends GetxController {
   //     grade.update((val) {
   //       if (name != null) val!.name = name;
   //       if (desc != null) val!.desc = desc;
-  //       if (levelId != null) val!.level = levelId;  
+  //       if (levelId != null) val!.level = levelId;
   //     });
   //     print('Grade updated successfully');
   //   } catch (e) {

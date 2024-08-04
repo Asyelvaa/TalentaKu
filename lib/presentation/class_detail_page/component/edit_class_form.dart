@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
-import 'package:flutter_talentaku/presentation/class_page/controllers/class_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
-import '../../../domain/models/class_model.dart';
 import '../../global_component/text_background.dart';
-import 'profile_name_avatar.dart';
 
 class EditClassBottomSheet extends GetView<ClassDetailController> {
   const EditClassBottomSheet({Key? key, }) : super(key: key);

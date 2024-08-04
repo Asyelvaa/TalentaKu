@@ -1,18 +1,16 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
-import '../../../domain/models/class_model.dart';
-import '../../../domain/models/task_model.dart';
 import '../../../domain/models/user_model.dart';
 import '../../../infrastructure/dal/services/api_services.dart';
 
 class ClassController extends GetxController {
   final ApiService apiService = ApiService();
   final classNameController = TextEditingController();
-  final classDescController = TextEditingController(); 
-  final classLevelController = TextEditingController(); 
-  final classCodeController = TextEditingController(); 
+  final classDescController = TextEditingController();
+  final classLevelController = TextEditingController();
+  final classCodeController = TextEditingController();
   var isLoading = false.obs;
 
   // RxList<GradeModel> gradesList = <GradeModel>[].obs;
@@ -29,14 +27,17 @@ class ClassController extends GetxController {
     grades: [],
   ).obs;
 
-   var userRole = <String>[].obs; 
-   var gradeList = <Map<String, dynamic>>[].obs;
+  var userRole = <String>[].obs;
+  var gradeList = <Map<String, dynamic>>[].obs;
+      
+
 
   @override
   void onInit() {
     fetchCurrentUser();
     fetchGrades();
     print(userRole);
+
     super.onInit();
   }
 
@@ -49,13 +50,16 @@ class ClassController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
   void fetchCurrentUser() {
     final box = GetStorage();
+
     Map<String, dynamic>? dataUser = box.read('dataUser');
     if (dataUser != null) {
       userRole.value = List<String>.from(dataUser['role']);
     }
   }
+
   // var currentUser = Rxn<UserModel>();
   // final UserService userService = UserService();
   // Future<void> fetchCurrentUser() async {
@@ -101,16 +105,16 @@ class ClassController extends GetxController {
   // }
 
   Future<void> fetchGrades() async {
-     var grades;
+    var grades;
     try {
       isLoading(true);
       fetchCurrentUser();
-       if (userRole.any((role) => role.contains('Guru'))) {
+      if (userRole.any((role) => role.contains('Guru'))) {
         grades = await ApiService().getGradesTeacher();
       } else if (userRole.any((role) => role.contains('Murid'))) {
         grades = await ApiService().getGradesStudent();
       }
-      
+
       if (grades != null) {
         gradeList.assignAll(grades);
       }
@@ -149,17 +153,17 @@ class ClassController extends GetxController {
     final desc = classDescController.text;
     final levelId = int.parse(classLevelController.text);
 
-    if (name.isEmpty || desc.isEmpty || levelId == null) {
-    print('All fields are required');
-    return;
-  }
+    if (name.isEmpty || desc.isEmpty) {
+      print('All fields are required');
+      return;
+    }
     print('$name, $desc, $levelId');
 
     isLoading.value = true;
     try {
       final result = await apiService.createClass(name, desc, levelId);
       print(result);
-      await fetchGrades();      
+      await fetchGrades();
     } catch (e) {
       print('Error creating class: $e');
     } finally {
@@ -178,11 +182,12 @@ class ClassController extends GetxController {
     try {
       final result = await apiService.joinClass(uniqueCode);
       await fetchGrades();
-      
     } catch (e) {
       print('Error joining class: $e');
     } finally {
       isLoading.value = false;
     }
   }
+
+  
 }

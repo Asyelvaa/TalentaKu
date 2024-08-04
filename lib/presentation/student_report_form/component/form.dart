@@ -10,13 +10,13 @@ class FormSection extends StatelessWidget {
   final TextEditingController textController;
   final String pointType;
 
-  FormSection({
-    Key? key,
-    required this.controller,
-    required this.sectionTitle,
-    required this.pointType,
-    required this.textController
-  }) : super(key: key);
+  FormSection(
+      {Key? key,
+      required this.controller,
+      required this.sectionTitle,
+      required this.pointType,
+      required this.textController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class FormSection extends StatelessWidget {
           children: [
             TextField(
               controller: textController,
+              maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Masukkan catatan',
                 border: InputBorder.none,

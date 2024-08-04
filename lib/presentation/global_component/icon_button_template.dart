@@ -21,24 +21,23 @@ class IconButtonTemplate extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(colorButton),
-        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
+          backgroundColor: MaterialStateProperty.all<Color>(colorButton),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          )
-      )),
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+          ))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             text,
-            style: AppTextStyle.tsTitle.copyWith(color: AppColor.white),
+            style: AppTextStyle.tsTitle.copyWith(color: AppColor.black),
           ),
           Icon(
             icon,
-            color: Colors.white,
+            color: AppColor.black,
           ),
         ],
       ),

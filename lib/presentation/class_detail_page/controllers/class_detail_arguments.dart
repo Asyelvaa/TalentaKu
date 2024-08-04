@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 
 import '../../../domain/models/class_model.dart';
 import '../../../domain/models/task_model.dart';

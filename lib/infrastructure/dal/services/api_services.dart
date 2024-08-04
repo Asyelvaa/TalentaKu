@@ -1,8 +1,6 @@
-// import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_talentaku/domain/models/album_model.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -38,8 +36,7 @@ class ApiService {
         }),
       );
       print(response.statusCode);
-      print(response.body);
-      print({email, password});
+      print(response.body.toString());
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -59,9 +56,8 @@ class ApiService {
     var uri = Uri.parse('$baseUrl/user/update-photo');
     var request = http.MultipartRequest('POST', uri);
 
-    var multipart = await http.MultipartFile.fromPath(
-      'file', filePath,
-      filename: path.basename(filePath));
+    var multipart = await http.MultipartFile.fromPath('file', filePath,
+        filename: path.basename(filePath));
     request.headers.addAll(headers);
     request.files.add(multipart);
     try {
@@ -82,6 +78,7 @@ class ApiService {
     }
   }
   
+
   Future<Map<String, dynamic>> getCurrentUser() async {
     try {
       final token = box.read('token');
@@ -101,8 +98,8 @@ class ApiService {
       if (response.statusCode == 200) {
         // final decodedBody = jsonDecode(response.body);
         // return UserModel.fromJson(decodedBody);
-        // return UserModel.fromJson(jsonDecode(response.body)); 
-        // return jsonDecode(response.body); 
+        // return UserModel.fromJson(jsonDecode(response.body));
+        // return jsonDecode(response.body);
         final jsonData = json.decode(response.body);
         return jsonData;
       } else {
@@ -112,6 +109,7 @@ class ApiService {
       throw Exception('Failed to load current user: $e');
     }
   }
+
   Future<UserModel> getUserData() async {
     try {
       final token = box.read('token');
@@ -129,7 +127,7 @@ class ApiService {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        return UserModel.fromJson(jsonDecode(response.body)); 
+        return UserModel.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Failed to load current user: ${response.statusCode}');
       }
@@ -137,8 +135,6 @@ class ApiService {
       throw Exception('Failed to load current user: $e');
     }
   }
-
-  
 
   //
   //   Future<void> fetchUser() async {
@@ -182,8 +178,8 @@ class ApiService {
       print(token);
 
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)['grades'];
-      return List<Map<String, dynamic>>.from(data);
+        List<dynamic> data = json.decode(response.body)['data'];
+        return List<Map<String, dynamic>>.from(data);
         // List<dynamic> data = jsonDecode(response.body)['grades'];
         // List<GradeModel> grades =
         //     data.map((json) => GradeModel.fromJson(json)).toList();
@@ -197,7 +193,8 @@ class ApiService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getGradesStudent() async {
+  Future<List<Map<String, dynamic>>> 
+  getGradesStudent() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -206,11 +203,11 @@ class ApiService {
       };
 
       final response = await http.get(
-        Uri.parse('$baseUrl/grades/student'),
+        Uri.parse('$baseUrl/grades/member'),
         headers: headers,
       );
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)['grades'];
+        List<dynamic> data = json.decode(response.body)['data'];
         return List<Map<String, dynamic>>.from(data);
       } else {
         throw Exception('Failed to load grades: ${response.statusCode}');
@@ -220,12 +217,13 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> createClass(String name, String desc, int levelId) async {
+  Future<Map<String, dynamic>> createClass(
+      String name, String desc, int levelId) async {
     final token = box.read('token');
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
     };
 
     final body = jsonEncode({
@@ -235,11 +233,8 @@ class ApiService {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/grades'),
-        headers: headers,
-        body: body
-      );
+      final response = await http.post(Uri.parse('$baseUrl/grades'),
+          headers: headers, body: body);
 
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -302,7 +297,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final data = jsonResponse['data'];
-      return GradeModel.fromJson(data);
+        return GradeModel.fromJson(data);
         // Map<String, dynamic> data = jsonDecode(response.body)['grades'];
         // GradeModel grade = GradeModel.fromJson(data);
         // return grade;
@@ -418,11 +413,12 @@ class ApiService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/grades/$gradeId/albums'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('$baseUrl/grades/$gradeId/albums'));
     request.fields['desc'] = desc;
     request.headers.addAll(headers);
-    
-    for (var file in media ) {
+
+    for (var file in media) {
       final mimeType = lookupMimeType(file.path);
       if (mimeType != null) {
         request.files.add(await http.MultipartFile.fromPath(
@@ -430,7 +426,6 @@ class ApiService {
           file.path,
           contentType: MediaType.parse(mimeType),
         ));
-        
       }
     }
 
@@ -445,7 +440,7 @@ class ApiService {
         return jsonDecode(response.body);
       } else {
         throw Exception('Failed to create album: ${response.body}');
-      }    
+      }
     } catch (e) {
       print('Error in postAlbum: $e');
       rethrow;
@@ -474,7 +469,9 @@ class ApiService {
         final jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
           List<dynamic> albumsJson = jsonResponse['data'];
-          return albumsJson.map((albumJson) => Album.fromJson(albumJson)).toList();
+          return albumsJson
+              .map((albumJson) => Album.fromJson(albumJson))
+              .toList();
         } else {
           throw Exception('Failed to load albums');
         }
@@ -492,13 +489,11 @@ class ApiService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    final response = await http.get(
-      Uri.parse('$baseUrl/grades/$gradeId/tasks'),
-      headers: headers
-    );
-   
+    final response = await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks'),
+        headers: headers);
+
     if (response.statusCode == 200) {
-    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
       if (jsonResponse.containsKey('data')) {
         List tasksData = jsonResponse['data'];
         return tasksData.map((task) => Task.fromJson(task)).toList();
@@ -516,7 +511,8 @@ class ApiService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    var response = await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks/$taskId'));
+    var response =
+        await http.get(Uri.parse('$baseUrl/grades/$gradeId/tasks/$taskId'));
     if (response.statusCode == 200) {
       return Task.fromJson(jsonDecode(response.body));
     } else {
@@ -524,12 +520,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> createTask(
-    Map<String, String> fields, 
-    List<File> files, 
-    List<String> links, 
-    String gradeId
-  ) async {
+  Future<Map<String, dynamic>> createTask(Map<String, String> fields,
+      List<File> files, List<String> links, String gradeId) async {
     final token = box.read('token');
     // box.read()
     print(token);
@@ -537,7 +529,8 @@ class ApiService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/grades/$gradeId/tasks'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('$baseUrl/grades/$gradeId/tasks'));
     request.headers.addAll(headers);
 
     fields.forEach((key, value) {
@@ -559,7 +552,7 @@ class ApiService {
         ),
       );
     }
-    
+
     try {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
@@ -567,27 +560,26 @@ class ApiService {
         return jsonDecode(response.body);
       } else {
         throw Exception('Failed to create task: ${response.body}');
-      }    
+      }
     } catch (e) {
       print('Error in cretae task: $e');
       rethrow;
     }
-  } 
+  }
+
   Future<List<ReportModel>> fetchReports(int id, int gradeId) async {
-    final uri = Uri.parse('$baseUrl/grades/1/student-report/?id=$id&grade_id=$gradeId');
+    final uri =
+        Uri.parse('$baseUrl/grades/1/student-report/?id=$id&grade_id=$gradeId');
     final token = box.read('token');
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    final response = await http.get(
-      uri,
-      headers:headers
-    );
+    final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
-      
+
       if (jsonData['status'] == 'success' && jsonData.containsKey('data')) {
         final List<dynamic> data = jsonData['data'];
         return data.map((item) => ReportModel.fromJson(item)).toList();

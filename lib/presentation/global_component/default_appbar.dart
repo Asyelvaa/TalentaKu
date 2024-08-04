@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../infrastructure/theme/theme.dart';
-import '../login_page/controllers/login.controller.dart';
 
 class DefaultAppbar extends StatelessWidget {
   const DefaultAppbar({

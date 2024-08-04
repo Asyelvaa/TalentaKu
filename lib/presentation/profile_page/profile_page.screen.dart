@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../domain/models/user_model.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../global_component/default_appbar.dart';
 import '../global_component/icon_button_template.dart';
-import '../student_report_page/daily_report.screen.dart';
 import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_container.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
-import '../student_report_page/report_list_page.dart';
 
 class ProfilePageScreen extends GetView<ProfilePageController> {
   const ProfilePageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProfilePageController controller = Get.put(ProfilePageController());
 
     Future<void> _showLogoutConfirmationDialog() async {
       return showDialog(
@@ -65,45 +63,6 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: DefaultAppbar(),
       ),
-      // body: Obx(() {
-      //   if (controller.isLoading.value) {
-      //     return Center(child: CircularProgressIndicator());
-      //   } else if (controller.userData.value != null) {
-      //     var user = controller.userData.value!;
-      //     return Padding(
-      //       padding: EdgeInsets.all(16.0),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: [
-      //           Text('Name: ${user['name']}', style: TextStyle(fontSize: 18)),
-      //           // Text('Email: ${user.email}', style: TextStyle(fontSize: 18)),
-      //           // Text('Identification Number: ${user.identificationNumber}', style: TextStyle(fontSize: 18)),
-      //           // Text('Address: ${user.address}', style: TextStyle(fontSize: 18)),
-      //           // Text('Bir\th Date: ${user.birthInformation}', style: TextStyle(fontSize: 18)),
-      //           // Text('Roles: ${user.roles.join(', ')}', style: TextStyle(fontSize: 18)),
-      //           // user.photo != null
-      //           //     ? Image.network(user.photo!)
-      //           //     : Container(),
-      //           // SizedBox(height: 20),
-      //           // Text('Grades:', style: TextStyle(fontSize: 18)),
-      //           // Expanded(
-      //           //   child: ListView.builder(
-      //           //     itemCount: user.grades.length,
-      //           //     itemBuilder: (context, index) {
-      //           //       return ListTile(
-      //           //         title: Text(user.grades[index].toString()),
-      //           //       );
-      //           //     },
-      //           //   ),
-      //           // ),
-      //         ],
-      //       ),
-      //     );
-      //   } else {
-      //     return Center(child: Text('No user data found.'));
-      //   }
-      // })
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -113,8 +72,11 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 alignment: Alignment.center,
                 child: ProfilePicture(),
               ),
-              SizedBox( height: 12,),
+              SizedBox(
+                height: 10,
+              ),
               Obx(() {
+                final UserModel user = controller.user.value;
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -127,10 +89,10 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 } else {
                   return Column(
                     children: [
-                      Text(controller.username, style: AppTextStyle.tsTitle),
-                      Text(controller.roles.join(', '), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
-                      // Text(controller.currentUser.value!.name, style: AppTextStyle.tsTitle),
-                      // Text(controller.currentUser.value!.roles.join(', '), style: AppTextStyle.tsNormal.copyWith(color: AppColor.blue600)),
+                      Text(user.name, style: AppTextStyle.tsTitle),
+                      Text(user.roles.join(", "),
+                          style: AppTextStyle.tsNormal
+                              .copyWith(color: AppColor.blue600)),
                     ],
                   );
                 }
@@ -144,22 +106,20 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                   children: [
                     ProfileDataContainer(
                       title: "NIS",
-                      // icon: Icons.library_books_outlined,
-                      // dataUser: controller.currentUser.value!.identificationNumber ?? '-',
-                      dataUser: controller.userData['identification_number'],
+                      icon: Icons.library_books_outlined,
+                      dataUser: controller.user.value.identificationNumber,
                     ),
                     ProfileDataContainer(
                       title: "Kelompok",
-                      // icon: Icons.portrait_rounded,
-                      dataUser: '-',
-                      // dataUser: controller.user.join(", "),
+                      icon: Icons.portrait_rounded,
+                      dataUser: controller.user.value.grades.join(", "),
                     ),
                   ],
                 ),
               ),
               defaultHeightSpace,
               //LIST INFORMATION USER
-              Obx(() => controller.isLoading.value
+              Obx(() => controller.isLoading.value == true
                   ? Column(
                       children: [
                         ProfileList(
@@ -185,19 +145,14 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                         ProfileList(
                           Title: "Nama Lengkap",
                           Description: controller.userData['name'],
-                          // Description: controller.currentUser.value!.name,
                         ),
                         ProfileList(
                           Title: "Tampat, Tanggal Lahir",
                           Description: controller.userData['birth_information'],
-                          // Description: controller.currentUser.value!.birthInformation,
-
                         ),
                         ProfileList(
                           Title: "Alamat",
                           Description: controller.userData['address'],
-                          // Description: controller.currentUser.value!.address,
-
                         ),
                         ProfileList(
                           Title: "Mulai di RBA",
@@ -205,18 +160,17 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                         ),
                       ],
                     )),
-              defaultHeightSpace,
+              // defaultHeightSpace,
               // LAPORAN PEMBELAJARAN
-              if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) 
-                IconButtonTemplate(
+              IconButtonTemplate(
                 text: "Laporan Pembelajaran",
                 icon: Icons.arrow_forward,
                 colorButton: AppColor.blue600,
                 onPressed: () {
-                  Get.to(() => ReportListPage());
-                  // Get.toNamed(Routes.DAILY_REPORT);
+                  Get.toNamed(Routes.REPORT_LIST_PAGE,
+                      arguments: [controller.userData['id']]);
                 },
-              ),              
+              ),
               defaultHeightSpace,
               // LOGOUT
               IconButtonTemplate(

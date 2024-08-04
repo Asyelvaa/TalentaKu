@@ -10,7 +10,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
   final String descriptionContent;
   final int programId;
 
-   HomeBottomsheetInformation({
+  HomeBottomsheetInformation({
     Key? key,
     required this.informationTitle,
     required this.photoList,
@@ -75,38 +75,17 @@ class HomeBottomsheetInformation extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Flexible(
-            child: SingleChildScrollView(
-              child: Text(
-                descriptionContent,
-                style: AppTextStyle.tsNormal
-                    .copyWith(fontWeight: FontWeight.normal),
-              ),
-            ),
+            child: Text(descriptionContent, style: AppTextStyle.tsNormal),
           ),
           SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              minimumSize: Size(double.infinity, 50), // Button size
-            ),
-            child: Text('Kembali',
-                style: AppTextStyle.tsNormal
-                    .copyWith(fontWeight: FontWeight.bold)),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => _showEditPopup(context),
+                onTap: () => _showEditBottomSheet(context),
                 child: Container(
                   height: 50,
-                  width: 100,
+                  width: Get.width * 0.4,
                   decoration: BoxDecoration(
                     color: AppColor.blue200,
                     borderRadius: BorderRadius.circular(12),
@@ -123,22 +102,21 @@ class HomeBottomsheetInformation extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 20,
+                width: Get.width * 0.08,
               ),
               GestureDetector(
                 onTap: () async {
                   try {
-                   await _homePageController.deleteProgram(programId);
-                    // Beri notifikasi atau perbarui UI setelah sukses
+                    await _homePageController.deleteProgram(programId);
+
                     Get.snackbar('Success', 'Program deleted successfully');
                   } catch (e) {
-                    // Tampilkan pesan kesalahan
                     Get.snackbar('Error', 'Failed to delete program: $e');
                   }
                 },
                 child: Container(
                   height: 50,
-                  width: 100,
+                  width: Get.width * 0.4,
                   decoration: BoxDecoration(
                     color: AppColor.red,
                     borderRadius: BorderRadius.circular(12),
@@ -161,16 +139,26 @@ class HomeBottomsheetInformation extends StatelessWidget {
     );
   }
 
-  void _showEditPopup(BuildContext context) {
-    showDialog(
+  void _showEditBottomSheet(BuildContext context) {
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return EditProgramPopup(
-          programId: programId,
-          initialName: informationTitle,
-          initialDesc: descriptionContent,
-          initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
-          initialCategoryId: 1,
+        return Container(
+          height: heightScreen * 0.5,
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+            color: AppColor.white,
+          ),
+          child: EditProgramPopup(
+            programId: programId,
+            initialName: informationTitle,
+            initialDesc: descriptionContent,
+            initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
+            initialCategoryId: 1,
+          ),
         );
       },
     );
