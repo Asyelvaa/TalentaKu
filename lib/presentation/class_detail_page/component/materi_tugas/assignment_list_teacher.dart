@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../infrastructure/theme/theme.dart';
 import '../../../assignment_page/assignemnt_form_page.screen.dart';
@@ -11,7 +12,7 @@ class AssignmentListTeacher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ClassDetailController>();
+    final controller = Get.put(ClassDetailController());
     var tasks = controller.teacherTasks;
 
     return CustomScrollView(
@@ -19,7 +20,6 @@ class AssignmentListTeacher extends StatelessWidget {
         SliverToBoxAdapter(
           child: GestureDetector(
             onTap: () => Get.to(() => AssignemntFormPageScreen(), arguments: {
-              'taskId': null,
               'gradeId': controller.classItem['id'].toString()
             }),
             child: Padding(
@@ -43,7 +43,7 @@ class AssignmentListTeacher extends StatelessWidget {
               var task = tasks[index];
               return MateriItem(
                 title: task.title!,
-                tenggat: 'Tenggat: ${task.endDate}',
+                tenggat: 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}',
                 taskId: task.id.toString(),
                 gradeId: controller.classItem['id'].toString(),
               );

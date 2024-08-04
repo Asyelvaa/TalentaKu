@@ -142,7 +142,11 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     final body = jsonEncode({'score': score});
+    print(body);
+    print(url);
     var response = await http.post(Uri.parse(url), headers: headers, body: body);
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -153,7 +157,7 @@ class ApiServiceTask {
   // SUBMIT TASK
   Future<SubmissionModel> submitTask(String gradeId, String taskId, List<File> files) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/submit";
+    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/submission";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
@@ -172,8 +176,10 @@ class ApiServiceTask {
         ),
       );
     }
-    print('grade id : $gradeId');
-    print('task id : $taskId');
+    print(files.toList());
+    print(url);
+    print(headers);
+
 
     try {
       final streamedResponse = await request.send();
@@ -220,8 +226,7 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     final response = await http.get(Uri.parse(url),headers: headers);
-    print(response.body);
-    print(url);
+
     if (response.statusCode == 200) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
       if (jsonResponse.containsKey('data')) {
@@ -244,8 +249,7 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     var response = await http.get(Uri.parse(url), headers: headers);
-    print(url);
-    print(headers);
+
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       return Task.fromJson(json['data']);
@@ -253,22 +257,6 @@ class ApiServiceTask {
       throw Exception('Failed to load tasks');
     }
   }
-
-  // Future<TaskStudentModel> getDetailTaskStudent(String gradeId, String taskId) async {
-  //   final token = box.read('token');
-  //   final url = "$baseUrl/grades/$gradeId/tasks/$taskId";
-  //   var headers = {
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $token'
-  //   };
-  //   var response = await http.get(Uri.parse(url), headers: headers);
-  //   if (response.statusCode == 200) {
-  //     final json = jsonDecode(response.body);
-  //     return TaskStudentModel.fromJson(json['data']);
-  //   } else {
-  //     throw Exception('Failed to load tasks');
-  //   }
-  // }
 
   // SHOW SUBMISSION BY ID
   Future<SubmissionDetailModel> getSubmissionById(String gradeId, String taskId, String completionsId) async {
@@ -296,13 +284,7 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
 
-    print('Request URL: $url');
-    print('Request Headers: $headers');
-
     var response = await http.get(Uri.parse(url), headers: headers);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -318,13 +300,7 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
 
-    print('Request URL: $url');
-    print('Request Headers: $headers');
-
     var response = await http.get(Uri.parse(url), headers: headers);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

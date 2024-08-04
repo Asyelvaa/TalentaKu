@@ -48,10 +48,9 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     final arguments = Get.arguments as Map<String, dynamic>;
     taskId = arguments['taskId'] as String;
     gradeId = arguments['gradeId'] as String;
-    print('taskId: $taskId');
     fetchTaskDetails();
-    fetchSubmissionsWithNullScore(taskId);
-    fetchSubmissionsWithScore(taskId);
+    fetchSubmissionsWithNullScore();
+    fetchSubmissionsWithScore();
     
   }
 
@@ -138,7 +137,6 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     }
   }
 
-  // SCORING TASK 
 
   // SUBMIT TASK
   Future<void> submitTask(String taskId) async {
@@ -149,6 +147,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
         submissionFiles
       );
       print('Task submitted successfully with ID: ${taskId}');
+      controller.fetchAllTask();
       Get.back();
       dialogSuccess('Tugas Berhasil Dikumpulkan');
     } catch (e) {
@@ -160,6 +159,9 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
       submissionFiles.add(File(pickedFile.path));
     }
   }
+  void removeSubmissionMedia(File file) {
+     submissionFiles.removeWhere((element) => element.path == file.path);
+  }
 
   // SHOW TASK BY ID
   
@@ -168,7 +170,6 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     try {
       final taskDetails = await ApiServiceTask().getDetailTask(gradeId, taskId);
       taskDetail.value = taskDetails;
-      print(taskDetail);
       print(taskDetail.value!.title);
     } catch (e) {
       print("Error fetching task details: $e"); 
@@ -178,7 +179,7 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   }
   
   // SHOW SUBMISSION NULL SCORE 
- Future<void> fetchSubmissionsWithNullScore(String taskId) async {
+ Future<void> fetchSubmissionsWithNullScore() async {
   isLoading.value = true;
   try {
     final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId, taskId);
@@ -200,12 +201,13 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
  }
 
 
-  Future<void> fetchSubmissionsWithScore(String taskId) async {
+  Future<void> fetchSubmissionsWithScore() async {
     isLoading.value = true;
     try {
       final response = await ApiServiceTask().getSubmissionWithScore(gradeId, taskId);
       if (response.containsKey('data')) {
-        submissionsWithScore.assignAll((response['data'] as List).map((submission) => SubmissionDetailModel.fromJson(submission)).toList());
+        submissionsWithScore.assignAll((response['data'] as List)
+        .map((submission) => SubmissionDetailModel.fromJson(submission)).toList());
       } else {
         throw Exception('Invalid response format: "data" key not found');
       }

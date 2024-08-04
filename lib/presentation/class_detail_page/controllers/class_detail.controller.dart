@@ -32,7 +32,7 @@ class ClassDetailController extends GetxController {
 
   var isLoading = true.obs;
     late final List<String> userRole;
-    
+  
   @override
   void onInit() {
     super.onInit();
@@ -56,7 +56,6 @@ class ClassDetailController extends GetxController {
       isLoading.value = true;
       var data = await ApiServiceUser().getUserData();
       currentUser.value = data;
-      print('User data: ${currentUser.value.name}');
     } finally {
       isLoading.value = false;
     }
@@ -68,8 +67,8 @@ class ClassDetailController extends GetxController {
       dataClass.value = gradeDetail;
       classMembers.assignAll(gradeDetail.member!);
 
-      print('Detail class: ${gradeDetail.name}');
-      print('Class members: ${classMembers.length}');
+      // print('Detail class: ${gradeDetail.name}');
+      // print('Class members: ${classMembers.length}');
     } catch (e) {
       print('Error fetching grade details: $e');
     }
@@ -88,7 +87,6 @@ class ClassDetailController extends GetxController {
       var fetchedAlbums = await ApiServiceAlbum().getAllAlbum(classItem['id']);
       fetchedAlbums.sort((a, b) => b.date!.compareTo(a.date!));
       albums.assignAll(fetchedAlbums);
-      print(albums);
     } catch (e) {
       print('Error fetching albums: $e');
     } finally {
@@ -108,6 +106,7 @@ class ClassDetailController extends GetxController {
         taskList =  ApiServiceTask().getAllTaskStudent(classItem['id'].toString());
         studentTasks.assignAll(await taskList);
         print(studentTasks);
+        update();
       }
     } catch(e) {
       print('failed fetch task: $e');

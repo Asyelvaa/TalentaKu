@@ -5,18 +5,22 @@ import 'package:flutter_talentaku/presentation/submission_page/controllers/submi
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
+import '../common_widget/back_appbar.dart';
 import '../common_widget/text_background.dart';
 
-class SubmissionScoringPage extends GetView<SubmissionPageController> {
+class SubmissionScoringPage extends StatelessWidget {
   const SubmissionScoringPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var task = controller.task!;
+    final controller = Get.put(SubmissionPageController());
+    var submission = controller.submission.value;
+    var task = controller.task;
+    
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Submission Detail'),
-      ),
+      appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: BackAppbar(titleAppbar: 'Penilaian Tugas')),
       body: Obx(() {
         if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
@@ -32,9 +36,9 @@ class SubmissionScoringPage extends GetView<SubmissionPageController> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
-              Text('Title: ${controller.task.title}'),
-              Text('Start Date: ${controller.task.startDate}'),
-              Text('End Date: ${controller.task.endDate}'),
+              Text('Title: ${controller.task.value.title}'),
+              Text('Start Date: ${controller.task.value.startDate}'),
+              Text('End Date: ${controller.task.value.endDate}'),
               SizedBox(height: 20),
               Text(
                 'Submissions',
@@ -58,6 +62,13 @@ class SubmissionScoringPage extends GetView<SubmissionPageController> {
                 'Submission Media:',
                 style: AppTextStyle.tsBodyBold(AppColor.black),
               ),
+              Container(
+                height: 100,
+                child: Image.network(
+                  'https://talentaku.site/image/task-submission/${controller.submission.value.submissionMedia?[0].fileName}' ?? 'unknown',
+                  fit: BoxFit.scaleDown,
+                ),
+              ),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: controller.submission.value.submissionMedia?.length ?? 0,
@@ -73,29 +84,41 @@ class SubmissionScoringPage extends GetView<SubmissionPageController> {
                 'Score the Submission:',
                 style: AppTextStyle.tsBodyBold(AppColor.black),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.scoringSubmission(controller.submission.value.submissionId.toString(), 'A');
-                    },
-                    child: Text('A'),
+              Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: ['A', 'B', 'C'].map((score) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            controller.scoreController.text = score;
+                            controller.selectedScore.value = score;
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: controller.selectedScore.value == score ? Colors.green : null,
+                          ),
+                          child: Text(score),
+                        );
+                      }).toList(),
+                    );
+                  }),
+              ElevatedButton(
+                    onPressed: () async {
+                      await controller.scoringSubmission();
+                    }, 
+                    child: Center(
+                      child: Text(
+                        'Kirim Nilai',
+                        style: AppTextStyle.tsNormal,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size.fromHeight(50),
+                      backgroundColor: AppColor.blue100,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.scoringSubmission(controller.submission.value.submissionId.toString(), 'B');
-                    },
-                    child: Text('B'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.scoringSubmission(controller.submission.value.submissionId.toString(), 'C');
-                    },
-                    child: Text('C'),
-                  ),
-                ],
-              ),
             ],
           ),
             ],

@@ -19,7 +19,7 @@ class ContentScoring extends StatelessWidget {
         return Center(child: CircularProgressIndicator());
       }
 
-      if (controller.submissionsWithNullScore.isEmpty) {
+      if (controller.submissionsWithNullScore.isEmpty && controller.submissionsWithScore.isEmpty) {
         return Center(child: Text('Belum ada siswa yang mengumpulkan tugas'));
       }
 
@@ -30,23 +30,49 @@ class ContentScoring extends StatelessWidget {
             spaceHeightSmall,
             Text('Diserahkan', style: AppTextStyle.tsBodyBold(AppColor.black)),
             spaceHeightExtraSmall,
-            if (controller.submissionsWithNullScore.isEmpty)
-              Text('No submissions with null score', style: AppTextStyle.tsSmallRegular(AppColor.black)),
-            ...controller.submissionsWithNullScore.map((submission) => SubmissionItem(
-                  studentName: submission.studentSubmitted?.name ?? 'Unknown',
-                  score: null,
-                  submittedAt: submission.submittedAt!,
-                )),
+            Obx(() {
+              if (controller.submissionsWithNullScore.isEmpty) {
+                return Text('Belum ada tugas yang diserahkan', style: AppTextStyle.tsSmallRegular(AppColor.black));
+              } else
+              return Center(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: controller.submissionsWithNullScore.length,
+                  itemBuilder: (context, index) {
+                    final submission = controller.submissionsWithNullScore[index];
+                    return SubmissionItem(
+                      studentName: submission.studentSubmitted?.name ?? 'Unknown',
+                      score: null,
+                      submittedAt: submission.submittedAt!,
+                    );
+                  },
+                ),
+              );
+            }),
             spaceHeightNormal,
             Text('Dinilai', style: AppTextStyle.tsBodyBold(AppColor.black)),
             spaceHeightExtraSmall,
-            if (controller.submissionsWithScore.isEmpty)
-              Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsSmallRegular(AppColor.black)),
-            ...controller.submissionsWithScore.map((submission) => SubmissionItem(
-                  studentName: submission.studentSubmitted?.name ?? 'Unknown',
-                  score: submission.score, // Display score if available
-                  submittedAt: submission.submittedAt!,
-                )),
+            Obx(() {
+              if (controller.submissionsWithScore.isEmpty) {
+                return Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsSmallRegular(AppColor.black));
+              } else
+              return Container(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: controller.submissionsWithScore.length,
+                  itemBuilder: (context, index) {
+                    final submission = controller.submissionsWithScore[index];
+                    return SubmissionItem(
+                      studentName: submission.studentSubmitted?.name ?? 'Unknown',
+                      score: submission.score,
+                      submittedAt: submission.submittedAt!,
+                    );
+                  },
+                ),
+              );
+            }),
           ],
         ),
       );

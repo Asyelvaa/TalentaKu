@@ -22,7 +22,11 @@ class SubmissionItem extends StatelessWidget {
 
     return GestureDetector(
       // onTap: () { Get.to(() {});},
-      onTap: () { Get.to(() => SubmissionScoringPage());},
+      onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
+        'taskId': Get.arguments['taskId'],
+        'gradeId': Get.arguments['gradeId'],
+        'studentSubmitted': studentName,
+      });},
       child: Container(
         decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: AppColor.grey)),

@@ -13,44 +13,99 @@ class SubmissionPageController extends GetxController {
 
   late String gradeId;
   late String taskId;
-  late Task task;
+  late String studentSubmitted;
+  Rx<Task> task = Task().obs;
   RxBool isLoading = false.obs;
   Rx<SubmissionDetailModel> submission = SubmissionDetailModel().obs;
+  RxString selectedScore = ''.obs; 
   TextEditingController scoreController = TextEditingController();
   
   @override
   void onInit() {
     super.onInit();
     final arguments = Get.arguments as Map<String, dynamic>;
-    task = arguments['task'] as Task;
+    taskId = arguments['taskId'] as String;
     gradeId = arguments['gradeId'] as String;
-    fetchSubmissionsById(task.id.toString());
+    studentSubmitted = arguments['studentSubmitted'] as String;
+    
+    print('pass arg in submission: $taskId, $gradeId, $studentSubmitted');
+    print(studentSubmitted);
+    fetchSubmissionsById();
+    fetchTaskDetails();
   }
   
-  Future<void> fetchSubmissionsById(String taskId) async {
+  // Future<void> fetchSubmissionsById(String taskId) async {
+  //   isLoading.value = true;
+  //   try {
+  //     final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId, taskId);
+  //     if (response.containsKey('data')) {
+  //       submission.value = SubmissionDetailModel.fromJson(response['data']);
+  //       print(' submission submitted : ${submission.value.studentSubmitted}');
+  //     } else {
+  //       throw Exception('Invalid response format: "data" key not found');
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching submissions detail: $e');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+  Future<void> fetchSubmissionsById() async {
+  isLoading.value = true;
+  try {
+    final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId, taskId);
+    
+    if (response.containsKey('data')) {
+      List<dynamic> submissionsData = response['data'];
+
+      // Filter the submissions to find the one that matches the taskId
+      var filteredSubmissions = submissionsData.where((submission) {
+          return submission['task_id'].toString() == taskId &&
+                 submission['student_submitted']['name'] == studentSubmitted;
+        }).toList();
+
+      if (filteredSubmissions.isNotEmpty) {
+          // Assuming you only need the first matched submission
+          submission.value = SubmissionDetailModel.fromJson(filteredSubmissions.first);
+          print('Submission submitted: ${submission.value.studentSubmitted?.name}');
+        } else {
+          throw Exception('No submissions found for taskId: $taskId and studentSubmitted: $studentSubmitted');
+        }
+    } else {
+      throw Exception('Invalid response format: "data" key not found');
+    }
+  } catch (e) {
+    print('Error fetching submissions detail: $e');
+  } finally {
+    isLoading.value = false;
+  }
+}
+  Future<void> fetchTaskDetails() async {
     isLoading.value = true;
     try {
-      final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId, taskId);
-      if (response.containsKey('data')) {
-        submission.value = SubmissionDetailModel.fromJson(response['data']);
-      } else {
-        throw Exception('Invalid response format: "data" key not found');
-      }
+      final taskDetail = await ApiServiceTask().getDetailTask(gradeId, taskId);
+      task.value = taskDetail;      
     } catch (e) {
-      print('Error fetching submissions detail: $e');
+      print('Error fetching task details: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
-  Future<void> scoringSubmission(String submissionId, String score) async {
+
+  Future<void> scoringSubmission() async {
+    var score = scoreController.text; 
+    var submissionId = submission.value.submissionId.toString();
     isLoading.value = true;
     try {
-      final response = await ApiServiceTask().correctionTask(gradeId, task.id.toString(), submissionId, score);
+      final response = await ApiServiceTask().correctionTask(gradeId, taskId, submissionId, score);
       submission.value = SubmissionDetailModel.fromJson(response['message']);
-      dialogSuccess('Submission has been scored');
+      Get.back();
+      dialogSuccess('Berhasil menilai tugas');
     } catch (e) {
-      dialogError('Failed to score submission');
+      Get.back();
+      dialogError('Gagal menilai tugas');
+      print(e);
     } finally {
       isLoading.value = false;
     }

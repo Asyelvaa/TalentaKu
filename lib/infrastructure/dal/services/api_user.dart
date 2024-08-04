@@ -134,9 +134,6 @@ class ApiServiceUser {
     try {
       final response = await http.get(Uri.parse(url),headers: headers);
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body)); 
       } else {

@@ -1,7 +1,7 @@
 class Task {
   String? title;
-  String? startDate;
-  String? endDate;
+  DateTime? startDate;
+  DateTime? endDate;
   List<String>? desc;
   List<Media>? media;
   List<Link>? links;
@@ -23,8 +23,8 @@ class Task {
   
    factory Task.fromJson(Map<String, dynamic> json) => Task(
     title: json["title"] as String?,
-    startDate: json["start_date"] as String?,
-    endDate: json["end_date"] as String?,
+    startDate: DateTime.parse(json['start_date']),
+    endDate: DateTime.parse(json['end_date']),
     desc: (json["desc"] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
     media: (json["media"] as List<dynamic>?)?.map((x) => Media.fromJson(x)).toList() ?? [],
     links: (json["links"] as List<dynamic>?)?.map((x) => Link.fromJson(x)).toList() ?? [],
@@ -35,8 +35,8 @@ class Task {
 
   Map<String, dynamic> toJson() => {
         "title": title,
-        "start_date": startDate,
-        "end_date": endDate,
+        'start_date': startDate?.toIso8601String(),
+        'end_date': endDate?.toIso8601String(),
         "desc": desc,
         "media": media?.map((x) => x.toJson()).toList(),
         "links": links?.map((x) => x.toJson()).toList(),
