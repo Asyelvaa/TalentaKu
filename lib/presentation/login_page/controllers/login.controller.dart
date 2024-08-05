@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../../../infrastructure/dal/services/api_services.dart';
+import '../../../infrastructure/dal/services/api_user.dart';
 import '../../../infrastructure/navigation/routes.dart';
 
 class LoginController extends GetxController {
-  final ApiService apiService = ApiService();
+  final ApiServiceUser apiService = ApiServiceUser();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -14,6 +14,12 @@ class LoginController extends GetxController {
   var isAuth = false.obs;
   final isLoading = false.obs;
 
+  @override
+  void onInit() {
+    // autoLogin();
+    // login();
+    super.onInit();
+  }
   @override
   void onClose() {
     emailController.dispose();
@@ -23,14 +29,13 @@ class LoginController extends GetxController {
 
   Future<void> autoLogin() async {
     final box = GetStorage();
-    if (box.read("token") != null) {
+    if(box.read("token")) {
       final dataUser = box.read("dataUser") as Map<String, dynamic>;
       final token = dataUser["token"];
-      if (token != null) {
-        // use token to verify auto-login
+      if(token != null) {
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME_PAGE);
-      }
+      } 
     }
   }
 
@@ -45,12 +50,12 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
-    print({email, password});
-
+    // print(email);
+    // print(password);
     try {
       final response = await apiService.login(email, password);
       if (response['success']) {
-        final data = response['data'];
+        final data = response['data'];  
         final token = response['token'];
         box.write('dataUser', {
           'email': email,
@@ -60,9 +65,9 @@ class LoginController extends GetxController {
           'role': List<String>.from(data['roles']),
         } );
         box.write('token', token);
+        isAuth.value = true;
         Map<String, dynamic>? dataUser = box.read('dataUser');
         print(dataUser);
-        print(token);
         Get.offAllNamed(Routes.PICK_IMAGE);
       }
     } catch (e) {
@@ -70,6 +75,17 @@ class LoginController extends GetxController {
       print(e);
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await apiService.logout();
+      isAuth.value = false;
+      Get.offAllNamed(Routes.LoginScreen);
+    } catch (e) {
+      dialogError('Logout failed');
+      print(e);
     }
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'controllers/report_list_user_page.controller.dart';
 
 class ReportListUserPageScreen extends GetView<ReportListUserPageController> {

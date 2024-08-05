@@ -1,22 +1,18 @@
 class Album {
-  final int id;
-  final String desc;
-  final String date;
-  final String gradeId;
-  final String teacherId;
-  final String createdAt;
-  final String updatedAt;
-  final List<Media> media;
+ int? id;
+ List<String>? desc;
+ String? date;
+ String? gradeId;
+ String? teacherId;
+ List<Media>? media;
 
   Album({
-    required this.id, 
-    required this.desc, 
-    required this.date, 
-    required this.gradeId,
-    required this.teacherId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.media
+   this.id, 
+   this.desc, 
+   this.date, 
+   this.gradeId,
+   this.teacherId,
+   this.media
   });
 
   factory Album.fromJson(Map<String, dynamic> json) {
@@ -26,37 +22,29 @@ class Album {
 
     return Album(
       id: json['id'],
-      desc: json['desc'],
+      desc: List<String>.from(json['desc'] ?? []),
       date: json['date'],
       gradeId: json['grade_id'],
       teacherId: json['teacher_id'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
       media: mediaList,
     );
   }
 }
 
 class Media {
-  final int id;
-  final String filePath;
-  final String createdAt;
-  final String updatedAt;
+ int? id;
+ String? filePath;
 
   Media({
-    required this.id, 
-    required this.filePath,
-    required this.createdAt,
-    required this.updatedAt
+   this.id, 
+   this.filePath,
   });
 
   factory Media.fromJson(Map<String, dynamic> json) {
-    const String baseUrl = 'https://talentaku.site/api';
+    const String baseUrl = 'https://talentaku.site/image/album-media/';
     return Media(
       id: json['id'],
-      filePath: baseUrl + json['file_path'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      filePath: baseUrl + json['file_name'],
     );
   }
 }

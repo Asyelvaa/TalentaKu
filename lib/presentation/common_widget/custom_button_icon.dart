@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/theme.dart';
 
-class IconButtonTemplate extends StatelessWidget {
+class CustomButtonWithIcon extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final IconData icon;
   final Color colorButton;
+  final Color colorText;
+  final Color colorIcon;
   final VoidCallback onPressed;
 
-  const IconButtonTemplate({
+  const CustomButtonWithIcon({
     Key? key,
     required this.text,
-    this.icon,
+    required this.icon,
     required this.colorButton,
+    required this.colorText,
+    required this.colorIcon,
     required this.onPressed,
   }) : super(key: key);
 
@@ -33,7 +37,7 @@ class IconButtonTemplate extends StatelessWidget {
         children: [
           Text(
             text,
-            style: AppTextStyle.tsTitle.copyWith(color: AppColor.black),
+            style: AppTextStyle.tsTitleBold(colorText),
           ),
           Icon(
             icon,

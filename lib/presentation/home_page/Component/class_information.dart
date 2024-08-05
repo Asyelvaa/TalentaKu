@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
-import '../../global_component/text_background.dart';
+import '../../common_widget/text_background.dart';
 
 class ClassInformation extends StatelessWidget {
   final String titleInfo;

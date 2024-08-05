@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_button_icon.dart';
 import 'package:get/get.dart';
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/appbar_username.dart';
-import '../global_component/icon_button_template.dart';
+import '../common_widget/appbar_username.dart';
 import '../student_report_form/model/Student.dart';
 import 'component/profile_data_container_user.dart';
 import 'component/profile_data_user.dart';
@@ -131,10 +131,12 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                       )),
                 defaultHeightSpace,
                 if (student.roles.contains('Murid KB') || student.roles.contains('Murid SD'))
-                  IconButtonTemplate(
+                  CustomButtonWithIcon(
                     text: "Laporan Pembelajaran",
                     icon: Icons.arrow_forward_ios,
                     colorButton: AppColor.white,
+                    colorIcon: AppColor.blue600,
+                    colorText: AppColor.blue600,
                     onPressed: () {
                       Get.toNamed(Routes.REPORT_LIST_USER_PAGE);
                     },

@@ -6,9 +6,9 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
+  auto_size_text: ^3.0.0
   cupertino_calendar_picker: ^1.1.2
   cupertino_icons: ^1.0.2
-  dio: ^5.4.3+1
   flutter:
     sdk: flutter
   get: 4.6.6
@@ -18,11 +18,13 @@ dependencies:
   http_parser: any
   iconsax: ^0.0.8
   image_picker: ^1.1.2
-  intl: ^0.18.1
-  mime: any
-  path: any
+  intl: ^0.19.0
+  # mime: any
+  # path: any
   persistent_bottom_nav_bar: ^5.0.2
   readmore: ^3.0.0
+  url_launcher: ^6.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -31,6 +33,5 @@ flutter:
 
   uses-material-design: true
 
-  # uses-material-design: true
   assets:
     - assets/images/

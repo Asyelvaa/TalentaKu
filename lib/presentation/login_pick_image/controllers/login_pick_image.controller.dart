@@ -4,15 +4,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../infrastructure/dal/services/api_services.dart';
+import '../../../infrastructure/dal/services/api_user.dart';
 import '../../../infrastructure/navigation/routes.dart';
 
 
 class PickimageController extends GetxController {
 
-  final ApiService apiService = ApiService();
+  final ApiServiceUser apiService = ApiServiceUser();
   final box = GetStorage();
   final username = GetStorage().read('dataUser')?['username'];
+
   Rx<File?> image = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
@@ -20,13 +21,8 @@ class PickimageController extends GetxController {
   void onInit() {
     super.onInit();
     _loadStoredImage(); 
-    print(username);
   }
   
-  void getInitials() {
-    
-  }
-
   void _loadStoredImage() {
     String? storedImagePath = box.read('profile_image_path');
     if (storedImagePath != null) {
@@ -49,7 +45,7 @@ class PickimageController extends GetxController {
   Future<void> uploadImageToApi() async {
     isLoading.value = true; 
     try {
-      await apiService.uploadImageToApi(image.value!.path);
+      await apiService.postUserProfilePhoto(image.value!.path);
       Get.offNamed(Routes.NAVBAR);
     } catch(e){
       print("Error uploading image: $e");

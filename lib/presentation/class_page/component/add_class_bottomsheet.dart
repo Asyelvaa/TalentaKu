@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_button_action_main.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_button_action_secondary.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
+import '../../common_widget/custom_textFormField.dart';
 import '../controllers/class_page.controller.dart';
 
 class AddClassBottomSheet extends GetView<ClassController> {
@@ -28,116 +31,73 @@ class AddClassBottomSheet extends GetView<ClassController> {
             children: [
               // TITLE SECTION
               Container(
-                width: 40,
-                height: 5,
+                width: widthScreen * 0.1,
+                height: heightScreen * 0.005,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[300],
+                  borderRadius: defaultBorderRadius,
+                  color:AppColor.black.withOpacity(0.1),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  'Buat Kelas',
-                  style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
+                padding: EdgeInsets.symmetric(vertical : heightScreen * 0.01),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(AppImage.logoTalentaku, scale: 15,),
+                    defaultWidthtSpace,
+                    Text(
+                      'Buat Kelas Baru',
+                      style: AppTextStyle.tsTitleBold(AppColor.black),
+                    ),
+                  ],
                 ),
               ),
               // BODY SECTION
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: EdgeInsets.symmetric(vertical: heightScreen * 0.02),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: TextField(
-                          controller: controller.classNameController,
-                          decoration: InputDecoration(
-                            hintText: 'Nama Kelas',
-                            hintStyle: AppTextStyle.tsNormal,
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue200),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue600, width: 2.0),
-                            ),
-                            contentPadding: EdgeInsets.all(8),
-                          ),
-                      ),
+                    CustomTextFormField(
+                      loginController: controller.classNameController,
+                      labelText: "Nama Kelas",
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: TextField(
-                          controller: controller.classDescController,
-                          decoration: InputDecoration(
-                            hintText: 'Deskripsi Kelas',
-                            hintStyle: AppTextStyle.tsNormal,
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue200),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue600, width: 2.0),
-                            ),
-                            contentPadding: EdgeInsets.all(8),
-                          ),
-                      ),
+                    spaceHeightNormal,
+                    CustomTextFormField(
+                      loginController: controller.classDescController,
+                      labelText: "Deskripsi Kelas",
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: TextField(
-                          controller: controller.classLevelController,
-                          decoration: InputDecoration(
-                            hintText: 'Level Kelas',
-                            hintStyle: AppTextStyle.tsNormal,
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue200),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.blue600, width: 2.0),
-                            ),
-                            contentPadding: EdgeInsets.all(8),
-                          ),
-                      ),
+                    spaceHeightNormal,
+                    CustomTextFormField(
+                      loginController: controller.classLevelController,
+                      labelText: "Level Kelas",
                     ),
                   ],
                 ),
               ),   
-              // BOTTOM ACTION SECTION       
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
+              // BOTTOM ACTION SECTION     
+              Container(
+                width: widthScreen * 0.9,
+                height: heightScreen * 0.002,
+                decoration: BoxDecoration(
+                  borderRadius: defaultBorderRadius,
+                  color: AppColor.black.withOpacity(0.1),
+                ),
+              ),  
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: heightScreen * 0.02),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButtonActionSecondary(
+                      text: 'Kembali', 
+                      onPressed: () { Get.back();}
                     ),
-                    child: Text('Kembali', style: AppTextStyle.tsNormal.copyWith(fontWeight: FontWeight.bold)),
-                  ),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.createNewClass();
-                      // print('${controller.classNameController.text}, ${controller.classDescController.text}, ${controller.classLevelController.text}'); 
-                      Get.back();
-                      },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.blue600,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0
-                    ),
-                    child: Text('Buat', style: AppTextStyle.tsNormal
-                    .copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.white,
-                    )),
-                  ),
-                ],
+                    CustomButtonActionMain(
+                      text: 'Buat Kelas', 
+                      onPressed: () { controller.createNewClass(); Get.back();}
+                    )
+                  ],
+                ),
               ),
             ],
           ),

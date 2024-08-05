@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'component/circular_icon_button.dart';
 import 'controllers/assignment_page.controller.dart';
 

@@ -2,158 +2,60 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../domain/models/user_model.dart';
-import '../../../infrastructure/dal/services/api_services.dart';
+
+import '../../../domain/models/class_model.dart';
+import '../../../infrastructure/dal/services/api_class.dart';
+import '../../profile_page/controllers/profile_page.controller.dart';
 
 class ClassController extends GetxController {
-  final ApiService apiService = ApiService();
+
+  final ApiServiceClass apiService = ApiServiceClass();
+  final userController = Get.put(ProfilePageController());
+  RxList<String> userRole = <String>[].obs;
+
+  // RxList<GradeModel> gradeList = <GradeModel>[].obs;
+
+  // RxList<GradeModel> get activeClasses => gradeList.where((classItem) => classItem.isactive.toLowerCase() == '1').toList().obs;
+  // RxList<GradeModel> get inactiveClasses => gradeList.where((classItem) => classItem.isactive.toLowerCase() != '1').toList().obs;
+
+  RxList<Map<String, dynamic>> gradeList = <Map<String, dynamic>>[].obs;
+  List<Map<String, dynamic>> get activeClasses => gradeList.where((classItem) => classItem['is_active_status'].toLowerCase() == 'active').toList();
+  List<Map<String, dynamic>> get inactiveClasses => gradeList.where((classItem) => classItem['is_active_status'].toLowerCase() != 'active').toList();
+
+
   final classNameController = TextEditingController();
-  final classDescController = TextEditingController();
-  final classLevelController = TextEditingController();
-  final classCodeController = TextEditingController();
+  final classDescController = TextEditingController(); 
+  final classLevelController = TextEditingController(); 
+  final classCodeController = TextEditingController(); 
+
   var isLoading = false.obs;
-
-  // RxList<GradeModel> gradesList = <GradeModel>[].obs;
-  RxString message = ''.obs;
-  Rx<UserModel> currentUser = UserModel(
-    id: 0,
-    name: '',
-    email: '',
-    identificationNumber: '',
-    address: '',
-    birthInformation: '',
-    photo: '',
-    roles: [],
-    grades: [],
-  ).obs;
-
-  var userRole = <String>[].obs;
-  var gradeList = <Map<String, dynamic>>[].obs;
-      
-
 
   @override
   void onInit() {
-    fetchCurrentUser();
-    fetchGrades();
-    print(userRole);
-
+    print('token : ${GetStorage().read('token')}');
+    fetchCurrentUserRole();
+    showAllGrades();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void fetchCurrentUser() {
+  // Current User
+  void fetchCurrentUserRole() {
     final box = GetStorage();
 
     Map<String, dynamic>? dataUser = box.read('dataUser');
     if (dataUser != null) {
       userRole.value = List<String>.from(dataUser['role']);
+      print(userRole);
     }
   }
 
-  // var currentUser = Rxn<UserModel>();
-  // final UserService userService = UserService();
-  // Future<void> fetchCurrentUser() async {
-  //   isLoading.value = true;
-  //   final token = GetStorage().read('token');
-  //   try {
-  //     if (token != null) {
-  //       final user = await apiService.getCurrentUser(token);
-  //       userData.value = user;
-  //       await userService.saveUser(user);
-  //     } else {
-  //       throw Exception('No token found');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-  // void loadUserFromStorage() {
-  //   userData.value = userService.getUser();
-  // }
-
-  //  void fetchCurrentUser() async {
-  //   final token = GetStorage().read('token');
-  //   try {
-  //     UserModel user = await apiService.getCurrentUser();
-  //     currentUser.value = user;
-  //     List<GradeModel> updatedGrades = [];
-  //     for (var grade in user.grades) {
-  //       final matchedGrade = gradesList.firstWhere(
-  //         (element) => element.id == grade.id,
-  //         orElse: () => grade,
-  //       );
-  //       updatedGrades.add(matchedGrade);
-  //     }
-  //     currentUser.update((val) {
-  //       val?.grades = updatedGrades;
-  //     });
-  //   } catch (e) {
-  //     print('Error fetching current user: $e');
-  //   }
-  // }
-
-  Future<void> fetchGrades() async {
-    var grades;
-    try {
-      isLoading(true);
-      fetchCurrentUser();
-      if (userRole.any((role) => role.contains('Guru'))) {
-        grades = await ApiService().getGradesTeacher();
-      } else if (userRole.any((role) => role.contains('Murid'))) {
-        grades = await ApiService().getGradesStudent();
-      }
-
-      if (grades != null) {
-        gradeList.assignAll(grades);
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  // Future<void> fetchGrades() async {
-  //   try {
-  //     List<GradeModel> grades = await apiService.getGradesTeacher();
-  //     gradesList.assignAll(grades);
-  //     print('Grades: $grades');
-
-  //     if (currentUser.value.id != 0) {
-  //     List<GradeModel> updatedGrades = [];
-  //     for (var grade in currentUser.value.grades) {
-  //       final matchedGrade = gradesList.firstWhere(
-  //         (element) => element.id == grade.id,
-  //         orElse: () => grade,
-  //       );
-  //       updatedGrades.add(matchedGrade);
-  //     }
-  //     currentUser.update((val) {
-  //       val?.grades = updatedGrades;
-  //     });
-  //   }
-
-  //   } catch (e) {
-  //     print('Error fetching grades: $e');
-  //   }
-  // }
-
+  // Create
   Future<void> createNewClass() async {
     final name = classNameController.text;
     final desc = classDescController.text;
     final levelId = int.parse(classLevelController.text);
 
-    if (name.isEmpty || desc.isEmpty) {
+    if (name.isEmpty || desc.isEmpty || levelId == null) {
       print('All fields are required');
       return;
     }
@@ -163,7 +65,7 @@ class ClassController extends GetxController {
     try {
       final result = await apiService.createClass(name, desc, levelId);
       print(result);
-      await fetchGrades();
+      await showAllGrades();      
     } catch (e) {
       print('Error creating class: $e');
     } finally {
@@ -171,6 +73,7 @@ class ClassController extends GetxController {
     }
   }
 
+  // Join
   Future<void> joinNewClass() async {
     final uniqueCode = classCodeController.text;
     if (uniqueCode.isEmpty) {
@@ -180,8 +83,8 @@ class ClassController extends GetxController {
 
     isLoading.value = true;
     try {
-      final result = await apiService.joinClass(uniqueCode);
-      await fetchGrades();
+      await apiService.joinClass(uniqueCode);
+      await showAllGrades();      
     } catch (e) {
       print('Error joining class: $e');
     } finally {
@@ -189,5 +92,23 @@ class ClassController extends GetxController {
     }
   }
 
-  
+  // Show All teacher & Show All Student
+  Future<void> showAllGrades() async {
+     var grades;
+    try {
+      isLoading(true);
+      fetchCurrentUserRole();
+       if (userRole.any((role) => role.contains('Guru'))) {
+        grades = await apiService.getGradesTeacher();
+      } else if (userRole.any((role) => role.contains('Murid'))) {
+        grades = await apiService.getGradesStudent();
+      }
+      
+      if (grades != null) {
+        gradeList.assignAll(grades);
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
 }

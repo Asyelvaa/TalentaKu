@@ -24,7 +24,7 @@ class ClassAppbar extends GetView<ClassDetailController> {
         Get.back();
       },
       ),
-      title: Text( titleAppbar, style: AppTextStyle.tsTitle.copyWith(color: AppColor.white)),
+      title: Text( titleAppbar, style: AppTextStyle.tsTitleBold(AppColor.white)),
       backgroundColor: AppColor.blue600,
       actions: [
         PopupMenuButton<int>(
@@ -37,7 +37,6 @@ class ClassAppbar extends GetView<ClassDetailController> {
                 EditClassBottomSheet(),
                 isScrollControlled: true,
               );
-              // case 2 : Get.toNamed('/add-member-class'); break;
             }
           },
           itemBuilder: (context) => [
@@ -47,12 +46,8 @@ class ClassAppbar extends GetView<ClassDetailController> {
             ),
             PopupMenuItem(
               value: 1,
-              child: Text('Edit Class'),
-            ),
-            // PopupMenuItem(
-            //   value: 2,
-            //   child: Text('Tambah Siswa'),
-            // ),
+              child: Text('Edit Kelas'),
+            ),            
           ]
         )
       ],

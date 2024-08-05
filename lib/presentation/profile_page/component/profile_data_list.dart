@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
@@ -16,23 +15,30 @@ class ProfileList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(12),
+      margin: EdgeInsets.only(bottom: 8),
       width: Get.width,
       decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: AppColor.blue300, width: 2))),
+        color: AppColor.white,
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.black.withOpacity(0.1),
+            offset: Offset(0, 2),
+            blurRadius: 4,
+          ),
+        ],
+        borderRadius: defaultBorderRadius
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              Title,
-            style:
-                GoogleFonts.manrope(fontWeight: FontWeight.w600, fontSize: 12),
+            Title,
+            style: AppTextStyle.tsSmallRegular(AppColor.black),
           ),
           Text(
             Description ?? " Data User ",
-            style:
-                GoogleFonts.manrope(fontWeight: FontWeight.w600, fontSize: 16),
+            style: AppTextStyle.tsBodyBold(AppColor.black),
           ),
         ],
       ),

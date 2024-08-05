@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/profile_page/controllers/profile_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -13,6 +14,7 @@ class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PickimageController controller = Get.put(PickimageController());
+    // final ProfilePageController userController = Get.put(ProfilePageController());
 
     return Stack(
         children: [
@@ -21,20 +23,16 @@ class ProfilePicture extends StatelessWidget {
               return controller.image.value != null
               ? CircleAvatar(
                 radius: 60,
+                // backgroundImage:  NetworkImage('https://talentaku.site/image/profile/' + userController.currentUser.value.photo!),
                 backgroundImage:  FileImage(controller.image.value!)
-                // backgroundImage:  FileImage(controller.profileImage)
               )
               : CircleAvatar( 
                   radius: 60,
                   backgroundColor: AppColor.blue600,
                   child: Text(
                   controller.username.substring(2).toUpperCase(),
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: AppColor.white
-                  ),
-                )                        
+                  style: AppTextStyle.tsSmallBold(AppColor.white)
+                  )                 
               );
             }),
           Positioned(

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/album_form_page/component/upload_option_bottomsheet.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_button_icon.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
-import '../global_component/back_appbar.dart';
+import '../common_widget/back_appbar.dart';
 import 'controllers/album_form.controller.dart';
 
-class AlbumFormScreen extends GetView<AlbumFormController> {
+class AlbumFormScreen extends StatelessWidget {
   const AlbumFormScreen({Key? key}) : super(key: key);
 
   Future<void> _confirmRemoveMedia(int index) async {
+    final controller = Get.find<AlbumFormController>();
     final result = await Get.dialog<bool>(
       AlertDialog(
         title: Text('Hapus Media'),
@@ -35,7 +37,9 @@ class AlbumFormScreen extends GetView<AlbumFormController> {
 
   @override
   Widget build(BuildContext context) {
-    final String gradeId = Get.arguments as String;
+     final arguments = Get.arguments as Map<String, dynamic>;
+    final gradeId = arguments['gradeId'] as String;
+    final controller = Get.put(AlbumFormController());
 
     return Scaffold(
         backgroundColor: AppColor.background,
@@ -168,11 +172,7 @@ class AlbumFormScreen extends GetView<AlbumFormController> {
                 // BUTTON UPLOAD
                 ElevatedButton(
                   onPressed: () async {
-                  await controller.uploadAlbumPost(gradeId, (bool success) {
-                    if(success) {
-                      Get.back();
-                    }
-                    });
+                  await controller.uploadAlbumPost(gradeId,);
                   }, 
                   child: Center(
                     child: Text(

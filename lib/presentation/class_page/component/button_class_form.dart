@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';
@@ -26,12 +28,12 @@ class ButtonClassForm extends GetView<ClassController> {
   
   @override
   Widget build(BuildContext context) {
-    // final List<String> userRole = (GetStorage().read('role') ?? []).cast<String>();
     return GestureDetector(
       onTap: (){
-        if (controller.userRole.any((role) => role == 'Guru KB' || role == 'Guru SD')) {
+        var userRole = controller.userRole;
+        if (userRole.any((role) => role.contains('Guru'))) {
           _showAddClassBottomSheet(context);
-        } else if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD')) {
+        } else if (userRole.any((role) => role.contains('Murid'))) {
           _showJoinClassBottomSheet(context);
         } else {
           Get.snackbar("Gagal", "Anda tidak memiliki role akses");
@@ -40,22 +42,23 @@ class ButtonClassForm extends GetView<ClassController> {
       child: Container(
         width: Get.width,
         decoration: BoxDecoration(
-          color: AppColor.blue100,
-          borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          color: AppColor.blue700,
+          borderRadius: defaultBorderRadius,),
+          padding: EdgeInsets.symmetric(
+            vertical: heightScreen * 0.02, 
+            horizontal: widthScreen * 0.03
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-              "assets/images/logo_talentaku.png", scale: 20,),
-            ),
-            Text(
-              "Klik bagian ini untuk mendapatkan kelas baru",
-              style: AppTextStyle.tsLittle,
-              overflow: TextOverflow.ellipsis,
+            Image.asset( AppImage.logoTalentaku, scale: 15,),
+            Expanded(
+              child: AutoSizeText(
+                "Klik bagian ini untuk mendapatkan kelas baru",
+                style: AppTextStyle.tsSmallBold(AppColor.white),
+                maxLines: 1,
+                textAlign: TextAlign.center,
+              ),
             )
           ],
         ),

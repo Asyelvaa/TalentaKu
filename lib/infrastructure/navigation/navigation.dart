@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';
 
 import 'package:get/get.dart';
 
 import '../../config.dart';
-import '../../presentation/global_component/navigation_menu.dart';
+import '../../presentation/common_widget/navigation_menu.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';
@@ -81,6 +82,11 @@ class Nav {
       name: Routes.STUDENT_REPORT_FORM,
       page: () => const StudentReportFormScreen(),
       binding: StudentReportFormControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.SUBMISSION_PAGE,
+      page: () => const SubmissionCompletePageScreem(),
+      binding: SubmissionPageControllerBinding(),
     ),
     GetPage(
       name: Routes.PROFILE_USER,
