@@ -22,23 +22,23 @@ class HeaderClass extends StatelessWidget {
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(24),
               bottomRight: Radius.circular(24))),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-        child: Obx(() {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.classMembers.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              final profile = controller.classMembers[index];
-              return ProfileNameAvatar(
-                name: profile.name,
-                profile: profile.photo,
-              );
-            },
-          );
-        }),
-      ),
+      // child: Padding(
+      //   padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+      //   child: Obx(() {
+      //     return ListView.builder(
+      //       shrinkWrap: true,
+      //       itemCount: controller.classMembers.length,
+      //       scrollDirection: Axis.horizontal,
+      //       itemBuilder: (context, index) {
+      //         final profile = controller.classMembers[index];
+      //         return ProfileNameAvatar(
+      //           name: profile.name!,
+      //           profile: profile.photo! ?? '',
+      //         );
+      //       },
+      //     );
+      //   }),
+      // ),
     );
   }
 }

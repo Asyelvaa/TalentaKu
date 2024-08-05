@@ -249,7 +249,7 @@ class ApiServiceTask {
       'Authorization': 'Bearer $token'
     };
     var response = await http.get(Uri.parse(url), headers: headers);
-
+    print(response.body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       return Task.fromJson(json['data']);

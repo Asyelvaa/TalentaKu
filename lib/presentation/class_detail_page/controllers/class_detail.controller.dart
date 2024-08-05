@@ -66,9 +66,8 @@ class ClassDetailController extends GetxController {
       GradeModel gradeDetail = await apiService.getDetailClass(classItem['id']);
       dataClass.value = gradeDetail;
       classMembers.assignAll(gradeDetail.member!);
-
-      // print('Detail class: ${gradeDetail.name}');
-      // print('Class members: ${classMembers.length}');
+      print('Detail class: ${gradeDetail.name}');
+      print('Class members: ${classMembers.length}');
     } catch (e) {
       print('Error fetching grade details: $e');
     }
@@ -77,7 +76,7 @@ class ClassDetailController extends GetxController {
   void toggleActiveStatus(bool isActive) async {
     await apiService.classStatus(dataClass.value.id!);
     dataClass.update((val) {
-      val!.isactive = isActive ? 'active' : 'inactive';
+      val!.isActiveStatus = isActive ? 'active' : 'inactive';
     });
   }
 

@@ -37,20 +37,33 @@ class AssignmentListTeacher extends StatelessWidget {
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              var task = tasks[index];
-              return MateriItem(
-                title: task.title!,
-                tenggat: 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}',
-                taskId: task.id.toString(),
-                gradeId: controller.classItem['id'].toString(),
-              );
-            },
-            childCount: tasks.length,
-          ),
-        )
+        tasks.isEmpty
+            ? SliverToBoxAdapter(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "Belum ada tugas yang dibuat",
+                      style: AppTextStyle.tsSmallRegular(AppColor.black),
+                    ),
+                  ),
+                ),
+              )
+            : SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    var task = tasks[index];
+                    return MateriItem(
+                      title: task.title!,
+                      tenggat:
+                          'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}',
+                      taskId: task.id.toString(),
+                      gradeId: controller.classItem['id'].toString(),
+                    );
+                  },
+                  childCount: tasks.length,
+                ),
+              ),
       ],
     );
   }

@@ -50,18 +50,19 @@ class ApiServiceClass {
 
   Future<void> joinClass(String uniqueCode) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/join";
+    final url = "$baseUrl/grades/member-join";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
     };
     final body = jsonEncode({
       'unique_code': uniqueCode
     });
     try {
-      var response = await http.post(Uri.parse(url),headers: headers,body: body);
-      
-      if (response.statusCode == 201) {
+      var response = await http.put(Uri.parse(url),headers: headers,body: body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         print('Joined class successfully');
       } else {
         throw Exception('Failed to join class:${response.statusCode}');
@@ -145,7 +146,7 @@ class ApiServiceClass {
 
     try {
       var response = await http.get(Uri.parse(url),headers: headers,);
-
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final data = jsonResponse['data'];

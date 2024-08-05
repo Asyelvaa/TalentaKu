@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:flutter_talentaku/presentation/class_page/controllers/class_page.controller.dart';
 import 'package:get/get.dart';
@@ -23,22 +24,30 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
       child: Column(
         children: [
           // HEADER
-          Container(
-            width: 40,
-            height: 5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[300],
+         Container(
+              width: widthScreen * 0.1,
+              height: heightScreen * 0.005,
+              decoration: BoxDecoration(
+                borderRadius: defaultBorderRadius,
+                color:AppColor.black.withOpacity(0.1),
+              ),
             ),
-          ),
           Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text(
-              'Pengaturan Kelas',
-              style: AppTextStyle.tsTitle.copyWith(fontSize: 16),
+              padding: EdgeInsets.symmetric(vertical : heightScreen * 0.01),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(AppImage.logoTalentaku, scale: 15,),
+                  defaultWidthtSpace,
+                  Text(
+                    'Pengaturan Kelas',
+                    style: AppTextStyle.tsTitleBold(AppColor.black),
+                  ),
+                ],
+              ),
             ),
-          ),
           // BODY
+          
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -54,19 +63,29 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: Text('Kode Kelas', style: AppTextStyle.tsNormal)),
+                            Expanded(child: Text('Kode Kelas', style: AppTextStyle.tsBodyBold(AppColor.black))),
                             TextWithBackground(
                               colorBackground: AppColor.blue200, 
-                              text: grade.uniqueCode!
+                              text: controller.dataClass.value.uniqueCode! ?? '',
                               ),
                               SizedBox(width: 4,),
-                            Icon(
+                            GestureDetector(
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: grade.uniqueCode!));
+                              Get.snackbar('Salin Kode', 'Kode Kelas berhasil di salin', 
+                              snackPosition: SnackPosition.TOP, 
+                              backgroundColor: AppColor.blue200,                              
+                              );
+                            },
+                            child: Icon(
                               Icons.copy_rounded,
                               size: 20,
-                            )
+                            ),
+                          ),
                           ],
                         ),
-                        Text('Nama Kelas', style: AppTextStyle.tsNormal),
+                        
+                        Text('Nama Kelas', style: AppTextStyle.tsBodyBold(AppColor.black)),
                         TextField(
                           controller: controller.classNameController,
                           decoration: InputDecoration(
@@ -82,7 +101,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                             ),
                           ),                  
                         ),
-                        Text('Deskripsi Kelas', style: AppTextStyle.tsNormal),
+                        Text('Deskripsi Kelas',style: AppTextStyle.tsBodyBold(AppColor.black)),                        
                         TextField(
                           controller: controller.classDescController,
                           decoration: InputDecoration(
@@ -98,50 +117,50 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                             ),
                           ),
                         ),
-                        Text('Level Kelas', style: AppTextStyle.tsNormal),
+                        Text('Level Kelas',style: AppTextStyle.tsBodyBold(AppColor.black)),
                         TextField(
                           controller: controller.classLevelController,
                           decoration: InputDecoration(
-                            hintText: grade.level.toString(),
+                            hintText: grade.levelName,
                             hintStyle: AppTextStyle.tsNormal,
-                            border: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: AppColor.blue200),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColor.blue600, width: 1),
-                            ),
+                            fillColor: AppColor.grey,
+                            
                           ),
                         ),                        
                         Row(children: [
-                          Text('Guru Kelas : ',style: AppTextStyle.tsNormal),
-                          Text('${grade.teacherId}' ,style: AppTextStyle.tsNormal),
+                          Text('Guru Kelas : ',style: AppTextStyle.tsBodyBold(AppColor.black)),
+                          Text('${grade.teacher!}' ,style: AppTextStyle.tsNormal),
                         ],),
-                        Text('Anggota Kelas', style: AppTextStyle.tsNormal),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: grade.member!.length,
-                          itemBuilder: (context, index) {
-                            final member = grade.member![index];
-                            return ListTile(
-                              title: Text(member.name, style: AppTextStyle.tsLittle,),
-                              leading: CircleAvatar(
-                                backgroundColor: AppColor.blue100,
-                                child: Text(member.name[0]),
-                              ),
-                            );
-                          },
-                        ),
+                       Text('Anggota Kelas', style: AppTextStyle.tsBodyBold(AppColor.black)),
+                      grade.member == null || grade.member!.isEmpty
+                        ? Text('Belum ada siswa yang bergabung', style: AppTextStyle.tsNormal)
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: grade.member!.length,
+                            itemBuilder: (context, index) {
+                              final member = grade.member![index];
+                              return ListTile(
+                                title: Text(
+                                  member.name!,
+                                  style: AppTextStyle.tsLittle,
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundColor: AppColor.blue100,
+                                  child: Text(member.name![0]),
+                                ),
+                              );
+                            },
+                          ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Active Class',
-                                  style: AppTextStyle.tsNormal),
+                                  style: AppTextStyle.tsBodyBold(AppColor.black)),
                               Switch(
-                                value: grade.isactive == "active",
+                                activeColor: AppColor.blue600,
+                                value: grade.isActiveStatus == "active",
                                 onChanged: (value) {
                                   controller.toggleActiveStatus(value);
                                 },
