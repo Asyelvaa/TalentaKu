@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
-import 'package:flutter_talentaku/presentation/class_page/controllers/class_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 

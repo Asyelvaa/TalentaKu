@@ -7,16 +7,20 @@ environment:
 
 dependencies:
   auto_size_text: ^3.0.0
+  cupertino_calendar_picker: ^1.1.2
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   get: 4.6.6
   get_storage: any
   google_fonts: ^6.2.1
-  http: ^1.2.1
+  http: ^1.2.2
+  http_parser: any
   iconsax: ^0.0.8
   image_picker: ^1.1.2
   intl: ^0.19.0
+  # mime: any
+  # path: any
   persistent_bottom_nav_bar: ^5.0.2
   readmore: ^3.0.0
   url_launcher: ^6.3.0

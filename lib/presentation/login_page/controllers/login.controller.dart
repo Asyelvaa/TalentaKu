@@ -57,15 +57,13 @@ class LoginController extends GetxController {
       if (response['success']) {
         final data = response['data'];  
         final token = response['token'];
-        box.write(
-          'dataUser', {
-            'email': email,
-            'password': password,
-            'username': data['name'],
-            'id' : data['id'],
-            'role': List<String>.from(data['roles']),
-          }
-        );
+        box.write('dataUser', {
+          'email': email,
+          'password': password,
+          'username': data['name'],
+          'id': data['id'],
+          'role': List<String>.from(data['roles']),
+        } );
         box.write('token', token);
         isAuth.value = true;
         Map<String, dynamic>? dataUser = box.read('dataUser');
@@ -103,5 +101,4 @@ class LoginController extends GetxController {
       duration: Duration(seconds: 3),
     );
   }
-  
 }

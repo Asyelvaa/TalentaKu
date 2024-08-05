@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
-
 import 'component/form.dart';
 import 'controllers/student_report_form.controller.dart';
 
@@ -11,14 +11,11 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
 
   @override
   Widget build(BuildContext context) {
-    double heightScreen = MediaQuery.of(context).size.height;
-    double widthScreen = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            // Handle back navigation
+            Get.back();
           },
           icon: Icon(Icons.arrow_back),
           color: AppColor.blue500,
@@ -33,7 +30,6 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Date input fields
             Row(
               children: [
                 Container(
@@ -44,14 +40,59 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   alignment: Alignment.center,
-                  child: TextFormField(
-                    controller: controller.createdController,
-                    decoration: InputDecoration(
-                      labelText: "DD/MM/YYYY",
-                      hintStyle: AppTextStyle.tsLittle,
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            height: 250,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(22)),
+                                      color: AppColor.background),
+                                  child: CupertinoDatePicker(
+                                    initialDateTime: DateTime.now(),
+                                    onDateTimeChanged: (DateTime newDateTime) {
+                                      controller.createdController.text =
+                                          "${newDateTime.year}/${newDateTime.month}/${newDateTime.day}";
+                                    },
+                                    use24hFormat: true,
+                                    mode: CupertinoDatePickerMode.date,
+                                  ),
+                                ),
+                                CupertinoButton(
+                                  color: AppColor.blue100,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  child: Text(
+                                    'Done',
+                                    style: AppTextStyle.tsLittle,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: TextFormField(
+                      controller: controller.createdController,
+                      decoration: InputDecoration(
+                        labelText: "YYYY/MM/DD",
+                        hintStyle: AppTextStyle.tsLittle,
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      ),
+                      enabled: false,
                     ),
                   ),
                 ),
@@ -77,7 +118,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               ],
             ),
             SizedBox(height: heightScreen * 0.02),
-            // Kegiatan Awal section
+
             Text(
               "Kegiatan Awal",
               style: AppTextStyle.tsTitle,
@@ -100,7 +141,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               textController: controller.kegiatanIntiTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
-              pointType: 'Kurang', // Contoh penggunaan pointType
+              pointType: 'Kurang', 
             ),
             SizedBox(height: heightScreen * 0.02),
             // Snack section
@@ -113,7 +154,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               textController: controller.SnackTextController,
               controller: controller,
               sectionTitle: "Snack",
-              pointType: 'Belum Muncul', // Contoh penggunaan pointType
+              pointType: 'Belum Muncul',
             ),
             SizedBox(height: heightScreen * 0.02),
             // Inklusi section
@@ -126,7 +167,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               textController: controller.inklusiTextController,
               controller: controller,
               sectionTitle: "Inklusi",
-              pointType: 'Muncul', // Contoh penggunaan pointType
+              pointType: 'Muncul',
             ),
             SizedBox(height: heightScreen * 0.02),
             // Catatan section
@@ -159,7 +200,6 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               ),
             ),
             SizedBox(height: heightScreen * 0.02),
-            // Media (foto/vidio)
             GestureDetector(
               onTap: () {
                 controller.pickImage();
@@ -191,7 +231,6 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               }),
             ),
             SizedBox(height: heightScreen * 0.02),
-            // Select students section
             Text(
               "Kirim Laporan untuk",
               style: AppTextStyle.tsTitle,
@@ -235,8 +274,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               onTap: () {
                 int studentId = controller.selectedStudents.first.id;
                 controller.submitReport(
-                  created: controller.createdController.text
-                      .replaceAll(RegExp(r'/'), '-'),
+                  created: controller.createdController.text,
                   semesterId: int.parse(controller.semesterIdController.text),
                   kegiatanAwal: controller.kegiatanIntiTextController.text,
                   awalPoint: controller.selectedOptions['Kegiatan Awal']!,

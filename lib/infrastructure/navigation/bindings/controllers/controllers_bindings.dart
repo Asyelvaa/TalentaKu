@@ -4,9 +4,13 @@ export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/class.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/class_detail.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/daily_report.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/edit_report_user_page.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/home_page.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/login.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/pickimage.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/profile_page.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/student_report_form.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/submission_page.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/profile_user.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/report_list_page.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/report_list_user_page.controller.binding.dart'; 

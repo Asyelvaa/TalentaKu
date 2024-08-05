@@ -3,8 +3,6 @@ import 'package:flutter_talentaku/presentation/submission_page/submission_comple
 
 import 'package:get/get.dart';
 
-import 'package:flutter_talentaku/presentation/album_page/album_detail_page.screen.dart';
-
 import '../../config.dart';
 import '../../presentation/common_widget/navigation_menu.dart';
 import '../../presentation/screens.dart';
@@ -89,6 +87,26 @@ class Nav {
       name: Routes.SUBMISSION_PAGE,
       page: () => const SubmissionCompletePageScreem(),
       binding: SubmissionPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE_USER,
+      page: () => ProfileUserScreen(),
+      binding: ProfileUserControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.REPORT_LIST_PAGE,
+      page: () => const ReportListPageScreen(),
+      binding: ReportListPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.REPORT_LIST_USER_PAGE,
+      page: () => const ReportListUserPageScreen(),
+      binding: ReportListUserPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.EDIT_REPORT_USER_PAGE,
+      page: () => const EditReportUserPageScreen(),
+      binding: EditReportUserPageControllerBinding(),
     ),
   ];
 }

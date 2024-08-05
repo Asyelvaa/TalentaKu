@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/home_page.controller.dart';
-import '../models/information_data.dart';
 import 'home_popup_infromation.dart';
 
 class VisiMisiComponent extends StatelessWidget {

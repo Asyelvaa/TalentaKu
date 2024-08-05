@@ -25,15 +25,13 @@ class CustomButtonWithIcon extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(colorButton),
-        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-          EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            
-            borderRadius: defaultBorderRadius,
-          )
-      )),
+          backgroundColor: MaterialStateProperty.all<Color>(colorButton),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+          ))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -43,7 +41,7 @@ class CustomButtonWithIcon extends StatelessWidget {
           ),
           Icon(
             icon,
-            color: colorIcon,
+            color: AppColor.black,
           ),
         ],
       ),

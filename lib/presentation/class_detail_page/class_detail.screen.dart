@@ -8,7 +8,7 @@ import 'component/beranda/content_beranda.dart';
 import 'component/materi_tugas/content_assignment.dart';
 import '../../infrastructure/theme/theme.dart';
 import 'controllers/class_detail.controller.dart';
- 
+
 class ClassDetailScreen extends GetView<ClassDetailController> {
   const ClassDetailScreen({Key? key}) : super(key: key);
   @override
@@ -63,4 +63,3 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
     ));
   }
 }
-

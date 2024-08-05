@@ -3,7 +3,6 @@ import 'package:flutter_talentaku/presentation/class_detail_page/component/edit_
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
 
-import '../../../domain/models/class_model.dart';
 import '../../../infrastructure/theme/theme.dart';
 
 

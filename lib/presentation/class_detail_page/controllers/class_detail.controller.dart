@@ -111,7 +111,7 @@ class ClassDetailController extends GetxController {
       print('failed fetch task: $e');
     }
   }
-
+  
   // Update
   // Future<void> updateClass() async {
   //   try{
@@ -146,7 +146,7 @@ class ClassDetailController extends GetxController {
   //     grade.update((val) {
   //       if (name != null) val!.name = name;
   //       if (desc != null) val!.desc = desc;
-  //       if (levelId != null) val!.level = levelId;  
+  //       if (levelId != null) val!.level = levelId;
   //     });
   //     print('Grade updated successfully');
   //   } catch (e) {

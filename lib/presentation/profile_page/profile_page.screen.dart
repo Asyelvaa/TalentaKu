@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../domain/models/user_model.dart';
+import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/custom_button.dart';
 import '../common_widget/custom_popup_dialog.dart';
@@ -9,7 +11,6 @@ import '../common_widget/custom_button_icon.dart';
 import 'controllers/profile_page.controller.dart';
 import 'component/profile_data_list.dart';
 import 'component/profile_picture.dart';
-import '../student_report_page/report_list_page.dart';
 
 class ProfilePageScreen extends GetView<ProfilePageController> {
   const ProfilePageScreen({super.key});
@@ -32,8 +33,11 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 alignment: Alignment.center,
                 child: ProfilePicture(),
               ),
-              SizedBox( height: 12,),
+              SizedBox(
+                height: 10,
+              ),
               Obx(() {
+                final user = controller.currentUser.value;
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -119,7 +123,10 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     colorIcon: AppColor.black,
                     colorText: AppColor.black,
                     onPressed: () {
-                      Get.to(() => ReportListPage());
+                      Get.toNamed(Routes.REPORT_LIST_PAGE, 
+                      arguments: [controller.currentUser.value.id]
+                      );
+                      
                     },
                   );
                 } else {
@@ -165,3 +172,4 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
     );
   }
 }
+

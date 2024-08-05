@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/common_widget/text_background.dart';
 import 'package:flutter_talentaku/presentation/home_page/controllers/home_page.controller.dart';
 import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
-import '../models/program_data.dart';
 import 'edit_program.dart';
 import 'header_content.dart';
-import 'home_bottomsheet_information.dart';
 
 class SlideContact extends GetView<HomePageController> {
   final String headerContent;

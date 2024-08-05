@@ -8,7 +8,6 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-import 'package:flutter/material.dart';
 
 class SlideInformation extends StatelessWidget {
   final String headerContent;

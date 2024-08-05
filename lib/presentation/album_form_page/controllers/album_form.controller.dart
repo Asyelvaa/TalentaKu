@@ -67,14 +67,10 @@ class AlbumFormController extends GetxController {
 
   Future<void> pickMedia() async {
     final pickedFiles = await _picker.pickMultiImage();
-    if (pickedFiles != null) {
-      print('pickedFiles: $pickedFiles');
-      final files = pickedFiles.map((pickedFile) => File(pickedFile.path)).toList();
-      selectedMedia.addAll(files);    
-    } else {
-      print('No image selected');
+    print('pickedFiles: $pickedFiles');
+    final files = pickedFiles.map((pickedFile) => File(pickedFile.path)).toList();
+    selectedMedia.addAll(files);    
     }
-  }
 
   Future<void> uploadAlbumPost(gradeId) async {
     final controller = Get.put(ClassDetailController());
