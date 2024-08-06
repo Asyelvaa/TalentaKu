@@ -99,13 +99,13 @@ class SubmissionPageController extends GetxController {
     isLoading.value = true;
     try {
       final response = await ApiServiceTask().correctionTask(gradeId, taskId, submissionId, score);
-      submission.value = SubmissionDetailModel.fromJson(response['message']);
+      submission.value = SubmissionDetailModel.fromJson(response['data']);
       Get.back();
       dialogSuccess('Berhasil menilai tugas');
     } catch (e) {
       Get.back();
       dialogError('Gagal menilai tugas');
-      print(e);
+      print('gagal nilai tugas $e');
     } finally {
       isLoading.value = false;
     }

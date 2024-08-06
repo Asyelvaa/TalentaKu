@@ -1,13 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../../../infrastructure/theme/theme.dart';
+import '../../controllers/class_detail.controller.dart';
+import 'widget_announcement_bottomsheet.dart';
+import 'widget_announcement_display.dart';
+import 'widget_announcement_task_display.dart';
 
 class ContentBeranda extends StatelessWidget {
   const ContentBeranda({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      // child: Padding(
+    final controller = Get.put(ClassDetailController());
+    // return Container();
+    return CustomScrollView(
+      slivers: [ 
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [                
+                Obx(() {
+                  var roles = controller.userRole;
+                  if (controller.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (roles.any((role) => role.contains('Guru KB'))) 
+                  { return GestureDetector(
+                    onTap: () => (Get.bottomSheet(CustomWidgetAnnouncementBottomsheet(), isScrollControlled: true)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColor.blue100,
+                        ),
+                        child: Text(
+                          'Buat Pengumuman Kelas',
+                          style: AppTextStyle.tsSmallBold(AppColor.black)),
+                      ),
+                    ),
+                  );
+                  } else {
+                    return Container();
+                  }
+                }),            
+              ],
+            ),
+          ),
+        ),
+        Obx(() {
+          if (controller.isLoading.value) {
+            return SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator()),
+            );
+          } else {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final content = controller.classStream[index];
+                  if (content['type'] == 'task') {
+                    return CustomWidgetAnnouncementTaskDisplay(task: content);
+                  } else if (content['type'] == 'comment') {
+                    return CustomWidgetAnnouncementDisplay(announcement: content);
+                  } else {
+                    return Container(); 
+                  }
+                },
+                childCount: controller.classStream.length,
+              ),
+            );
+          }
+        })
+      ]
+    );
+  }
+}
+
+// child: Padding(
       //   padding: const EdgeInsets.all(20),
       //   child: Column(
       //     children: [
@@ -124,6 +196,29 @@ class ContentBeranda extends StatelessWidget {
       //     ],
       //   ),
       // ),
-    );
-  }
-}
+
+// Obx(() {
+//               if (controller.isLoading.value) {
+//                 return Center(child: CircularProgressIndicator());
+//               }
+//               else if (controller.dataClass.value.isActiveStatus! == 'inactive') {
+//               return 
+//                 Padding(
+//                   padding: const EdgeInsets.all(20),
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     decoration: BoxDecoration(
+//                       color: AppColor.red,
+//                       borderRadius: defaultBorderRadius
+//                     ),
+//                     child: Text(
+//                       'Class has been archived by your teacher. You can’t add or edit anything',
+//                       style: AppTextStyle.tsSmallBold(AppColor.white),
+//                     ),
+//                   ),
+//                 );
+//               } else {
+//                 return Container();
+//               }           
+//             }
+//             ),

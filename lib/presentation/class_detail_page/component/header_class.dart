@@ -62,7 +62,7 @@ class HeaderClass extends GetView<ProfileUserController> {
                       onTap: () {
                         Get.toNamed(
                           Routes.PROFILE_USER, 
-                          arguments: {'studentId' : student.id});
+                          arguments: {'student' : student});
                       },
                       child: Container(
                         width: widthScreen * 0.2,

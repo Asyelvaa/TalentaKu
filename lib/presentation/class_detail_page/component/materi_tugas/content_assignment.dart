@@ -12,14 +12,27 @@ class ContentAssignment extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
+      // child: AssignmentListTeacher()
       child: Obx(() {
-        var roles = controller.currentUser.value.roles;
-        if (roles != null && roles.any((role) => role.contains('Guru'))) {
+         if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+         else if (controller.userRole.any((role) => role.contains('Murid KB') || role.contains('Murid SD'))) {
+          return AssignmentListStudent();
+        } else if(controller.userRole.any((role) => role.contains('Guru KB') || role.contains('Guru SD'))) {
           return AssignmentListTeacher();
         } else {
-          return AssignmentListStudent();
+          return Text(controller.userRole.toString());
         }
       }),
+      // child: Obx(() {
+      //       // var roles = controller.userRole;           
+      //       if (controller.userRole.any((role) => role.contains('Guru KB') || role.contains('Guru SD'))) {
+      //         return AssignmentListTeacher();
+      //       } else {
+      //         return AssignmentListStudent();
+      //       }
+      //     }),
     );
   }
 }

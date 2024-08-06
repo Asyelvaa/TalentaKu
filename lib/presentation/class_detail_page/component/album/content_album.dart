@@ -18,8 +18,13 @@ class ContentAlbum extends GetView<ClassDetailController> {
       child: CustomScrollView(
         slivers: [
           Obx(() {
-              var roles = controller.currentUser.value.roles;
-              if (roles != null && roles.any((role) => role.startsWith('Guru'))) {
+              var roles = controller.userRole;
+              if (controller.isLoading.value) {
+                return SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              } 
+              else if (roles != null && roles.any((role) => role.contains('Guru'))) {
                 return SliverToBoxAdapter(
                   child: GestureDetector(
                     onTap: () => Get.to(

@@ -103,37 +103,37 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                           Title: "Alamat",
                           Description: controller.currentUser.value.address ?? '-',
                         ),
-                        ProfileList(
-                          Title: "Mulai di RBA",
-                          Description: '-',
-                        ),
+                        // ProfileList(
+                        //   Title: "Mulai di RBA",
+                        //   Description: '-',
+                        // ),
                       ],
                     );
                   }),
               spaceHeightNormal,
 
               // LAPORAN PEMBELAJARAN
-              Obx(() {
-                var roles = controller.currentUser.value.roles;
-                if (roles != null && roles.any((role) => role.startsWith('Murid'))) {
-                  return CustomButtonWithIcon(
-                    text: "Laporan Pembelajaran",
-                    icon: Icons.arrow_forward_rounded,
-                    colorButton: AppColor.white,
-                    colorIcon: AppColor.black,
-                    colorText: AppColor.black,
-                    onPressed: () {
-                      Get.toNamed(Routes.REPORT_LIST_PAGE, 
-                      arguments: [controller.currentUser.value.id]
-                      );
+              // Obx(() {
+              //   var roles = controller.currentUser.value.roles;
+              //   if (roles != null && roles.any((role) => role.startsWith('Murid'))) {
+              //     return CustomButtonWithIcon(
+              //       text: "Laporan Pembelajaran",
+              //       icon: Icons.arrow_forward_rounded,
+              //       colorButton: AppColor.white,
+              //       colorIcon: AppColor.black,
+              //       colorText: AppColor.black,
+              //       onPressed: () {
+              //         Get.toNamed(Routes.REPORT_LIST_PAGE, 
+              //         arguments: [controller.currentUser.value.id]
+              //         );
                       
-                    },
-                  );
-                } else {
-                  return Container();
-                }
-              }),
-              spaceHeightSmall,
+              //       },
+              //     );
+              //   } else {
+              //     return Container();
+              //   }
+              // }),
+              // spaceHeightSmall,
 
               // LOGOUT
               CustomButton(

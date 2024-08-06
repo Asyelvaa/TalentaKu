@@ -16,8 +16,8 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
   @override
   Widget build(BuildContext context) {
     final ProfileUserController controller = Get.put(ProfileUserController());
-    final Student student = Get.arguments as Student;
-
+    // final Student student = Get.arguments as Student;
+    final student = controller.student.value;
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
@@ -61,7 +61,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                           style: AppTextStyle.tsTitle,
                         ),
                         Text(
-                          student.roles.join(', '), 
+                          student.roles!.join(', '), 
                           style: AppTextStyle.tsNormal
                               .copyWith(color: AppColor.blue600),
                         ),
@@ -82,7 +82,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                       ),
                       ProfileDataContainer(
                         title: "Kelompok",
-                        dataUser: student.grades.isNotEmpty ? student.grades[0] : '-',
+                        dataUser: student.grades!.isNotEmpty ? student.grades![0] : '-',
                       ),
                     ],
                   ),
@@ -130,7 +130,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                         ],
                       )),
                 defaultHeightSpace,
-                if (student.roles.contains('Murid KB') || student.roles.contains('Murid SD'))
+                
                   CustomButtonWithIcon(
                     text: "Laporan Pembelajaran",
                     icon: Icons.arrow_forward_ios,

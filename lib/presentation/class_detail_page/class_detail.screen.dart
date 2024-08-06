@@ -30,12 +30,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HeaderClass(
-            // className: controller.dataClass.value.name!,
-            // classDesc: controller.dataClass.value.desc!
-            // className: classItem['name'],
-            // classDesc: classItem['desc'],
-          ),
+          HeaderClass(),
           Container(
             child: TabBar(
               dividerColor: AppColor.background,

@@ -12,7 +12,7 @@ class AssignmentListTeacher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ClassDetailController());
+    final controller = Get.find<ClassDetailController>();
     var tasks = controller.teacherTasks;
 
     return CustomScrollView(
