@@ -24,7 +24,7 @@ class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
         if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         }
-        
+
         if (controller.reportData.isEmpty) {
           return Center(
               child: Text(
@@ -43,9 +43,13 @@ class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
                 'Laporan Harian ${DateFormat('dd MMMM yyyy').format(createdDate)}',
                 style: AppTextStyle.tsNormal,
               ),
-              onTap: () {
-                Get.toNamed(Routes.EDIT_REPORT_USER_PAGE,
-                    arguments: ['edit', report]);
+              onTap: () async {
+                await Get.toNamed(Routes.EDIT_REPORT_USER_PAGE,
+                    arguments: ['edit', report])?.then((value) {
+                  if (value == 'success') {
+                    controller.fetchUserReport();
+                  }
+                });
               },
               trailing: Icon(
                 Icons.arrow_forward_ios,

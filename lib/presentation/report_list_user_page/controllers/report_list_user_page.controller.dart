@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,8 @@ import 'package:http/http.dart' as http;
 
 class ReportListUserPageController extends GetxController {
   var isLoading = false.obs;
+  late final int userId;
+  late final int gradeId;
   late final arguments;
   final box = GetStorage();
   var reportData = [].obs;
@@ -23,9 +26,8 @@ class ReportListUserPageController extends GetxController {
 
     try {
       final response = await http.get(
-          Uri.parse('$baseUrl/grades/1/student-report/student/7'),
+          Uri.parse('$baseUrl/grades/$gradeId/student-report/student/$userId'),
           headers: headers);
-
       if (response.statusCode == 200) {
         print(json.decode(response.body));
         final jsonData = json.decode(response.body);
@@ -43,8 +45,11 @@ class ReportListUserPageController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
-    fetchUserReport();
     super.onInit();
+    final arguments = Get.arguments;
+    gradeId = arguments[1];
+    userId = arguments[0];
+    fetchUserReport();
   }
 
   @override

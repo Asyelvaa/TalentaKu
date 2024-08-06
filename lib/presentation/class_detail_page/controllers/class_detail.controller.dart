@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
+import 'package:flutter_talentaku/presentation/student_report_form/model/Student.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -12,46 +16,55 @@ import '../../../domain/models/user_model.dart';
 import '../../../infrastructure/dal/services/api_album.dart';
 import '../../../infrastructure/dal/services/api_class.dart';
 import '../../../infrastructure/dal/services/api_task.dart';
+import '../../../infrastructure/theme/theme.dart';
+
+import 'package:http/http.dart' as http;
 
 class ClassDetailController extends GetxController {
-
   final ApiServiceClass apiService = ApiServiceClass();
 
-  Rx<GradeModel> dataClass = GradeModel().obs; 
+  Rx<GradeModel> dataClass = GradeModel().obs;
   RxList<ClassMemberModel> classMembers = <ClassMemberModel>[].obs;
   Rx<UserModel> currentUser = UserModel().obs;
-
+  final RxList<Student> selectedStudents = <Student>[].obs;
+  final box = GetStorage();
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> teacherTasks = <Task>[].obs;
+  final RxList<Student> students = <Student>[].obs;
+    final username = GetStorage().read('dataUser')?['username'];
+  Rx<File?> image = Rx<File?>(null);
   RxList<TaskStudentModel> studentTasks = <TaskStudentModel>[].obs;
-  late Map<String,dynamic> classItem;
+  late Map<String, dynamic> classItem;
 
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController classDescController = TextEditingController();
   final TextEditingController classLevelController = TextEditingController();
 
   var isLoading = true.obs;
-    late final List<String> userRole;
   
+  late final List<String> userRole;
+
   @override
   void onInit() {
     super.onInit();
     userRole = GetStorage().read('dataUser')['role'];
     inituser();
-    classItem = Get.arguments as Map<String,dynamic>;
+    classItem = Get.arguments as Map<String, dynamic>;
     print(classItem['id']);
     fetchAlbums();
     fetchGradeDetails();
     fetchAllTask();
-  }
+    fetchStudentsFromApi();
+    print(username);
 
+  }
 
   Future<void> inituser() async {
     await getUserData();
     print(currentUser.value.name);
   }
 
-  Future<void> getUserData() async  {
+  Future<void> getUserData() async {
     try {
       isLoading.value = true;
       var data = await ApiServiceUser().getUserData();
@@ -59,7 +72,7 @@ class ClassDetailController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  } 
+  }
 
   Future<void> fetchGradeDetails() async {
     try {
@@ -98,20 +111,69 @@ class ClassDetailController extends GetxController {
     try {
       isLoading(true);
       if (userRole.any((role) => role.contains('Guru'))) {
-        taskList =  ApiServiceTask().getAllTaskTeacher(classItem['id'].toString());
+        taskList =
+            ApiServiceTask().getAllTaskTeacher(classItem['id'].toString());
         teacherTasks.assignAll(await taskList);
         print(teacherTasks);
       } else if (userRole.any((role) => role.contains('Murid'))) {
-        taskList =  ApiServiceTask().getAllTaskStudent(classItem['id'].toString());
+        taskList =
+            ApiServiceTask().getAllTaskStudent(classItem['id'].toString());
         studentTasks.assignAll(await taskList);
         print(studentTasks);
         update();
       }
-    } catch(e) {
+    } catch (e) {
       print('failed fetch task: $e');
     }
   }
-  
+
+     void fetchStudentsFromApi() async {
+    isLoading.value = true;
+    final token = box.read('token');
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    final url = 'https://talentaku.site/api/grades/teacher';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final List<dynamic> grades = jsonResponse['data'];
+        students.clear();
+        for (var grade in grades) {
+          if (grade['members'] != null) {
+            final List<dynamic> members = grade['members'];
+            for (var member in members) {
+              if (!students.any((student) => student.id == member['id'])) {
+                students.add(Student.fromJson(member));
+              }
+            }
+          }
+        }
+        print("Fetched students data: ${students}");
+      } else {
+        Get.snackbar(
+            'Error', 'Failed to fetch students: ${response.statusCode}',
+            backgroundColor: AppColor.red);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void toggleSelection(Student student) {
+    if (selectedStudents.contains(student)) {
+      selectedStudents.remove(student);
+    } else {
+      selectedStudents.add(student);
+    }
+  }
+}
+
   // Update
   // Future<void> updateClass() async {
   //   try{
@@ -123,17 +185,16 @@ class ClassDetailController extends GetxController {
   //     );
   //   } catch (e) {
   //     print('Error updating class: $e');
-  //   } 
+  //   }
   // }
 
   // isActive
   // {{localhost}}api/grades/1/toggle-active
 
-  // Delete Member 
+  // Delete Member
   // {{localhost}}api/grades/1/members/7
 
   // Show by ID
-
 
   // Future<void> updateGradeDetails({String? name, String? desc, int? levelId}) async {
   //   try {
@@ -153,4 +214,4 @@ class ClassDetailController extends GetxController {
   //     print('Error updating grade details: $e');
   //   }
   // }
-}
+

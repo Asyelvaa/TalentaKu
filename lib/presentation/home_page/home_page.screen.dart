@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/home_page/Component/SlideExtra.dart';
 import 'package:flutter_talentaku/presentation/home_page/Component/slide_information.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +29,8 @@ class HomePageScreen extends GetView<HomePageController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (controller.userRole.any((role) => role == 'Murid KB' || role == 'Murid SD'))
+              if (controller.userRole
+                  .any((role) => role == 'Murid KB' || role == 'Murid SD'))
                 ClassInformation(
                   titleInfo: "Laporan harian Dimas",
                   dateInfo: '04 April 2024',
@@ -50,17 +52,23 @@ class HomePageScreen extends GetView<HomePageController> {
                       image: "program_tambahan.png",
                       contentTitles: controller.contentTitles,
                     )),
-              SlideInformation(
-                headerContent: "Ekstrakulikuler",
-                image: "ekstrakurikuler.png",
-                contentTitles: [
-                  'Musik & Tari',
-                  'Kreasi & Gambar',
-                  'Batik Eco Print',
-                  'Cooking',
-                  'Renang'
-                ],
-              ),
+              Obx(() => controller.isLoading.value
+                  ? SlideExtra(
+                      headerContent: "Loading.... ",
+                      image: "program_tambahan.png",
+                      contenExtra: [
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...',
+                        'Loading...'
+                      ],
+                    )
+                  : SlideExtra(
+                      headerContent: "Extra ",
+                      image: "program_tambahan.png",
+                      contenExtra: controller.contenExtra,
+                    )),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(

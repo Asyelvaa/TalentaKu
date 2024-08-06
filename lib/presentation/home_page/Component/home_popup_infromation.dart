@@ -18,6 +18,9 @@ class HomePopupInformation extends StatelessWidget {
         padding: EdgeInsets.all(16),
         width: Get.width * 0.8,
         height: Get.height * 0.6,
+        decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.all(Radius.circular(12))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

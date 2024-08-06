@@ -60,7 +60,7 @@ class PickImageScreen extends GetView<PickimageController> {
                                           controller.username.substring(0, 2).toUpperCase(),
                                           style: GoogleFonts.poppins(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12,
+                                            fontSize: 20,
                                             color: Colors.white,
                                           ),
                                         ),

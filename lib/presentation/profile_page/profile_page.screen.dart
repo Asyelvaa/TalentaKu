@@ -17,13 +17,12 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(heightScreen * 0.075),
         child: DefaultAppbar(),
-      ),      
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -41,15 +40,19 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
-                      Text('Loading...', style: AppTextStyle.tsBodyRegular(AppColor.black)),
-                      Text('Loading...', style: AppTextStyle.tsBodyRegular(AppColor.black)),
+                      Text('Loading...',
+                          style: AppTextStyle.tsBodyRegular(AppColor.black)),
+                      Text('Loading...',
+                          style: AppTextStyle.tsBodyRegular(AppColor.black)),
                     ],
-                  );  
+                  );
                 } else {
                   return Column(
                     children: [
-                      Text(controller.currentUser.value.name ?? 'name', style: AppTextStyle.tsTitleBold(AppColor.black)),
-                      Text(controller.currentUser.value.roles!.join(', '), style: AppTextStyle.tsBodyBold(AppColor.blue500)),
+                      Text(controller.currentUser.value.name ?? 'name',
+                          style: AppTextStyle.tsTitleBold(AppColor.black)),
+                      Text(controller.currentUser.value.roles!.join(', '),
+                          style: AppTextStyle.tsBodyBold(AppColor.blue500)),
                     ],
                   );
                 }
@@ -57,59 +60,63 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
               spaceHeightNormal,
 
               // LIST INFORMATION USER
-              Obx(() { 
-                if (controller.isLoading.value) 
+              Obx(() {
+                if (controller.isLoading.value)
                   return Column(
-                      children: [
-                        ProfileList(
-                          Title: "Nama Lengkap",
-                          Description: "Loading...",
-                        ),
-                        ProfileList(
-                          Title: "NIS",
-                          Description: "Loading...",
-                        ),
-                        ProfileList(
-                          Title: "Tempat, Tanggal Lahir",
-                          Description: "Loading...",
-                        ),
-                        ProfileList(
-                          Title: "Alamat",
-                          Description: "Loading...",
-                        ),
-                        ProfileList(
-                          Title: "Mulai di RBA",
-                          Description: "Loading...",
-                        ),
-                      ],
-                    );                
-                 else 
-                    return Column(
-                      children: [
-                        ProfileList(
-                          Title: "Nama Lengkap",
-                          Description: controller.currentUser.value.name ?? '-',
-                        ),
-                        ProfileList(
-                          Title: "NIS",
-                          Description: controller.currentUser.value.identificationNumber ?? '-',
-                        ),
-                        ProfileList(
-                          Title: "Tempat, Tanggal Lahir",
-                          Description: controller.currentUser.value.birthInformation ?? '-',
-
-                        ),
-                        ProfileList(
-                          Title: "Alamat",
-                          Description: controller.currentUser.value.address ?? '-',
-                        ),
-                        ProfileList(
-                          Title: "Mulai di RBA",
-                          Description: '-',
-                        ),
-                      ],
-                    );
-                  }),
+                    children: [
+                      ProfileList(
+                        Title: "Nama Lengkap",
+                        Description: "Loading...",
+                      ),
+                      ProfileList(
+                        Title: "NIS",
+                        Description: "Loading...",
+                      ),
+                      ProfileList(
+                        Title: "Tempat, Tanggal Lahir",
+                        Description: "Loading...",
+                      ),
+                      ProfileList(
+                        Title: "Alamat",
+                        Description: "Loading...",
+                      ),
+                      ProfileList(
+                        Title: "Mulai di RBA",
+                        Description: "Loading...",
+                      ),
+                    ],
+                  );
+                else
+                  return Column(
+                    children: [
+                      ProfileList(
+                        Title: "Nama Lengkap",
+                        Description: controller.currentUser.value.name ?? '-',
+                      ),
+                      ProfileList(
+                        Title: "NIS",
+                        Description:
+                            controller.currentUser.value.identificationNumber ??
+                                '-',
+                      ),
+                      ProfileList(
+                        Title: "Tempat, Tanggal Lahir",
+                        Description:
+                            controller.currentUser.value.birthInformation ??
+                                '-',
+                      ),
+                      ProfileList(
+                        Title: "Alamat",
+                        Description:
+                            controller.currentUser.value.address ?? '-',
+                      ),
+                      ProfileList(
+                        Title: "Mulai di RBA",
+                        Description: '-',
+                      ),
+                    ],
+                  );
+              }),
               spaceHeightNormal,
 
               // LAPORAN PEMBELAJARAN
@@ -123,10 +130,10 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     colorIcon: AppColor.black,
                     colorText: AppColor.black,
                     onPressed: () {
-                      Get.toNamed(Routes.REPORT_LIST_PAGE, 
+                      Get.toNamed(Routes.REPORT_LIST_PAGE,
                       arguments: [controller.currentUser.value.id]
                       );
-                      
+
                     },
                   );
                 } else {
@@ -141,26 +148,27 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 colorButton: AppColor.red,
                 colorText: AppColor.white,
                 onPressed: () {
-                 showCustomPopupDialog(
+                  showCustomPopupDialog(
                     "Keluar Akun",
                     "Apakah Anda yakin ingin keluar akun?",
                     [
                       ElevatedButton(
-                        onPressed: () => Get.back(),                         
+                        onPressed: () => Get.back(),
                         child: Text(
-                            "Tidak",
-                            style: AppTextStyle.tsBodyRegular( AppColor.black),
-                          ),
+                          "Tidak",
+                          style: AppTextStyle.tsBodyRegular(AppColor.black),
+                        ),
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(AppColor.blue500)),
-                        onPressed: () => controller.logout(),                         
+                            backgroundColor:
+                                MaterialStateProperty.all(AppColor.blue500)),
+                        onPressed: () => controller.logout(),
                         child: Text(
-                            "Iya, Keluar",
-                            style: AppTextStyle.tsBodyRegular( AppColor.white),
-                          ),
-                      ),                      
+                          "Iya, Keluar",
+                          style: AppTextStyle.tsBodyRegular(AppColor.white),
+                        ),
+                      ),
                     ],
                   );
                 },
@@ -172,4 +180,3 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
     );
   }
 }
-

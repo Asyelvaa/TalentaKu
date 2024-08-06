@@ -208,49 +208,50 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
               }),
             ),
             SizedBox(height: heightScreen * 0.02),
-            Text("Kirim Laporan untuk", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
-            Obx(() {
-              if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (controller.students.isEmpty) {
-                return Center(child: Text("Tidak ada murid"));
-              }
-              return Wrap(
-                spacing: 10,
-                children: controller.students.map((student) {
-                  final isSelected =
-                      controller.selectedStudents.contains(student);
-                  return GestureDetector(
-                    onTap: () => controller.toggleSelection(student),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: student.photo != null
-                              ? NetworkImage(student.photo!)
-                              : AssetImage('assets/images/anak.png')
-                                  as ImageProvider,
-                          backgroundColor:
-                              isSelected ? Colors.blue : Colors.grey,
-                        ),
-                        SizedBox(height: 5),
-                        Text(student.name),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
-            }),
+            // Text("Kirim Laporan untuk", style: AppTextStyle.tsTitle),
+            // SizedBox(height: heightScreen * 0.02),
+            // Obx(() {
+            //   if (controller.isLoading.value) {
+            //     return Center(child: CircularProgressIndicator());
+            //   }
+            //   if (controller.students.isEmpty) {
+            //     return Center(child: Text("Tidak ada murid"));
+            //   }
+            //   return Wrap(
+            //     spacing: 10,
+            //     children: controller.students.map((student) {
+            //       final isSelected =
+            //           controller.selectedStudents.contains(student);
+            //       return GestureDetector(
+            //         onTap: () => controller.toggleSelection(student),
+            //         child: Column(
+            //           children: [
+            //             CircleAvatar(
+            //               radius: 30,
+            //               backgroundImage: student.photo != null
+            //                   ? NetworkImage(student.photo!)
+            //                   : AssetImage('assets/images/anak.png')
+            //                       as ImageProvider,
+            //               backgroundColor:
+            //                   isSelected ? Colors.blue : Colors.grey,
+            //             ),
+            //             SizedBox(height: 5),
+            //             Text(student.name),
+            //           ],
+            //         ),
+            //       );
+            //     }).toList(),
+            //   );
+            // }),
             SizedBox(height: heightScreen * 0.03),
             Row(
               children: [
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      final int reportId = controller.reportUser['id'] ??
-                          0; // Safeguard for reportId
+                      
+                      final int reportId = controller.reportUser['id'] ?? 0;
+
                       controller.editReport(
                         created: controller.createdController.text,
                         semesterId:
@@ -292,8 +293,9 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      final int reportId = controller.reportUser['id'] ?? 1;
+                      int reportId = controller.reportUser['id'] ?? 1;
                       controller.deleteReport(reportId);
+                      Get.back(result: 'success');
                     },
                     child: Container(
                       height: heightScreen * 0.07,

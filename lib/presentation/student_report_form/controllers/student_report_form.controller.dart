@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_talentaku/domain/models/class_member_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:http_parser/http_parser.dart';
 
 class StudentReportFormController extends GetxController {
   var selectedImage = Rxn<File>();
+  RxList<File> selectedImages = <File>[].obs;
   final createdController = TextEditingController();
   final semesterIdController = TextEditingController();
   final catatanController = TextEditingController();
@@ -22,15 +24,20 @@ class StudentReportFormController extends GetxController {
   final SnackTextController = TextEditingController();
   final inklusiTextController = TextEditingController();
 
+  final studentId = 0.obs;
+  late final String gradeId;
   var selectedOptions = <String, String>{}.obs;
 
   RxList<String> selectedPoints = <String>[].obs;
   final box = GetStorage();
-  final RxBool isLoading = false.obs;
-  final RxList<Student> students = <Student>[].obs;
-  final RxList<Student> selectedStudents = <Student>[].obs;
+    final isLoading = false.obs;
+  final RxList<ClassMemberModel> students = <ClassMemberModel>[].obs;
+  final RxList<ClassMemberModel> selectedStudents = <ClassMemberModel>[].obs;
+  Rx<File?> image = Rx<File?>(null);
 
-  void toggleSelection(Student student) {
+  RxList<RxBool> isSelected = RxList<RxBool>();
+
+  void toggleSelection(ClassMemberModel student) {
     if (selectedStudents.contains(student)) {
       selectedStudents.remove(student);
     } else {
@@ -41,8 +48,20 @@ class StudentReportFormController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    gradeId = Get.arguments["gradeId"];
     fetchStudentsFromApi();
-    pickImage();
+    _loadStoredImage();
+  }
+
+  void _loadStoredImage() {
+    String? storedImagePath = box.read('profile_image_path');
+    if (storedImagePath != null) {
+      image.value = File(storedImagePath);
+    }
+  }
+
+  void removeImage(int index) {
+    selectedImages.removeAt(index);
   }
 
   void fetchStudentsFromApi() async {
@@ -52,24 +71,21 @@ class StudentReportFormController extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
-    final url = 'https://talentaku.site/api/grades/teacher';
+    final url = 'https://talentaku.site/api/grades/$gradeId';
 
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> grades = jsonResponse['data'];
-        students.clear();
+        final List<dynamic> membersJson = jsonResponse['data']['members'];
+        final List<ClassMemberModel> memberList = membersJson
+            .map((memberJson) => ClassMemberModel.fromJson(memberJson))
+            .toList();
 
-        for (var grade in grades) {
-          if (grade['members'] != null) {
-            final List<dynamic> members = grade['members'];
-            students.addAll(
-                members.map((member) => Student.fromJson(member)).toList());
-          }
-        }
-
-        print("Fetched students data: ${students}");
+        isSelected.value =
+            List.generate(memberList.length, (index) => false.obs);
+        students.assignAll(memberList);
+        print("Fetched students data: ${students.length}");
       } else {
         Get.snackbar(
             'Error', 'Failed to fetch students: ${response.statusCode}',
@@ -77,6 +93,7 @@ class StudentReportFormController extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
+      print(e);
     } finally {
       isLoading.value = false;
     }
@@ -86,7 +103,7 @@ class StudentReportFormController extends GetxController {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      selectedImage.value = File(pickedFile.path);
+      selectedImages.add(File(pickedFile.path));
     }
   }
 
@@ -109,10 +126,30 @@ class StudentReportFormController extends GetxController {
     required List<File> media,
     required int studentId,
   }) async {
-    try {
-      final url = 'https://talentaku.site/api/grades/1/student-report/?id=1&grade_id=1';
-      final token = box.read('token');  
+    if (created.isEmpty ||
+        semesterId == 0 ||
+        kegiatanAwal.isEmpty ||
+        awalPoint.isEmpty ||
+        kegiatanInti.isEmpty ||
+        intiPoint.isEmpty ||
+        snack.isEmpty ||
+        snackPoint.isEmpty ||
+        inklusi.isEmpty ||
+        inklusiPoint.isEmpty ||
+        catatan.isEmpty ||
+        studentId == 0) {
+      Get.snackbar(
+        'Peringatan',
+        'Harap isi semua kolom yang wajib diisi',
+        backgroundColor: AppColor.red,
+      );
+      return;
+    }
 
+    try {
+      final url = 'https://talentaku.site/api/grades/$gradeId/student-report';
+      final token = box.read('token');
+      print(url);
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=UTF-8',
@@ -130,7 +167,7 @@ class StudentReportFormController extends GetxController {
         'inklusi': inklusi,
         'inklusi_point': inklusiPoint,
         'catatan': catatan,
-        'student_id': 7,
+        'student_id': studentId
       };
 
       final request = await http.MultipartRequest(
@@ -157,18 +194,18 @@ class StudentReportFormController extends GetxController {
 
       final response = await request.send();
       if (response.statusCode == 201) {
-        Get.snackbar('Success', 'Report has been submitted',
+        Get.snackbar('Sukses', 'Laporan telah dikirim',
             backgroundColor: AppColor.blue100);
         Get.offAllNamed(Routes.NAVBAR);
         print(formData);
       } else {
-        Get.snackbar('Error', 'Failed to submit report: ${response.statusCode}',
+        Get.snackbar('Error', 'Gagal mengirim laporan: ${response.statusCode}',
             backgroundColor: AppColor.red);
         print(await response.stream.bytesToString());
       }
     } catch (error) {
       print('Error occurred during report submission: $error');
-      Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
+      Get.snackbar('Error', 'Terjadi kesalahan', backgroundColor: AppColor.red);
     }
 
     isLoading.value = false;
