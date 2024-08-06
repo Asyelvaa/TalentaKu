@@ -285,6 +285,8 @@ class ApiServiceTask {
     };
 
     var response = await http.get(Uri.parse(url), headers: headers);
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

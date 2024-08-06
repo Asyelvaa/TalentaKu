@@ -13,10 +13,13 @@ import 'controllers/assignment_page.controller.dart';
 class AssignemntFormPageScreen extends StatelessWidget {
   AssignemntFormPageScreen({Key? key}) : super(key: key);
 
-  final AssignmentPageController controller = Get.put(AssignmentPageController());
 
   @override
   Widget build(BuildContext context) {
+   Get.lazyPut(() => AssignmentPageController());
+
+    // Retrieve the controller instance
+    final AssignmentPageController controller = Get.find();
     return Scaffold(
       backgroundColor: AppColor.background,
         appBar: PreferredSize(

@@ -19,9 +19,12 @@ class AssignmentListTeacher extends StatelessWidget {
       slivers: [
         SliverToBoxAdapter(
           child: GestureDetector(
-            onTap: () => Get.to(() => AssignemntFormPageScreen(), arguments: {
+            onTap: () => Get.to(() => AssignemntFormPageScreen(), 
+            arguments: {
+              'taskId' : '',
               'gradeId': controller.classItem['id'].toString()
-            }),
+            }
+            ),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
+import 'package:flutter_talentaku/presentation/class_page/controllers/class_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -37,29 +38,11 @@ class ClassDetailController extends GetxController {
   void onInit() {
     super.onInit();
     userRole = GetStorage().read('dataUser')['role'];
-    inituser();
     classItem = Get.arguments as Map<String,dynamic>;
-    print(classItem['id']);
     fetchAlbums();
     fetchGradeDetails();
     fetchAllTask();
   }
-
-
-  Future<void> inituser() async {
-    await getUserData();
-    print(currentUser.value.name);
-  }
-
-  Future<void> getUserData() async  {
-    try {
-      isLoading.value = true;
-      var data = await ApiServiceUser().getUserData();
-      currentUser.value = data;
-    } finally {
-      isLoading.value = false;
-    }
-  } 
 
   Future<void> fetchGradeDetails() async {
     try {
@@ -73,12 +56,37 @@ class ClassDetailController extends GetxController {
     }
   }
 
-  void toggleActiveStatus(bool isActive) async {
-    await apiService.classStatus(dataClass.value.id!);
-    dataClass.update((val) {
-      val!.isActiveStatus = isActive ? 'active' : 'inactive';
-    });
+  Future<void> toggleActiveStatus(bool isActive) async {
+    final controller = Get.put(ClassController());
+         try {
+        final response = await apiService.classStatus(dataClass.value.id!);
+         if (response != null) {
+        dataClass.update((val) {
+          val!.isActiveStatus = isActive ? 'active' : 'inactive';
+        });
+        controller.showAllGrades();
+        Get.back();
+        Get.snackbar(
+          'Success',
+          'Class status updated to ${isActive ? 'active' : 'inactive'}',
+          snackPosition: SnackPosition.TOP,
+        );
+        print('Class status updated to ${isActive ? 'active' : 'inactive'}');
+      } else {
+        Get.back();
+        Get.snackbar(
+          'Error',
+          'Failed to update class status',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+      } catch (e) {
+        print(e);
+      }
+    
   }
+
+
 
   void fetchAlbums() async {
     try {
@@ -111,46 +119,63 @@ class ClassDetailController extends GetxController {
       print('failed fetch task: $e');
     }
   }
-  
-  // Update
-  // Future<void> updateClass() async {
-  //   try{
-  //     await apiService.updateClass(
-  //       classNameController.text,
-  //       classDescController.text,
-  //       int.parse(classLevelController.text),
-  //       gradeId
-  //     );
-  //   } catch (e) {
-  //     print('Error updating class: $e');
-  //   } 
-  // }
-
-  // isActive
-  // {{localhost}}api/grades/1/toggle-active
 
   // Delete Member 
-  // {{localhost}}api/grades/1/members/7
+  void removeMember(String memberId) {
+    try {
+      apiService.deleteMember(dataClass.value.id!.toString(), memberId);
+      classMembers.removeWhere((element) => element.id == memberId);    
+      print('Member with id $memberId has been removed');
+      print(classMembers.length);
+    } catch (e) {
+      print('Error removing member: $e');
+    }
+  }
 
-  // Show by ID
+  // Delete Class
+  void deleteClass() async {
+    final controller = Get.put(ClassController());
+    final classId = dataClass.value.id!.toString();
+    try {
+      final response = await apiService.deleteClass(classId);
+      controller.showAllGrades();
+      Get.back();
+       if (response != null && response.statusCode == 200) {
+        Get.snackbar('Success', 'Class deleted successfully');
+        print('Class with id $classId deleted successfully');
+      } else {
+        Get.snackbar('Error', 'Failed to delete class');
+      }
+    } catch (e) {
+      print('Error deleting class: $e');
+    }
+  }
 
+  // Update Class Details
+  Future<void> updateGradeDetails() async {
+    try {
+      String name = classNameController.text.isNotEmpty
+          ? classNameController.text
+          : dataClass.value.name!;
+      String desc = classDescController.text.isNotEmpty
+          ? classDescController.text
+          : dataClass.value.desc!;
+      int levelId = classLevelController.text.isNotEmpty
+          ? int.parse(classLevelController.text)
+          : dataClass.value.levelId!;
 
-  // Future<void> updateGradeDetails({String? name, String? desc, int? levelId}) async {
-  //   try {
-  //     await apiService.updateGrade(
-  //       classItem['id'],
-  //       name ?? grade.value.name,
-  //       desc ?? grade.value.desc,
-  //       levelId ?? grade.value.level,
-  //     );
-  //     grade.update((val) {
-  //       if (name != null) val!.name = name;
-  //       if (desc != null) val!.desc = desc;
-  //       if (levelId != null) val!.level = levelId;
-  //     });
-  //     print('Grade updated successfully');
-  //   } catch (e) {
-  //     print('Error updating grade details: $e');
-  //   }
-  // }
+      await apiService.updateClass(name, desc, levelId, dataClass.value.id!.toString());
+      dataClass.update((val) {
+        if (val != null) {
+          val.name = name;
+          val.desc = desc;
+          val.levelId= levelId;
+        }
+      });
+      Get.back();
+      print('Grade updated successfully');
+    } catch (e) {
+      print('Error updating grade details: $e');
+    }
+  }  
 }

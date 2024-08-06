@@ -77,7 +77,7 @@ class ApiServiceClass {
     String name, 
     String desc, 
     int levelId,
-    int gradeId
+    String gradeId
     ) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId";
@@ -95,46 +95,66 @@ class ApiServiceClass {
     try {
       var response = await http.post(Uri.parse(url),headers: headers,body: body);
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
         throw Exception('Failed to update class: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error creating class: $e');
+      print('Error update class: $e');
       throw Exception('Failed to update class: $e');
     }
   }
 
-  Future<void> classStatus(int gradeId) async {
+  // DELETE CLASS 
+  Future<http.Response?> deleteClass(String gradeId) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/toggle-active";
+    final url = "$baseUrl/grades/$gradeId";
     final headers = {
+      'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json', 
     };
-
     try {
-      var response = await http.post(Uri.parse(url),headers: headers,);
-
+      var response = await http.delete(Uri.parse(url),headers: headers,);
+      print('hapus kelas : ${response.statusCode}');
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        if (data['status'] == 'success') {
-          if (data['data']['isactive']) {
-            print('Grade has been successfully activated.');
-          } else {
-            print('Grade has been successfully deactivated.');
-          }
-        } else {
-          print('Failed: ${data['message']}');
-        }
+        print('Class deleted successfully');
       } else {
-        print('Failed: ${response.reasonPhrase}');
+        throw Exception('Failed to delete class: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Error: $e');
+    } catch(e) {
+      print('Error deleting class: $e');      
     }
   }
+
+    Future<Map<String, dynamic>?> classStatus(int gradeId) async {
+      final token = box.read('token');
+      final url = "$baseUrl/grades/$gradeId/toggle-active";
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json', 
+      };
+
+      try {
+        var response = await http.patch(Uri.parse(url),headers: headers,);
+
+        if (response.statusCode == 200) {
+          var data = jsonDecode(response.body);
+          if (data['data'] != null) {
+            print(data['data']['is_active_status'] == 'active'
+                ? 'Grade has been successfully activated.'
+                : 'Grade has been successfully deactivated.');
+            return data;
+          } else {
+            print('Failed: ${data['message']}');
+          }
+        } else {
+          print('Failed: ${response.reasonPhrase}');
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
 
   Future<GradeModel> getDetailClass(int gradeId) async {
     final token = box.read('token');
@@ -206,4 +226,23 @@ class ApiServiceClass {
   }
 
   // DELETE MEMBER
+  Future<void> deleteMember(String gradeId, String memberId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/members/$memberId";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      var response = await http.delete(Uri.parse(url),headers: headers,);
+      if (response.statusCode == 200) {
+        print('Member deleted successfully');
+      } else {
+        throw Exception('Failed to delete member: ${response.statusCode}');
+      }
+    } catch(e) {
+      print('Error deleting member: $e');      
+    }
+  }
+
 }

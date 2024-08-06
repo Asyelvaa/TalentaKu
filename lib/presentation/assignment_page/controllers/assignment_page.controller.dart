@@ -12,7 +12,7 @@ import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
 import '../../class_detail_page/controllers/class_detail.controller.dart';
 
-class AssignmentPageController extends GetxController  with GetSingleTickerProviderStateMixin {
+class AssignmentPageController extends GetxController  with GetTickerProviderStateMixin {
 
   var isLoading = true.obs;
 
@@ -37,12 +37,11 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   late TabController tabController;
   late final String gradeId;
   late final String taskId;
-  late final List<String> userRole;
+  late final List<String> userRole = GetStorage().read('dataUser')['role'];
 
   @override
   void onInit() {
     super.onInit();
-    userRole = GetStorage().read('dataUser')['role'];
     tabController = TabController(length: 2, vsync: this);
 
     final arguments = Get.arguments as Map<String, dynamic>;
