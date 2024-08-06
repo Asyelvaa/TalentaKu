@@ -1,12 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
+import 'package:get/get.dart';
 
+import '../../../../infrastructure/theme/theme.dart';
+import '../../../common_widget/custom_button_icon.dart';
 
-class ContentBeranda extends StatelessWidget {
+class ContentBeranda extends GetView<ClassDetailController> {
   const ContentBeranda({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      child: Column(
+        children: [
+          // CustomButtonWithIcon(
+          //   text: "Laporan Pembelajaran",
+          //   icon: Icons.arrow_forward_rounded,
+          //   colorButton: AppColor.white,
+          //   colorIcon: AppColor.black,
+          //   colorText: AppColor.black,
+          //   onPressed: () {
+          //     Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
+          //       "gradeId": controller.classItem["id"].toString()
+          //     });
+          //   },
+          // )
+          Obx(() {
+            var roles = controller.currentUser.value.roles;
+            if (roles != null && roles.any((role) => role.contains('Murid'))) {
+              return CustomButtonWithIcon(
+                text: "Laporan Pembelajaran",
+                icon: Icons.arrow_forward_rounded,
+                colorButton: AppColor.white,
+                colorIcon: AppColor.black,
+                colorText: AppColor.black,
+                onPressed: () {
+                  Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
+                    "gradeId": controller.classItem["id"].toString()
+                  });
+                },
+              );
+            } else {
+              return Container();
+            }
+          }),
+        ],
+      ),
       // child: Padding(
       //   padding: const EdgeInsets.all(20),
       //   child: Column(
@@ -15,13 +55,13 @@ class ContentBeranda extends StatelessWidget {
       //           Container(
       //             margin: EdgeInsets.only(top: 12),
       //             decoration: BoxDecoration(
-      //                 borderRadius: BorderRadius.circular(20), 
+      //                 borderRadius: BorderRadius.circular(20),
       //                 color: AppColor.white,
       //                 boxShadow: [
       //                   BoxShadow(
-      //                     color: Colors.grey.withOpacity(0.2), 
-      //                     blurRadius: 2, 
-      //                     offset: Offset(0, 1), 
+      //                     color: Colors.grey.withOpacity(0.2),
+      //                     blurRadius: 2,
+      //                     offset: Offset(0, 1),
       //                   )
       //                 ]
       //             ),

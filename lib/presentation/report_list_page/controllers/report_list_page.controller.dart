@@ -11,6 +11,7 @@ class ReportListPageController extends GetxController {
   final box = GetStorage();
   var reportData = [].obs;
   final String baseUrl = 'https://talentaku.site/api';
+  late final String gradeId;
 
   Future<void> fetchDataReport() async {
     isLoading.value = true;
@@ -23,15 +24,16 @@ class ReportListPageController extends GetxController {
 
     try {
       final response = await http.get(
-          Uri.parse('$baseUrl/grades/1/student-report/student'),
+          Uri.parse('$baseUrl/grades/$gradeId/student-report/student'),
           headers: headers);
-
+      print(headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body));
         final jsonData = json.decode(response.body);
         reportData.assignAll(jsonData['data']);
       } else {
-        print("cuk");
+        print(response.body);
+        print("jancookkk");
       }
     } catch (e) {
       print('Exception: $e');
@@ -45,6 +47,9 @@ class ReportListPageController extends GetxController {
   void onInit() {
     fetchDataReport();
     super.onInit();
+    final arguments = Get.arguments as Map<String, dynamic>;
+    gradeId = arguments['gradeId'] as String;
+    print(gradeId);
   }
 
   @override

@@ -8,10 +8,9 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-
 class SlideInformation extends StatelessWidget {
   final String headerContent;
-  final List<String> contentTitles; // Pastikan parameter ini ada
+  final List<String> contentTitles;
   final void Function()? onTap;
   final String image;
 
@@ -55,7 +54,6 @@ class SlideInformation extends StatelessWidget {
   }
 }
 
-
 class Content extends GetView<HomePageController> {
   final String contentTitle;
   final int index;
@@ -69,9 +67,10 @@ class Content extends GetView<HomePageController> {
   void _showProgramDetails(BuildContext context, Program program) {
     Get.bottomSheet(
       HomeBottomsheetInformation(
-        informationTitle: controller.programs[index]['name'],
-        photoList: program.photos,
-        descriptionContent: controller.programs[index]['desc'], programId: 1,
+        informationTitle: program.name,
+        photoList: program.photos ?? [],
+        descriptionContent: program.desc.join(', '),
+        programId: 1,
       ),
       isScrollControlled: true,
     );
@@ -79,15 +78,7 @@ class Content extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final program = mockProgramData.firstWhere(
-      (program) => program.title == contentTitle,
-      orElse: () => Program(
-        title: 'Not Found',
-        description: 'No description available',
-        photos: [],
-      ),
-    );
-
+    final program = Program.fromJson(controller.programs[index]);
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: Container(

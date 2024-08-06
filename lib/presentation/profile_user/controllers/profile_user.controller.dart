@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ProfileUserController extends GetxController {
   var student = <String, dynamic>{}.obs;
   var isLoading = false.obs;
   final roles = <String>[].obs;
   final grades = <String>[].obs;
+  final gradeId = 0.obs;
+  final box = GetStorage();
 
   @override
   void onInit() {

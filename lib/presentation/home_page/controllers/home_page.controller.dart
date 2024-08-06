@@ -18,9 +18,12 @@ class HomePageController extends GetxController {
   final desc = [].obs;
   final informationList = <Information>[].obs;
   final contentTitles = <String>[].obs;
+  final contenExtra = <String>[].obs;
   final contact = <String>[].obs;
   final contactandinformation = [].obs;
+  final extra = [].obs;
   final programs = [].obs;
+
   var isLoading = false.obs;
   var user = UserModel(
     id: 0,
@@ -77,10 +80,10 @@ class HomePageController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         final items = jsonData['data'];
-        contentTitles.clear();
+        contenExtra.clear();
         programs.clear();
         for (var item in items) {
-          contentTitles.add(item['name']);
+          contenExtra.add(item['name']);
           programs.add(item);
         }
         isLoading.value = false;
@@ -213,11 +216,10 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() {
-    // fetchUser();
-    fetchProgram();
-    fetchExtra();
     fetchContactAndInformation();
     fetchInformationList();
+    fetchProgram();
+    fetchExtra();
     super.onInit();
     fetchCurrentUser();
   }

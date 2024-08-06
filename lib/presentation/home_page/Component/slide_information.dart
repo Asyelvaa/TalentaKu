@@ -104,7 +104,7 @@ class Content extends GetView<HomePageController> {
               children: [
                 Text(contentTitle, style: AppTextStyle.tsNormal),
                 Text(
-                  contentDesc,
+                  contentDesc.replaceAll('\\n', '\n'),
                   style: AppTextStyle.tsNormal,
                 )
               ],

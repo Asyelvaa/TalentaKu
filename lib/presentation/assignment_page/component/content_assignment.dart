@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../../common_widget/text_background.dart';
@@ -42,8 +43,8 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                       Container(
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          border:
-                              Border(bottom: BorderSide(color: AppColor.blue200)),
+                          border: Border(
+                              bottom: BorderSide(color: AppColor.blue200)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,8 +71,8 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                                   DateFormat('EEE, d/M/yyyy')
                                           .format(task.startDate!) ??
                                       '',
-                                  style:
-                                      AppTextStyle.tsSmallRegular(AppColor.black),
+                                  style: AppTextStyle.tsSmallRegular(
+                                      AppColor.black),
                                 )
                               ],
                             ),
@@ -97,8 +98,8 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                                   DateFormat('EEE, d/M/yyyy')
                                           .format(task.endDate!) ??
                                       '',
-                                  style:
-                                      AppTextStyle.tsSmallRegular(AppColor.black),
+                                  style: AppTextStyle.tsSmallRegular(
+                                      AppColor.black),
                                 ),
                               ],
                             )
@@ -154,7 +155,7 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                             ),
                           ],
                         ),
-                
+
                       // Links section
                       spaceHeightExtraSmall,
                       if (task.links!.isNotEmpty)
@@ -176,7 +177,7 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                                   onTap: () async {
                                     final url = link.url!;
                                     final uri = Uri.tryParse(url);
-                                    if (uri != null && await canLaunchUrl(uri)) {
+                                    if (uri != null && await launchUrl(uri)) {
                                       await launchUrl(uri);
                                     } else {
                                       throw 'Could not launch $url';
@@ -200,8 +201,9 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               link.url!,
-                                              style: AppTextStyle.tsSmallRegular(
-                                                  AppColor.black),
+                                              style:
+                                                  AppTextStyle.tsSmallRegular(
+                                                      AppColor.black),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -217,51 +219,50 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                     ],
                   ),
                 ),
-                spaceHeightNormal,                  
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          await controller.deleteTask(task.id.toString());
-                        },
-                        child: Center(
-                          child: Text(
-                            'Hapus Tugas',
-                            style: AppTextStyle.tsSmallBold(AppColor.white),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromHeight(44),
-                          elevation: 0,
-                          backgroundColor: AppColor.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                spaceHeightNormal,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        await controller.deleteTask(task.id.toString());
+                      },
+                      child: Center(
+                        child: Text(
+                          'Hapus Tugas',
+                          style: AppTextStyle.tsSmallBold(AppColor.white),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          // await controller.updateTask();
-                        },
-                        child: Center(
-                          child: Text(
-                            'Edit Tugas',
-                            style: AppTextStyle.tsSmallBold(AppColor.white),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromHeight(44),
-                          elevation: 0,
-                          backgroundColor: AppColor.blue600,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromHeight(44),
+                        elevation: 0,
+                        backgroundColor: AppColor.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        // await controller.updateTask();
+                      },
+                      child: Center(
+                        child: Text(
+                          'Edit Tugas',
+                          style: AppTextStyle.tsSmallBold(AppColor.white),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromHeight(44),
+                        elevation: 0,
+                        backgroundColor: AppColor.blue600,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             );
           }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
-import 'package:flutter_talentaku/presentation/common_widget/custom_button_icon.dart';
 import 'package:get/get.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/appbar_username.dart';
+import '../common_widget/custom_button_icon.dart';
 import '../student_report_form/model/Student.dart';
 import 'component/profile_data_container_user.dart';
 import 'component/profile_data_user.dart';
@@ -16,7 +16,9 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
   @override
   Widget build(BuildContext context) {
     final ProfileUserController controller = Get.put(ProfileUserController());
-    final Student student = Get.arguments as Student;
+    final Student student = Get.arguments[0] as Student;
+    final arguments = Get.arguments;
+    controller.box.write('student_id', student.id);
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -61,7 +63,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                           style: AppTextStyle.tsTitle,
                         ),
                         Text(
-                          student.roles.join(', '), 
+                          student.roles.join(', '),
                           style: AppTextStyle.tsNormal
                               .copyWith(color: AppColor.blue600),
                         ),
@@ -82,7 +84,8 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                       ),
                       ProfileDataContainer(
                         title: "Kelompok",
-                        dataUser: student.grades.isNotEmpty ? student.grades[0] : '-',
+                        dataUser:
+                            student.grades.isNotEmpty ? student.grades[0] : '-',
                       ),
                     ],
                   ),
@@ -130,7 +133,8 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                         ],
                       )),
                 defaultHeightSpace,
-                if (student.roles.contains('Murid KB') || student.roles.contains('Murid SD'))
+                if (student.roles.contains('Murid KB') ||
+                    student.roles.contains('Murid SD'))
                   CustomButtonWithIcon(
                     text: "Laporan Pembelajaran",
                     icon: Icons.arrow_forward_ios,
@@ -138,7 +142,8 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                     colorIcon: AppColor.blue600,
                     colorText: AppColor.blue600,
                     onPressed: () {
-                      Get.toNamed(Routes.REPORT_LIST_USER_PAGE);
+                      Get.toNamed(Routes.REPORT_LIST_USER_PAGE,
+                          arguments: [student.id, arguments[1]]);
                     },
                   ),
               ],

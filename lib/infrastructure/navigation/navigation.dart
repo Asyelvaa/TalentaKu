@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';
 
 import 'package:get/get.dart';
+
+import 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';
 
 import '../../config.dart';
 import '../../presentation/common_widget/navigation_menu.dart';
