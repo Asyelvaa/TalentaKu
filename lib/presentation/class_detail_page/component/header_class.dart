@@ -23,8 +23,7 @@ class HeaderClass extends GetView<ProfileUserController> {
           color: AppColor.blue600,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24))
-      ),
+              bottomRight: Radius.circular(24))),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
         child: Column(
@@ -39,61 +38,75 @@ class HeaderClass extends GetView<ProfileUserController> {
             //   colorBackground: AppColor.white,
             //   text:  'Guru : ${controller.classItem['teacher']}',
             // ),
-            // spaceHeightExtraSmall, 
+            // spaceHeightExtraSmall,
             // TextWithBackground(
             //   colorBackground: AppColor.white,
             //   text:  'Member Kelas',
-            // ),         
+            // ),
             Obx(() {
               if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator(color: AppColor.white,),);
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColor.white,
+                  ),
+                );
               }
               if (controller.classMembers.isEmpty) {
-                return Center(child: Text("Belum memiliki murid", style: AppTextStyle.tsSmallRegular(AppColor.white),));
+                return Center(
+                    child: Text(
+                  "Belum memiliki murid",
+                  style: AppTextStyle.tsSmallRegular(AppColor.white),
+                ));
               }
               return Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: controller.classMembers.length,
+                  itemCount: controller.students.length,
                   itemBuilder: (context, index) {
-                    final student = controller.classMembers[index];
+                    final student = controller.students[index];
+                    final isSelected =
+                        controller.selectedStudents.contains(student);
+                    final storedImage = controller.image.value;
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(
-                          Routes.PROFILE_USER, 
-                          arguments: {'student' : student});
+                        controller.toggleSelection(student);
+
+                        Get.toNamed(Routes.PROFILE_USER,
+                            // arguments: {
+                            //   'student': student,
+                            //   'classId': controller.classItem['id']
+                            // });
+                            arguments: [controller.students[index], controller.classItem['id']]);
                       },
                       child: Container(
                         width: widthScreen * 0.2,
-                        child: Column(
-                          children: [
-                            CircleAvatar(
+                        child: Column(children: [
+                          CircleAvatar(
                               radius: 30,
                               backgroundColor: AppColor.white,
                               child: student.photo != null
-                                ? ClipOval(
-                                    child: Image.network(
-                                      student.photo!,
-                                      width: 30,
-                                      height: 30,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : AutoSizeText(
-                                  getInitials(student.name!),
-                                   style: AppTextStyle.tsBodyBold(AppColor.black),
-                                   minFontSize: 12,                                  
-                                )
-                            ),  
-                            AutoSizeText(
-                              student.name!, 
-                              style: AppTextStyle.tsSmallRegular(AppColor.white),
-                              minFontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              ),                        
-                          ]
-                        ),
+                                  ? ClipOval(
+                                      child: Image.network(
+                                        student.photo!,
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : AutoSizeText(
+                                      getInitials(student.name!),
+                                      style: AppTextStyle.tsBodyBold(
+                                          AppColor.black),
+                                      minFontSize: 12,
+                                    )),
+                          AutoSizeText(
+                            student.name!,
+                            style: AppTextStyle.tsSmallRegular(AppColor.white),
+                            minFontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ]),
                       ),
                     );
                   },
@@ -108,10 +121,10 @@ class HeaderClass extends GetView<ProfileUserController> {
 }
 
 String getInitials(String name) {
-    List<String> nameParts = name.split(' ');
-    if (nameParts.length == 1) {
-      return nameParts[0].substring(0, 2).toUpperCase();
-    } else {
-      return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
-    }
+  List<String> nameParts = name.split(' ');
+  if (nameParts.length == 1) {
+    return nameParts[0].substring(0, 2).toUpperCase();
+  } else {
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
   }
+}

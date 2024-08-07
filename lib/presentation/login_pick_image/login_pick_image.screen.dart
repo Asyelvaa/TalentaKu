@@ -57,12 +57,8 @@ class PickImageScreen extends GetView<PickimageController> {
                                         radius: 60,
                                         backgroundColor: AppColor.blue600,
                                         child: Text(
-                                          controller.username.substring(0, 2).toUpperCase(),
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12,
-                                            color: Colors.white,
-                                          ),
+                                          controller.username.substring(2).toUpperCase(),
+                                          style: AppTextStyle.tsSmallBold(AppColor.white)
                                         ),
                                       );
                               },
@@ -109,11 +105,7 @@ class PickImageScreen extends GetView<PickimageController> {
                         child: Center(
                           child: Text(
                             controller.username,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
+                            style: AppTextStyle.tsBodyBold(AppColor.black)
                           ),
                         ),
                       ),

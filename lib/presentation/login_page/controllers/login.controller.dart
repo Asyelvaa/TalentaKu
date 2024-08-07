@@ -50,8 +50,6 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
-    // print(email);
-    // print(password);
     try {
       final response = await apiService.login(email, password);
       if (response['success']) {
@@ -69,9 +67,11 @@ class LoginController extends GetxController {
         Map<String, dynamic>? dataUser = box.read('dataUser');
         print(dataUser);
         Get.offAllNamed(Routes.PICK_IMAGE);
+      } else {
+        String message = response['message'];
+        dialogError(message);
       }
-    } catch (e) {
-      dialogError('Pengguna tidak terdaftar');
+    } catch (e) {      
       print(e);
     } finally {
       isLoading.value = false;

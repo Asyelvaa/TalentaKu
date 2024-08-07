@@ -35,6 +35,7 @@ class DailyReportScreen extends GetView<DailyReportController> {
     // }
 
     return Scaffold(
+      backgroundColor: AppColor.background,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {

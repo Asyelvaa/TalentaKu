@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:iconsax/iconsax.dart';
 import '../../../infrastructure/theme/theme.dart';
 import 'component/form.dart';
 import 'controllers/student_report_form.controller.dart';
@@ -141,7 +141,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               textController: controller.kegiatanIntiTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
-              pointType: 'Kurang', 
+              pointType: 'Kurang',
             ),
             SizedBox(height: heightScreen * 0.02),
             // Snack section
@@ -200,36 +200,80 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               ),
             ),
             SizedBox(height: heightScreen * 0.02),
+            Row(
+              children: [
+                Icon(
+                  Iconsax.document_upload,
+                  color: AppColor.blue400,
+                ),
+                SizedBox(width: widthScreen * 0.02),
+                Text(
+                  "Upload Tugas Kamu :",
+                  style: AppTextStyle.tsNormal
+                      .copyWith(fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            SizedBox(height: heightScreen * 0.01),
             GestureDetector(
               onTap: () {
                 controller.pickImage();
               },
               child: Obx(() {
-                return Container(
-                  height: heightScreen * 0.4,
-                  width: widthScreen * 1,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.5, color: AppColor.blue500),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  alignment: Alignment.center,
-                  child: controller.selectedImage.value != null
-                      ? ClipRRect(
+                return controller.selectedImages.isNotEmpty
+                    ? GridView.builder(
+                        padding: EdgeInsets.all(8),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemCount: controller.selectedImages.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.file(
+                                  controller.selectedImages[index],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                              ),
+                              Positioned(
+                                right: 8,
+                                top: 8,
+                                child: GestureDetector(
+                                  onTap: () => controller.removeImage(index),
+                                  child: Icon(
+                                    Icons.remove_circle,
+                                    color: AppColor.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : Container(
+                        height: heightScreen * 0.1,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 1.5, color: AppColor.blue500),
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.file(
-                            controller.selectedImage.value!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        )
-                      : Text(
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
                           "+ Foto / Vidio Baru",
                           style: AppTextStyle.tsNormal,
                         ),
-                );
+                      );
               }),
             ),
+
             SizedBox(height: heightScreen * 0.02),
             Text(
               "Kirim Laporan untuk",
@@ -242,70 +286,114 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               }
               if (controller.students.isEmpty) {
                 return Center(child: Text("Tidak ada murid"));
+              } else {
+                return Container(
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.students.length,
+                      itemBuilder: (context, index) {
+                        final student = controller.students[index];
+                        final selected = controller.isSelected[index];
+                        return GestureDetector(
+                          onTap: () {
+                            controller.isSelected.value = List.generate(
+                                controller.students.length,
+                                (index) => false.obs);
+                            controller.studentId.value = student.id!;
+                            selected.toggle();
+                          },
+                          child: Container(
+                              child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  Obx(
+                                    () => Container(
+                                      padding: EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: selected.value
+                                              ? Border.all(
+                                                  width: 2,
+                                                  color: AppColor.blue800)
+                                              : null),
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage: student.photo != null
+                                            ? NetworkImage(student.photo!)
+                                            : AssetImage(
+                                                    'assets/images/anak.png')
+                                                as ImageProvider,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(student.name!),
+                                ],
+                              ),
+                            ],
+                          )),
+                        );
+                      }),
+                );
               }
-              return Wrap(
-                spacing: 10,
-                children: controller.students.map((student) {
-                  final isSelected =
-                      controller.selectedStudents.contains(student);
-                  return GestureDetector(
-                    onTap: () => controller.toggleSelection(student),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: student.photo != null
-                              ? NetworkImage(student.photo!)
-                              : AssetImage('assets/images/anak.png')
-                                  as ImageProvider,
-                          backgroundColor:
-                              isSelected ? Colors.blue : Colors.grey,
-                        ),
-                        SizedBox(height: 5),
-                        Text(student.name),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
             }),
             SizedBox(height: heightScreen * 0.03),
-            GestureDetector(
-              onTap: () {
-                int studentId = controller.selectedStudents.first.id;
-                controller.submitReport(
-                  created: controller.createdController.text,
-                  semesterId: int.parse(controller.semesterIdController.text),
-                  kegiatanAwal: controller.kegiatanIntiTextController.text,
-                  awalPoint: controller.selectedOptions['Kegiatan Awal']!,
-                  kegiatanInti: controller.kegiatanIntiTextController.text,
-                  intiPoint: controller.selectedOptions['Kegiatan Inti']!,
-                  snack: controller.SnackTextController.text,
-                  snackPoint: controller.selectedOptions['Snack']!,
-                  inklusi: controller.inklusiTextController.text,
-                  inklusiPoint: controller.selectedOptions['Inklusi']!,
-                  catatan: controller.catatanController.text,
-                  media: [
-                    controller.selectedImage.value!,
-                  ],
-                  studentId: studentId,
-                );
-              },
-              child: Container(
-                height: heightScreen * 0.07,
+            Obx(() {
+              return SizedBox(
                 width: double.infinity,
-                decoration: BoxDecoration(
+                child: MaterialButton(
+                  minWidth: double.infinity,
+                  height: 50,
+                  onPressed: controller.isLoading.value
+                      ? null
+                      : () {
+                          if (controller.studentId != 0) {
+                            controller.submitReport(
+                              created: controller.createdController.text,
+                              semesterId: int.parse(
+                                  controller.semesterIdController.text),
+                              kegiatanAwal:
+                                  controller.kegiatanAwalTextController.text,
+                              awalPoint:
+                                  controller.selectedOptions['Kegiatan Awal']!,
+                              kegiatanInti:
+                                  controller.kegiatanIntiTextController.text,
+                              intiPoint:
+                                  controller.selectedOptions['Kegiatan Inti']!,
+                              snack: controller.SnackTextController.text,
+                              snackPoint: controller.selectedOptions['Snack']!,
+                              inklusi: controller.inklusiTextController.text,
+                              inklusiPoint:
+                                  controller.selectedOptions['Inklusi']!,
+                              catatan: controller.catatanController.text,
+                              media: controller.selectedImages,
+                              studentId: controller.studentId.value,
+                            );
+                          } else {
+                            Get.snackbar('Peringatan', 'Harap pilih siswa',
+                                backgroundColor: AppColor.red);
+                          }
+                        },
                   color: AppColor.blue100,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Center(
-                  child: Text(
-                    "Kirim Laporan",
-                    style: AppTextStyle.tsNormal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
+                  elevation: 0,
+                  child: controller.isLoading.value
+                      ? CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColor.blue200),
+                        )
+                      : Text(
+                          "Kirim Laporan",
+                          style: AppTextStyle.tsNormal
+                              .copyWith(color: Colors.white),
+                        ),
                 ),
-              ),
-            )
+              );
+            })
           ],
         ),
       ),

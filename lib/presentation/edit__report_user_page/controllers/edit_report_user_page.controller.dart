@@ -14,6 +14,7 @@ import '../../../infrastructure/theme/theme.dart';
 class EditReportUserPageController extends GetxController {
   var isLoading = false.obs;
   late final arguments;
+  late final gradeId;
   final box = GetStorage();
   var reportData = [].obs;
   var semesterReportData = [].obs;
@@ -51,7 +52,7 @@ class EditReportUserPageController extends GetxController {
 
     try {
       final response = await http.get(
-          Uri.parse('$baseUrl/grades/1/student-report/student/7'),
+          Uri.parse('$baseUrl/grades/$gradeId/student-report/student/7'),
           headers: headers);
 
       if (response.statusCode == 200) {
@@ -89,7 +90,7 @@ class EditReportUserPageController extends GetxController {
 
     try {
       final response = await http.get(
-          Uri.parse('$baseUrl/grades/3/student-report/semester/1'),
+          Uri.parse('$baseUrl/grades/$gradeId/student-report/semester/1'),
           headers: headers);
 
       if (response.statusCode == 200) {
@@ -129,10 +130,11 @@ class EditReportUserPageController extends GetxController {
     required String inklusiPoint,
     required String catatan,
     required List<File> media,
-    required int reportId, // Add the reportId parameter here
+    required int reportId,
   }) async {
     try {
-      final url = '$baseUrl/grades/1/student-report/$reportId';
+      final url =
+          '$baseUrl/grades/${gradeId['grade_id']}/student-report/$reportId';
       final token = box.read('token');
 
       var headers = {
@@ -152,10 +154,11 @@ class EditReportUserPageController extends GetxController {
         'inklusi': inklusi,
         'inklusi_point': inklusiPoint,
         'catatan': catatan,
+        'student_id': box.read('student_id')
       };
 
       final request = http.MultipartRequest(
-        'POST', // Use PUT or PATCH for updating the report
+        'POST',
         Uri.parse(url),
       );
 
@@ -223,6 +226,9 @@ class EditReportUserPageController extends GetxController {
   }
 
   Future<void> deleteReport(int reportId) async {
+    final url =
+        '$baseUrl/grades/${gradeId['grade_id']}/student-report/$reportId';
+    print(url);
     isLoading.value = true;
     final token = box.read('token');
 
@@ -233,15 +239,13 @@ class EditReportUserPageController extends GetxController {
 
     try {
       final response = await http.delete(
-        Uri.parse('$baseUrl/grades/2/student-report/$reportId'),
+        Uri.parse(url),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
         Get.snackbar('Success', 'Report has been deleted',
             backgroundColor: AppColor.blue100);
-
-        Get.offAllNamed(Routes.REPORT_LIST_USER_PAGE);
       } else {
         Get.snackbar('Error', 'Failed to delete report: ${response.statusCode}',
             backgroundColor: AppColor.red);
@@ -260,6 +264,7 @@ class EditReportUserPageController extends GetxController {
     arguments = Get.arguments;
     if (arguments[0] == 'edit') {
       reportUser.value = arguments[1];
+      gradeId = arguments[1];
       print(reportUser);
       setValueText();
     } else {

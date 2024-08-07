@@ -24,7 +24,7 @@ class AppbarUsername extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Profile, $username',
+            'Profile Siswa',
             style: AppTextStyle.tsTitle,
           ),
         ],

@@ -21,10 +21,10 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(colorButton),
-          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+          backgroundColor: MaterialStateProperty.all(colorButton),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
               EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
             borderRadius: defaultBorderRadius,
           ))),
