@@ -1,5 +1,8 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/header_class.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../infrastructure/theme/theme.dart';
@@ -31,88 +34,114 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 50,
                   width: 155,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return Container(
-                            height: 250,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(22)),
-                                      color: AppColor.background),
-                                  child: CupertinoDatePicker(
-                                    initialDateTime: DateTime.now(),
-                                    onDateTimeChanged: (DateTime newDateTime) {
-                                      controller.createdController.text =
-                                          "${newDateTime.year}/${newDateTime.month}/${newDateTime.day}";
-                                    },
-                                    use24hFormat: true,
-                                    mode: CupertinoDatePickerMode.date,
-                                  ),
-                                ),
-                                CupertinoButton(
-                                  color: AppColor.blue100,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                  child: Text(
-                                    'Done',
-                                    style: AppTextStyle.tsLittle,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: TextFormField(
-                      controller: controller.createdController,
-                      decoration: InputDecoration(
-                        labelText: "YYYY/MM/DD",
-                        hintStyle: AppTextStyle.tsLittle,
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => controller.pickDate(context),
+                        icon: Icon(
+                          Icons.calendar_today,
+                          color: AppColor.blue500,
+                        ),
                       ),
-                      enabled: false,
-                    ),
+                      Obx(() {
+                        return Text(
+                          controller.selectedDate.value != null
+                              ? '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}'
+                              : 'Pilih tanggal',
+                          style: AppTextStyle.tsNormal,
+                        );
+                      }),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10),
+                // Container(
+                //   height: 50,
+                //   width: 155,
+                //   decoration: BoxDecoration(
+                //     border: Border.all(width: 1.5, color: AppColor.blue500),
+                //     borderRadius: BorderRadius.circular(16),
+                //   ),
+                //   alignment: Alignment.center,
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       showModalBottomSheet(
+                //         context: context,
+                //         builder: (context) {
+                //           return Container(
+                //             height: 250,
+                //             child: Column(
+                //               children: [
+                //                 Container(
+                //                   height: 200,
+                //                   decoration: BoxDecoration(
+                //                       borderRadius:
+                //                           BorderRadius.all(Radius.circular(22)),
+                //                       color: AppColor.background),
+                //                   child: CupertinoDatePicker(
+                //                     initialDateTime: DateTime.now(),
+                //                     onDateTimeChanged: (DateTime newDateTime) {
+                //                       controller.createdController.text =
+                //                           "${newDateTime.year}/${newDateTime.month}/${newDateTime.day}";
+                //                     },
+                //                     use24hFormat: true,
+                //                     mode: CupertinoDatePickerMode.date,
+                //                   ),
+                //                 ),
+                //                 CupertinoButton(
+                //                   color: AppColor.blue100,
+                //                   borderRadius:
+                //                       BorderRadius.all(Radius.circular(12)),
+                //                   child: Text(
+                //                     'Done',
+                //                     style: AppTextStyle.tsLittle,
+                //                   ),
+                //                   onPressed: () {
+                //                     Navigator.of(context).pop();
+                //                   },
+                //                 )
+                //               ],
+                //             ),
+                //           );
+                //         },
+                //       );
+                //     },
+                //     child: TextFormField(
+                //       controller: controller.createdController,
+                //       decoration: InputDecoration(
+                //         labelText: "YYYY/MM/DD",
+                //         hintStyle: AppTextStyle.tsLittle,
+                //         border: InputBorder.none,
+                //         contentPadding:
+                //             EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                //       ),
+                //       enabled: false,
+                //     ),
+                //   ),
+                // ),
+
                 Container(
-                  height: 50,
                   width: 155,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: TextFormField(
-                    controller: controller.semesterIdController,
-                    decoration: InputDecoration(
-                      labelText: "Semester ID",
-                      hintStyle: AppTextStyle.tsLittle,
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: CustomDropdown<String>(
+                    decoration: CustomDropdownDecoration(
+                      hintStyle: AppTextStyle.tsNormal,
                     ),
+                    hintText: 'Pilih Semester',
+                    items: ['1', '2'],
+                    onChanged: (value) {
+                      value == '1' ? '1' : '2';
+                    },
                   ),
                 ),
               ],
@@ -121,61 +150,61 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
 
             Text(
               "Kegiatan Awal",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsBodyBold(Colors.black),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             FormSection(
               textController: controller.kegiatanAwalTextController,
               controller: controller,
               sectionTitle: "Kegiatan Awal",
-              pointType: 'Muncul', // Contoh penggunaan pointType
+              pointType: 'Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
-            // Kegiatan Inti section
+            spaceHeightSmall,
+
             Text(
               "Kegiatan Inti",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsBodyBold(Colors.black),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             FormSection(
               textController: controller.kegiatanIntiTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
               pointType: 'Kurang',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             // Snack section
             Text(
               "Snack",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsBodyBold(Colors.black),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             FormSection(
               textController: controller.SnackTextController,
               controller: controller,
               sectionTitle: "Snack",
               pointType: 'Belum Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             // Inklusi section
             Text(
               "Inklusi",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsBodyBold(Colors.black),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             FormSection(
               textController: controller.inklusiTextController,
               controller: controller,
               sectionTitle: "Inklusi",
               pointType: 'Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             // Catatan section
             Text(
               "Catatan",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsBodyBold(AppColor.black),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             Container(
               height: heightScreen * 0.08,
               width: widthScreen * 1,
@@ -188,7 +217,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                 controller: controller.catatanController,
                 decoration: InputDecoration(
                   hintText: "Masukkan Catatan",
-                  hintStyle: AppTextStyle.tsLittle,
+                  hintStyle: AppTextStyle.tsBodyBold(AppColor.black),
                   border: InputBorder.none,
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -199,7 +228,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                 },
               ),
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             Row(
               children: [
                 Icon(
@@ -207,11 +236,8 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                   color: AppColor.blue400,
                 ),
                 SizedBox(width: widthScreen * 0.02),
-                Text(
-                  "Upload Tugas Kamu :",
-                  style: AppTextStyle.tsNormal
-                      .copyWith(fontWeight: FontWeight.bold),
-                )
+                Text("Upload Foto",
+                    style: AppTextStyle.tsBodyBold(AppColor.black))
               ],
             ),
             SizedBox(height: heightScreen * 0.01),
@@ -249,7 +275,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                                 child: GestureDetector(
                                   onTap: () => controller.removeImage(index),
                                   child: Icon(
-                                    Icons.remove_circle,
+                                    Icons.close_outlined,
                                     color: AppColor.red,
                                   ),
                                 ),
@@ -267,19 +293,19 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          "+ Foto / Vidio Baru",
+                          "Tambah Foto",
                           style: AppTextStyle.tsNormal,
                         ),
                       );
               }),
             ),
 
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             Text(
               "Kirim Laporan untuk",
               style: AppTextStyle.tsTitle,
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             Obx(() {
               if (controller.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
@@ -304,33 +330,48 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                             selected.toggle();
                           },
                           child: Container(
-                              child: Stack(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                children: [
-                                  Obx(
-                                    () => Container(
-                                      padding: EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: selected.value
-                                              ? Border.all(
-                                                  width: 2,
-                                                  color: AppColor.blue800)
-                                              : null),
-                                      child: CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: student.photo != null
-                                            ? NetworkImage(student.photo!)
-                                            : AssetImage(
-                                                    'assets/images/anak.png')
-                                                as ImageProvider,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(student.name!),
-                                ],
+                              Obx(
+                                () => Container(
+                                  margin: EdgeInsets.only(right: 12),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: selected.value
+                                                  ? Border.all(
+                                                      width: 2,
+                                                      color: AppColor.blue800)
+                                                  : null),
+                                          child: CircleAvatar(
+                                              radius: 30,
+                                              backgroundColor: AppColor.blue200,
+                                              child: CircleAvatar(
+                                                child: Image.network(
+                                                  student.photo == null
+                                                      ? 'https://ui-avatars.com/api/?name=${student.name}&background=C1CDFF'
+                                                      : student.photo!,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )),
+                                        ),
+                                        SizedBox(height: 10),
+                                        AutoSizeText(
+                                          student.name!,
+                                          style: AppTextStyle.tsSmallRegular(
+                                              AppColor.black),
+                                          minFontSize: 12,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ]),
+                                ),
                               ),
                             ],
                           )),
@@ -376,7 +417,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                                 backgroundColor: AppColor.red);
                           }
                         },
-                  color: AppColor.blue100,
+                  color: AppColor.blue600,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

@@ -72,8 +72,10 @@ class HeaderClass extends GetView<ProfileUserController> {
                       onTap: () {
                         controller.toggleSelection(student);
 
-                        Get.toNamed(Routes.PROFILE_USER,
-                            arguments: [controller.students[index], controller.classItem['id']]);
+                        Get.toNamed(Routes.PROFILE_USER, arguments: [
+                          controller.students[index],
+                          controller.classItem['id']
+                        ]);
                       },
                       child: Container(
                         width: widthScreen * 0.2,

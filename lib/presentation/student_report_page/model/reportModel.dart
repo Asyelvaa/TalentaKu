@@ -1,3 +1,31 @@
+class Media {
+  final int id;
+  final String reportId;
+  final String filePath;
+
+  Media({
+    required this.id,
+    required this.reportId,
+    required this.filePath,
+  });
+
+  factory Media.fromJson(Map<String, dynamic> json) {
+    return Media(
+      id: json['id'],
+      reportId: json['report_id'],
+      filePath: json['file_path'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'report_id': reportId,
+      'file_path': filePath,
+    };
+  }
+}
+
 class ReportModel {
   final int id;
   final String created;
@@ -15,7 +43,7 @@ class ReportModel {
   final String studentId;
   final String teacherId;
   final String gradeId;
-  final List<dynamic> media;
+  final List<Media> media;
 
   ReportModel({
     required this.id,
@@ -55,7 +83,30 @@ class ReportModel {
       studentId: json['student_id'],
       teacherId: json['teacher_id'],
       gradeId: json['grade_id'],
-      media: List<dynamic>.from(json['media']),
+      media:
+          List<Media>.from(json['media'].map((item) => Media.fromJson(item))),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'created': created,
+      'semester_id': semesterId,
+      'semester_name': semesterName,
+      'kegiatan_awal': kegiatanAwal,
+      'awal_point': awalPoint,
+      'kegiatan_inti': kegiatanInti,
+      'inti_point': intiPoint,
+      'snack': snack,
+      'snack_point': snackPoint,
+      'inklusi': inklusi,
+      'inklusi_point': inklusiPoint,
+      'catatan': catatan,
+      'student_id': studentId,
+      'teacher_id': teacherId,
+      'grade_id': gradeId,
+      'media': media.map((item) => item.toJson()).toList(),
+    };
   }
 }

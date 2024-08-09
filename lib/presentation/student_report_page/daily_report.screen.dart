@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/text_background.dart';
+import 'component/media_display.dart';
 import 'controllers/daily_report.controller.dart';
 import 'component/report_item.dart';
 
@@ -132,6 +133,8 @@ class DailyReportScreen extends GetView<DailyReportController> {
                         fieldName: 'catatan',
                         fieldPoint: 'catatan_point',
                       ),
+                      SizedBox(height: 20),
+                      MediaDisplay(media: controller.singleReportData['media']),
                     ],
                   ),
                 ),
