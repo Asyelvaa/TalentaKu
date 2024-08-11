@@ -22,7 +22,7 @@ class ContentScoring extends StatelessWidget {
       }
 
       if (controller.submissionsWithNullScore.isEmpty && controller.submissionsWithScore.isEmpty) {
-        return Center(child: Text('Belum ada siswa yang mengumpulkan tugas'));
+        return Center(child: Text('Belum ada siswa yang mengumpulkan tugas', style: AppTextStyle.tsBodyRegular(AppColor.black),));
       }
 
       return SingleChildScrollView(
@@ -34,7 +34,7 @@ class ContentScoring extends StatelessWidget {
             spaceHeightExtraSmall,
             Obx(() {
               if (controller.submissionsWithNullScore.isEmpty) {
-                return Text('Belum ada tugas yang diserahkan', style: AppTextStyle.tsSmallRegular(AppColor.black));
+                return Text('Tidak ada tugas yang diserahkan', style: AppTextStyle.tsBodyRegular(AppColor.black));
               } else
               return Center(
                 child: ListView.builder(
@@ -62,7 +62,7 @@ class ContentScoring extends StatelessWidget {
             spaceHeightExtraSmall,
             Obx(() {
               if (controller.submissionsWithScore.isEmpty) {
-                return Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsSmallRegular(AppColor.black));
+                return Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsBodyRegular(AppColor.black));
               } else
               return Container(
                 child: ListView.builder(

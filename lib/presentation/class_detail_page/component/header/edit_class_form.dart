@@ -4,9 +4,9 @@ import 'package:flutter_talentaku/presentation/class_detail_page/controllers/cla
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
-import '../../../domain/models/class_model.dart';
-import '../../common_widget/custom_popup_dialog.dart';
-import '../../common_widget/text_background.dart';
+import '../../../../domain/models/class_model.dart';
+import '../../../common_widget/custom_popup_dialog.dart';
+import '../../../common_widget/text_background.dart';
 import 'profile_name_avatar.dart';
 
 class EditClassBottomSheet extends GetView<ClassDetailController> {

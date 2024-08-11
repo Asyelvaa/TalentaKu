@@ -25,29 +25,29 @@ class ContentBeranda extends GetView<ClassDetailController> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Obx(() {
-              var roles = controller.userRole;
-              if (controller.isLoading.value){
-                return Center(child: CircularProgressIndicator(),);
-              }
-              else if (roles != null && roles.any((role) => role.contains('Murid'))) {
-                return CustomButtonWithIcon(
-                  text: "Laporan Pembelajaran",
-                  icon: Icons.arrow_forward_rounded,
-                  colorButton: AppColor.white,
-                  colorIcon: AppColor.black,
-                  colorText: AppColor.black,
-                  onPressed: () {
-                    var classItemId = controller.classItem["id"].toString();
-                    Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
-                      "gradeId": classItemId
-                    });
-                  },
-                );
-              } else {
-                return Container();
-              }
-            }),
+            // Obx(() {
+            //   var roles = controller.userRole;
+            //   if (controller.isLoading.value){
+            //     return Center(child: CircularProgressIndicator(),);
+            //   }
+            //   else if (roles != null && roles.any((role) => role.contains('Murid'))) {
+            //     return CustomButtonWithIcon(
+            //       text: "Laporan Pembelajaran",
+            //       icon: Icons.arrow_forward_rounded,
+            //       colorButton: AppColor.white,
+            //       colorIcon: AppColor.black,
+            //       colorText: AppColor.black,
+            //       onPressed: () {
+            //         var classItemId = controller.classItem["id"].toString();
+            //         Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
+            //           "gradeId": classItemId
+            //         });
+            //       },
+            //     );
+            //   } else {
+            //     return Container();
+            //   }
+            // }),
           ],
         ),
       ),

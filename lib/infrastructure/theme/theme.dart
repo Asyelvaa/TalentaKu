@@ -41,6 +41,12 @@ final widthScreen = Get.mediaQuery.size.width;
 final heightScreen = Get.mediaQuery.size.height;
 
 class AppTextStyle {
+   static TextStyle tsBigTitleBold(Color color) {
+    return GoogleFonts.manrope(
+    fontSize: figmaFontsize(20),
+    fontWeight: FontWeight.bold,
+    color: color,
+  );}
   static TextStyle tsTitleBold(Color color) {
     return GoogleFonts.manrope(
     fontSize: figmaFontsize(16),

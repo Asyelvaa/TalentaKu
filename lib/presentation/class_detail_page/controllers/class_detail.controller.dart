@@ -25,7 +25,7 @@ import '../../../infrastructure/theme/theme.dart';
 
 import 'package:http/http.dart' as http;
 
-class ClassDetailController extends GetxController {
+class ClassDetailController extends GetxController with GetSingleTickerProviderStateMixin {
   final ApiServiceClass apiService = ApiServiceClass();
 
   Rx<GradeModel> dataClass = GradeModel().obs;
@@ -48,10 +48,11 @@ class ClassDetailController extends GetxController {
   var isLoading = true.obs;
   
   late final List<String> userRole;
+  late final TabController tabController;
 
   @override
   void onInit() {
-    super.onInit();
+    tabController = TabController(length: 3, vsync: this);
     userRole = GetStorage().read('dataUser')['role'];
     print(userRole);
     classItem = Get.arguments as Map<String, dynamic>;
@@ -60,9 +61,10 @@ class ClassDetailController extends GetxController {
     fetchAllTask();
     fetchStudentsFromApi();
     print(username);
+    super.onInit();
 
   }
-
+  
   Future<void> inituser() async {
     await getUserData();
     print(currentUser.value.name);

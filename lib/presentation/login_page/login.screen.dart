@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/common_widget/text_background.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
@@ -29,28 +30,35 @@ class LoginScreen extends GetView<LoginController> {
               defaultHeightSpace,
               Container(
                 width: widthScreen * 0.8,
+                height: heightScreen * 0.5,
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColor.white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 48),
+                  padding:  EdgeInsets.symmetric(vertical: heightScreen * 0.02),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Selamat datang',
-                        style: AppTextStyle.tsTitle
+                        style: AppTextStyle.tsTitleBold(AppColor.black)
                       ),
                       Text(
                         'Semangat buat hari ini ya...',
-                        style: AppTextStyle.tsNormal
+                        style: AppTextStyle.tsBodyRegular(AppColor.black)
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
+                      spaceHeightLarge,
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: heightScreen * 0.02),
                         child: Column(
                           children: [
+                            TextWithBackground(colorBackground: AppColor.blue50, text: 'Masukkan akun yang diberikan dari sekolah'),
+                            // Text('Masukkan akun yang diberikan oleh Gurumu', 
+                            // style: AppTextStyle.tsSmallRegular(AppColor.blue800),),
+                            spaceHeightSmall,
                             CustomTextFormField(
                               loginController: controller.emailController,
                               labelText: "Masukkan email anda",
@@ -59,10 +67,14 @@ class LoginScreen extends GetView<LoginController> {
                             CustomTextFormField(
                               loginController: controller.passwordController,
                               isPassword: true,
-                              labelText: "Masukkan pin anda",
-                            ),
-                            defaultHeightSpace,
-                            Obx(() {
+                              labelText: "Masukkan password anda",
+                            ),                      
+                            
+                          ],
+                        ),
+                      ),
+                      spaceHeightLarge,
+                      Obx(() {
                               return SizedBox(
                                 width: double.infinity,
                                 child: MaterialButton(
@@ -73,7 +85,7 @@ class LoginScreen extends GetView<LoginController> {
                                       : controller.login,
                                   color: AppColor.blue600,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: defaultBorderRadius,
                                   ),
                                   elevation: 0,
                                   child: controller.isLoading.value
@@ -92,9 +104,7 @@ class LoginScreen extends GetView<LoginController> {
                                                   color: Colors.white,
                                               )
                                             ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
+                                            defaultWidthtSpace,
                                             const Icon(
                                               size: 20,
                                               Icons.arrow_forward_ios_rounded,
@@ -105,9 +115,6 @@ class LoginScreen extends GetView<LoginController> {
                                 ),
                               );
                             }),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
