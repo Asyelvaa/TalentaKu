@@ -128,6 +128,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                 // ),
 
                 Container(
+                  
                   width: 155,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
