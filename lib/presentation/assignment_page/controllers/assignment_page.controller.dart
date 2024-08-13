@@ -12,7 +12,7 @@ import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
 import '../../class_detail_page/controllers/class_detail.controller.dart';
 
-class AssignmentPageController extends GetxController  with GetSingleTickerProviderStateMixin {
+class AssignmentPageController extends GetxController  with GetTickerProviderStateMixin {
 
   var isLoading = true.obs;
 
@@ -37,12 +37,11 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
   late TabController tabController;
   late final String gradeId;
   late final String taskId;
-  late final List<String> userRole;
+  late final List<String> userRole = GetStorage().read('dataUser')['role'];
 
   @override
   void onInit() {
     super.onInit();
-    userRole = GetStorage().read('dataUser')['role'];
     tabController = TabController(length: 2, vsync: this);
 
     final arguments = Get.arguments as Map<String, dynamic>;
@@ -153,14 +152,26 @@ class AssignmentPageController extends GetxController  with GetSingleTickerProvi
     } catch (e) {
       Get.snackbar('Error', 'Failed to submit task');    }
   }
-  Future<void> pickSubmissionMedia(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source) ?? await picker.pickVideo(source: source);
-    if (pickedFile != null) {
-      submissionFiles.add(File(pickedFile.path));
-    }
-  }
+  // Future<void> pickSubmissionMedia(ImageSource source) async {
+  //   final pickedFile = await picker.pickImage(source: source) ?? await picker.pickVideo(source: source);
+  //   if (pickedFile != null) {
+  //     submissionFiles.add(File(pickedFile.path));
+  //   }
+  // }
   void removeSubmissionMedia(File file) {
      submissionFiles.removeWhere((element) => element.path == file.path);
+  }
+  var mediaPaths = <String>[].obs;
+  Future<void> pickSubmissionMedia({required ImageSource source}) async {
+    final List<XFile>? images = await picker.pickMultiImage();
+    if (images != null && images.isNotEmpty) {
+      mediaPaths.addAll(images.map((image) => image.path).toList());
+    }
+    final XFile? video = await picker.pickVideo(source: source);
+    if (video != null) {
+      mediaPaths.add(video.path);
+    }
+    print("Media Paths: $mediaPaths");
   }
 
   // SHOW TASK BY ID

@@ -12,31 +12,34 @@ class AssignmentListTeacher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ClassDetailController());
+    final controller = Get.find<ClassDetailController>();
     var tasks = controller.teacherTasks;
 
     return CustomScrollView(
       slivers: [
-        SliverToBoxAdapter(
-          child: GestureDetector(
-            onTap: () => Get.to(() => AssignemntFormPageScreen(), arguments: {
-              'gradeId': controller.classItem['id'].toString()
-            }),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Container(
-                alignment: Alignment.center,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColor.blue100,
-                ),
-                child: Text('Upload Task / Material',
-                    style: AppTextStyle.tsSmallBold(AppColor.black)),
-              ),
-            ),
-          ),
-        ),
+        // SliverToBoxAdapter(
+        //   child: GestureDetector(
+        //     onTap: () => Get.to(() => AssignemntFormPageScreen(), 
+        //     arguments: {
+        //       'taskId' : '',
+        //       'gradeId': controller.classItem['id'].toString()
+        //     }
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsets.only(bottom: 8.0),
+        //       child: Container(
+        //         alignment: Alignment.center,
+        //         height: 40,
+        //         decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(12),
+        //           color: AppColor.blue100,
+        //         ),
+        //         child: Text('Upload Task / Material',
+        //             style: AppTextStyle.tsSmallBold(AppColor.black)),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         tasks.isEmpty
             ? SliverToBoxAdapter(
                 child: Center(
@@ -44,7 +47,7 @@ class AssignmentListTeacher extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       "Belum ada tugas yang dibuat",
-                      style: AppTextStyle.tsSmallRegular(AppColor.black),
+                      style: AppTextStyle.tsBodyRegular(AppColor.black),
                     ),
                   ),
                 ),
@@ -53,7 +56,7 @@ class AssignmentListTeacher extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     var task = tasks[index];
-                    return MateriItem(
+                    return AssignmentItem(
                       title: task.title!,
                       tenggat:
                           'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}',

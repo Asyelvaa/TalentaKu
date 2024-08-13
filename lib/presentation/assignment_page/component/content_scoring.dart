@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/presentation/assignment_page/component/submission_item.dart';
+import 'package:flutter_talentaku/presentation/screens.dart';
 import 'package:get/get.dart';
 
+import '../../submission_page/submission_scoring_page.dart';
 import '../controllers/assignment_page.controller.dart';
 
 class ContentScoring extends StatelessWidget {
@@ -20,7 +22,7 @@ class ContentScoring extends StatelessWidget {
       }
 
       if (controller.submissionsWithNullScore.isEmpty && controller.submissionsWithScore.isEmpty) {
-        return Center(child: Text('Belum ada siswa yang mengumpulkan tugas'));
+        return Center(child: Text('Belum ada siswa yang mengumpulkan tugas', style: AppTextStyle.tsBodyRegular(AppColor.black),));
       }
 
       return SingleChildScrollView(
@@ -32,7 +34,7 @@ class ContentScoring extends StatelessWidget {
             spaceHeightExtraSmall,
             Obx(() {
               if (controller.submissionsWithNullScore.isEmpty) {
-                return Text('Belum ada tugas yang diserahkan', style: AppTextStyle.tsSmallRegular(AppColor.black));
+                return Text('Tidak ada tugas yang diserahkan', style: AppTextStyle.tsBodyRegular(AppColor.black));
               } else
               return Center(
                 child: ListView.builder(
@@ -45,6 +47,11 @@ class ContentScoring extends StatelessWidget {
                       studentName: submission.studentSubmitted?.name ?? 'Unknown',
                       score: null,
                       submittedAt: submission.submittedAt!,
+                      onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
+                        'taskId': Get.arguments['taskId'],
+                        'gradeId': Get.arguments['gradeId'],
+                        'studentSubmitted': submission.studentSubmitted?.name ?? 'Unknown',
+                      });},
                     );
                   },
                 ),
@@ -55,7 +62,7 @@ class ContentScoring extends StatelessWidget {
             spaceHeightExtraSmall,
             Obx(() {
               if (controller.submissionsWithScore.isEmpty) {
-                return Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsSmallRegular(AppColor.black));
+                return Text('Belum ada tugas yang dinilai', style: AppTextStyle.tsBodyRegular(AppColor.black));
               } else
               return Container(
                 child: ListView.builder(
@@ -68,6 +75,18 @@ class ContentScoring extends StatelessWidget {
                       studentName: submission.studentSubmitted?.name ?? 'Unknown',
                       score: submission.score,
                       submittedAt: submission.submittedAt!,
+                      onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
+                        'taskId': Get.arguments['taskId'],
+                        'gradeId': Get.arguments['gradeId'],
+                        'studentSubmitted': submission.studentSubmitted?.name ?? 'Unknown',
+                      });
+                      // onTap: () { Get.to(() => SubmissionCompletePageScreen(
+                      //   taskId: taskId,
+                      //   gradeId: Get.arguments['gradeId'],
+                      //   completionsId: submission.completionsId.toString(),
+                      // ));
+                        
+                      },
                     );
                   },
                 ),

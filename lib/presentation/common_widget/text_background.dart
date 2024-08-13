@@ -15,12 +15,12 @@ class TextWithBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: widthScreen * 0.02, vertical: heightScreen * 0.01),
         decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(text,
-            style: AppTextStyle.tsLittle));
+            style: AppTextStyle.tsSmallRegular(AppColor.black)));
   }
 }

@@ -17,34 +17,39 @@ class ContentAlbum extends GetView<ClassDetailController> {
       padding: const EdgeInsets.all(20),
       child: CustomScrollView(
         slivers: [
-          Obx(() {
-              var roles = controller.currentUser.value.roles;
-              if (roles != null && roles.any((role) => role.startsWith('Guru'))) {
-                return SliverToBoxAdapter(
-                  child: GestureDetector(
-                    onTap: () => Get.to(
-                      () => AlbumFormScreen(), 
-                      arguments: {'gradeId' : controller.classItem['id'].toString()}
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppColor.blue100,
-                        ),
-                        child: Text('Upload Photo / Video',
-                            style: AppTextStyle.tsSmallBold(AppColor.black)),
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return SliverToBoxAdapter(child: Container());
-              }
-            }),
+          // Obx(() {
+          //     var roles = controller.userRole;
+          //     if (controller.isLoading.value) {
+          //       return SliverToBoxAdapter(
+          //         child: Center(child: CircularProgressIndicator()),
+          //       );
+          //     } 
+          //     else if (roles != null && roles.any((role) => role.contains('Guru'))) {
+          //       return SliverToBoxAdapter(
+          //         child: GestureDetector(
+          //           onTap: () => Get.to(
+          //             () => AlbumFormScreen(), 
+          //             arguments: {'gradeId' : controller.classItem['id'].toString()}
+          //           ),
+          //           child: Padding(
+          //             padding: const EdgeInsets.only(bottom: 8.0),
+          //             child: Container(
+          //               alignment: Alignment.center,
+          //               height: 40,
+          //               decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(12),
+          //                 color: AppColor.blue100,
+          //               ),
+          //               child: Text('Upload Photo / Video',
+          //                   style: AppTextStyle.tsSmallBold(AppColor.black)),
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     } else {
+          //       return SliverToBoxAdapter(child: Container());
+          //     }
+          //   }),
           Obx((){
             if (controller.isLoading.value) {
               return SliverToBoxAdapter(

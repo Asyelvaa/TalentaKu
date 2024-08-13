@@ -275,6 +275,7 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
                             : [],
                         reportId: reportId,
                       );
+                      Get.back(result: 'success');
                     },
                     child: Container(
                       height: heightScreen * 0.07,

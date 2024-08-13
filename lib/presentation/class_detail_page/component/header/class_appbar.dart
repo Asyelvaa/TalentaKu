@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/presentation/class_detail_page/component/edit_class_form.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/header/edit_class_form.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
 
-import '../../../infrastructure/theme/theme.dart';
+import '../../../../infrastructure/theme/theme.dart';
 
 
 class ClassAppbar extends GetView<ClassDetailController> {

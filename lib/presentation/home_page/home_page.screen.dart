@@ -48,7 +48,7 @@ class HomePageScreen extends GetView<HomePageController> {
                       ],
                     )
                   : SlideInformation(
-                      headerContent: "Programs ",
+                      headerContent: "Program Tambahan",
                       image: "program_tambahan.png",
                       contentTitles: controller.contentTitles,
                     )),
@@ -65,7 +65,7 @@ class HomePageScreen extends GetView<HomePageController> {
                       ],
                     )
                   : SlideExtra(
-                      headerContent: "Extra ",
+                      headerContent: "Extrakurikuler ",
                       image: "program_tambahan.png",
                       contenExtra: controller.contenExtra,
                     )),

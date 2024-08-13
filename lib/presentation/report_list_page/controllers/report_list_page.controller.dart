@@ -21,10 +21,10 @@ class ReportListPageController extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-
+    final url = '$baseUrl/grades/$gradeId/student-report/student';
     try {
       final response = await http.get(
-          Uri.parse('$baseUrl/grades/$gradeId/student-report/student'),
+          Uri.parse(url),
           headers: headers);
       print(headers);
       if (response.statusCode == 200) {
@@ -33,7 +33,7 @@ class ReportListPageController extends GetxController {
         reportData.assignAll(jsonData['data']);
       } else {
         print(response.body);
-        print("jancookkk");
+        print("error fetch report");
       }
     } catch (e) {
       print('Exception: $e');
@@ -50,6 +50,7 @@ class ReportListPageController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     gradeId = arguments['gradeId'] as String;
     print(gradeId);
+    fetchDataReport();
   }
 
   @override

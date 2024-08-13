@@ -46,8 +46,10 @@ class ApiServiceUser {
       'Accept': 'Application/json',
       'Authorization': 'Bearer $token'
     };
+    print(headers);
     try {
       final response = await http.post(Uri.parse(url), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
         box.erase();
         print('loging out user');

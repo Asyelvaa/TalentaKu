@@ -7,12 +7,12 @@ import '../../../../infrastructure/theme/theme.dart';
 import '../../../assignment_page/assignment_page.screen.dart';
 import '../../controllers/class_detail.controller.dart';
 
-class MateriItem extends GetView<ClassDetailController> {
+class AssignmentItem extends GetView<ClassDetailController> {
   final String title;
   final String tenggat;
   final String taskId;
   final String gradeId;
-  const MateriItem({
+  const AssignmentItem({
     super.key,
     required this.title,
     required this.tenggat,

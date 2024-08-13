@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../domain/models/task_model.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../../common_widget/custom_popup_dialog.dart';
 import '../../common_widget/text_background.dart';
 import '../controllers/assignment_page.controller.dart';
 import 'circular_icon_button.dart';
@@ -32,200 +33,186 @@ class ContentAssignment extends GetView<AssignmentPageController> {
             final task = controller.taskDetail.value!;
             return Column(
               children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColor.blue50,
-                    borderRadius: defaultBorderRadius,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(color: AppColor.blue200)),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          size: 20,
+                          color: AppColor.red,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month,
-                                      size: 20,
-                                      color: AppColor.blue600,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text('Dibuat',
-                                        style: AppTextStyle.tsSmallBold(
-                                            AppColor.black)),
-                                  ],
-                                ),
-                                Text(
-                                  DateFormat('EEE, d/M/yyyy')
-                                          .format(task.startDate!) ??
-                                      '',
-                                  style: AppTextStyle.tsSmallRegular(
-                                      AppColor.black),
-                                )
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month,
-                                      size: 20,
-                                      color: AppColor.red,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text('Tenggat',
-                                        style: AppTextStyle.tsSmallBold(
-                                            AppColor.black)),
-                                  ],
-                                ),
-                                Text(
-                                  DateFormat('EEE, d/M/yyyy')
-                                          .format(task.endDate!) ??
-                                      '',
-                                  style: AppTextStyle.tsSmallRegular(
-                                      AppColor.black),
-                                ),
-                              ],
-                            )
-                          ],
+                        SizedBox(
+                          width: 4,
                         ),
+                        Text('Tenggat : ',
+                            style: AppTextStyle.tsSmallBold(AppColor.black)),
+                        Text(
+                          DateFormat('EEE, d MMMM yyyy')
+                                  .format(task.endDate!) ??
+                              '',
+                          style: AppTextStyle.tsSmallRegular(AppColor.black),
+                        )
+                      ],
+                    ),
+                    spaceHeightNormal,
+                    Row(
+                      children: [
+                        Icon(Icons.assignment, color: AppColor.blue600),
+                        defaultWidthtSpace,
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: heightScreen * 0.01,
+                              horizontal: widthScreen * 0.05),
+                          decoration: BoxDecoration(
+                              color: AppColor.white,
+                              borderRadius: defaultBorderRadius),
+                          child: Text(
+                            task.title! ?? '',
+                            style: AppTextStyle.tsBodyBold(AppColor.black),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ],
+                    ),
+                    spaceHeightExtraSmall,
+                    Text(
+                      task.desc!.join('\n') ?? '',
+                      style: AppTextStyle.tsBodyRegular(AppColor.black),
+                      textAlign: TextAlign.start,
+                    ),
+                    spaceHeightExtraSmall,
+                    if (task.media!.isNotEmpty)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Wrap(
+                            runSpacing: 8,
+                            spacing: 8,
+                            children: task.media!.map((media) {
+                              return GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => Dialog(
+                                      child: InteractiveViewer(
+                                        child: Image.network(
+                                          'https://talentaku.site/image/task/${media.fileName}',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    'https://talentaku.site/image/task/${media.fileName}',
+                                    width: widthScreen * 0.3,
+                                    height: heightScreen * 0.15,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
-                      spaceHeightNormal,
-                      Text(
-                        task.title! ?? '',
-                        style: AppTextStyle.tsBodyBold(AppColor.black),
-                        textAlign: TextAlign.justify,
-                      ),
-                      spaceHeightExtraSmall,
-                      Text(
-                        task.desc!.join('\n') ?? '',
-                        style: AppTextStyle.tsSmallRegular(AppColor.black),
-                        textAlign: TextAlign.justify,
-                      ),
-                      spaceHeightExtraSmall,
-                      if (task.media!.isNotEmpty)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Wrap(
-                              runSpacing: 8,
-                              spacing: 8,
-                              children: task.media!.map((media) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => Dialog(
-                                        child: InteractiveViewer(
-                                          child: Image.network(
-                                            'https://talentaku.site/image/task/${media.fileName}',
-                                            fit: BoxFit.contain,
+
+                    // Links section
+                    spaceHeightExtraSmall,
+                    if (task.links!.isNotEmpty)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [                          
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: task.links!.length,
+                            itemBuilder: (context, index) {
+                              final link = task.links![index];
+                              return GestureDetector(
+                                onTap: () async {
+                                  final url = link.url!;
+                                  final uri = Uri.tryParse(url);
+                                  if (uri != null && await launchUrl(uri)) {
+                                    await launchUrl(uri);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 8),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.white,
+                                    borderRadius: defaultBorderRadius,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.link,
+                                        size: 24,
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            link.url!,
+                                            style: AppTextStyle.tsSmallRegular(
+                                                AppColor.black),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      'https://talentaku.site/image/task/${media.fileName}',
-                                      width: widthScreen * 0.3,
-                                      height: heightScreen * 0.15,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    ],
                                   ),
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-
-                      // Links section
-                      spaceHeightExtraSmall,
-                      if (task.links!.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Links : ',
-                              style: AppTextStyle.tsSmallBold(AppColor.black),
-                            ),
-                            spaceHeightExtraSmall,
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: task.links!.length,
-                              itemBuilder: (context, index) {
-                                final link = task.links![index];
-                                return GestureDetector(
-                                  onTap: () async {
-                                    final url = link.url!;
-                                    final uri = Uri.tryParse(url);
-                                    if (uri != null && await launchUrl(uri)) {
-                                      await launchUrl(uri);
-                                    } else {
-                                      throw 'Could not launch $url';
-                                    }
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 8),
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: AppColor.white,
-                                      borderRadius: defaultBorderRadius,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.link,
-                                          size: 24,
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              link.url!,
-                                              style:
-                                                  AppTextStyle.tsSmallRegular(
-                                                      AppColor.black),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
                 spaceHeightNormal,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () async {
-                        await controller.deleteTask(task.id.toString());
+                      onPressed: () {
+                        showCustomPopupDialog(
+                          'Konfirmasi',
+                          'Apakah Anda yakin ingin menghapus tugas ini?',
+                          [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: AppColor.white),
+                              onPressed: () => Get.back(),
+                              child: Text(
+                                'Tidak',
+                                style:
+                                    AppTextStyle.tsBodyRegular(AppColor.black),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: AppColor.blue600),
+                              onPressed: () async {
+                                Get.back();
+                                await controller.deleteTask(task.id.toString());
+                              },
+                              child: Text(
+                                'Hapus Tugas',
+                                style:
+                                    AppTextStyle.tsBodyRegular(AppColor.white),
+                              ),
+                            ),
+                          ],
+                        );
                       },
                       child: Center(
                         child: Text(
