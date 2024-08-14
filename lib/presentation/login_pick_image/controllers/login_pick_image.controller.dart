@@ -13,6 +13,7 @@ class PickimageController extends GetxController {
   final ApiServiceUser apiService = ApiServiceUser();
   final box = GetStorage();
   final username = GetStorage().read('dataUser')?['username'];
+  final tokenUser = GetStorage().read('token');
 
   Rx<File?> image = Rx<File?>(null);
   RxBool isLoading = false.obs;
@@ -21,6 +22,7 @@ class PickimageController extends GetxController {
   void onInit() {
     super.onInit();
     _loadStoredImage(); 
+    print(tokenUser);
   }
   
   void _loadStoredImage() {
