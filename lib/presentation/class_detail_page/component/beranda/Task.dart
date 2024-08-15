@@ -17,16 +17,15 @@ class Task extends StatelessWidget {
     return Container(
       width: widthScreen,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), 
+          borderRadius: BorderRadius.circular(20),
           color: AppColor.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2), 
-              blurRadius: 2, 
-              offset: Offset(0, 1), 
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 2,
+              offset: Offset(0, 1),
             )
-          ]
-      ),
+          ]),
       child: Column(
         children: [
           Padding(
@@ -34,7 +33,11 @@ class Task extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  child: Icon(Icons.assignment, color: AppColor.black,size: 20  ,),
+                  child: Icon(
+                    Icons.assignment,
+                    color: AppColor.black,
+                    size: 20,
+                  ),
                   backgroundColor: AppColor.blue100,
                   radius: 16,
                 ),

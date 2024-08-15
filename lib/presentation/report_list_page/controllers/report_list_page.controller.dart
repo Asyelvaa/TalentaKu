@@ -3,15 +3,19 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 
 class ReportListPageController extends GetxController {
-  //TODO: Implement ReportListPageController
   var isLoading = false.obs;
-  late final arguments;
+  var selectedSemester = '1'.obs;
   final box = GetStorage();
   var reportData = [].obs;
+  var filteredReportData = [].obs;
   final String baseUrl = 'https://talentaku.site/api';
   late final String gradeId;
+
+  final dropdownController =
+      SingleSelectController<String?>('Semester 1');
 
   Future<void> fetchDataReport() async {
     isLoading.value = true;
@@ -26,11 +30,10 @@ class ReportListPageController extends GetxController {
       final response = await http.get(
           Uri.parse(url),
           headers: headers);
-      print(headers);
       if (response.statusCode == 200) {
-        print(json.decode(response.body));
         final jsonData = json.decode(response.body);
         reportData.assignAll(jsonData['data']);
+        filterReportData(); 
       } else {
         print(response.body);
         print("error fetch report");
@@ -42,26 +45,20 @@ class ReportListPageController extends GetxController {
     }
   }
 
-  final count = 0.obs;
+  void filterReportData() {
+    filteredReportData.assignAll(
+      reportData
+          .where((report) => report['semester_id'] == selectedSemester.value)
+          .toList(),
+    );
+  }
+
   @override
   void onInit() {
-    fetchDataReport();
     super.onInit();
     final arguments = Get.arguments as Map<String, dynamic>;
     gradeId = arguments['gradeId'] as String;
     print(gradeId);
     fetchDataReport();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
