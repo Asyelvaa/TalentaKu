@@ -57,7 +57,9 @@ class ContentAlbum extends GetView<ClassDetailController> {
               );
             } else if (controller.albums.isEmpty) {
               return SliverToBoxAdapter(
-                child: Center(child: Container(child: Text('No albums found'))),
+                child: Center(child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: Text('Belum ada foto yang diunggah', style: AppTextStyle.tsBodyRegular(AppColor.black),),),)
               );
             } else {
               return SliverGrid(

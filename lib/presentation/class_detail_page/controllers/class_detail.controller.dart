@@ -65,6 +65,7 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
 
   }
   
+  
   Future<void> inituser() async {
     await getUserData();
     print(currentUser.value.name);
@@ -140,14 +141,14 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
     final classId = dataClass.value.id!.toString();
     try {
       final response = await apiService.deleteClass(classId);
-      controller.showAllGrades();
-      Get.back();
-       if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == 200) {
         Get.snackbar('Success', 'Class deleted successfully');
         print('Class with id $classId deleted successfully');
+        controller.showAllGrades();
       } else {
         Get.snackbar('Error', 'Failed to delete class');
       }
+      Get.back(); 
     } catch (e) {
       print('Error deleting class: $e');
     }
@@ -279,22 +280,25 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
   final pickedFiles = <File>[].obs;
   final TextEditingController announcementController = TextEditingController();
   final announcement = ClassAnnouncementModel().obs;
-  Future<void> pickPdf() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+
+  Future<void> pickFile() async {
+    FilePickerResult? pdfResult = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
-    if (result != null && result.files.single.path != null) {
-      File file = File(result.files.single.path!);
-      pickedFiles.add(file);
+    if (pdfResult != null && pdfResult.files.single.path != null) {
+      File pdfFile = File(pdfResult.files.single.path!);
+      pickedFiles.add(pdfFile);
+      return;
     }
-  }
-  Future<void> pickFile() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery) ?? await _picker.pickVideo(source: ImageSource.gallery);
+    final XFile? pickedFile =
+      await _picker.pickImage(source: ImageSource.gallery) ?? 
+      await _picker.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
       pickedFiles.add(File(pickedFile.path));
     }
   }
+
   void removeFile(File file) {
      pickedFiles.removeWhere((element) => element.path == file.path);
   }
@@ -311,10 +315,10 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
       );
       announcement.value = newAnnouncement;
       Get.back();
-      Get.snackbar('Success', 'Announcement created successfully');
+      dialogSuccess('Pengumuman berhasil dibuat');
     } catch (e) {
       Get.back();
-      Get.snackbar('Error', 'Failed to create announcement');
+      dialogError('Gagal membuat pengumuman');
     } finally {
       isLoading(false);
     }
@@ -347,5 +351,39 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
   //     isLoading(false);
   //   }
   // }
+
+   void dialogSuccess(String message) {
+    Get.snackbar(
+      'Berhasil',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor:AppColor.blue100,
+      colorText: AppColor.black,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
+  }
+
+  void dialogError(String message) {
+    Get.snackbar(
+      'Gagal',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red[600],
+      colorText: Colors.white,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    announcementController.dispose();
+    pickedFiles.clear();
+    super.onClose();
+  }
 }
 

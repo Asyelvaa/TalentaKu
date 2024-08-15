@@ -7,6 +7,7 @@ import '../../../../infrastructure/theme/theme.dart';
 import '../../../common_widget/custom_button_action_secondary.dart';
 import '../../../common_widget/custom_button_action_main.dart';
 import '../../controllers/class_detail.controller.dart';
+import 'widget_display_picked_file.dart';
 
 class CustomWidgetAnnouncementBottomsheet extends StatelessWidget {
   const CustomWidgetAnnouncementBottomsheet({super.key});
@@ -84,72 +85,77 @@ class CustomWidgetAnnouncementBottomsheet extends StatelessWidget {
                     ),
                     spaceHeightExtraSmall,
                     Obx(() {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SingleChildScrollView(                            
+                      final imageVideoFiles = controller.pickedFiles.where((file) {
+                        String extension = file.path.split('.').last.toLowerCase();
+                        return ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'avi'].contains(extension);
+                      }).toList();
+
+                      final pdfFiles = controller.pickedFiles.where((file) {
+                        String extension = file.path.split('.').last.toLowerCase();
+                        return extension == 'pdf';
+                      }).toList();
+                    return Column(
+                      children: [
+                        if (imageVideoFiles.isNotEmpty) ...[                        
+                        Container(
+                          width: widthScreen,
+                          height: heightScreen * 0.2,
+                          child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Wrap(
-                              spacing: 8.0,
-                              runSpacing: 8.0,
-                              children: controller.pickedFiles.map((file) {
-                                return Stack(
+                            child: Row(
+                              children: imageVideoFiles.map((file) {
+                                 return Row(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () => showGeneralDialog(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        barrierLabel:
-                                            MaterialLocalizations.of(context)
-                                                .modalBarrierDismissLabel,
-                                        barrierColor: AppColor.black,
-                                        pageBuilder: (BuildContext context,
-                                            Animation first, Animation second) {
-                                          return Center(
-                                            child: InteractiveViewer(
-                                              child:
-                                                  Image.file(File(file.path)),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.file(
-                                          File(file.path),
-                                          width: widthScreen * 0.3,
-                                          height: heightScreen * 0.15,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                    CustomWidgetDisplayPickedFile(
+                                      file: file,
+                                      widthScreen: widthScreen,
+                                      heightScreen: heightScreen,
+                                      onRemove: () => controller.pickedFiles.remove(file),
                                     ),
-                                    Positioned(
-                                      right: 4,
-                                      top: 4,
-                                      child: GestureDetector(
-                                        onTap: () => controller
-                                            .removeFile(file),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    SizedBox(width: 8.0),
                                   ],
                                 );
                               }).toList(),
                             ),
                           ),
-                        ],
-                      );
-                    }),                    
+                        ),
+                      ],
+                      if (pdfFiles.isNotEmpty) ...[
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: pdfFiles.length,
+                        itemBuilder: (context, index) {
+                          return CustomWidgetDisplayPickedFile(
+                            file: pdfFiles[index],
+                            widthScreen: widthScreen,
+                            heightScreen: heightScreen,
+                            onRemove: () => controller.pickedFiles.remove(pdfFiles[index]),
+                          );
+                        },
+                      ),
+                    ],
+                        // Container(
+                        //   width: widthScreen,
+                        //   child: SingleChildScrollView(
+                        //     scrollDirection: Axis.horizontal,
+                        //     child: Wrap(
+                        //       spacing: 8.0,
+                        //       runSpacing: 8.0,
+                        //       children: controller.pickedFiles.map((file) {
+                        //         return CustomWidgetDisplayPickedFile(
+                        //           file: file,
+                        //           widthScreen: widthScreen,
+                        //           heightScreen: heightScreen,
+                        //           onRemove: () => controller.removeFile(file),
+                        //         );
+                        //       }).toList(),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    );
+                  }),
                   ],
                 ),
               ),   
@@ -169,11 +175,16 @@ class CustomWidgetAnnouncementBottomsheet extends StatelessWidget {
                   children: [
                     CustomButtonActionSecondary(
                       text: 'Batalkan', 
-                      onPressed: () {Get.back();}
+                      onPressed: () {
+                        Get.back(); 
+                        controller.announcementController.clear();
+                        controller.pickedFiles.clear();
+                      }
                     ),
                     CustomButtonActionMain(
                       text: 'Kirim', 
-                      onPressed: () { controller.createAnnouncement();}
+                      onPressed: () { controller.createAnnouncement();},
+                      isLoading: controller.isLoading.value,
                     )
                   ],
                 ),
