@@ -7,7 +7,6 @@ environment:
 
 dependencies:
   auto_size_text: ^3.0.0
-  cupertino_calendar_picker: ^1.1.2
   cupertino_icons: ^1.0.2
   file_picker: ^8.0.6
   flutter:
@@ -22,7 +21,6 @@ dependencies:
   intl: ^0.19.0
   pdfx: ^2.6.0
   persistent_bottom_nav_bar: ^5.0.2
-  readmore: ^3.0.0
   url_launcher: ^6.3.0
   video_player: ^2.8.7
 

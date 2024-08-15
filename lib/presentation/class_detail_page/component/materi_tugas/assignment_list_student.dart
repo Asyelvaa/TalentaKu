@@ -7,6 +7,7 @@ import '../../../../domain/models/task_student_model.dart';
 import '../../../../infrastructure/theme/theme.dart';
 import '../../controllers/class_detail.controller.dart';
 import 'assignment_item.dart';
+import 'submission_item.dart';
 
 class AssignmentListStudent extends StatelessWidget {
   const AssignmentListStudent({super.key});
@@ -32,12 +33,14 @@ class AssignmentListStudent extends StatelessWidget {
               tasks: notSubmittedTasks,
               emptyMessage: 'Tidak ada tugas',
               controller: controller,
+              isSubmission: false,
             ),
             ... buildTaskSection(
               title: 'Tugas Sudah Dikerjakan:',
               tasks: submittedTasks,
               emptyMessage: 'Tidak ada tugas yang sudah dikerjakan',
               controller: controller,
+              isSubmission: true,
             ),
           ],
         );
@@ -54,19 +57,34 @@ class AssignmentListStudent extends StatelessWidget {
     );
   }
 
-  SliverList buildTaskList(List<TaskStudentModel> tasks, ClassDetailController controller) {
+  SliverList buildTaskList({
+    required List<TaskStudentModel> tasks,
+    required ClassDetailController controller,
+    required bool isSubmission,
+  }) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           var task = tasks[index];
-          return AssignmentItem(
-            title: task.title ?? 'No title',
-            tenggat: task.endDate != null
-                ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
-                : 'No end date',
-            taskId: task.taskId.toString(),
-            gradeId: controller.classItem['id'].toString(),
-          );
+          if (isSubmission) {
+            return SubmissionItem(
+              title: task.title ?? 'No title',
+              tenggat: task.endDate != null
+                  ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
+                  : 'No end date',
+              taskId: task.taskId.toString(),
+              gradeId: controller.classItem['id'].toString(),
+            );
+          } else {
+            return AssignmentItem(
+              title: task.title ?? 'No title',
+              tenggat: task.endDate != null
+                  ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
+                  : 'No end date',
+              taskId: task.taskId.toString(),
+              gradeId: controller.classItem['id'].toString(),
+            );
+          }
         },
         childCount: tasks.length,
       ),
@@ -78,6 +96,7 @@ class AssignmentListStudent extends StatelessWidget {
     required List<TaskStudentModel> tasks,
     required String emptyMessage,
     required ClassDetailController controller,
+    required bool isSubmission,
   }) {
     return [
       buildSectionTitle(title),
@@ -89,7 +108,7 @@ class AssignmentListStudent extends StatelessWidget {
           ),
         )
       else
-        buildTaskList(tasks, controller),
+        buildTaskList(tasks: tasks, controller: controller, isSubmission: isSubmission),
     ];
   }
 }

@@ -152,26 +152,18 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
     } catch (e) {
       Get.snackbar('Error', 'Failed to submit task');    }
   }
-  // Future<void> pickSubmissionMedia(ImageSource source) async {
-  //   final pickedFile = await picker.pickImage(source: source) ?? await picker.pickVideo(source: source);
-  //   if (pickedFile != null) {
-  //     submissionFiles.add(File(pickedFile.path));
-  //   }
-  // }
+
   void removeSubmissionMedia(File file) {
      submissionFiles.removeWhere((element) => element.path == file.path);
   }
-  var mediaPaths = <String>[].obs;
-  Future<void> pickSubmissionMedia({required ImageSource source}) async {
-    final List<XFile>? images = await picker.pickMultiImage();
-    if (images != null && images.isNotEmpty) {
-      mediaPaths.addAll(images.map((image) => image.path).toList());
-    }
-    final XFile? video = await picker.pickVideo(source: source);
-    if (video != null) {
-      mediaPaths.add(video.path);
-    }
-    print("Media Paths: $mediaPaths");
+  // var mediaPaths = <String>[].obs;
+  Future<void> pickSubmissionMedia() async {
+    final XFile? pickedFile =
+      await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        submissionFiles.add(File(pickedFile.path));
+      }   
+    print("Media Paths: $submissionFiles");
   }
 
   // SHOW TASK BY ID

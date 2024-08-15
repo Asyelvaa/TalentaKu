@@ -14,7 +14,7 @@ class SubmissionPageController extends GetxController {
 
   late String gradeId;
   late String taskId;
-  late String studentSubmitted;
+  late String studentIdSubmitted;
   Rx<Task> task = Task().obs;
   RxBool isLoading = false.obs;
   Rx<SubmissionDetailModel> submission = SubmissionDetailModel().obs;
@@ -27,10 +27,10 @@ class SubmissionPageController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     taskId = arguments['taskId'] as String;
     gradeId = arguments['gradeId'] as String;
-    studentSubmitted = arguments['studentSubmitted'] as String;
+    studentIdSubmitted = arguments['studentIdSubmitted'] as String;
     
-    print('pass arg in submission: $taskId, $gradeId, $studentSubmitted');
-    print(studentSubmitted);
+    print('pass arg in submission: $taskId, $gradeId, $studentIdSubmitted');
+    print(studentIdSubmitted);
     fetchSubmissionsById();
     fetchTaskDetails();
   }
@@ -59,18 +59,16 @@ class SubmissionPageController extends GetxController {
     if (response.containsKey('data')) {
       List<dynamic> submissionsData = response['data'];
 
-      // Filter the submissions to find the one that matches the taskId
       var filteredSubmissions = submissionsData.where((submission) {
           return submission['task_id'].toString() == taskId &&
-                 submission['student_submitted']['name'] == studentSubmitted;
+                 submission['student_submitted']['id'] == studentIdSubmitted;
         }).toList();
 
       if (filteredSubmissions.isNotEmpty) {
-          // Assuming you only need the first matched submission
           submission.value = SubmissionDetailModel.fromJson(filteredSubmissions.first);
           print('Submission submitted: ${submission.value.studentSubmitted?.name}');
         } else {
-          throw Exception('No submissions found for taskId: $taskId and studentSubmitted: $studentSubmitted');
+          throw Exception('No submissions found for taskId: $taskId and studentSubmitted: $studentIdSubmitted');
         }
     } else {
       throw Exception('Invalid response format: "data" key not found');

@@ -11,22 +11,22 @@ class ApiServiceAnnouncements {
 static const String baseUrl = 'https://talentaku.site/api';
 final box = GetStorage();
 
-// CREATE COMMENT
+// CREATE announcements
   Future<ClassAnnouncementModel> createAnnouncement(
-    String comments,
+    String announcements,
     List<File> files, 
     String gradeId
   ) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/comments";
+    final url = "$baseUrl/grades/$gradeId/announcements";
     final headers = {
-      'Accept': 'application/json',
+      'Accept': 'application/json', 
       'Authorization': 'Bearer $token'
     };
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.headers.addAll(headers);
 
-    request.fields['comments'] = comments;
+    request.fields['announcements'] = announcements;
 
     for (var file in files) {
       request.files.add(
@@ -44,7 +44,7 @@ final box = GetStorage();
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 201) {
-        var jsonResponse = jsonDecode(response.body)['comment'];
+        var jsonResponse = jsonDecode(response.body)['data'];
         return ClassAnnouncementModel.fromJson(jsonResponse);
       } else {
         throw Exception('Failed to create announcement: ${response.body}');
@@ -55,10 +55,10 @@ final box = GetStorage();
     }
   } 
 
-  // DELETE COMMENT
-   Future<void> deleteAnnouncement(String gradeId, String commentId) async {
+  // DELETE announcements
+   Future<void> deleteAnnouncement(String gradeId, String announcementsId) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/comments/$commentId";
+    final url = "$baseUrl/grades/$gradeId/announcements/$announcementsId";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -77,28 +77,63 @@ final box = GetStorage();
     }
   }
 
-  // GET DETAIL COMMENTS AND REPLIES
-  // Future<Map<String,dynamic>> getAllClassStream(String gradeId) async {
-  //   final token = box.read('token');
-  //   final url = "$baseUrl/grades/$gradeId/stream";
-  //   final headers = {
-  //     'Authorization': 'Bearer $token',
-  //   };
-  //   final response = await http.get(Uri.parse(url), headers: headers);
-  //   if (response.statusCode == 200) {
-  //     return jsonDecode(response.body);
-  //   } else {
-  //     throw Exception('Failed to load class stream');
-  //   }
-  // }
-  
+// CREATE announcements REPLY
+  Future<void> createAnnouncementReply(
+    String gradeId,
+    String announcementsId,
+    List<String> replies
+  ) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/announcements/$announcementsId/replies";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final body = jsonEncode({
+      'replies': replies,
+    });
+
+    try {
+      final response = await http.post(Uri.parse(url),headers: headers,body: body,);
+      if (response.statusCode == 201) {
+        print('Reply created successfully');
+      } else {
+        throw Exception('Failed to create reply: ${response.body}');
+      }
+    } catch (e) {
+      print('Error in create reply: $e');
+      rethrow;
+    }
+  }
+
+// DELETE announcements REPLY
+  Future<void> deleteAnnouncementReply(
+    String gradeId,
+    String announcementsId,
+    String replyId
+  ) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/announcements/$announcementsId/replies/$replyId";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers,);
+      if (response.statusCode == 200) {
+        print('Reply deleted successfully');
+      } else {
+        throw Exception('Failed to delete reply: ${response.body}');
+      }
+    } catch (e) {
+      print('Error in delete reply: $e');
+      rethrow;
+    }
+  }
 }
 
 // UPDATE COMMENT 
-
-// CREATE COMMENT REPLY
-
 // UPDATE COMMENT REPLY
 
-// DELETE COMMENT REPLY
 

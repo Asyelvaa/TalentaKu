@@ -34,8 +34,9 @@ class AssignemntFormPageScreen extends StatelessWidget {
                   controller: controller.titleController,
                   decoration: InputDecoration(
                     hintText: 'Tambahkan Judul...',
-                    hintStyle: AppTextStyle.tsLittle,
+                    hintStyle: AppTextStyle.tsSmallRegular(AppColor.black),
                     labelText: 'Judul',
+                    labelStyle: AppTextStyle.tsBodyRegular(AppColor.black),
                     fillColor: AppColor.white,
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -51,13 +52,14 @@ class AssignemntFormPageScreen extends StatelessWidget {
                   maxLines: null,
                   minLines: 1,
                 ),
-                SizedBox(height: 12),
+                spaceHeightSmall,
                 TextFormField(
                   controller: controller.descController,
                   decoration: InputDecoration(
                     hintText: 'Tambahkan deskripsi...',
-                    hintStyle: AppTextStyle.tsLittle,
+                    hintStyle: AppTextStyle.tsSmallRegular(AppColor.black),
                     labelText: 'Deskripsi',
+                    labelStyle: AppTextStyle.tsBodyRegular(AppColor.black),
                     fillColor: AppColor.white,
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -78,7 +80,7 @@ class AssignemntFormPageScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
                     children: [
-                      Text('Tenggat :', style: AppTextStyle.tsNormal,),
+                      Text('Tenggat :', style: AppTextStyle.tsBodyBold(AppColor.black),),
                       IconButton(
                         onPressed: () => controller.pickDate(context),
                         icon: Icon(Icons.calendar_today),
@@ -87,8 +89,8 @@ class AssignemntFormPageScreen extends StatelessWidget {
                         return Text(
                           controller.selectedDate.value != null
                               ? '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}'
-                              : 'No date selected',
-                          style: AppTextStyle.tsNormal,
+                              : 'Tidak ada tanggal terpilih',
+                          style: AppTextStyle.tsBodyRegular(AppColor.black),
                         );
                       }),
                     ],
@@ -149,8 +151,8 @@ class AssignemntFormPageScreen extends StatelessWidget {
                     }, 
                     child: Center(
                       child: Text(
-                        'Kirim Tugas',
-                        style: AppTextStyle.tsNormal,
+                        'Buat Tugas',
+                        style: AppTextStyle.tsBodyRegular(AppColor.black),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(

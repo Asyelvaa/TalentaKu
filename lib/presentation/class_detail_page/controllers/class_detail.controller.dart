@@ -292,8 +292,8 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
       return;
     }
     final XFile? pickedFile =
-      await _picker.pickImage(source: ImageSource.gallery) ?? 
-      await _picker.pickVideo(source: ImageSource.gallery);
+      await _picker.pickImage(source: ImageSource.gallery);
+      // await _picker.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
       pickedFiles.add(File(pickedFile.path));
     }

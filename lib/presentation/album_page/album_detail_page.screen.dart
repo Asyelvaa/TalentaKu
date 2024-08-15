@@ -29,21 +29,7 @@ class AlbumDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${album.date ?? 'N/A'}',
-                  style: AppTextStyle.tsSmallBold(AppColor.black),
-                ),
-                IconButton(
-                  icon: Icon(Icons.save_alt),
-                  onPressed: () => controller.saveAllMedia(),
-                ),
-              ],
-            ),
-            spaceHeightExtraSmall,
+          children: [           
             Container(
               height: heightScreen * 0.4,
               child: PageView.builder(
@@ -77,6 +63,20 @@ class AlbumDetailPage extends StatelessWidget {
                 IconButton(
                   onPressed: controller.nextPage,
                   icon: Icon(Icons.arrow_forward),
+                ),
+              ],
+            ),
+            spaceHeightExtraSmall,
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${album.date ?? 'N/A'}',
+                  style: AppTextStyle.tsSmallBold(AppColor.black),
+                ),
+                IconButton(
+                  icon: Icon(Icons.save_alt),
+                  onPressed: () => controller.saveAllMedia(),
                 ),
               ],
             ),
