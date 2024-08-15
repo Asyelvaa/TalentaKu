@@ -24,7 +24,7 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // final baseUrlPhotoProfile = "https://talentaku.site/image/profile/";
+    // final baseUrlPhotoProfile = "https://talentaku.site/";
     final data = json['data'];
 
     return UserModel(

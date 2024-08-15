@@ -82,7 +82,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                   tabs: [
                     Tab(text: 'Beranda'),
                     Tab(text: 'Materi & Tugas'),
-                    Tab(text: 'Album'),
+                    Tab(text: 'Gallery'),
                   ],
                 ),
               ),

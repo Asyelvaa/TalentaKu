@@ -31,11 +31,13 @@ class HeaderClass extends GetView<ProfileUserController> {
               );
             }
             if (controller.classMembers.isEmpty) {
-              return Center(
-                  child: Text(
-                "Belum memiliki murid",
-                style: AppTextStyle.tsSmallRegular(AppColor.white),
-              ));
+              return Expanded(
+                child: Center(
+                    child: Text(
+                  "Kelas ini belum memiliki murid",
+                  style: AppTextStyle.tsBodyRegular(AppColor.white),
+                )),
+              );
             }
             return Expanded(
               child: ListView.builder(

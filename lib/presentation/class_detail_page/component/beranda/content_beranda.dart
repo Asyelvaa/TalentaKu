@@ -25,6 +25,22 @@ class ContentBeranda extends GetView<ClassDetailController> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            Obx((){
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            } else if (controller.albums.isEmpty) {
+              return Center(child: Container(
+                padding: EdgeInsets.all(20),
+                child: Text('Belum ada pengumuman', style: AppTextStyle.tsBodyRegular(AppColor.black),),),);
+            } else {
+              return  ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  // ...controller.albums.map((album) => CustomWidgetAnnouncementDisplay(announcement: album)).toList(),
+                ],
+              );
+            }})
             // Obx(() {
             //   var roles = controller.userRole;
             //   if (controller.isLoading.value){

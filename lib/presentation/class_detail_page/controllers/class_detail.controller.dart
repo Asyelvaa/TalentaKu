@@ -65,6 +65,7 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
 
   }
   
+  
   Future<void> inituser() async {
     await getUserData();
     print(currentUser.value.name);
@@ -140,14 +141,14 @@ class ClassDetailController extends GetxController with GetSingleTickerProviderS
     final classId = dataClass.value.id!.toString();
     try {
       final response = await apiService.deleteClass(classId);
-      controller.showAllGrades();
-      Get.back();
-       if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == 200) {
         Get.snackbar('Success', 'Class deleted successfully');
         print('Class with id $classId deleted successfully');
+        controller.showAllGrades();
       } else {
         Get.snackbar('Error', 'Failed to delete class');
       }
+      Get.back(); 
     } catch (e) {
       print('Error deleting class: $e');
     }
