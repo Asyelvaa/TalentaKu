@@ -14,13 +14,9 @@ class ClassController extends GetxController {
   RxList<String> userRole = <String>[].obs;
 
   // RxList<GradeModel> gradeList = <GradeModel>[].obs;
-
-  // RxList<GradeModel> get activeClasses => gradeList.where((classItem) => classItem.isactive.toLowerCase() == '1').toList().obs;
-  // RxList<GradeModel> get inactiveClasses => gradeList.where((classItem) => classItem.isactive.toLowerCase() != '1').toList().obs;
-
   RxList<Map<String, dynamic>> gradeList = <Map<String, dynamic>>[].obs;
-  List<Map<String, dynamic>> get activeClasses => gradeList.where((classItem) => classItem['is_active_status'].toLowerCase() == 'active').toList();
-  List<Map<String, dynamic>> get inactiveClasses => gradeList.where((classItem) => classItem['is_active_status'].toLowerCase() != 'active').toList();
+  List<Map<String, dynamic>> get activeClasses => gradeList.where((classItem) => classItem['is_active'] == 'true').toList();
+  List<Map<String, dynamic>> get inactiveClasses => gradeList.where((classItem) => classItem['is_active'] != 'true').toList();
 
 
   final classNameController = TextEditingController();

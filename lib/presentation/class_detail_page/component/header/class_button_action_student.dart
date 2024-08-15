@@ -1,0 +1,54 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
+import 'package:get/get.dart';
+
+import '../../../../infrastructure/navigation/routes.dart';
+import '../../../../infrastructure/theme/theme.dart';
+
+class ClassButtonActionStudent extends StatelessWidget {
+  const ClassButtonActionStudent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(ClassDetailController());
+    return Expanded(
+    child: GestureDetector(
+      onTap: (){
+        var classItemId = controller.classItem["id"].toString();
+        Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
+           "gradeId": classItemId
+        });
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [ 
+          Container(
+            height: heightScreen * 0.07,
+            width: widthScreen,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColor.blue50,
+              borderRadius: defaultBorderRadius
+            ),
+            child: Row(
+              children: [
+                SizedBox(width: widthScreen * 0.25,),
+                AutoSizeText('Laporan Pembelajaran', 
+                style: AppTextStyle.tsBodyBold(AppColor.black), 
+                minFontSize: 12,),
+              ],  
+            )
+          ),
+          Positioned(
+            left: 20,
+            top: -22,
+            child: Image.asset('assets/images/stiker_laporan.png', scale:6, )
+          )
+        ]
+      ),
+    ));
+  }
+}

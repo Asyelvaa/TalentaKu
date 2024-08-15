@@ -43,7 +43,7 @@ class ClassItem extends GetView<ClassController> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: classItem['is_active_status'].toLowerCase() == 'active'
+              color: classItem['is_active'] == 'true'
                   ? AppColor.blue100
                   : Colors.grey[200],
             ),

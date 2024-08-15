@@ -1,7 +1,11 @@
+import 'package:flutter_talentaku/domain/models/class_member_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../../infrastructure/theme/theme.dart';
+
 class ProfileUserController extends GetxController {
+  // Rx<ClassMemberModel> student = ClassMemberModel().obs;
   var student = <String, dynamic>{}.obs;
   var isLoading = false.obs;
   final roles = <String>[].obs;
@@ -12,15 +16,8 @@ class ProfileUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // final arguments = Get.arguments;
-    // if (arguments != null && arguments is Map<String, dynamic>) {
-    //   student.value = arguments;
-    //   roles.value = List<String>.from(student['roles'] ?? []);
-    //   grades.value = List<String>.from(student['grades'] ?? []);
-    // } else {
-    //   Get.snackbar('Error', 'Invalid arguments passed', backgroundColor: AppColor.red);
-    // }
+    // student.value = Get.arguments['student'] as ClassMemberModel;
+   
   }
 
-  void increment() => student['count'] = (student['count'] ?? 0) + 1;
 }

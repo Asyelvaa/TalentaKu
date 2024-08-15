@@ -232,53 +232,53 @@ class HomePageController extends GetxController {
     }
   }
 
-  Future<void> showBottomSheet() async {
-    Get.bottomSheet(
-      backgroundColor: AppColor.background,
-      isScrollControlled: true,
-      Container(
-        width: double.infinity,
-        height: Get.height * 0.6,
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Text(
-              "Terapi Wicara",
-              style: GoogleFonts.manrope(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 15),
-            Image.asset("assets/images/wacara.png"),
-            SizedBox(height: 20),
-            Text(
-              "This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.",
-              style: GoogleFonts.manrope(
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 5),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColor.blue300,
-                ),
-                child: Text("Kembali"),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Future<void> showBottomSheet() async {
+  //   Get.bottomSheet(
+  //     backgroundColor: AppColor.background,
+  //     isScrollControlled: true,
+  //     Container(
+  //       width: double.infinity,
+  //       height: Get.height * 0.6,
+  //       padding: EdgeInsets.all(15),
+  //       child: Column(
+  //         children: [
+  //           Text(
+  //             "Terapi Wicara",
+  //             style: GoogleFonts.manrope(
+  //               fontWeight: FontWeight.w600,
+  //               fontSize: 16,
+  //             ),
+  //           ),
+  //           SizedBox(height: 15),
+  //           Image.asset("assets/images/wacara.png"),
+  //           SizedBox(height: 20),
+  //           Text(
+  //             "This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.This subheader is pinned to the top so you can adjust the symbol height as necessary. Bottom padding should be 16px.",
+  //             style: GoogleFonts.manrope(
+  //               fontWeight: FontWeight.normal,
+  //               fontSize: 12,
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           SizedBox(height: 5),
+  //           GestureDetector(
+  //             onTap: () {
+  //               Get.back();
+  //             },
+  //             child: Container(
+  //               width: double.infinity,
+  //               height: 50,
+  //               alignment: Alignment.center,
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(10),
+  //                 color: AppColor.blue300,
+  //               ),
+  //               child: Text("Kembali"),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

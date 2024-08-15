@@ -43,6 +43,7 @@ class ProfilePageController extends GetxController {
       await apiService.logout();
       Get.offAllNamed(Routes.LoginScreen);
     } catch (e) {
+      print('Error: $e');
       Get.snackbar(
         'Logout Failed',
         'An error occurred while logging out. Please try again.',

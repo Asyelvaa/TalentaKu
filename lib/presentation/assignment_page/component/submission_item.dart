@@ -8,12 +8,14 @@ class SubmissionItem extends StatelessWidget {
   final String studentName;
   final String? score;
   final DateTime submittedAt;
+  final VoidCallback onTap;
 
   const SubmissionItem({
     Key? key,
     required this.studentName,
     this.score,
     required this.submittedAt,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -22,11 +24,12 @@ class SubmissionItem extends StatelessWidget {
 
     return GestureDetector(
       // onTap: () { Get.to(() {});},
-      onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
-        'taskId': Get.arguments['taskId'],
-        'gradeId': Get.arguments['gradeId'],
-        'studentSubmitted': studentName,
-      });},
+      // onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
+      //   'taskId': Get.arguments['taskId'],
+      //   'gradeId': Get.arguments['gradeId'],
+      //   'studentSubmitted': studentName,
+      // });},
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: AppColor.grey)),

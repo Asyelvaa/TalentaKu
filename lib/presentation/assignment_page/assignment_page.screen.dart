@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/assignment_page/component/content_assignment.dart';
 import 'package:flutter_talentaku/presentation/assignment_page/component/content_assignment_submit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/back_appbar.dart';
 import 'component/content_scoring.dart';
@@ -14,49 +15,83 @@ class AssignmentPageScreen extends StatelessWidget {
     final controller = Get.put(AssignmentPageController());
 
     return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(titleAppbar: 'Detail Tugas',),
+      backgroundColor: AppColor.background,      
+      appBar: AppBar(
+        backgroundColor: AppColor.blue600,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back, 
+          color: AppColor.white,)),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        } else if (controller.userRole.contains('Murid SD') || controller.userRole.contains('Murid TK')) {
-          return ContentAssignmentSubmit();
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(bottom: heightScreen * 0.04),
+            decoration: BoxDecoration(
+              color: AppColor.blue600,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TabBar(
-                  controller: controller.tabController,
-                  tabs:
-                        [
-                          Tab(text: 'Tugas'),
-                          Tab(text: 'Nilai'),
-                        ],
-                  dividerColor: AppColor.background,
-                  indicatorColor: AppColor.blue400,
-                  labelColor: AppColor.black,
-                  labelStyle: AppTextStyle.tsLittle,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: controller.tabController,
-                    children:
-                         [
-                            ContentAssignment(),
-                            ContentScoring(taskId: controller.taskId),
-                          ],
-                  ),
-                ),
+                Image.asset('assets/images/logo_talentaku.png', scale: 12),
+                defaultWidthtSpace,
+                Column(
+                  children: [
+                    Text('Tugas Pembelajaran', style: AppTextStyle.tsTitleBold(AppColor.white)),
+                    Obx( () => controller.isLoading.value 
+                      ? Text('...', style: AppTextStyle.tsSmallRegular(AppColor.white))
+                      : Text( DateFormat('EEE, d MMMM yyyy').format(controller.taskDetail.value!.startDate!) ?? '',
+                              style: AppTextStyle.tsSmallRegular(AppColor.white),
+                            ), 
+                      )                    
+                    
+                  ],
+                )
               ],
             ),
-          );
-        }
-      }
+          ),          
+          Obx(() {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            } else if (controller.userRole.contains('Murid SD') || controller.userRole.contains('Murid TK')) {
+              return ContentAssignmentSubmit();
+              // return Text('test');
+            } else {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    TabBar(
+                      controller: controller.tabController,
+                      tabs:
+                            [
+                              Tab(text: 'Tugas'),
+                              Tab(text: 'Nilai'),
+                            ],
+                      dividerColor: AppColor.background,
+                      indicatorColor: AppColor.blue400,
+                      labelColor: AppColor.black,
+                      labelStyle: AppTextStyle.tsBodyRegular(AppColor.black),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                    ),
+                    Container(
+                      height: heightScreen * 0.7,
+                      child: TabBarView(
+                        controller: controller.tabController,
+                        children: [
+                          ContentAssignment(),
+                          ContentScoring(taskId: controller.taskId),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }
+          ),
+        ],
       )
     );
   }

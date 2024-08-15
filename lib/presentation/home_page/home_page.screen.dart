@@ -48,7 +48,7 @@ class HomePageScreen extends GetView<HomePageController> {
                       ],
                     )
                   : SlideInformation(
-                      headerContent: "Programs ",
+                      headerContent: "Program Tambahan",
                       image: "program_tambahan.png",
                       contentTitles: controller.contentTitles,
                     )),
@@ -65,7 +65,7 @@ class HomePageScreen extends GetView<HomePageController> {
                       ],
                     )
                   : SlideExtra(
-                      headerContent: "Extra ",
+                      headerContent: "Extrakurikuler ",
                       image: "program_tambahan.png",
                       contenExtra: controller.contenExtra,
                     )),
@@ -90,12 +90,12 @@ class HomePageScreen extends GetView<HomePageController> {
                   ],
                 ),
               ),
-              SlideContact(
-                headerContent: "Kurikulum",
-                image: "ekstrakurikuler.png",
-                contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
-                contentDesc: ['desc1', 'desc2', 'desc3', 'desc4'],
-              ),
+              // SlideContact(
+              //   headerContent: "Kurikulum",
+              //   image: "ekstrakurikuler.png",
+              //   contentTitles: ['Title 1', 'Title 2', 'Title 3', 'Title 4'],
+              //   contentDesc: ['desc1', 'desc2', 'desc3', 'desc4'],
+              // ),
               Obx(() => controller.isLoading.value
                   ? SlideContact(
                       headerContent: "Loading....",

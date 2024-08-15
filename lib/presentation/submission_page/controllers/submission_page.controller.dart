@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/screens.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -103,13 +104,14 @@ class SubmissionPageController extends GetxController {
     try {
       final response = await ApiServiceTask()
           .correctionTask(gradeId, taskId, submissionId, score);
-      submission.value = SubmissionDetailModel.fromJson(response['message']);
+      submission.value = SubmissionDetailModel.fromJson(response['data']);
       Get.back();
+      // Get.to(SubmissionCompletePageScreem());
       dialogSuccess('Berhasil menilai tugas');
     } catch (e) {
       Get.back();
       dialogError('Gagal menilai tugas');
-      print(e);
+      print('gagal nilai tugas $e');
     } finally {
       isLoading.value = false;
     }

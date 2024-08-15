@@ -19,7 +19,7 @@ class HeaderContent extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: 330,
+            width: widthScreen,
             height: 50,
             margin: EdgeInsets.all(20),
             padding: EdgeInsets.only(left: 30),

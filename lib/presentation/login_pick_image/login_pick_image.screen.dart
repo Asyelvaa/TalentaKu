@@ -31,67 +31,69 @@ class PickImageScreen extends GetView<PickimageController> {
               SizedBox(height: 16),
               Container(
                 width: Get.width * 0.8,
+                height: heightScreen * 0.5,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: heightScreen * 0.05, horizontal: widthScreen * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Selamat datang', style: AppTextStyle.tsTitle),
-                      Text('Semangat buat hari ini ya...', style: AppTextStyle.tsNormal),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Stack(
-                          children: [
-                            Obx(
-                              () {
-                                return controller.image.value != null
-                                    ? CircleAvatar(
-                                        radius: 60,
-                                        backgroundImage: FileImage(controller.image.value!),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor: AppColor.blue600,
-                                        child: Text(
-                                          controller.username.substring(0, 2).toUpperCase(),
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      );
+                       Text(
+                        'Selamat datang',
+                        style: AppTextStyle.tsTitleBold(AppColor.black)
+                      ),
+                      Text(
+                        'Anda masuk sebagai...',
+                        style: AppTextStyle.tsBodyRegular(AppColor.black)
+                      ),
+                      spaceHeightLarge,
+                      Stack(
+                        children: [
+                          Obx(
+                            () {
+                              return controller.image.value != null
+                                  ? CircleAvatar(
+                                      radius: 60,
+                                      backgroundImage: FileImage(controller.image.value!),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: AppColor.blue600,
+                                      child: Text(
+                                        controller.username.substring(2).toUpperCase(),
+                                        style: AppTextStyle.tsSmallBold(AppColor.white)
+                                      ),
+                                    );
+                            },
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.pickImage(ImageSource.gallery);
                               },
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  controller.pickImage(ImageSource.gallery);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.blue600,
-                                    border: Border.all(color: AppColor.white, width: 1),
-                                  ),
-                                  child: Icon(
-                                    Iconsax.camera5,
-                                    size: 20,
-                                    color: AppColor.white,
-                                  ),
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColor.blue600,
+                                  border: Border.all(color: AppColor.white, width: 1),
+                                ),
+                                child: Icon(
+                                  Iconsax.camera5,
+                                  size: 20,
+                                  color: AppColor.white,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      spaceHeightLarge,
                       Container(
                         width: Get.width,
                         height: 50,
@@ -109,15 +111,11 @@ class PickImageScreen extends GetView<PickimageController> {
                         child: Center(
                           child: Text(
                             controller.username,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
+                            style: AppTextStyle.tsBodyBold(AppColor.black)
                           ),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      spaceHeightSmall,
                       Obx(() {
                         return SizedBox(
                           width: Get.width,
@@ -140,9 +138,7 @@ class PickImageScreen extends GetView<PickimageController> {
                             ),
                             elevation: 0,
                             child: controller.isLoading.value
-                                ? CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(AppColor.white),
-                                  )
+                                ? CircularProgressIndicator(color: AppColor.blue200,)
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

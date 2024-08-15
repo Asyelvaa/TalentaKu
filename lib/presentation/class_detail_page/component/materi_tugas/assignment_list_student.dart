@@ -59,7 +59,7 @@ class AssignmentListStudent extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           var task = tasks[index];
-          return MateriItem(
+          return AssignmentItem(
             title: task.title ?? 'No title',
             tenggat: task.endDate != null
                 ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
