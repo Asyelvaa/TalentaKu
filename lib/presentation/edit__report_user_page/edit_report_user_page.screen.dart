@@ -121,44 +121,98 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
               ],
             ),
             SizedBox(height: heightScreen * 0.02),
-            Text("Kegiatan Awal", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
+            Text("Kegiatan Awal di Halaman", style: AppTextStyle.tsTitle),
+            spaceHeightNormal,
             FormSection(
-              textController: controller.kegiatanAwalTextController,
+              textController: controller.kegiatan_awal_dihalamanTextController,
               controller: controller,
-              sectionTitle: "Kegiatan Awal",
+              sectionTitle: "kegiatan_awal_dihalaman",
               pointType: 'Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
-            Text("Kegiatan Inti", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
+            defaultHeightSpace,
+            Text("Kegiatan Berdoa", style: AppTextStyle.tsTitle),
+            spaceHeightNormal,
             FormSection(
-              textController: controller.kegiatanIntiTextController,
+              textController: controller.kegiatan_awal_berdoaTextController,
               controller: controller,
-              sectionTitle: "Kegiatan Inti",
+              sectionTitle: "kegiatan_awal_berdoa",
               pointType: 'Kurang',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            defaultHeightSpace,
+            Text(
+              "Kegiatan Inti Satu",
+              style: AppTextStyle.tsTitle,
+            ),
+            spaceHeightNormal,
+            FormSection(
+              textController: controller.kegiatan_inti_satuTextController,
+              controller: controller,
+              sectionTitle: "kegiatan_inti_satu",
+              pointType: 'Kurang',
+            ),
+            defaultHeightSpace,
+            Text(
+              "Kegiatan Inti Dua",
+              style: AppTextStyle.tsTitle,
+            ),
+            spaceHeightNormal,
+            FormSection(
+              textController: controller.kegiatan_inti_duaTextController,
+              controller: controller,
+              sectionTitle: "kegiatan_inti_dua",
+              pointType: 'Kurang',
+            ),
+            spaceHeightNormal,
+            Text(
+              "Kegiatan Inti Tiga",
+              style: AppTextStyle.tsTitle,
+            ),
+            spaceHeightNormal,
+            FormSection(
+              textController: controller.kegiatan_inti_tigaTextController,
+              controller: controller,
+              sectionTitle: "kegiatan_inti_tiga",
+              pointType: 'Kurang',
+            ),
+            spaceHeightNormal,
             Text("Snack", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightNormal,
             FormSection(
               textController: controller.SnackTextController,
               controller: controller,
-              sectionTitle: "Snack",
+              sectionTitle: "snack",
               pointType: 'Belum Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightNormal,
+            Text("Inklusi Doa", style: AppTextStyle.tsTitle),
+            spaceHeightSmall,
+            FormSection(
+              textController: controller.inklusi_doaTextController,
+              controller: controller,
+              sectionTitle: "inklusi_doa",
+              pointType: 'Muncul',
+            ),
+            spaceHeightNormal,
+            Text("Inklusi Penutup", style: AppTextStyle.tsTitle),
+            spaceHeightSmall,
+            FormSection(
+              textController: controller.inklusi_penutupTextController,
+              controller: controller,
+              sectionTitle: "inklusi_penutup",
+              pointType: 'Muncul',
+            ),
+            spaceHeightNormal,
             Text("Inklusi", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             FormSection(
               textController: controller.inklusiTextController,
               controller: controller,
-              sectionTitle: "Inklusi",
+              sectionTitle: "inklusi",
               pointType: 'Muncul',
             ),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightNormal,
             Text("Catatan", style: AppTextStyle.tsTitle),
-            SizedBox(height: heightScreen * 0.02),
+            spaceHeightSmall,
             Container(
               height: heightScreen * 0.08,
               width: widthScreen * 1,
@@ -249,33 +303,55 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      
                       final int reportId = controller.reportUser['id'] ?? 0;
 
                       controller.editReport(
                         created: controller.createdController.text,
                         semesterId:
                             int.parse(controller.semesterIdController.text),
-                        kegiatanAwal:
-                            controller.kegiatanAwalTextController.text,
-                        awalPoint:
-                            controller.selectedOptions['Kegiatan Awal'] ?? '',
-                        kegiatanInti:
-                            controller.kegiatanIntiTextController.text,
-                        intiPoint:
-                            controller.selectedOptions['Kegiatan Inti'] ?? '',
+                        kegiatan_awal_dihalaman: controller
+                            .kegiatan_awal_dihalamanTextController.text,
+                        dihalaman_hasil: controller
+                                .selectedOptions['kegiatan_awal_dihalaman'] ??
+                            '',
+                        kegiatan_awal_berdoa:
+                            controller.kegiatan_awal_berdoaTextController.text,
+                        berdoa_hasil: controller
+                                .selectedOptions['kegiatan_awal_berdoa'] ??
+                            '',
+                        kegiatan_inti_satu:
+                            controller.kegiatan_inti_satuTextController.text,
+                        inti_satu_hasil:
+                            controller.selectedOptions['kegiatan_inti_satu'] ??
+                                '',
+                        kegiatan_inti_dua:
+                            controller.kegiatan_inti_duaTextController.text,
+                        inti_dua_hasil:
+                            controller.selectedOptions['kegiatan_inti_dua'] ??
+                                '',
+                        kegiatan_inti_tiga:
+                            controller.kegiatan_inti_tigaTextController.text,
+                        inti_tiga_hasil:
+                            controller.selectedOptions['kegiatan_inti_tiga'] ??
+                                '',
+                        inklusi_penutup:
+                            controller.inklusi_penutupTextController.text,
+                        inklusi_penutup_hasil:
+                            controller.selectedOptions['inklusi_penutup'] ?? '',
+                        inklusi_doa: controller.inklusi_doaTextController.text,
+                        doa_hasil:
+                            controller.selectedOptions['inklusi_doa'] ?? '',
                         snack: controller.SnackTextController.text,
-                        snackPoint: controller.selectedOptions['Snack'] ?? '',
                         inklusi: controller.inklusiTextController.text,
-                        inklusiPoint:
-                            controller.selectedOptions['Inklusi'] ?? '',
+                        inklusi_hasil:
+                            controller.selectedOptions['inklusi'] ?? '',
                         catatan: controller.catatanController.text,
                         media: controller.selectedImage.value != null
                             ? [controller.selectedImage.value!]
                             : [],
                         reportId: reportId,
                       );
-                      Get.back(result: 'success');
+                      Get.back(result: 'success $reportId');
                     },
                     child: Container(
                       height: heightScreen * 0.07,

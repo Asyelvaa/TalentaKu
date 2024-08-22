@@ -1,8 +1,9 @@
 class ClassMemberModel {
   int? id;
+  String? status;
+  String? username;
   String? name;
-  String? email;
-  String? identificationNumber;
+  String? nomorInduk;
   String? address;
   String? photo;
   String? birthInformation;
@@ -11,9 +12,10 @@ class ClassMemberModel {
 
   ClassMemberModel({
     this.id,
+    this.status,
+    this.username,
     this.name,
-    this.email,
-    this.identificationNumber,
+    this.nomorInduk,
     this.address,
     this.photo,
     this.birthInformation,
@@ -22,26 +24,27 @@ class ClassMemberModel {
   });
 
   factory ClassMemberModel.fromJson(Map<String, dynamic> json) {
-    const baseurl = "https://talentaku.site/image/profile/";
     return ClassMemberModel(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      email: json['email'] ?? '',
-      identificationNumber: json['identification_number'] ?? '',
-      address: json['address'] ?? '',
-      photo:json['photo'] != null ? baseurl + json['photo'] : null,
-      birthInformation: json['birth_information'] ?? '',
-      roles: List<String>.from(json['roles'] ?? []),
-      grades: List<String>.from(json['grades'] ?? []),
+      id: json['id'],
+      status: json['status'],
+      username: json['username'],
+      name: json['name'],
+      nomorInduk: json['nomor_induk'],
+      address: json['address'],
+      photo: json['photo'],
+      birthInformation: json['birth_information'],
+      roles: json['roles'] != null ? List<String>.from(json['roles']) : [],
+      grades: json['grades'] != null ? List<String>.from(json['grades']) : [],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'status': status,
+      'username': username,
       'name': name,
-      'email': email,
-      'identification_number': identificationNumber,
+      'nomor_induk': nomorInduk,
       'address': address,
       'photo': photo,
       'birth_information': birthInformation,

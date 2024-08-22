@@ -33,7 +33,7 @@ class ReportListUserPageController extends GetxController {
         final jsonData = json.decode(response.body);
         reportData.assignAll(jsonData['data']);
       } else {
-        print("cuk");
+        print(response.statusCode);
       }
     } catch (e) {
       print('Exception: $e');

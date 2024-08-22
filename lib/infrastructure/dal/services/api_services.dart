@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_talentaku/domain/models/album_model.dart';
+import 'package:flutter_talentaku/domain/models/grade_model.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:mime/mime.dart';
 
-import '../../../domain/models/class_model.dart';
+
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/user_model.dart';
 import '../../../presentation/student_report_page/model/reportModel.dart';
@@ -77,7 +78,6 @@ class ApiService {
       };
     }
   }
-  
 
   Future<Map<String, dynamic>> getCurrentUser() async {
     try {
@@ -95,22 +95,14 @@ class ApiService {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        // final decodedBody = jsonDecode(response.body);
-        // return UserModel.fromJson(decodedBody);
-        // return UserModel.fromJson(jsonDecode(response.body));
-        // return jsonDecode(response.body);
-        final jsonData = json.decode(response.body);
-        return jsonData;
-      } else {
-        throw Exception('Failed to load current user: ${response.statusCode}');
-      }
+      final jsonData = json.decode(response.body);
+      return jsonData;
     } catch (e) {
       throw Exception('Failed to load current user: $e');
     }
   }
 
-  Future<UserModel> getUserData() async {
+  Future<dynamic> getUserData() async {
     try {
       final token = box.read('token');
       var headers = {
@@ -126,13 +118,9 @@ class ApiService {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(jsonDecode(response.body));
-      } else {
-        throw Exception('Failed to load current user: ${response.statusCode}');
-      }
+      return json.decode(response.body)['data'];
     } catch (e) {
-      throw Exception('Failed to load current user: $e');
+      print(e);
     }
   }
 
@@ -193,8 +181,7 @@ class ApiService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> 
-  getGradesStudent() async {
+  Future<List<Map<String, dynamic>>> getGradesStudent() async {
     try {
       final token = box.read('token');
       var headers = {

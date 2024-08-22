@@ -54,12 +54,10 @@ class LoginScreen extends GetView<LoginController> {
                                 colorBackground: AppColor.blue50,
                                 text:
                                     'Masukkan akun yang diberikan dari sekolah'),
-                            // Text('Masukkan akun yang diberikan oleh Gurumu',
-                            // style: AppTextStyle.tsSmallRegular(AppColor.blue800),),
                             spaceHeightSmall,
                             CustomTextFormField(
-                              loginController: controller.emailController,
-                              labelText: "Masukkan email anda",
+                              loginController: controller.usernameController,
+                              labelText: "Masukkan username anda",
                             ),
                             const SizedBox(height: 10),
                             CustomTextFormField(

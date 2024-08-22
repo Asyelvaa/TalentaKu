@@ -29,7 +29,9 @@ class SubmissionModel {
       id: json['id'],
       taskId: json['task_id'],
       studentId: json['student_id'],
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
+      createdAt: json['created_at'] != null 
+        ? DateTime.parse(json['created_at']) 
+        : null,
       updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
       user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
       task: json['task'] != null ? Task.fromJson(json['task']) : null,

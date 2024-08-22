@@ -31,24 +31,22 @@ class PickImageScreen extends GetView<PickimageController> {
               SizedBox(height: 16),
               Container(
                 width: Get.width * 0.8,
-                height: heightScreen * 0.5,
+                height: heightScreen * 0.55,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: heightScreen * 0.05, horizontal: widthScreen * 0.05),
+                  padding: EdgeInsets.symmetric(
+                      vertical: heightScreen * 0.05,
+                      horizontal: widthScreen * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                       Text(
-                        'Selamat datang',
-                        style: AppTextStyle.tsTitleBold(AppColor.black)
-                      ),
-                      Text(
-                        'Anda masuk sebagai...',
-                        style: AppTextStyle.tsBodyRegular(AppColor.black)
-                      ),
+                      Text('Selamat datang',
+                          style: AppTextStyle.tsTitleBold(AppColor.black)),
+                      Text('Anda masuk sebagai...',
+                          style: AppTextStyle.tsBodyRegular(AppColor.black)),
                       spaceHeightLarge,
                       Stack(
                         children: [
@@ -57,15 +55,18 @@ class PickImageScreen extends GetView<PickimageController> {
                               return controller.image.value != null
                                   ? CircleAvatar(
                                       radius: 60,
-                                      backgroundImage: FileImage(controller.image.value!),
+                                      backgroundImage:
+                                          FileImage(controller.image.value!),
                                     )
                                   : CircleAvatar(
                                       radius: 60,
                                       backgroundColor: AppColor.blue600,
                                       child: Text(
-                                        controller.username.substring(2).toUpperCase(),
-                                        style: AppTextStyle.tsSmallBold(AppColor.white)
-                                      ),
+                                          controller.username
+                                              .substring(2)
+                                              .toUpperCase(),
+                                          style: AppTextStyle.tsSmallBold(
+                                              AppColor.white)),
                                     );
                             },
                           ),
@@ -81,7 +82,8 @@ class PickImageScreen extends GetView<PickimageController> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppColor.blue600,
-                                  border: Border.all(color: AppColor.white, width: 1),
+                                  border: Border.all(
+                                      color: AppColor.white, width: 1),
                                 ),
                                 child: Icon(
                                   Iconsax.camera5,
@@ -109,10 +111,8 @@ class PickImageScreen extends GetView<PickimageController> {
                           ),
                         ),
                         child: Center(
-                          child: Text(
-                            controller.username,
-                            style: AppTextStyle.tsBodyBold(AppColor.black)
-                          ),
+                          child: Text(controller.username,
+                              style: AppTextStyle.tsBodyBold(AppColor.black)),
                         ),
                       ),
                       spaceHeightSmall,
@@ -138,7 +138,9 @@ class PickImageScreen extends GetView<PickimageController> {
                             ),
                             elevation: 0,
                             child: controller.isLoading.value
-                                ? CircularProgressIndicator(color: AppColor.blue200,)
+                                ? CircularProgressIndicator(
+                                    color: AppColor.blue200,
+                                  )
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

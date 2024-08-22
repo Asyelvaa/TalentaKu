@@ -31,14 +31,23 @@ class ReportModel {
   final String created;
   final String semesterId;
   final String semesterName;
-  final List<String> kegiatanAwal;
-  final String awalPoint;
-  final List<String> kegiatanInti;
-  final String intiPoint;
+  final List<String> kegiatanAwalDihalaman;
+  final String dihalamanHasil;
+  final List<String> kegiatanAwalBerdoa;
+  final String berdoaHasil;
+  final List<String> kegiatanIntiSatu;
+  final String intiSatuHasil;
+  final List<String> kegiatanIntiDua;
+  final String intiDuaHasil;
+  final List<String> kegiatanIntiTiga;
+  final String intiTigaHasil;
   final List<String> snack;
-  final String snackPoint;
   final List<String> inklusi;
-  final String inklusiPoint;
+  final String inklusiHasil;
+  final String inklusiPenutup;
+  final String inklusiPenutupHasil;
+  final String inklusiDoa;
+  final String inklusiDoaHasil;
   final List<String> catatan;
   final String studentId;
   final String teacherId;
@@ -50,14 +59,23 @@ class ReportModel {
     required this.created,
     required this.semesterId,
     required this.semesterName,
-    required this.kegiatanAwal,
-    required this.awalPoint,
-    required this.kegiatanInti,
-    required this.intiPoint,
+    required this.kegiatanAwalDihalaman,
+    required this.dihalamanHasil,
+    required this.kegiatanAwalBerdoa,
+    required this.berdoaHasil,
+    required this.kegiatanIntiSatu,
+    required this.intiSatuHasil,
+    required this.kegiatanIntiDua,
+    required this.intiDuaHasil,
+    required this.kegiatanIntiTiga,
+    required this.intiTigaHasil,
     required this.snack,
-    required this.snackPoint,
     required this.inklusi,
-    required this.inklusiPoint,
+    required this.inklusiHasil,
+    required this.inklusiPenutup,
+    required this.inklusiPenutupHasil,
+    required this.inklusiDoa,
+    required this.inklusiDoaHasil,
     required this.catatan,
     required this.studentId,
     required this.teacherId,
@@ -71,14 +89,23 @@ class ReportModel {
       created: json['created'],
       semesterId: json['semester_id'],
       semesterName: json['semester_name'],
-      kegiatanAwal: List<String>.from(json['kegiatan_awal']),
-      awalPoint: json['awal_point'],
-      kegiatanInti: List<String>.from(json['kegiatan_inti']),
-      intiPoint: json['inti_point'],
+      kegiatanAwalDihalaman: List<String>.from(json['kegiatan_awal_dihalaman']),
+      dihalamanHasil: json['dihalaman_hasil'],
+      kegiatanAwalBerdoa: List<String>.from(json['kegiatan_awal_berdoa']),
+      berdoaHasil: json['berdoa_hasil'],
+      kegiatanIntiSatu: List<String>.from(json['kegiatan_inti_satu']),
+      intiSatuHasil: json['inti_satu_hasil'],
+      kegiatanIntiDua: List<String>.from(json['kegiatan_inti_dua']),
+      intiDuaHasil: json['inti_dua_hasil'],
+      kegiatanIntiTiga: List<String>.from(json['kegiatan_inti_tiga']),
+      intiTigaHasil: json['inti_tiga_hasil'],
       snack: List<String>.from(json['snack']),
-      snackPoint: json['snack_point'],
       inklusi: List<String>.from(json['inklusi']),
-      inklusiPoint: json['inklusi_point'],
+      inklusiHasil: json['inklusi_hasil'],
+      inklusiPenutup: json['inklusi_penutup'],
+      inklusiPenutupHasil: json['inklusi_penutup_hasil'],
+      inklusiDoa: json['inklusi_doa'],
+      inklusiDoaHasil: json['inklusi_doa_hasil'],
       catatan: List<String>.from(json['catatan']),
       studentId: json['student_id'],
       teacherId: json['teacher_id'],
@@ -94,14 +121,23 @@ class ReportModel {
       'created': created,
       'semester_id': semesterId,
       'semester_name': semesterName,
-      'kegiatan_awal': kegiatanAwal,
-      'awal_point': awalPoint,
-      'kegiatan_inti': kegiatanInti,
-      'inti_point': intiPoint,
+      'kegiatan_awal_dihalaman': kegiatanAwalDihalaman,
+      'dihalaman_hasil': dihalamanHasil,
+      'kegiatan_awal_berdoa': kegiatanAwalBerdoa,
+      'berdoa_hasil': berdoaHasil,
+      'kegiatan_inti_satu': kegiatanIntiSatu,
+      'inti_satu_hasil': intiSatuHasil,
+      'kegiatan_inti_dua': kegiatanIntiDua,
+      'inti_dua_hasil': intiDuaHasil,
+      'kegiatan_inti_tiga': kegiatanIntiTiga,
+      'inti_tiga_hasil': intiTigaHasil,
       'snack': snack,
-      'snack_point': snackPoint,
       'inklusi': inklusi,
-      'inklusi_point': inklusiPoint,
+      'inklusi_hasil': inklusiHasil,
+      'inklusi_penutup': inklusiPenutup,
+      'inklusi_penutup_hasil': inklusiPenutupHasil,
+      'inklusi_doa': inklusiDoa,
+      'inklusi_doa_hasil': inklusiDoaHasil,
       'catatan': catatan,
       'student_id': studentId,
       'teacher_id': teacherId,
