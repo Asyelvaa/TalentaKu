@@ -8,17 +8,14 @@ import 'package:http_parser/http_parser.dart';
 import '../../../domain/models/class_announcement_model.dart';
 
 class ApiServiceAnnouncements {
-static const String baseUrl = 'https://talentaku.site/api';
-final box = GetStorage();
+  static const String baseUrl = 'https://talentaku.site/api';
+  final box = GetStorage();
 
 // CREATE COMMENT
   Future<ClassAnnouncementModel> createAnnouncement(
-    String comments,
-    List<File> files, 
-    String gradeId
-  ) async {
+      String comments, List<File> files, String gradeId) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/comments";
+    final url = "$baseUrl/grades/$gradeId/announcements";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
@@ -26,7 +23,7 @@ final box = GetStorage();
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.headers.addAll(headers);
 
-    request.fields['comments'] = comments;
+    request.fields['announcements'] = comments;
 
     for (var file in files) {
       request.files.add(
@@ -39,24 +36,25 @@ final box = GetStorage();
         ),
       );
     }
-    
+
     try {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
-        var jsonResponse = jsonDecode(response.body)['comment'];
+        var jsonResponse = jsonDecode(response.body)['announcements'];
         return ClassAnnouncementModel.fromJson(jsonResponse);
       } else {
         throw Exception('Failed to create announcement: ${response.body}');
-      }    
+      }
     } catch (e) {
-      print('Error in cretae announcement: $e');
+      print('Error in create announcement: $e');
       rethrow;
     }
-  } 
+  }
 
   // DELETE COMMENT
-   Future<void> deleteAnnouncement(String gradeId, String commentId) async {
+  Future<void> deleteAnnouncement(String gradeId, String commentId) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId/comments/$commentId";
     final headers = {
@@ -65,7 +63,10 @@ final box = GetStorage();
     };
 
     try {
-      final response = await http.delete(Uri.parse(url),headers: headers,);
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         print('Announcement deleted');
       } else {
@@ -91,7 +92,6 @@ final box = GetStorage();
   //     throw Exception('Failed to load class stream');
   //   }
   // }
-  
 }
 
 // UPDATE COMMENT 

@@ -19,62 +19,71 @@ class ClassButtonActionTeacher extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.bottomSheet(ClassBottomsheetActionTeacher());
             },
             child: Container(
               height: heightScreen * 0.07,
-              padding: EdgeInsets.symmetric(horizontal: widthScreen * 0.04,),
-              decoration: BoxDecoration(
-                color: AppColor.blue50,
-                borderRadius: defaultBorderRadius
+              padding: EdgeInsets.symmetric(
+                horizontal: widthScreen * 0.04,
               ),
-              child: Icon(Icons.list, size: 30, color: AppColor.black,),
+              decoration: BoxDecoration(
+                  color: AppColor.blue50, borderRadius: defaultBorderRadius),
+              child: Icon(
+                Icons.list,
+                size: 30,
+                color: AppColor.black,
+              ),
             ),
           ),
           defaultWidthtSpace,
           Expanded(
-            child: GestureDetector(
-              onTap: (){
-                Get.toNamed('/student-report-form',
-                arguments: {
-                  "gradeId" : controller.classItem["id"].toString()
-                }); 
-              },
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [ 
-                  Container(
-                    height: heightScreen * 0.07,
-                    width: widthScreen,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
+              child: GestureDetector(
+            onTap: () {
+              Get.toNamed('/student-report-form', arguments: {
+                "gradeId": controller.classItem["id"].toString()
+              });
+            },
+            child: Stack(clipBehavior: Clip.none, children: [
+              Container(
+                  height: heightScreen * 0.075,
+                  width: widthScreen,
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
                       color: AppColor.blue50,
-                      borderRadius: defaultBorderRadius
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: widthScreen * 0.15,),
-                        Column(
+                      borderRadius: defaultBorderRadius),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: widthScreen * 0.14,
+                      ),
+                      Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AutoSizeText('Buat', style: AppTextStyle.tsSmallRegular(AppColor.black), minFontSize: 10,),
-                            AutoSizeText('Laporan Pembelajaran', style: AppTextStyle.tsBodyBold(AppColor.black), minFontSize: 10,)
-                          ]
-                        ),
-                      ],  
-                    )
-                  ),
-                  Positioned(
-                    left: -5,
-                    bottom: 0,
-                    child: Image.asset('assets/images/stiker_laporan.png', scale:8  , )
-                  )
-                ]
-              ),
-            )                          
-          )
+                            AutoSizeText(
+                              'Buat',
+                              style:
+                                  AppTextStyle.tsSmallRegular(AppColor.black),
+                              minFontSize: 10,
+                            ),
+                            AutoSizeText(
+                              'Laporan Pembelajaran',
+                              style: AppTextStyle.tsSmallBold(AppColor.black),
+                              minFontSize: 10,
+                            )
+                          ]),
+                    ],
+                  )),
+              Positioned(
+                  left: -5,
+                  bottom: 0,
+                  child: Image.asset(
+                    'assets/images/stiker_laporan.png',
+                    scale: 9,
+                  ))
+            ]),
+          ))
         ],
       ),
     );

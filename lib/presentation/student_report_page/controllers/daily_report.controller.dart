@@ -13,23 +13,22 @@ class DailyReportController extends GetxController {
   final box = GetStorage();
   late final arguments;
 
-  
+  // ReportModel? getReportById(int id) {
+  //   return null;
 
-  ReportModel? getReportById(int id) {
-    return null;
-
-    // try {
-    //   return reportData.firstWhere((report) => report.id == id);
-    // } catch (e) {
-    //   print("Error finding report by ID: $e");
-    //   return null;
-    // }
-  }
+  //   // try {
+  //   //   return reportData.firstWhere((report) => report.id == id);
+  //   // } catch (e) {
+  //   //   print("Error finding report by ID: $e");
+  //   //   return null;
+  //   // }
+  // }
 
   @override
   void onInit() {
     arguments = Get.arguments;
     singleReportData.value = arguments[0];
     super.onInit();
+    print(singleReportData);
   }
 }

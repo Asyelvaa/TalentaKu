@@ -14,78 +14,88 @@ class AnnouncementComponent extends GetView<ClassDetailController> {
       children: [
         Container(
           width: Get.width,
-          // height: heightScreen * 0.43,
           decoration: BoxDecoration(
             color: AppColor.white,
             borderRadius: BorderRadius.circular(22),
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 5),
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundColor: AppColor.blue500,
+            child: Obx(() {
+              if (controller.announcementsList.isEmpty) {
+                return Center(child: Text("No announcements available"));
+              }
+
+              final announcement = controller.announcementsList[0];
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5),
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColor.blue500,
+                        ),
                       ),
-                    ),
-                    defaultWidthtSpace,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(controller.announcementsList[0]['user']['name'],
-                              style: AppTextStyle.tsBodyBold(AppColor.black)),
-                          Text(
-                              DateFormat('dd MMMM yyyy', 'id_ID;').format(
-                                  DateTime.parse(controller.announcementsList[0]
-                                          ['created_at']
-                                      .toString())),
+                      defaultWidthtSpace,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              announcement['user']['name'],
+                              style: AppTextStyle.tsBodyBold(AppColor.black),
+                            ),
+                            Text(
+                              DateFormat('dd MMMM yyyy', 'id_ID').format(
+                                DateTime.parse(
+                                    announcement['created_at'].toString()),
+                              ),
                               style:
-                                  AppTextStyle.tsSmallRegular(AppColor.black)),
-                        ],
+                                  AppTextStyle.tsSmallRegular(AppColor.black),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                spaceHeightExtraSmall,
-                Column(
-                  children: [
-                    for (int i = 0; i < controller.anounces.length; i++)
-                      Text(controller.anounces[i],
-                          style: AppTextStyle.tsBodyRegular(AppColor.black)),
-                  ],
-                ),
-                // spaceHeightExtraSmall,
-                // ListView.builder(
-                //   itemCount: controller.mediaAnnounce.length,
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemBuilder: (context, index) {
-                //     var media = controller.mediaAnnounce[index];
-                //     Container(
-                //         child: Image.network(
-                //             'https://talentaku.site/image/announcement-media/${media['file_name']}'));
-                //   },
-                // ),
-                defaultHeightSpace,
-                Divider(
-                  color: AppColor.black,
-                  height: 2,
-                ),
-                spaceHeightSmall,
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
+                    ],
+                  ),
+                  spaceHeightExtraSmall,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        announcement['content'] ?? '',
                         style: AppTextStyle.tsBodyRegular(AppColor.black),
-                        decoration: InputDecoration(
+                      ),
+                    ],
+                  ),
+                  spaceHeightExtraSmall,
+                  if (announcement['media'].isNotEmpty)
+                    ...announcement['media'].map<Widget>((media) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Image.network(
+                          'https://talentaku.site/image/announcement-media/${media}',
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }).toList(),
+                  defaultHeightSpace,
+                  Divider(
+                    color: AppColor.black,
+                    height: 2,
+                  ),
+                  spaceHeightSmall,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          style: AppTextStyle.tsBodyRegular(AppColor.black),
+                          decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                               vertical:
                                   MediaQuery.of(context).size.height * 0.01,
@@ -108,27 +118,29 @@ class AnnouncementComponent extends GetView<ClassDetailController> {
                             fillColor: AppColor.black,
                             hintText: "Tambahkan Komentar",
                             hintStyle:
-                                AppTextStyle.tsSmallRegular(AppColor.black)),
+                                AppTextStyle.tsSmallRegular(AppColor.black),
+                          ),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        // Handle send action
-                      },
-                      icon: Icon(Icons.send, color: AppColor.black),
-                    ),
-                  ],
-                ),
-                spaceHeightExtraSmall,
-                Text(
-                  "Lihat 2 Komentar",
-                  style: AppTextStyle.tsSmallRegular(AppColor.black),
-                )
-              ],
-            ),
+                      IconButton(
+                        onPressed: () {
+                          // Handle send action
+                        },
+                        icon: Icon(Icons.send, color: AppColor.black),
+                      ),
+                    ],
+                  ),
+                  spaceHeightExtraSmall,
+                  Text(
+                    "Lihat ${announcement['replies_count']} Komentar",
+                    style: AppTextStyle.tsSmallRegular(AppColor.black),
+                  ),
+                ],
+              );
+            }),
           ),
         ),
-        SizedBox(height: 12)
+        SizedBox(height: 12),
       ],
     );
   }

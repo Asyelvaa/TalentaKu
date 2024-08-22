@@ -18,11 +18,18 @@ class StudentReportFormController extends GetxController {
   RxList<File> selectedImages = <File>[].obs;
   final createdController = TextEditingController();
   final semesterIdController = TextEditingController();
+  final kegiatan_awal_dihalamanTextController = TextEditingController();
+  final kegiatan_awal_berdoaTextController = TextEditingController();
+
   final catatanController = TextEditingController();
   final kegiatanAwalTextController = TextEditingController();
-  final kegiatanIntiTextController = TextEditingController();
+  final kegiatan_inti_satuTextController = TextEditingController();
+  final kegiatan_inti_duaTextController = TextEditingController();
+  final kegiatan_inti_tigaTextController = TextEditingController();
   final SnackTextController = TextEditingController();
   final inklusiTextController = TextEditingController();
+  final inklusi_penutupTextController = TextEditingController();
+  final inklusi_doaTextController = TextEditingController();
 
   final studentId = 0.obs;
   late final String gradeId;
@@ -123,42 +130,61 @@ class StudentReportFormController extends GetxController {
 
   void select(String sectionTitle, String option) {
     selectedOptions[sectionTitle] = option;
+    print(selectedOptions);
   }
 
   void submitReport({
     required String created,
     required int semesterId,
-    required String kegiatanAwal,
-    required String awalPoint,
-    required String kegiatanInti,
-    required String intiPoint,
+    required String kegiatanAwalDihalaman,
+    required String dihalamanHasil,
+    required String kegiatanAwalBerdoa,
+    required String berdoaHasil,
+    required String kegiatanIntiSatu,
+    required String intiSatuHasil,
+    required String kegiatanIntiDua,
+    required String intiDuaHasil,
+    required String kegiatanIntiTiga,
+    required String intiTigaHasil,
     required String snack,
-    required String snackPoint,
     required String inklusi,
-    required String inklusiPoint,
-    required String catatan,
+    required String inklusiHasil,
+    required String inklusiPenutup,
+    required String inklusiPenutupHasil,
+    required String inklusiDoa,
+    required String inklusiDoaHasil,
+    required List<String> catatan,
     required List<File> media,
     required int studentId,
   }) async {
-    if (created.isEmpty ||
-        semesterId == 0 ||
-        kegiatanAwal.isEmpty ||
-        awalPoint.isEmpty ||
-        kegiatanInti.isEmpty ||
-        intiPoint.isEmpty ||
-        snack.isEmpty ||
-        snackPoint.isEmpty ||
-        inklusi.isEmpty ||
-        inklusiPoint.isEmpty ||
-        catatan.isEmpty ||
-        studentId == 0) {
-      Get.snackbar(
-        'Peringatan',
-        'Harap isi semua kolom yang wajib diisi',
-        backgroundColor: AppColor.red,
-      );
-      return;
-    }
+    // if (created.isEmpty ||
+    //     semesterId == 0 ||
+    //     kegiatanAwalDihalaman.isEmpty ||
+    //     dihalamanHasil.isEmpty ||
+    //     kegiatanAwalBerdoa.isEmpty ||
+    //     berdoaHasil.isEmpty ||
+    //     kegiatanIntiSatu.isEmpty ||
+    //     intiSatuHasil.isEmpty ||
+    //     kegiatanIntiDua.isEmpty ||
+    //     intiDuaHasil.isEmpty ||
+    //     kegiatanIntiTiga.isEmpty ||
+    //     intiTigaHasil.isEmpty ||
+    //     snack.isEmpty ||
+    //     inklusi.isEmpty ||
+    //     inklusiHasil.isEmpty ||
+    //     inklusiPenutup.isEmpty ||
+    //     inklusiPenutupHasil.isEmpty ||
+    //     inklusiDoa.isEmpty ||
+    //     inklusiDoaHasil.isEmpty ||
+    //     catatan.isEmpty ||
+    //     studentId == 0) {
+    //   Get.snackbar(
+    //     'Peringatan',
+    //     'Harap isi semua kolom yang wajib diisi',
+    //     backgroundColor: AppColor.red,
+    //   );
+    //   return;
+    // }
 
     try {
       final url = 'https://talentaku.site/api/grades/$gradeId/student-report';
@@ -167,21 +193,31 @@ class StudentReportFormController extends GetxController {
 
       var headers = {
         'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
       };
 
       var request = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers)
         ..fields['created'] = created
         ..fields['semester_id'] = semesterId.toString()
-        ..fields['kegiatan_awal'] = kegiatanAwal
-        ..fields['awal_point'] = awalPoint
-        ..fields['kegiatan_inti'] = kegiatanInti
-        ..fields['inti_point'] = intiPoint
+        ..fields['kegiatan_awal_dihalaman'] = kegiatanAwalDihalaman
+        ..fields['dihalaman_hasil'] = dihalamanHasil
+        ..fields['kegiatan_awal_berdoa'] = kegiatanAwalBerdoa
+        ..fields['berdoa_hasil'] = berdoaHasil
+        ..fields['kegiatan_inti_satu'] = kegiatanIntiSatu
+        ..fields['inti_satu_hasil'] = intiSatuHasil
+        ..fields['kegiatan_inti_dua'] = kegiatanIntiDua
+        ..fields['inti_dua_hasil'] = intiDuaHasil
+        ..fields['kegiatan_inti_tiga'] = kegiatanIntiTiga
+        ..fields['inti_tiga_hasil'] = intiTigaHasil
         ..fields['snack'] = snack
-        ..fields['snack_point'] = snackPoint
         ..fields['inklusi'] = inklusi
-        ..fields['inklusi_point'] = inklusiPoint
-        ..fields['catatan'] = catatan
+        ..fields['inklusi_hasil'] = inklusiHasil
+        ..fields['inklusi_penutup'] = inklusiPenutup
+        ..fields['inklusi_penutup_hasil'] = inklusiPenutupHasil
+        ..fields['inklusi_doa'] = inklusiDoa
+        ..fields['inklusi_doa_hasil'] = inklusiDoaHasil
+        ..fields['catatan'] = catatan.join(',')
         ..fields['student_id'] = studentId.toString();
 
       for (File file in media) {
@@ -193,12 +229,12 @@ class StudentReportFormController extends GetxController {
           ));
         }
       }
-
+      print(request.fields);
       final response = await request.send();
       if (response.statusCode == 201) {
         Get.snackbar('Sukses', 'Laporan telah dikirim',
             backgroundColor: AppColor.blue100);
-        Get.offAllNamed(Routes.NAVBAR);
+        Get.offAllNamed(Routes.CLASS_DETAIL);
       } else {
         Get.snackbar('Error', 'Gagal mengirim laporan: ${response.statusCode}',
             backgroundColor: AppColor.red);

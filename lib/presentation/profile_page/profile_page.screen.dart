@@ -17,6 +17,8 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
   @override
   Widget build(BuildContext context) {
+    final user = controller.currentUser.value;
+
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: PreferredSize(
@@ -36,7 +38,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 height: 10,
               ),
               Obx(() {
-                final user = controller.currentUser.value;
+                print(user);
                 if (controller.isLoading.value == true) {
                   return Column(
                     children: [
@@ -49,9 +51,9 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 } else {
                   return Column(
                     children: [
-                      Text(controller.currentUser.value.name ?? 'name',
+                      Text(user.name ?? 'name',
                           style: AppTextStyle.tsTitleBold(AppColor.black)),
-                      Text(controller.currentUser.value.roles!.join(', '),
+                      Text(user.roles!.join(', '),
                           style: AppTextStyle.tsBodyBold(AppColor.blue500)),
                     ],
                   );
@@ -91,24 +93,19 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     children: [
                       ProfileList(
                         Title: "Nama Lengkap",
-                        Description: controller.currentUser.value.name ?? '-',
+                        Description: user.name ?? '-',
                       ),
                       ProfileList(
                         Title: "NIS",
-                        Description:
-                            controller.currentUser.value.identificationNumber ??
-                                '-',
+                        Description: user.nomorInduk ?? '-',
                       ),
                       ProfileList(
                         Title: "Tempat, Tanggal Lahir",
-                        Description:
-                            controller.currentUser.value.birthInformation ??
-                                '-',
+                        Description: user.birthInformation ?? '-',
                       ),
                       ProfileList(
                         Title: "Alamat",
-                        Description:
-                            controller.currentUser.value.address ?? '-',
+                        Description: user.address ?? '-',
                       ),
                       ProfileList(
                         Title: "Mulai di RBA",
@@ -121,7 +118,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
               // LAPORAN PEMBELAJARAN
               // Obx(() {
-              //   var roles = controller.currentUser.value.roles;
+              //   var roles = user.roles;
               //   if (roles != null && roles.any((role) => role.startsWith('Murid'))) {
               //     return CustomButtonWithIcon(
               //       text: "Laporan Pembelajaran",
@@ -131,7 +128,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
               //       colorText: AppColor.black,
               //       onPressed: () {
               //         Get.toNamed(Routes.REPORT_LIST_PAGE,
-              //         arguments: [controller.currentUser.value.id]
+              //         arguments: [user.id]
               //         );
 
               //       },

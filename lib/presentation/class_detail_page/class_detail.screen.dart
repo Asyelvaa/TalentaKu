@@ -31,12 +31,13 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                   icon: Icon(Icons.arrow_back, color: AppColor.white),
                   onPressed: () => Get.back(),
                 ),
-                expandedHeight: heightScreen * 0.42,
+                expandedHeight: heightScreen * 0.44,
                 floating: false,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    padding: EdgeInsets.only(top: heightScreen * 0.12, left: 20, right: 20),
+                    padding: EdgeInsets.only(
+                        top: heightScreen * 0.12, left: 20, right: 20),
                     decoration: BoxDecoration(
                       color: AppColor.blue600,
                       borderRadius: BorderRadius.only(
@@ -47,21 +48,25 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(classItem['name'], style: AppTextStyle.tsBigTitleBold(AppColor.white)),
+                        Text(classItem['name'],
+                            style: AppTextStyle.tsBigTitleBold(AppColor.white)),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
                             color: AppColor.white,
                             borderRadius: defaultBorderRadius,
                           ),
-                          child: Text(classItem['desc'], style: AppTextStyle.tsSmallRegular(AppColor.black)),
+                          child: Text(classItem['desc'],
+                              style:
+                                  AppTextStyle.tsSmallRegular(AppColor.black)),
                         ),
-                        spaceHeightNormal,
+                        defaultHeightSpace,
                         HeaderClass(),
                         Obx(() {
                           if (controller.isLoading.value) {
                             return Center(child: CircularProgressIndicator());
-                          } else if (controller.userRole.any((role) => role.contains('Guru'))) {
+                          } else if (controller.userRole
+                              .any((role) => role.contains('Guru'))) {
                             return ClassButtonActionTeacher();
                           } else {
                             return ClassButtonActionStudent();
@@ -81,7 +86,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                   labelStyle: AppTextStyle.tsSmallBold(AppColor.white),
                   tabs: [
                     Tab(text: 'Beranda'),
-                    Tab(text: 'Materi & Tugas'),
+                    Tab(text: 'Tugas'),
                     Tab(text: 'Gallery'),
                   ],
                 ),
@@ -97,7 +102,8 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                 return CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                     ),
                     SliverFillRemaining(
                       child: ContentBeranda(),
@@ -111,7 +117,8 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                 return CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                     ),
                     SliverFillRemaining(
                       child: ContentAssignment(),
@@ -125,7 +132,8 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                 return CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                     ),
                     SliverFillRemaining(
                       child: ContentAlbum(),

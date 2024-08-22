@@ -5,22 +5,20 @@ import '../../../infrastructure/theme/theme.dart';
 import '../../student_report_form/controllers/student_report_form.controller.dart';
 import '../controllers/edit_report_user_page.controller.dart';
 
-
 class FormSection extends StatelessWidget {
   final EditReportUserPageController controller;
   final String sectionTitle;
-  
+
   final TextEditingController textController;
   final String pointType;
 
-  FormSection(
-      {Key? key,
-      required this.controller,
-      required this.sectionTitle,
-      required this.pointType,
-      required this.textController, 
-})
-      : super(key: key);
+  FormSection({
+    Key? key,
+    required this.controller,
+    required this.sectionTitle,
+    required this.pointType,
+    required this.textController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +26,7 @@ class FormSection extends StatelessWidget {
       String? selectedOption = controller.selectedOptions[sectionTitle];
 
       return Container(
-        height: 180,
-        width: 325,
+        padding: EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           border: Border.all(width: 1.5, color: AppColor.blue500),
           borderRadius: BorderRadius.circular(16),
@@ -37,24 +34,35 @@ class FormSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            TextFormField(
               controller: textController,
-              maxLines: 4,
               decoration: InputDecoration(
-                hintText: 'Masukkan catatan',
-                border: InputBorder.none,
+                hintText: 'Masukkan Catatan...',
+                hintStyle: AppTextStyle.tsLittle,
+                fillColor: AppColor.white,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  borderSide: BorderSide(color: AppColor.white),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  borderSide: BorderSide(color: AppColor.white),
+                ),
               ),
+              maxLines: null,
+              minLines: 1,
             ),
-            SizedBox(height: 5),
+            spaceHeightExtraSmall,
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
-                  child: Text('Hasil:', style: AppTextStyle.tsNormal),
+                  child: Text('Hasil:',
+                      style: AppTextStyle.tsSmallBold(AppColor.black)),
                 ),
-                SizedBox(width: 10),
+                defaultWidthtSpace,
                 GestureDetector(
                   onTap: () {
                     controller.select(sectionTitle, 'Muncul');
@@ -77,7 +85,7 @@ class FormSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 5),
+                spaceHeightExtraSmall,
                 GestureDetector(
                   onTap: () {
                     controller.select(sectionTitle, 'Kurang');
@@ -100,7 +108,7 @@ class FormSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 5),
+                spaceHeightExtraSmall,
                 GestureDetector(
                   onTap: () {
                     controller.select(sectionTitle, 'Belum Muncul');

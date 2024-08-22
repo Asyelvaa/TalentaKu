@@ -12,29 +12,7 @@ class DailyReportScreen extends GetView<DailyReportController> {
 
   @override
   Widget build(BuildContext context) {
-    // final report = controller.getReportById(reportId);
-
-    // if (report == null) {
-    //   return Scaffold(
-    //     backgroundColor: AppColor.background,
-    //     appBar: AppBar(
-    //       leading: IconButton(
-    //         onPressed: () {
-    //           Get.back();
-    //         },
-    //         icon: Icon(
-    //           Icons.arrow_back,
-    //           color: AppColor.white,
-    //         ),
-    //       ),
-    //       backgroundColor: AppColor.blue600,
-    //     ),
-    //     body: Center(
-    //       child: Text("Report not found"),
-    //     ),
-    //   );
-    // }
-
+    print(controller.singleReportData);
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: AppBar(
@@ -53,9 +31,9 @@ class DailyReportScreen extends GetView<DailyReportController> {
         width: double.infinity,
         height: double.infinity,
         child: Obx(
-          () => controller.isLoading.value == true
+          () => controller.isLoading.value
               ? Center(
-                  child: Text("Report not found"),
+                  child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
                   child: Column(
@@ -105,34 +83,66 @@ class DailyReportScreen extends GetView<DailyReportController> {
                       ),
                       SizedBox(height: 20),
                       ReportItem(
-                        title: "Kegiatan Awal",
-                        data: [controller.singleReportData],
-                        fieldName: 'kegiatan_awal',
-                        fieldPoint: 'awal_point',
+                        title: "Kegiatan Awal Diahalaman",
+                        data: controller
+                            .singleReportData['kegiatan_awal_dihalaman'],
+                        fieldName: 'kegiatan_awal_dihalaman',
+                        fieldPoint: 'dihalaman_hasil',
                       ),
                       ReportItem(
-                        title: "Kegiatan Inti",
-                        data: [controller.singleReportData],
-                        fieldName: 'kegiatan_inti',
-                        fieldPoint: 'inti_point',
+                        title: "Kegiatan Awal Berdoa",
+                        data:
+                            controller.singleReportData['kegiatan_awal_berdoa'],
+                        fieldName: 'kegiatan_awal_berdoa',
+                        fieldPoint: 'berdoa_hasil',
+                      ),
+                      ReportItem(
+                        title: "Kegiatan Inti Satu",
+                        data: controller.singleReportData['kegiatan_inti_satu'],
+                        fieldName: 'kegiatan_inti_satu',
+                        fieldPoint: 'inti_satu_hasil',
+                      ),
+                      ReportItem(
+                        title: "Kegiatan Inti Dua",
+                        data: controller.singleReportData['kegiatan_inti_dua'],
+                        fieldName: 'kegiatan_inti_dua',
+                        fieldPoint: 'inti_dua_hasil',
+                      ),
+                      ReportItem(
+                        title: "Kegiatan Inti Tiga",
+                        data: controller.singleReportData['kegiatan_inti_tiga'],
+                        fieldName: 'kegiatan_inti_tiga',
+                        fieldPoint: 'inti_tiga_hasil',
                       ),
                       ReportItem(
                         title: "Snack",
-                        data: [controller.singleReportData],
+                        data: controller.singleReportData['snack'],
                         fieldName: 'snack',
-                        fieldPoint: 'snack_point',
+                        fieldPoint: 'none',
                       ),
                       ReportItem(
                         title: "Kegiatan Inklusi",
-                        data: [controller.singleReportData],
+                        data: controller.singleReportData['inklusi'],
                         fieldName: 'inklusi',
-                        fieldPoint: 'inklusi_point',
+                        fieldPoint: 'inklusi_hasil',
+                      ),
+                      ReportItem(
+                        title: "Penutup",
+                        data: controller.singleReportData['inklusi_penutup'],
+                        fieldName: 'inklusi_penutup',
+                        fieldPoint: 'inklusi_penutup_hasil',
+                      ),
+                      ReportItem(
+                        title: "Doa",
+                        data: controller.singleReportData['inklusi_doa'],
+                        fieldName: 'inklusi_doa',
+                        fieldPoint: 'inklusi_doa_hasil',
                       ),
                       ReportItem(
                         title: "Catatan",
-                        data: [controller.singleReportData],
+                        data: controller.singleReportData['catatan'],
                         fieldName: 'catatan',
-                        fieldPoint: 'catatan_point',
+                        fieldPoint: 'none',
                       ),
                       SizedBox(height: 20),
                       MediaDisplay(media: controller.singleReportData['media']),
