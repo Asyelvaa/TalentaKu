@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/annoucement_component.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/materi_tugas/assignment_item.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../infrastructure/theme/theme.dart';
 import '../../controllers/class_detail.controller.dart';
@@ -7,6 +10,8 @@ import 'widget_announcement_bottomsheet.dart';
 import 'widget_announcement_display.dart';
 import 'widget_announcement_task_display.dart';
 import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
+
+import 'package:flutter_talentaku/presentation/class_detail_page/component/materi_tugas/assignment_list_teacher.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
 
@@ -25,45 +30,42 @@ class ContentBeranda extends GetView<ClassDetailController> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Obx((){
-            if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            } else if (controller.albums.isEmpty) {
-              return Center(child: Container(
-                padding: EdgeInsets.all(20),
-                child: Text('Belum ada pengumuman', style: AppTextStyle.tsBodyRegular(AppColor.black),),),);
-            } else {
-              return  ListView(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  // ...controller.albums.map((album) => CustomWidgetAnnouncementDisplay(announcement: album)).toList(),
-                ],
-              );
-            }})
-            // Obx(() {
-            //   var roles = controller.userRole;
-            //   if (controller.isLoading.value){
-            //     return Center(child: CircularProgressIndicator(),);
-            //   }
-            //   else if (roles != null && roles.any((role) => role.contains('Murid'))) {
-            //     return CustomButtonWithIcon(
-            //       text: "Laporan Pembelajaran",
-            //       icon: Icons.arrow_forward_rounded,
-            //       colorButton: AppColor.white,
-            //       colorIcon: AppColor.black,
-            //       colorText: AppColor.black,
-            //       onPressed: () {
-            //         var classItemId = controller.classItem["id"].toString();
-            //         Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
-            //           "gradeId": classItemId
-            //         });
-            //       },
-            //     );
-            //   } else {
-            //     return Container();
-            //   }
-            // }),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              } else if (controller.albums.isEmpty) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'Belum ada pengumuman',
+                      style: AppTextStyle.tsBodyRegular(AppColor.black),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: controller.tasklist.length +
+                      controller.announcementsList.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: ((context, index) {
+                    if (index == 0) {
+                      return AnnouncementComponent();
+                    }
+                     else {
+                      var task = controller.tasklist[index - 1];
+                      return AssignmentItem(
+                          title: task['preview'],
+                          tenggat: DateFormat('dd MM yyyy').format(
+                              DateTime.parse(task['created_at'].toString())),
+                          taskId: task['id'].toString(),
+                          gradeId: task['grade']['id'].toString());
+                    }
+                  }),
+                );
+              }
+            })
           ],
         ),
       ),

@@ -7,11 +7,11 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
 import '../model/Student.dart';
-import 'package:http_parser/http_parser.dart';
 
 class StudentReportFormController extends GetxController {
   var selectedImage = Rxn<File>();
@@ -30,12 +30,13 @@ class StudentReportFormController extends GetxController {
 
   RxList<String> selectedPoints = <String>[].obs;
   final box = GetStorage();
-    final isLoading = false.obs;
+  final isLoading = false.obs;
   final RxList<ClassMemberModel> students = <ClassMemberModel>[].obs;
   final RxList<ClassMemberModel> selectedStudents = <ClassMemberModel>[].obs;
   Rx<File?> image = Rx<File?>(null);
 
   RxList<RxBool> isSelected = RxList<RxBool>();
+  final selectedDate = Rxn<DateTime>();
 
   void toggleSelection(ClassMemberModel student) {
     if (selectedStudents.contains(student)) {
@@ -51,6 +52,19 @@ class StudentReportFormController extends GetxController {
     gradeId = Get.arguments["gradeId"];
     fetchStudentsFromApi();
     _loadStoredImage();
+  }
+
+  void pickDate(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2025),
+    ).then((value) {
+      if (value != null) {
+        selectedDate.value = value;
+      }
+    });
   }
 
   void _loadStoredImage() {
@@ -150,45 +164,33 @@ class StudentReportFormController extends GetxController {
       final url = 'https://talentaku.site/api/grades/$gradeId/student-report';
       final token = box.read('token');
       print(url);
+
       var headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       };
-      var formData = {
-        'created': created,
-        'semester_id': semesterId.toString(),
-        'kegiatan_awal': kegiatanAwal,
-        'awal_point': awalPoint,
-        'kegiatan_inti': kegiatanInti,
-        'inti_point': intiPoint,
-        'snack': snack,
-        'snack_point': snackPoint,
-        'inklusi': inklusi,
-        'inklusi_point': inklusiPoint,
-        'catatan': catatan,
-        'student_id': studentId
-      };
 
-      final request = await http.MultipartRequest(
-        'POST',
-        Uri.parse(url),
-      );
-
-      request.headers.addAll(headers);
-      formData.forEach((key, value) {
-        request.fields[key] = value.toString();
-      });
+      var request = http.MultipartRequest('POST', Uri.parse(url))
+        ..headers.addAll(headers)
+        ..fields['created'] = created
+        ..fields['semester_id'] = semesterId.toString()
+        ..fields['kegiatan_awal'] = kegiatanAwal
+        ..fields['awal_point'] = awalPoint
+        ..fields['kegiatan_inti'] = kegiatanInti
+        ..fields['inti_point'] = intiPoint
+        ..fields['snack'] = snack
+        ..fields['snack_point'] = snackPoint
+        ..fields['inklusi'] = inklusi
+        ..fields['inklusi_point'] = inklusiPoint
+        ..fields['catatan'] = catatan
+        ..fields['student_id'] = studentId.toString();
 
       for (File file in media) {
         if (await file.exists()) {
-          request.files.add(
-            await http.MultipartFile.fromPath(
-              'file',
-              file.path,
-              contentType: MediaType('application', 'octet-stream'),
-            ),
-          );
+          request.files.add(await http.MultipartFile.fromPath(
+            'media[]', // Ensure this matches the API's expected parameter name
+            file.path,
+            contentType: MediaType('image', 'jpeg'), // Adjust as necessary
+          ));
         }
       }
 
@@ -197,7 +199,6 @@ class StudentReportFormController extends GetxController {
         Get.snackbar('Sukses', 'Laporan telah dikirim',
             backgroundColor: AppColor.blue100);
         Get.offAllNamed(Routes.NAVBAR);
-        print(formData);
       } else {
         Get.snackbar('Error', 'Gagal mengirim laporan: ${response.statusCode}',
             backgroundColor: AppColor.red);
