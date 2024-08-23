@@ -22,7 +22,7 @@ class ContentBeranda extends GetView<ClassDetailController> {
           return Center(child: CircularProgressIndicator());
         } else if (controller.userRole.any(
             (role) => role.contains('Murid KB') || role.contains('Murid SD'))) {
-          return informasiSiswa();
+          return InformasiSiswa();
         } else if (controller.userRole.any(
             (role) => role.contains('Guru KB') || role.contains('Guru SD'))) {
           return AssignmentListTeacher();

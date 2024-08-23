@@ -368,7 +368,7 @@ class ClassDetailController extends GetxController
 
   Future<void> fetchStream() async {
     late final token = box.read('token');
-    final url = 'https://talentaku.site/api/grades/1/grade-content';
+    final url = 'https://talentaku.site/api/grades/1/announcements';
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -376,26 +376,26 @@ class ClassDetailController extends GetxController
 
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
         List<dynamic> datas = json.decode(response.body)['data'];
-        List<Map<String, dynamic>> announcementsList = [];
 
         for (var data in datas) {
           announcementsList.add({
             'id': data['id'],
             'title': data['title'],
-            'content': data['content'],
+            'announcements': data['announcements'],
             'created_at': data['created_at'],
             'updated_at': data['updated_at'],
-            'user': data['user'],
             'media': data['media'],
+            'user': data['user'],
             'replies_count': data['replies_count'],
           });
         }
 
         if (announcementsList.isNotEmpty) {
-          anounces.value = announcementsList[0]['content'];
-          mediaAnnounce.value = announcementsList[0]['media'];
+          anounces.value = announcementsList[0]['announcements'];
+          // mediaAnnounce.value = announcementsList[0]['media'];
         }
 
         print("Announcements List: $announcementsList");

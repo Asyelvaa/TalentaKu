@@ -3,13 +3,13 @@ import 'package:flutter_talentaku/presentation/class_detail_page/component/mater
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/models/task_model.dart';
 import '../../../../domain/models/task_student_model.dart';
 import '../../../../infrastructure/theme/theme.dart';
 import '../../controllers/class_detail.controller.dart';
+import 'annoucement_component.dart';
 
-class informasiSiswa extends StatelessWidget {
-  const informasiSiswa({super.key});
+class InformasiSiswa extends StatelessWidget {
+  const InformasiSiswa({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +22,20 @@ class informasiSiswa extends StatelessWidget {
         );
       } else {
         var tasks = controller.studentTasks;
-        var submittedTasks =
-            tasks.where((task) => task.haveSubmit == true).toList();
         var notSubmittedTasks =
             tasks.where((task) => task.haveSubmit == false).toList();
 
         return CustomScrollView(
+          shrinkWrap: true,
           slivers: [
             ...buildTaskSection(
               title: 'Informasi',
               tasks: notSubmittedTasks,
               emptyMessage: 'Tidak ada tugas',
               controller: controller,
+            ),
+            SliverToBoxAdapter(
+              child: AnnouncementComponent(),
             ),
           ],
         );
