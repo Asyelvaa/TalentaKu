@@ -42,7 +42,6 @@ class ClassDetailController extends GetxController
   Rx<File?> image = Rx<File?>(null);
   RxList<TaskStudentModel> studentTasks = <TaskStudentModel>[].obs;
   late Map<String, dynamic> classItem;
-
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController classDescController = TextEditingController();
   final TextEditingController classLevelController = TextEditingController();
@@ -368,6 +367,7 @@ class ClassDetailController extends GetxController
 
   Future<void> fetchStream() async {
     late final token = box.read('token');
+
     final url = 'https://talentaku.site/api/grades/1/announcements';
     var headers = {
       'Accept': 'application/json',

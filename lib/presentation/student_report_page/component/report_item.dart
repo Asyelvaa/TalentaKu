@@ -21,7 +21,7 @@ class ReportItem extends GetView<DailyReportController> {
     // Map<dynamic, dynamic> dataMap = data;
     List<dynamic> arrayKegiatan = controller.singleReportData[fieldName];
     String point =
-        fieldPoint == 'none' ? '' : controller.singleReportData[fieldPoint];
+        fieldPoint == 'none' ? 'none' : controller.singleReportData[fieldPoint];
 
     // for (var item in datas) {
     //   if (title == "Kegiatan Awal") {
@@ -103,8 +103,11 @@ class ReportItem extends GetView<DailyReportController> {
             maxLines: 3,
           ),
         ),
-        fieldPoint.trim().toLowerCase() == 'none'
-            ? SizedBox.shrink()
+        fieldPoint == 'none'
+            ? SizedBox(
+                width: 0,
+                height: 0,
+              )
             : Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/annoucement_component.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/informasi_siswa.dart';
+import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/informasi_teacher.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/materi_tugas/assignment_item.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,7 @@ class ContentBeranda extends GetView<ClassDetailController> {
           return InformasiSiswa();
         } else if (controller.userRole.any(
             (role) => role.contains('Guru KB') || role.contains('Guru SD'))) {
-          return AssignmentListTeacher();
+          return InformasiTeacher();
         } else {
           return Text(controller.userRole.toString());
         }
