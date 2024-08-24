@@ -175,15 +175,21 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
             ),
             defaultHeightSpace,
             Text(
-              "Kegiatan Inti",
+              "Kegiatan Inti Satu",
               style: AppTextStyle.tsBodyBold(Colors.black),
             ),
             spaceHeightSmall,
+
             FormSection(
               textController: controller.kegiatan_inti_satuTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
               pointType: 'Muncul',
+            ),
+            defaultHeightSpace,
+            Text(
+              "Kegiatan Inti Dua",
+              style: AppTextStyle.tsBodyBold(Colors.black),
             ),
             spaceHeightSmall,
             FormSection(
@@ -193,6 +199,11 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               pointType: 'Belum Muncul',
             ),
             defaultHeightSpace,
+            Text(
+              "Kegiatan Inti Tiga",
+              style: AppTextStyle.tsBodyBold(Colors.black),
+            ),
+            spaceHeightSmall,
             FormSection(
               textController: controller.kegiatan_inti_tigaTextController,
               controller: controller,
