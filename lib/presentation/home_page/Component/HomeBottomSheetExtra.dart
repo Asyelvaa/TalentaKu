@@ -153,7 +153,7 @@ class HomeBottomSheetExtra extends StatelessWidget {
             programId: extraId,
             initialName: informationTitleExtra,
             initialDesc: descriptionContentExtra,
-            initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
+            // initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
             initialCategoryId: 1,
           ),
         );

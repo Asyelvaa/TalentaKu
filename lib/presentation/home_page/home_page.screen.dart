@@ -29,12 +29,12 @@ class HomePageScreen extends GetView<HomePageController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (controller.userRole
-                  .any((role) => role == 'Murid KB' || role == 'Murid SD'))
-                ClassInformation(
-                  titleInfo: "Laporan harian Dimas",
-                  dateInfo: '04 April 2024',
-                ),
+              // if (controller.userRole
+              //     .any((role) => role == 'Murid KB' || role == 'Murid SD'))
+              //   ClassInformation(
+              //     titleInfo: "Laporan harian Dimas",
+              //     dateInfo: '04 April 2024',
+              //   ),
               Obx(() => controller.isLoading.value
                   ? SlideInformation(
                       headerContent: "Loading.... ",
@@ -80,11 +80,11 @@ class HomePageScreen extends GetView<HomePageController> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(height: 100, child: KbSdTalentaComponent()),
+                        Container(height: heightScreen * 0.12, child: KbSdTalentaComponent()),
                         SizedBox(
                           height: 10,
                         ),
-                        Container(height: 100, child: RbaTalentaComponent()),
+                        Container(height: heightScreen * 0.12, child: RbaTalentaComponent()),
                       ],
                     ),
                   ],

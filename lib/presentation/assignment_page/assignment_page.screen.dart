@@ -56,7 +56,6 @@ class AssignmentPageScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             } else if (controller.userRole.contains('Murid SD') || controller.userRole.contains('Murid TK')) {
               return ContentAssignmentSubmit();
-              // return Text('test');
             } else {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -66,8 +65,8 @@ class AssignmentPageScreen extends StatelessWidget {
                       controller: controller.tabController,
                       tabs:
                             [
-                              Tab(text: 'Tugas'),
-                              Tab(text: 'Nilai'),
+                              Tab(text: 'Deskripsi Tugas'),
+                              Tab(text: 'Penilaian Tugas'),
                             ],
                       dividerColor: AppColor.background,
                       indicatorColor: AppColor.blue400,

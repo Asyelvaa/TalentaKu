@@ -78,7 +78,7 @@ class Content extends GetView<HomePageController> {
         programId: program['id'],
         initialName: program['name'],
         initialDesc: program['desc'],
-        initialPhoto: program['photo'],
+        // initialPhoto: program['photo'],
         initialCategoryId: int.parse(program['category_id']),
       ),
     );
@@ -102,10 +102,10 @@ class Content extends GetView<HomePageController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(contentTitle, style: AppTextStyle.tsNormal),
+                Text(contentTitle, style: AppTextStyle.tsBodyBold(AppColor.black)),
                 Text(
                   contentDesc.replaceAll('\\n', '\n'),
-                  style: AppTextStyle.tsNormal,
+                  style: AppTextStyle.tsBodyRegular(AppColor.black),
                 )
               ],
             ),

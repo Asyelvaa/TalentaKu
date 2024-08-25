@@ -25,6 +25,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return TextFormField(
       controller: widget.loginController,
       obscureText: widget.isPassword && !_isPasswordVisible,
+      maxLines:  widget.isPassword ? 1 : null,
       style: AppTextStyle.tsBodyRegular(AppColor.black),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(

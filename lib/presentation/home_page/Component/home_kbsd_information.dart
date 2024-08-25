@@ -36,10 +36,10 @@ class KbSdTalentaComponent extends GetView<HomePageController> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text("Kb & Sd \nInkliusi talenta",
+                child: Text("Kb & Sd \nInklusi talenta",
                     textAlign: TextAlign.start,
                     style:
-                        AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
+                        AppTextStyle.tsBodyBold(AppColor.white)),
               ),
             ),
             Positioned(

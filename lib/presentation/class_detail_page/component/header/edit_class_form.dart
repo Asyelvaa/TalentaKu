@@ -17,9 +17,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
     final grade = controller.dataClass.value;
     return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      minChildSize: 0.4,
-      maxChildSize: 1,
+      initialChildSize: 0.8,
       expand: false,
       builder: (context, scrollController) => Container(
         height: MediaQuery.of(context).size.height * 0.6,
@@ -103,6 +101,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               ),
                             ],
                           ),
+                          spaceHeightSmall,
                           Text('Nama Kelas',
                               style: AppTextStyle.tsBodyBold(AppColor.black)),
                           TextField(
@@ -121,7 +120,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               ),
                             ),
                           ),
-                          spaceHeightExtraSmall,
+                          spaceHeightSmall,
                           Text('Deskripsi Kelas',
                               style: AppTextStyle.tsBodyBold(AppColor.black)),
                           TextField(
@@ -140,7 +139,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               ),
                             ),
                           ),
-                          spaceHeightExtraSmall,
+                          spaceHeightSmall,
                           Text('Level Kelas',
                               style: AppTextStyle.tsBodyBold(AppColor.black)),
                           TextField(
@@ -159,7 +158,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               ),
                             ),
                           ),
-                          spaceHeightExtraSmall,
+                          spaceHeightSmall,
                           Row(
                             children: [
                               Text('Guru Kelas : ',
@@ -170,12 +169,12 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                                       AppColor.black)),
                             ],
                           ),
-                          spaceHeightExtraSmall,
+                          spaceHeightSmall,
                           Text('Anggota Kelas',
                               style: AppTextStyle.tsBodyBold(AppColor.black)),
                           grade.member == null || grade.member!.isEmpty
                               ? Text('Belum ada siswa yang bergabung',
-                                  style: AppTextStyle.tsNormal)
+                                  style: AppTextStyle.tsBodyRegular(AppColor.black))
                               : ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -279,10 +278,11 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               ),
                             ],
                           ),
+                          spaceHeightNormal,
                           ElevatedButton(
                             onPressed: () {
                               showCustomPopupDialog(
-                                'Konfirmasi',
+                                'Peringatan!',
                                 'Apakah Anda yakin ingin menghapus kelas ini?',
                                 [
                                   ElevatedButton(
@@ -314,19 +314,17 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                               );
                             },
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Text('Hapus Kelas',style: AppTextStyle.tsBodyBold( AppColor.black)),
                                 Icon(Icons.delete_forever, color: AppColor.red),
-                                defaultWidthtSpace,
-                                Text('Hapus Kelas',
-                                    style: AppTextStyle.tsBodyBold(
-                                        AppColor.black)),
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColor.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: defaultBorderRadius
-                                ),
+                                padding: EdgeInsets.all(12),
+                                backgroundColor: AppColor.grey,
+                                shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
+                                elevation: 0
                                 ),
                           )
                         ],

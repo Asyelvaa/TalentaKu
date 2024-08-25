@@ -49,17 +49,12 @@ class LoginScreen extends GetView<LoginController> {
                         margin:
                             EdgeInsets.symmetric(vertical: heightScreen * 0.02),
                         child: Column(
-                          children: [
-                            TextWithBackground(
-                                colorBackground: AppColor.blue50,
-                                text:
-                                    'Masukkan akun yang diberikan dari sekolah'),
-                            spaceHeightSmall,
+                          children: [                            
                             CustomTextFormField(
                               loginController: controller.usernameController,
                               labelText: "Masukkan username anda",
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 20),
                             CustomTextFormField(
                               loginController: controller.passwordController,
                               isPassword: true,

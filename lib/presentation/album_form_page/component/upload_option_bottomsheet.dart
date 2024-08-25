@@ -8,7 +8,7 @@ class ShowUploadOptionsBottomSheet extends GetView<AlbumFormController> {
 
   Widget build(BuildContext context) {
         return Container(
-          height: heightScreen * 0.4,
+          height: heightScreen * 0.3,
           decoration: BoxDecoration(
             color: AppColor.white,
             borderRadius: BorderRadius.only(

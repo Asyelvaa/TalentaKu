@@ -26,17 +26,14 @@ class ApiServiceUser {
       'username': username,
       'password': password,
     });
-    try {
-      final response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
-      if (response.statusCode == 200) {
-        final decodedResponse = jsonDecode(response.body);
-        return decodedResponse ?? {};
-      } else {
-        throw Exception('Failed to login');
-      }
-    } catch (e) {
-      throw Exception('Failed to login: $e');
+    final response = await http.post(Uri.parse(url), headers: headers, body: body);
+  
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to login with status code ${response.statusCode}');
     }
   }
 

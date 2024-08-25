@@ -25,28 +25,25 @@ class ClassButtonActionStudent extends StatelessWidget {
         Container(
             height: heightScreen * 0.07,
             width: widthScreen,
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: AppColor.blue50, borderRadius: defaultBorderRadius),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AutoSizeText(
                   'Laporan Pembelajaran',
                   style: AppTextStyle.tsBodyBold(AppColor.black),
                   minFontSize: 12,
-                ),
-                SizedBox(
-                  width: 10,
-                )
+                ),               
               ],
             )),
         Positioned(
             left: 20,
-            top: -22,
+            top: -5,
             child: Image.asset(
               'assets/images/stiker_laporan.png',
-              scale: 6,
+              scale: 7,
             ))
       ]),
     ));

@@ -39,7 +39,7 @@ class SubmissionDetailModel {
       submittedAt:  DateTime.parse(json['submitted_at']),
       isLate: json['is_late'],
       status: json['status'],
-      score: json['score']?.toString(),
+      score: json['score']?.toString() ?? 'Belum dinilai',
     );
   }
 
@@ -52,7 +52,7 @@ class SubmissionDetailModel {
       'submitted_at': submittedAt?.toIso8601String(),
       'is_late': isLate,
       'status': status,
-      'score': score,
+      'score': score ?? 'Belum dinilai',
     };
   }
 }
