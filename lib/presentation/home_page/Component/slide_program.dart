@@ -32,7 +32,7 @@ class SlideInformation extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 20),
             width: double.infinity,
-            height: heightScreen * 0.13,
+            height: 100,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: contentTitles.length,
@@ -64,13 +64,13 @@ class Content extends GetView<HomePageController> {
     required this.contentTitle,
   });
 
-  void _showProgramDetails(BuildContext context, Program program) {
+  void _showProgramDetails(BuildContext context, program) {
     Get.bottomSheet(
       HomeBottomsheetInformation(
-        informationTitle: program.name,
-        // photoList: program.photos ?? [],
-        descriptionContent: program.desc.join(', ').toString(),
-        programId: 1,
+        informationTitle: program['name'],
+        photoList: program['photo'] ?? '',
+        descriptionContent: program['desc'].join(', '),
+        programId: program['id'],
       ),
       isScrollControlled: true,
     );
@@ -78,7 +78,7 @@ class Content extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final program = Program.fromJson(controller.programs[index]);
+    // final program = Program.fromJson(controller.programs[index]);
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: Container(
@@ -93,11 +93,10 @@ class Content extends GetView<HomePageController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(contentTitle, style: AppTextStyle.tsBodyRegular(AppColor.black)),
+              Text(contentTitle, style: AppTextStyle.tsNormal),
               GestureDetector(
                 onTap: () {
-                  _showProgramDetails(context, program);
-                  print('ini $program');
+                  _showProgramDetails(context, controller.programs[index]);
                 },
                 child: TextWithBackground(
                   colorBackground: AppColor.blue100,
