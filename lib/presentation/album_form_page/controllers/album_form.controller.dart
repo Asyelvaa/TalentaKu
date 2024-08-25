@@ -94,9 +94,11 @@ class AlbumFormController extends GetxController {
         Get.snackbar('success', 'uploaded successfully');
       } 
     } catch (e) {
+      Get.back();
       Get.snackbar('Error', 'Error uploading album post');
       print('Error uploading album post: $e');
     } finally {
+      Get.back();
       print('uploadAlbumPost finished');
     }
   } 

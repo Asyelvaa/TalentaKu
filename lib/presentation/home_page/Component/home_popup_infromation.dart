@@ -16,7 +16,7 @@ class HomePopupInformation extends StatelessWidget {
       ),
       child: Container(
         padding: EdgeInsets.all(16),
-        width: Get.width * 0.8,
+        width: Get.width * 0.85,
         height: Get.height * 0.6,
         decoration: BoxDecoration(
             color: AppColor.white,
@@ -35,11 +35,9 @@ class HomePopupInformation extends StatelessWidget {
             ),
             Text(
               information.informationTitle,
-              style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
+              style: AppTextStyle.tsTitleBold(AppColor.black)
             ),
-            SizedBox(
-              height: 10,
-            ),
+            spaceHeightNormal,
             Container(
               height: 2,
               width: 250,
@@ -56,13 +54,15 @@ class HomePopupInformation extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(content.title,
-                                    style: AppTextStyle.tsNormal),
-                                SizedBox(height: 4),
+                                Text(
+                                  content.title,
+                                  style: AppTextStyle.tsBodyBold(AppColor.black)),
+                                spaceHeightExtraSmall,
                                 ...content.desc
-                                    .map((desc) => Text(desc,
-                                        style: AppTextStyle.tsLittle))
+                                    .map((desc) => Text('- ${desc}',
+                                        style: AppTextStyle.tsBodyRegular(AppColor.black)))
                                     .toList(),
+                                spaceHeightNormal,
                               ],
                             ),
                           ))

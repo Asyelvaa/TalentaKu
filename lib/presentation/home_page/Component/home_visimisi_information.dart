@@ -15,7 +15,8 @@ class VisiMisiComponent extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           if (controller.contactandinformation.isNotEmpty) {
-            Get.dialog(HomePopupInformation(
+            Get.dialog(
+              HomePopupInformation(
                 information: controller.informationList[0]));
           } else {
             print("Information data is not available");
@@ -25,14 +26,14 @@ class VisiMisiComponent extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(20),
-              height: 210,
+              height: heightScreen * 0.24,
               width: Get.width * 0.4,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   border: Border.all(color: AppColor.blue500, width: 1),
                   color: AppColor.white),
               child: Text("Visi & \nMisi",
-                  textAlign: TextAlign.start, style: AppTextStyle.tsTitle),
+                  textAlign: TextAlign.start, style: AppTextStyle.tsTitleBold(AppColor.black)),
             ),
             Positioned(
               child: Image.asset('assets/images/bottom2.png'),

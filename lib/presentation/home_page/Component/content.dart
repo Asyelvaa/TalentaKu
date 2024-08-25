@@ -32,7 +32,7 @@ class Content extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final extra = Extra.fromJson(controller.programs[index]);
+    final extra = Extra.fromJson(controller.extra[index]);
 
     return Padding(
       padding: const EdgeInsets.only(right: 12),
@@ -48,7 +48,7 @@ class Content extends GetView<HomePageController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(contenExtra, style: AppTextStyle.tsNormal),
+              Text(contenExtra, style: AppTextStyle.tsBodyRegular(AppColor.black)),
               GestureDetector(
                 onTap: () {
                   _showProgramDetails(context, extra);

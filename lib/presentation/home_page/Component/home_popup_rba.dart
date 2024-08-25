@@ -15,15 +15,15 @@ class HomePopupRba extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Container(
-        padding: EdgeInsets.all(16),
-        width: Get.width * 0.8,
+        padding: EdgeInsets.all(20),
+        width: Get.width * 0.9,
         height: Get.height * 0.6,
         decoration: BoxDecoration(
             color: AppColor.white,
             borderRadius: BorderRadius.all(Radius.circular(12))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Align(
               alignment: Alignment.topRight,
@@ -37,18 +37,16 @@ class HomePopupRba extends StatelessWidget {
             Center(
               child: Text(
                 information.informationTitle,
-                style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
+                style: AppTextStyle.tsTitleBold(AppColor.black),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            spaceHeightNormal,
             Container(
               height: 2,
               width: 250,
               color: AppColor.black,
             ),
-            SizedBox(height: 10),
+            spaceHeightLarge,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -61,36 +59,31 @@ class HomePopupRba extends StatelessWidget {
                               children: [
                                 Text(
                                   content.title,
-                                  style: AppTextStyle.tsNormal,
+                                  style: AppTextStyle.tsBodyBold(AppColor.black),
                                 ),
-                                SizedBox(height: 4),
+                                spaceHeightExtraSmall,
                                 ...content.desc
-                                    .map((desc) => Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 2),
+                                    .map((desc) => Padding(padding:EdgeInsets.symmetric(vertical: 2),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               SizedBox(width: 10),
                                               Text(
                                                 "-",
-                                                style: AppTextStyle.tsLittle
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                style: AppTextStyle.tsBodyRegular(AppColor.black)
                                               ),
                                               SizedBox(width: 10),
                                               Expanded(
                                                 child: Text(
                                                   desc,
-                                                  style: AppTextStyle.tsLittle,
+                                                  style: AppTextStyle.tsBodyRegular(AppColor.black),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ))
                                     .toList(),
+                                spaceHeightNormal,
                               ],
                             ),
                           ))

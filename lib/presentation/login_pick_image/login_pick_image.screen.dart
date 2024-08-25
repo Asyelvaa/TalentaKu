@@ -31,7 +31,7 @@ class PickImageScreen extends GetView<PickimageController> {
               SizedBox(height: 16),
               Container(
                 width: Get.width * 0.8,
-                height: heightScreen * 0.55,
+                // height: heightScreen * 0.55,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,

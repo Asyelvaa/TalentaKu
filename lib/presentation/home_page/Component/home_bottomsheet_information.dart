@@ -6,14 +6,14 @@ import '../controllers/home_page.controller.dart';
 
 class HomeBottomsheetInformation extends StatelessWidget {
   final String informationTitle;
-  final List<String> photoList;
+  // final List<String> photoList;
   final String descriptionContent;
   final int programId;
 
   HomeBottomsheetInformation({
     Key? key,
     required this.informationTitle,
-    required this.photoList,
+    // required this.photoList,
     required this.descriptionContent,
     required this.programId,
   }) : super(key: key);
@@ -45,35 +45,35 @@ class HomeBottomsheetInformation extends StatelessWidget {
             style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
           ),
           SizedBox(height: 20),
-          Container(
-            height: 200,
-            color: Colors.grey[200],
-            child: photoList.isEmpty
-                ? Center(child: Text("No photos available"))
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: photoList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          photoList[index],
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.grey,
-                              child: Icon(
-                                Icons.error,
-                                color: Colors.red,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-          ),
-          SizedBox(height: 20),
+          // Container(
+          //   height: 200,
+          //   color: Colors.grey[200],
+          //   child: photoList.isEmpty
+          //       ? Center(child: Text("No photos available"))
+          //       : ListView.builder(
+          //           scrollDirection: Axis.horizontal,
+          //           itemCount: photoList.length,
+          //           itemBuilder: (context, index) {
+          //             return Padding(
+          //               padding: const EdgeInsets.all(8.0),
+          //               child: Image.network(
+          //                 photoList[index],
+          //                 fit: BoxFit.cover,
+          //                 errorBuilder: (context, error, stackTrace) {
+          //                   return Container(
+          //                     color: Colors.grey,
+          //                     child: Icon(
+          //                       Icons.error,
+          //                       color: Colors.red,
+          //                     ),
+          //                   );
+          //                 },
+          //               ),
+          //             );
+          //           },
+          //         ),
+          // ),
+          // SizedBox(height: 20),
           Flexible(
             child: Text(descriptionContent, style: AppTextStyle.tsNormal),
           ),
@@ -82,7 +82,10 @@ class HomeBottomsheetInformation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => _showEditBottomSheet(context),
+                onTap: () => {
+                  Get.back(),
+                  _showEditBottomSheet(context),
+                },
                 child: Container(
                   height: 50,
                   width: Get.width * 0.4,
@@ -93,10 +96,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Edit',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
-                      ),
+                      style: AppTextStyle.tsBodyBold(AppColor.black)
                     ),
                   ),
                 ),
@@ -108,10 +108,9 @@ class HomeBottomsheetInformation extends StatelessWidget {
                 onTap: () async {
                   try {
                     await _homePageController.deleteProgram(programId);
-
-                    Get.snackbar('Success', 'Program deleted successfully');
+                    Get.snackbar('Success', 'Program berhasil dihapus');
                   } catch (e) {
-                    Get.snackbar('Error', 'Failed to delete program: $e');
+                    Get.snackbar('Error', 'Gagal menghapus program: $e');
                   }
                 },
                 child: Container(
@@ -124,10 +123,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Delete',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
-                      ),
+                      style: AppTextStyle.tsBodyBold(AppColor.white)
                     ),
                   ),
                 ),
@@ -140,27 +136,37 @@ class HomeBottomsheetInformation extends StatelessWidget {
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: heightScreen * 0.5,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-            color: AppColor.white,
-          ),
-          child: EditProgramPopup(
-            programId: programId,
-            initialName: informationTitle,
-            initialDesc: descriptionContent,
-            initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
-            initialCategoryId: 1,
-          ),
-        );
-      },
+    Get.bottomSheet(
+      EditProgramPopup(
+        programId: programId,
+        initialName: informationTitle,
+        initialDesc: descriptionContent,
+        // initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
+        initialCategoryId: 1,
+      ),
+      isScrollControlled: true
     );
+    // showModalBottomSheet(
+    //   context: context,
+    //   // isScrollControlled: true,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (BuildContext context) {
+    //     return Container(
+    //       height: heightScreen * 0.5,
+    //       padding: EdgeInsets.all(5),
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+    //         color: AppColor.white,
+    //       ),
+    //       child: EditProgramPopup(
+    //         programId: programId,
+    //         initialName: informationTitle,
+    //         initialDesc: descriptionContent,
+    //         initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
+    //         initialCategoryId: 1,
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

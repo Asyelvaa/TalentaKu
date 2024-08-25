@@ -17,6 +17,8 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     autoLogin();
+    usernameController.text = 'ita';
+    passwordController.text = 'ita1234';
     super.onInit();
   }
 
@@ -68,7 +70,7 @@ class LoginController extends GetxController {
         isAuth.value = true;
         Get.offAllNamed(Routes.PICK_IMAGE);
       } else {
-        String message = response['message'] ?? '$response';
+        String message = response['message'] ?? 'Login failed';
         dialogError(message);
       }
     } catch (e) {

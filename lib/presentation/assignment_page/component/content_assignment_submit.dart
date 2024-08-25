@@ -66,7 +66,14 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                             padding: EdgeInsets.symmetric(vertical: heightScreen * 0.01, horizontal: widthScreen * 0.05),
                             decoration: BoxDecoration(
                               color: AppColor.white,
-                              borderRadius: defaultBorderRadius
+                              borderRadius: defaultBorderRadius,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColor.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
                             child: Text(
                               task.title! ?? '',
@@ -183,7 +190,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                       IconButton(
                         icon: Icon(Icons.file_upload_rounded),
                         color: AppColor.blue600,
-                        onPressed: () => controller.pickSubmissionMedia(source: ImageSource.gallery),
+                        onPressed: () => controller.pickSubmissionMedia(),
                       ),
                       Text(
                         'Upload Tugas Kamu: ',
@@ -208,16 +215,24 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                                     onTap: () => showGeneralDialog(
                                       context: context,
                                       barrierDismissible: true,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
+                                      barrierLabel:MaterialLocalizations.of(context).modalBarrierDismissLabel,
                                       barrierColor: AppColor.black,
-                                      pageBuilder: (BuildContext context,
-                                          Animation first, Animation second) {
-                                        return Center(
-                                          child: InteractiveViewer(
-                                            child:
-                                                Image.file(File(file.path)),
+                                      pageBuilder: (BuildContext context, Animation first, Animation second) {
+                                        return Scaffold(
+                                          backgroundColor: Colors.transparent,
+                                          body: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.close, color: Colors.white),
+                                                onPressed: () => Get.back(),
+                                              ),
+                                              SizedBox(height: 16.0),
+                                              InteractiveViewer(
+                                                child: Image.file(File(file.path)),
+                                              ),
+                                            ],
                                           ),
                                         );
                                       },
@@ -236,8 +251,7 @@ class ContentAssignmentSubmit extends GetView<AssignmentPageController> {
                                     right: 4,
                                     top: 4,
                                     child: GestureDetector(
-                                      onTap: () => controller
-                                          .removeSubmissionMedia(file),
+                                      onTap: () => controller.removeSubmissionMedia(file),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.red,

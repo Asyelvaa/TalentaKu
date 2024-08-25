@@ -32,7 +32,7 @@ class SlideInformation extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 20),
             width: double.infinity,
-            height: 100,
+            height: heightScreen * 0.13,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: contentTitles.length,
@@ -68,8 +68,8 @@ class Content extends GetView<HomePageController> {
     Get.bottomSheet(
       HomeBottomsheetInformation(
         informationTitle: program.name,
-        photoList: program.photos ?? [],
-        descriptionContent: program.desc.join(', '),
+        // photoList: program.photos ?? [],
+        descriptionContent: program.desc.join(', ').toString(),
         programId: 1,
       ),
       isScrollControlled: true,
@@ -93,10 +93,11 @@ class Content extends GetView<HomePageController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(contentTitle, style: AppTextStyle.tsNormal),
+              Text(contentTitle, style: AppTextStyle.tsBodyRegular(AppColor.black)),
               GestureDetector(
                 onTap: () {
                   _showProgramDetails(context, program);
+                  print('ini $program');
                 },
                 child: TextWithBackground(
                   colorBackground: AppColor.blue100,
