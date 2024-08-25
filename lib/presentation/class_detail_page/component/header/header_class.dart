@@ -17,11 +17,11 @@ class HeaderClass extends GetView<ProfileUserController> {
   Widget build(BuildContext context) {
     final controller = Get.put(ClassDetailController());
     return Container(
-      height: heightScreen * 0.1,
-      width: widthScreen,      
+      height: heightScreen * 0.11,
+      width: widthScreen,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [         
+        children: [
           Obx(() {
             if (controller.isLoading.value) {
               return Center(
@@ -30,7 +30,7 @@ class HeaderClass extends GetView<ProfileUserController> {
                 ),
               );
             }
-            if (controller.classMembers.isEmpty) {
+            if (controller.students.isEmpty) {
               return Expanded(
                 child: Center(
                     child: Text(
@@ -46,19 +46,22 @@ class HeaderClass extends GetView<ProfileUserController> {
                 itemCount: controller.students.length,
                 itemBuilder: (context, index) {
                   final student = controller.students[index];
-                  final isSelected =
-                      controller.selectedStudents.contains(student);
+                  final isSelected = controller.selectedStudents.contains(student);
                   final storedImage = controller.image.value;
                   return GestureDetector(
                     onTap: () {
-                      controller.toggleSelection(student);
-      
-                      Get.toNamed(Routes.PROFILE_USER,
+                      if (controller.userRole.any((role)=> role.contains('Guru'))) {
+                        controller.toggleSelection(student);
+                        Get.toNamed(Routes.PROFILE_USER,
                           // arguments: {
                           //   'student': student,
                           //   'classId': controller.classItem['id']
                           // });
-                          arguments: [controller.students[index], controller.classItem['id']]);
+                          arguments: [
+                            controller.students[index],
+                            controller.classItem['id']
+                          ]);
+                      }                     
                     },
                     child: Container(
                       width: widthScreen * 0.2,
@@ -75,13 +78,16 @@ class HeaderClass extends GetView<ProfileUserController> {
                                       fit: BoxFit.cover,
                                     ),
                                   )
-                                : Image.asset('assets/images/student.png', fit: BoxFit.cover,)),
-                                // : AutoSizeText(
-                                //     getInitials(student.name!),
-                                //     style: AppTextStyle.tsBodyBold(
-                                //         AppColor.black),
-                                //     minFontSize: 12,
-                                //   )),
+                                : Image.asset(
+                                    'assets/images/student.png',
+                                    fit: BoxFit.cover,
+                                  )),
+                        // : AutoSizeText(
+                        //     getInitials(student.name!),
+                        //     style: AppTextStyle.tsBodyBold(
+                        //         AppColor.black),
+                        //     minFontSize: 12,
+                        //   )),
                         AutoSizeText(
                           student.name!,
                           style: AppTextStyle.tsSmallRegular(AppColor.white),

@@ -39,7 +39,7 @@ class RbaTalentaComponent extends GetView<HomePageController> {
                 child: Text("Rumah Belajar Anak",
                     textAlign: TextAlign.start,
                     style:
-                        AppTextStyle.tsNormal.copyWith(color: AppColor.white)),
+                        AppTextStyle.tsBodyBold(AppColor.white)),
               ),
             ),
             Positioned(

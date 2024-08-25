@@ -15,8 +15,8 @@ class HomePopupKbSd extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Container(
-        padding: EdgeInsets.all(16),
-        width: Get.width * 0.8,
+        padding: EdgeInsets.all(20),
+        width: Get.width * 0.9,
         height: Get.height * 0.6,
         decoration: BoxDecoration(
             color: AppColor.white,
@@ -37,15 +37,13 @@ class HomePopupKbSd extends StatelessWidget {
               information.informationTitle,
               style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            spaceHeightNormal,
             Container(
               height: 2,
               width: 250,
               color: AppColor.black,
             ),
-            SizedBox(height: 10),
+            spaceHeightLarge,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -57,12 +55,30 @@ class HomePopupKbSd extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(content.title,
-                                    style: AppTextStyle.tsNormal),
-                                SizedBox(height: 4),
-                                ...content.desc
-                                    .map((desc) => Text('- ${desc}',
-                                        style: AppTextStyle.tsLittle))
+                                    style: AppTextStyle.tsBodyBold(AppColor.black)),
+                                spaceHeightExtraSmall,
+                                 ...content.desc
+                                    .map((desc) => Padding(padding:EdgeInsets.symmetric(vertical: 2),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Text(
+                                                "-",
+                                                style: AppTextStyle.tsBodyRegular(AppColor.black)
+                                              ),
+                                              SizedBox(width: 10),
+                                              Expanded(
+                                                child: Text(
+                                                  desc,
+                                                  style: AppTextStyle.tsBodyRegular(AppColor.black),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
                                     .toList(),
+                                spaceHeightSmall
                               ],
                             ),
                           ))

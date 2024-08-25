@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,8 +14,8 @@ class DefaultAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final username = GetStorage().read('dataUser')?['username'];
-    
+    final username = GetStorage().read('dataUser')['name'];
+    print(username);
     return AppBar(
       backgroundColor: AppColor.background,
       title: Padding(
@@ -29,7 +31,7 @@ class DefaultAppbar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Halo, $username',
+                  'Halo, ${username}',
                   style: AppTextStyle.tsTitleBold(AppColor.black),
                 ),
                 Text(

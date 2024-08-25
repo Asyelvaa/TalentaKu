@@ -8,8 +8,8 @@ import 'package:http_parser/http_parser.dart';
 import '../../../domain/models/class_announcement_model.dart';
 
 class ApiServiceAnnouncements {
-static const String baseUrl = 'https://talentaku.site/api';
-final box = GetStorage();
+  static const String baseUrl = 'https://talentaku.site/api';
+  final box = GetStorage();
 
 // CREATE announcements
   Future<ClassAnnouncementModel> createAnnouncement(
@@ -39,21 +39,22 @@ final box = GetStorage();
         ),
       );
     }
-    
+
     try {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
-        var jsonResponse = jsonDecode(response.body)['data'];
+        var jsonResponse = jsonDecode(response.body)['announcements'];
         return ClassAnnouncementModel.fromJson(jsonResponse);
       } else {
         throw Exception('Failed to create announcement: ${response.body}');
-      }    
+      }
     } catch (e) {
-      print('Error in cretae announcement: $e');
+      print('Error in create announcement: $e');
       rethrow;
     }
-  } 
+  }
 
   // DELETE announcements
    Future<void> deleteAnnouncement(String gradeId, String announcementsId) async {
@@ -65,7 +66,10 @@ final box = GetStorage();
     };
 
     try {
-      final response = await http.delete(Uri.parse(url),headers: headers,);
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         print('Announcement deleted');
       } else {
@@ -131,6 +135,20 @@ final box = GetStorage();
       rethrow;
     }
   }
+  // GET DETAIL COMMENTS AND REPLIES
+  // Future<Map<String,dynamic>> getAllClassStream(String gradeId) async {
+  //   final token = box.read('token');
+  //   final url = "$baseUrl/grades/$gradeId/stream";
+  //   final headers = {
+  //     'Authorization': 'Bearer $token',
+  //   };
+  //   final response = await http.get(Uri.parse(url), headers: headers);
+  //   if (response.statusCode == 200) {
+  //     return jsonDecode(response.body);
+  //   } else {
+  //     throw Exception('Failed to load class stream');
+  //   }
+  // }
 }
 
 // UPDATE COMMENT 

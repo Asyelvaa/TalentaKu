@@ -45,8 +45,9 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
                 items: ['Semester 1', 'Semester 2'],
                 controller: controller.dropdownController,
                 onChanged: (value) {
-                  controller.selectedSemester.value = value == 'Semester 1' ? '1' : '2';
-                  controller.filterReportData(); 
+                  controller.selectedSemester.value =
+                      value == 'Semester 1' ? '1' : '2';
+                  controller.filterReportData();
                 },
               ),
             ),
@@ -62,6 +63,7 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
                       style: AppTextStyle.tsNormal,
                     ),
                     onTap: () {
+                      print(report);
                       Get.toNamed(Routes.DAILY_REPORT, arguments: [report]);
                     },
                     trailing: Icon(

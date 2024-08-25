@@ -15,40 +15,37 @@ class ClassButtonActionStudent extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ClassDetailController());
     return Expanded(
-    child: GestureDetector(
-      onTap: (){
+        child: GestureDetector(
+      onTap: () {
         var classItemId = controller.classItem["id"].toString();
-        Get.toNamed(Routes.REPORT_LIST_PAGE, arguments: {
-           "gradeId": classItemId
-        });
+        Get.toNamed(Routes.REPORT_LIST_PAGE,
+            arguments: {"gradeId": classItemId});
       },
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [ 
-          Container(
+      child: Stack(clipBehavior: Clip.none, children: [
+        Container(
             height: heightScreen * 0.07,
             width: widthScreen,
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColor.blue50,
-              borderRadius: defaultBorderRadius
-            ),
+                color: AppColor.blue50, borderRadius: defaultBorderRadius),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: widthScreen * 0.25,),
-                AutoSizeText('Laporan Pembelajaran', 
-                style: AppTextStyle.tsBodyBold(AppColor.black), 
-                minFontSize: 12,),
-              ],  
-            )
-          ),
-          Positioned(
+                AutoSizeText(
+                  'Laporan Pembelajaran',
+                  style: AppTextStyle.tsBodyBold(AppColor.black),
+                  minFontSize: 12,
+                ),               
+              ],
+            )),
+        Positioned(
             left: 20,
-            top: -22,
-            child: Image.asset('assets/images/stiker_laporan.png', scale:6, )
-          )
-        ]
-      ),
+            top: -5,
+            child: Image.asset(
+              'assets/images/stiker_laporan.png',
+              scale: 7,
+            ))
+      ]),
     ));
   }
 }

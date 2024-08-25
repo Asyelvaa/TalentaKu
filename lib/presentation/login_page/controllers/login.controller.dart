@@ -7,7 +7,7 @@ import '../../../infrastructure/navigation/routes.dart';
 
 class LoginController extends GetxController {
   final ApiServiceUser apiService = ApiServiceUser();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final box = GetStorage();
@@ -16,62 +16,64 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    // autoLogin();
-    // login();
+    autoLogin();
+    usernameController.text = 'ita';
+    passwordController.text = 'ita1234';
     super.onInit();
   }
+
   @override
   void onClose() {
-    emailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     super.onClose();
   }
 
   Future<void> autoLogin() async {
-    final box = GetStorage();
-    if(box.read("token")) {
-      final dataUser = box.read("dataUser") as Map<String, dynamic>;
-      final token = dataUser["token"];
-      if(token != null) {
-        isAuth.value = true;
-        Get.offAllNamed(Routes.HOME_PAGE);
-      } 
+    final token = box.read("token");
+    if (token != null) {
+      final dataUser = box.read("dataUser") as Map<String, dynamic>?;
+      if (dataUser != null) {
+        final token = dataUser["token"];
+        if (token != null) {
+          isAuth.value = true;
+          Get.offAllNamed(Routes.HOME_PAGE);
+        }
+      }
     }
   }
 
   Future<void> login() async {
     isLoading.value = true;
 
-    final email = emailController.text;
+    final username = usernameController.text;
     final password = passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
-      dialogError('Email dan Password tidak boleh kosong');
+    if (username.isEmpty || password.isEmpty) {
+      dialogError('Username dan Password tidak boleh kosong');
       isLoading.value = false;
       return;
     }
     try {
-      final response = await apiService.login(email, password);
-      if (response['success']) {
-        final data = response['data'];  
+      final response = await apiService.login(username, password);
+      if (response['data'] != null) {
+        final data = response['data'];
         final token = response['token'];
         box.write('dataUser', {
-          'email': email,
+          'username': username,
           'password': password,
-          'username': data['name'],
+          'name': data['name'],
           'id': data['id'],
           'role': List<String>.from(data['roles']),
-        } );
+        });
         box.write('token', token);
         isAuth.value = true;
-        Map<String, dynamic>? dataUser = box.read('dataUser');
-        print(dataUser);
         Get.offAllNamed(Routes.PICK_IMAGE);
       } else {
-        String message = response['message'];
+        String message = response['message'] ?? 'Login failed';
         dialogError(message);
       }
-    } catch (e) {      
+    } catch (e) {
       print(e);
     } finally {
       isLoading.value = false;

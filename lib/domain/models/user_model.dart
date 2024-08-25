@@ -1,58 +1,52 @@
-import 'package:flutter_talentaku/domain/models/class_model.dart';
-
 class UserModel {
   int? id;
+  String? status;
+  String? username;
   String? name;
-  String? email;
-  String? identificationNumber;
+  String? nomorInduk;
   String? address;
-  String? birthInformation;
   String? photo;
+  String? birthInformation;
   List<String>? roles;
   List<String>? grades;
 
-  UserModel({
-     this.id,
-     this.name,
-     this.email,
-     this.identificationNumber,
-     this.address,
-     this.birthInformation,
-    this.photo,
-     this.roles,
-    this.grades,
-  });
+  UserModel(
+      {this.id,
+      this.status,
+      this.username,
+      this.name,
+      this.nomorInduk,
+      this.address,
+      this.photo,
+      this.birthInformation,
+      this.roles,
+      this.grades});
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    // final baseUrlPhotoProfile = "https://talentaku.site/";
-    final data = json['data'];
-
-    return UserModel(
-      id: data['id'],
-      name: data['name'] ,
-      email: data['email'],
-      identificationNumber: data['identification_number'],
-      address: data['address'] ,
-      birthInformation: data['birth_information'],
-      photo:  data['photo'],
-      roles: List<String>.from(data['roles']),
-      grades: List<String>.from(data['grades']),
-    );
+  UserModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['status'];
+    username = json['username'];
+    name = json['name'];
+    nomorInduk = json['nomor_induk'];
+    address = json['address'];
+    photo = json['photo'];
+    birthInformation = json['birth_information'];
+    roles = (json['roles'] as List).cast<String>();
+    grades = (json['grades'] as List).cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'data': {
-        'id': id,
-        'name': name,
-        'email': email,
-        'identification_number': identificationNumber,
-        'address': address,
-        'birth_information': birthInformation,
-        'photo': photo,
-        'roles': roles,
-        'grades': grades,
-      }
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['status'] = this.status;
+    data['username'] = this.username;
+    data['name'] = this.name;
+    data['nomor_induk'] = this.nomorInduk;
+    data['address'] = this.address;
+    data['photo'] = this.photo;
+    data['birth_information'] = this.birthInformation;
+    data['roles'] = this.roles;
+    data['grades'] = this.grades;
+    return data;
   }
 }

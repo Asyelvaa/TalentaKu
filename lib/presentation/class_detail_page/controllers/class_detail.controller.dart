@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/domain/models/grade_model.dart';
 import 'package:flutter_talentaku/domain/models/stream_item.dart';
 import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
 import 'package:flutter_talentaku/presentation/student_report_form/model/Student.dart';
@@ -14,7 +15,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../domain/models/album_model.dart';
 import '../../../domain/models/class_announcement_model.dart';
 import '../../../domain/models/task_model.dart';
-import '../../../domain/models/class_model.dart';
 import '../../../domain/models/class_member_model.dart';
 import '../../../domain/models/task_student_model.dart';
 import '../../../domain/models/user_model.dart';
@@ -225,18 +225,18 @@ class ClassDetailController extends GetxController
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
-    final url = 'https://talentaku.site/api/grades/teacher';
+    final url = 'https://talentaku.site/api/grades/${classItem['id']}';
 
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> grades = jsonResponse['data'];
-        students.clear();
-        for (var grade in grades) {
-          if (grade['members'] != null) {
-            final List<dynamic> members = grade['members'];
-            for (var member in members) {
+        final data = jsonResponse['data'];
+        if (data != null && data['members'] is List) {
+          final List<dynamic> members = data['members'];
+          students.clear(); 
+          for (var member in members) {
+            if (member != null && member['id'] != null) {
               if (!students.any((student) => student.id == member['id'])) {
                 students.add(Student.fromJson(member));
               }
@@ -246,9 +246,6 @@ class ClassDetailController extends GetxController
         print("Fetched students data: ${students}");
       } else {
         print('error fetching students: ${response.statusCode}');
-        // Get.snackbar(
-        //     'Error', 'Failed to fetch students: ${response.statusCode}',
-        //     backgroundColor: AppColor.red);
       }
     } catch (e) {
       Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
@@ -306,6 +303,8 @@ class ClassDetailController extends GetxController
   Future<void> createAnnouncement() async {
     final gradeId = classItem['id'].toString();
     isLoading(true);
+    print(announcementController.text);
+    print(pickedFiles.toString());
     try {
       final newAnnouncement = await ApiServiceAnnouncements()
           .createAnnouncement(
@@ -376,16 +375,27 @@ class ClassDetailController extends GetxController
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         List<dynamic> datas = json.decode(response.body)['data'];
+        List<Map<String, dynamic>> announcementsList = [];
+
         for (var data in datas) {
-          if (data['type'] == "task") {
-            tasklist.add(data);
-          } else {
-            announcementsList.add(data);
-          }
+          announcementsList.add({
+            'id': data['id'],
+            'title': data['title'],
+            'content': data['content'],
+            'created_at': data['created_at'],
+            'updated_at': data['updated_at'],
+            'user': data['user'],
+            'media': data['media'],
+            'replies_count': data['replies_count'],
+          });
         }
-        anounces.value = announcementsList[0]['announcements'];
-        mediaAnnounce.value = announcementsList[0]['media'];
-        print(response.body);
+
+        if (announcementsList.isNotEmpty) {
+          anounces.value = announcementsList[0]['content'];
+          mediaAnnounce.value = announcementsList[0]['media'];
+        }
+
+        print("Announcements List: $announcementsList");
       }
     } catch (e) {
       print(e);

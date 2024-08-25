@@ -32,24 +32,18 @@ class MediaDisplay extends StatelessWidget {
                   final imageUrl =
                       "https://talentaku.site/image/student-report/$filename";
                   return Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                      width: 100,
-                      height: 100,
-                      errorBuilder: (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                        print("Error loading image: $error");
-                        return Image.asset(
-                          'assets/images/logo_talentaku.png',
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
-                        );
-                      },
-                    ),
-                  );
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          print("Error loading image: $error");
+                          return Text('Image error');
+                        },
+                      ));
                 },
               ),
             ),

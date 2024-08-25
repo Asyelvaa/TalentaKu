@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:flutter_talentaku/presentation/student_report_page/controllers/daily_report.controller.dart';
 import 'package:get/get.dart';
 
-class ReportItem extends StatelessWidget {
+class ReportItem extends GetView<DailyReportController> {
   final String title;
   final dynamic data;
   final String fieldName;
@@ -17,9 +18,10 @@ class ReportItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<dynamic, dynamic> dataMap = data[0];
-    List<dynamic> arrayKegiatan = dataMap[fieldName];
-    String point = fieldName == 'catatan' ? '' : dataMap[fieldPoint];
+    // Map<dynamic, dynamic> dataMap = data;
+    List<dynamic> arrayKegiatan = controller.singleReportData[fieldName];
+    String point =
+        fieldPoint == 'none' ? '' : controller.singleReportData[fieldPoint];
 
     // for (var item in datas) {
     //   if (title == "Kegiatan Awal") {
@@ -101,15 +103,19 @@ class ReportItem extends StatelessWidget {
             maxLines: 3,
           ),
         ),
-        Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: AppColor.blue500, borderRadius: BorderRadius.circular(12)),
-          child: Text(
-            fieldPoint,
-            style: AppTextStyle.tsLittle.copyWith(color: AppColor.white),
-          ),
-        ),
+        fieldPoint.trim().toLowerCase() == 'none'
+            ? SizedBox.shrink()
+            : Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColor.blue500,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  fieldPoint,
+                  style: AppTextStyle.tsLittle.copyWith(color: AppColor.white),
+                ),
+              ),
       ],
     );
   }

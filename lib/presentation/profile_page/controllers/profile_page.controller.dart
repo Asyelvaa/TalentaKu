@@ -10,7 +10,6 @@ import '../../../infrastructure/dal/services/api_user.dart';
 import '../../../infrastructure/navigation/routes.dart';
 
 class ProfilePageController extends GetxController {
-  
   final ApiServiceUser apiService = ApiServiceUser();
   final box = GetStorage();
   var isLoading = false.obs;
@@ -24,10 +23,10 @@ class ProfilePageController extends GetxController {
 
   Future<void> inituser() async {
     await getUserData();
-    print(currentUser.value.name);
+    print(' init user : ${currentUser.value.name}');
   }
 
-  Future<void> getUserData() async  {
+  Future<void> getUserData() async {
     try {
       isLoading.value = true;
       var data = await apiService.getUserData();
@@ -36,9 +35,9 @@ class ProfilePageController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  } 
+  }
 
- Future<void> logout() async {
+  Future<void> logout() async {
     try {
       await apiService.logout();
       Get.offAllNamed(Routes.LoginScreen);

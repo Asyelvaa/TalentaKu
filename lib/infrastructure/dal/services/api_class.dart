@@ -1,9 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter_talentaku/domain/models/grade_model.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-
-import '../../../domain/models/class_model.dart';
 
 class ApiServiceClass {
   static final ApiServiceClass _singleton = ApiServiceClass._internal();

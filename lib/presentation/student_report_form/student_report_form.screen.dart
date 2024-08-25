@@ -128,7 +128,6 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                 // ),
 
                 Container(
-                  
                   width: 155,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
@@ -141,39 +140,66 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                     hintText: 'Pilih Semester',
                     items: ['1', '2'],
                     onChanged: (value) {
-                      value == '1' ? '1' : '2';
+                      if (value != null) {
+                        controller.semesterIdController.text =
+                            value; // Update the controller's text
+                      }
                     },
                   ),
                 ),
               ],
             ),
             SizedBox(height: heightScreen * 0.02),
-
             Text(
-              "Kegiatan Awal",
+              "Kegiatan di Halaman",
               style: AppTextStyle.tsBodyBold(Colors.black),
             ),
             spaceHeightSmall,
             FormSection(
-              textController: controller.kegiatanAwalTextController,
+              textController: controller.kegiatan_awal_dihalamanTextController,
               controller: controller,
-              sectionTitle: "Kegiatan Awal",
+              sectionTitle: "Kegiatan di Halaman",
               pointType: 'Muncul',
             ),
+            defaultHeightSpace,
+            Text(
+              "Kegiatan Awal Berdoa",
+              style: AppTextStyle.tsBodyBold(Colors.black),
+            ),
             spaceHeightSmall,
-
+            FormSection(
+              textController: controller.kegiatan_awal_berdoaTextController,
+              controller: controller,
+              sectionTitle: "Kegiatan Awal Berdoa",
+              pointType: 'Muncul',
+            ),
+            defaultHeightSpace,
             Text(
               "Kegiatan Inti",
               style: AppTextStyle.tsBodyBold(Colors.black),
             ),
             spaceHeightSmall,
             FormSection(
-              textController: controller.kegiatanIntiTextController,
+              textController: controller.kegiatan_inti_satuTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
-              pointType: 'Kurang',
+              pointType: 'Muncul',
             ),
             spaceHeightSmall,
+            FormSection(
+              textController: controller.kegiatan_inti_duaTextController,
+              controller: controller,
+              sectionTitle: "Kegiatan Inti dua",
+              pointType: 'Belum Muncul',
+            ),
+            defaultHeightSpace,
+            FormSection(
+              textController: controller.kegiatan_inti_tigaTextController,
+              controller: controller,
+              sectionTitle: "Kegiatan Inti tiga",
+              pointType: 'Belum Muncul',
+            ),
+            defaultHeightSpace,
             // Snack section
             Text(
               "Snack",
@@ -200,10 +226,34 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               pointType: 'Muncul',
             ),
             spaceHeightSmall,
+            Text(
+              "Berdoa",
+              style: AppTextStyle.tsBodyBold(Colors.black),
+            ),
+            spaceHeightSmall,
+            FormSection(
+              textController: controller.inklusi_doaTextController,
+              controller: controller,
+              sectionTitle: "Doa",
+              pointType: 'Muncul',
+            ),
+            defaultHeightSpace,
+            Text(
+              "Penutup",
+              style: AppTextStyle.tsBodyBold(Colors.black),
+            ),
+            spaceHeightSmall,
+            FormSection(
+              textController: controller.inklusi_penutupTextController,
+              controller: controller,
+              sectionTitle: "Penutup",
+              pointType: 'Muncul',
+            ),
+            defaultHeightSpace,
             // Catatan section
             Text(
               "Catatan",
-              style: AppTextStyle.tsBodyBold(AppColor.black),
+              style: AppTextStyle.tsSmallRegular(AppColor.black),
             ),
             spaceHeightSmall,
             Container(
@@ -391,27 +441,47 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                   onPressed: controller.isLoading.value
                       ? null
                       : () {
-                          if (controller.studentId != 0) {
+                          if (controller.studentId.value != 0) {
                             controller.submitReport(
-                              created: controller.createdController.text,
+                              created: controller.selectedDate.value.toString(),
                               semesterId: int.parse(
                                   controller.semesterIdController.text),
-                              kegiatanAwal:
-                                  controller.kegiatanAwalTextController.text,
-                              awalPoint:
-                                  controller.selectedOptions['Kegiatan Awal']!,
-                              kegiatanInti:
-                                  controller.kegiatanIntiTextController.text,
-                              intiPoint:
-                                  controller.selectedOptions['Kegiatan Inti']!,
                               snack: controller.SnackTextController.text,
-                              snackPoint: controller.selectedOptions['Snack']!,
                               inklusi: controller.inklusiTextController.text,
-                              inklusiPoint:
+                              inklusiHasil:
                                   controller.selectedOptions['Inklusi']!,
-                              catatan: controller.catatanController.text,
+                              catatan:
+                                  controller.catatanController.text.split(','),
                               media: controller.selectedImages,
                               studentId: controller.studentId.value,
+                              kegiatanAwalDihalaman: controller
+                                  .kegiatan_awal_dihalamanTextController.text,
+                              dihalamanHasil: controller
+                                  .selectedOptions['Kegiatan di Halaman']!,
+                              kegiatanAwalBerdoa: controller
+                                  .kegiatan_awal_berdoaTextController.text,
+                              berdoaHasil: controller
+                                  .selectedOptions['Kegiatan Awal Berdoa']!,
+                              kegiatanIntiSatu: controller
+                                  .kegiatan_inti_satuTextController.text,
+                              intiSatuHasil:
+                                  controller.selectedOptions['Kegiatan Inti']!,
+                              kegiatanIntiDua: controller
+                                  .kegiatan_inti_duaTextController.text,
+                              intiDuaHasil: controller
+                                  .selectedOptions['Kegiatan Inti dua']!,
+                              kegiatanIntiTiga: controller
+                                  .kegiatan_inti_tigaTextController.text,
+                              intiTigaHasil: controller
+                                  .selectedOptions['Kegiatan Inti tiga']!,
+                              inklusiPenutup:
+                                  controller.inklusi_penutupTextController.text,
+                              inklusiPenutupHasil:
+                                  controller.selectedOptions['Penutup']!,
+                              inklusiDoa:
+                                  controller.inklusi_doaTextController.text,
+                              inklusiDoaHasil:
+                                  controller.selectedOptions['Doa']!,
                             );
                           } else {
                             Get.snackbar('Peringatan', 'Harap pilih siswa',

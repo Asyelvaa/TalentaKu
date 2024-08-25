@@ -17,25 +17,23 @@ class ApiServiceUser {
   ApiServiceUser._internal();
   final box = GetStorage();
 
-
-  Future<Map<String, dynamic>> login(String email, password) async {
+  Future<Map<String, dynamic>> login(String username, password) async {
     final url = "$baseUrl/auth/login";
     final headers = {
       'Content-Type': 'application/json; charset=UTF-8',
     };
     final body = jsonEncode({
-      'email': email,
+      'username': username,
       'password': password,
     });
-    try {
-      final response = await http.post(Uri.parse(url), headers: headers, body: body);
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception('Failed to login');
-      }
-    } catch (e) {
-      throw Exception('Failed to login: $e');
+    final response = await http.post(Uri.parse(url), headers: headers, body: body);
+  
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to login with status code ${response.statusCode}');
     }
   }
 
@@ -69,10 +67,8 @@ class ApiServiceUser {
       'Authorization': 'Bearer $token'
     };
     var request = http.MultipartRequest('POST', Uri.parse(url));
-    var multipart = await http.MultipartFile.fromPath(
-      'file', filePath,
-      filename: path.basename(filePath)
-    );      
+    var multipart = await http.MultipartFile.fromPath('file', filePath,
+        filename: path.basename(filePath));
 
     request.headers.addAll(headers);
     request.files.add(multipart);
@@ -94,11 +90,8 @@ class ApiServiceUser {
     }
   }
 
-  Future<Map<String, dynamic>> updateUserPassword(
-    String currentPassword, 
-    String newPassword, 
-    String newPasswordConfirmation
-    ) async {
+  Future<Map<String, dynamic>> updateUserPassword(String currentPassword,
+      String newPassword, String newPasswordConfirmation) async {
     final token = box.read('token');
     final url = "$baseUrl/user/update-password";
     final headers = {
@@ -106,17 +99,21 @@ class ApiServiceUser {
       'Authorization': 'Bearer $token'
     };
     final body = jsonEncode({
-    'current_password': currentPassword,
-    'new_password': newPassword,
-    'new_password_confirmation': newPasswordConfirmation,
-  });  
+      'current_password': currentPassword,
+      'new_password': newPassword,
+      'new_password_confirmation': newPasswordConfirmation,
+    });
     try {
-      final response = await http.post(Uri.parse(url), headers: headers, body: body);
+      final response =
+          await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 200) {
         return {'success': true, 'message': 'Password updated successfully'};
       } else {
-        return {'success': false, 'message': 'Failed to update password: ${response.body}'};
+        return {
+          'success': false,
+          'message': 'Failed to update password: ${response.body}'
+        };
       }
     } catch (e) {
       return {
@@ -125,7 +122,7 @@ class ApiServiceUser {
       };
     }
   }
-  
+
   Future<UserModel> getUserData() async {
     final token = box.read('token');
     final url = "$baseUrl/user";
@@ -134,10 +131,11 @@ class ApiServiceUser {
       'Authorization': 'Bearer $token'
     };
     try {
-      final response = await http.get(Uri.parse(url),headers: headers);
-
+      final response = await http.get(Uri.parse(url), headers: headers);
+      print(response.body);
+      print(response.statusCode); 
       if (response.statusCode == 200) {
-        return UserModel.fromJson(jsonDecode(response.body)); 
+        return UserModel.fromJson(json.decode(response.body)['data']);
       } else {
         throw Exception('Failed to load current user: ${response.statusCode}');
       }
