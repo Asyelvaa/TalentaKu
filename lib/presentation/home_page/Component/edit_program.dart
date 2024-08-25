@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
 
 import '../controllers/home_page.controller.dart';
 
-class EditProgramPopup extends StatelessWidget {
+class EditProgramPopup extends GetView<HomePageController> {
   final int programId;
   final String initialName;
   final String initialDesc;
@@ -21,14 +23,13 @@ class EditProgramPopup extends StatelessWidget {
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
-  final TextEditingController photoController = TextEditingController();
+
   final TextEditingController categoryIdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     nameController.text = initialName;
     descController.text = initialDesc;
-    photoController.text = initialPhoto;
     categoryIdController.text = initialCategoryId.toString();
 
     return Scaffold(
@@ -104,23 +105,37 @@ class EditProgramPopup extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                TextFormField(
-                  controller: photoController,
-                  decoration: InputDecoration(
-                    labelText: "Photo URL",
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.grey),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    controller.pickImage();
+                  },
+                  child: Obx(
+                    () => controller.selectedImages.isNotEmpty
+                        ? Container(
+                            width: widthScreen,
+                            height: heightScreen * 0.2,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: FileImage(
+                                    File(controller.selectedImages.value)),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            height: heightScreen * 0.1,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1.5, color: AppColor.blue500),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Tambah Foto",
+                              style: AppTextStyle.tsNormal,
+                            ),
+                          ),
                   ),
                 ),
                 SizedBox(
@@ -129,16 +144,16 @@ class EditProgramPopup extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       try {
                         Get.find<HomePageController>().updateProgram(
                           programId,
                           nameController.text,
                           descController.text,
-                          photoController.text,
+                          File(controller.selectedImages.value),
                           int.parse(categoryIdController.text),
                         );
-                        Navigator.of(context).pop();
+                        
                       } catch (e) {
                         print('Error: $e');
                       }

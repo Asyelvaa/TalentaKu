@@ -64,13 +64,13 @@ class Content extends GetView<HomePageController> {
     required this.contentTitle,
   });
 
-  void _showProgramDetails(BuildContext context, Program program) {
+  void _showProgramDetails(BuildContext context, program) {
     Get.bottomSheet(
       HomeBottomsheetInformation(
-        informationTitle: program.name,
-        photoList: program.photos ?? [],
-        descriptionContent: program.desc.join(', '),
-        programId: 1,
+        informationTitle: program['name'],
+        photoList: program['photo'] ?? '',
+        descriptionContent: program['desc'].join(', '),
+        programId: program['id'],
       ),
       isScrollControlled: true,
     );
@@ -78,7 +78,7 @@ class Content extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final program = Program.fromJson(controller.programs[index]);
+    // final program = Program.fromJson(controller.programs[index]);
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: Container(
@@ -96,7 +96,7 @@ class Content extends GetView<HomePageController> {
               Text(contentTitle, style: AppTextStyle.tsNormal),
               GestureDetector(
                 onTap: () {
-                  _showProgramDetails(context, program);
+                  _showProgramDetails(context, controller.programs[index]);
                 },
                 child: TextWithBackground(
                   colorBackground: AppColor.blue100,

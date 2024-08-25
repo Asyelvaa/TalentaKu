@@ -17,6 +17,8 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     autoLogin();
+    usernameController.text = 'ita';
+    passwordController.text = 'ita1234';
     super.onInit();
   }
 

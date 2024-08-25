@@ -44,7 +44,8 @@ class HomePageScreen extends GetView<HomePageController> {
                         'Loading...',
                         'Loading...',
                         'Loading...',
-                        'Loading...'
+                        'Loading...',
+                        'Loading...',
                       ],
                     )
                   : SlideInformation(
@@ -61,7 +62,6 @@ class HomePageScreen extends GetView<HomePageController> {
                         'Loading...',
                         'Loading...',
                         'Loading...',
-                        'Loading...'
                       ],
                     )
                   : SlideExtra(

@@ -6,7 +6,7 @@ import '../controllers/home_page.controller.dart';
 
 class HomeBottomsheetInformation extends StatelessWidget {
   final String informationTitle;
-  final List<String> photoList;
+  final String photoList;
   final String descriptionContent;
   final int programId;
 
@@ -50,27 +50,21 @@ class HomeBottomsheetInformation extends StatelessWidget {
             color: Colors.grey[200],
             child: photoList.isEmpty
                 ? Center(child: Text("No photos available"))
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: photoList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          photoList[index],
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.grey,
-                              child: Icon(
-                                Icons.error,
-                                color: Colors.red,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      'https://talentaku.site/image/program/$photoList',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey,
+                          child: Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                        );
+                      },
+                    ),
                   ),
           ),
           SizedBox(height: 20),
@@ -82,7 +76,10 @@ class HomeBottomsheetInformation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => _showEditBottomSheet(context),
+                onTap: () {
+                  Get.back();
+                  _showEditBottomSheet(context);
+                },
                 child: Container(
                   height: 50,
                   width: Get.width * 0.4,

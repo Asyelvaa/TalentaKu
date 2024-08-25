@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/presentation/home_page/models/information_data.dart';
+import 'package:flutter_talentaku/presentation/home_page/models/program_data.dart';
 import 'package:flutter_talentaku/presentation/home_page/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomePageController extends GetxController {
   final box = GetStorage();
@@ -14,6 +18,7 @@ class HomePageController extends GetxController {
 
   final userData = {}.obs;
   final role = [].obs;
+  var selectedImages = ''.obs;
 
   final desc = [].obs;
   final informationList = <Information>[].obs;
@@ -23,7 +28,7 @@ class HomePageController extends GetxController {
   final contactandinformation = [].obs;
   final extra = [].obs;
   final programs = [].obs;
-
+  Rx<File?> image = Rx<File?>(null);
   var isLoading = false.obs;
   var user = UserModel(
     id: 0,
@@ -40,13 +45,21 @@ class HomePageController extends GetxController {
     return username;
   }
 
+  void pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImages.value = pickedFile.path;
+    }
+  }
+
   Future<void> fetchProgram() async {
-    isLoading.value = true;
     final url = "https://talentaku.site/api/programs/category/1";
     var headers = {
       'Accept': 'Application/json',
     };
     try {
+      isLoading.value = true;
       final response = await http.get(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
@@ -58,6 +71,7 @@ class HomePageController extends GetxController {
           contentTitles.add(item['name']);
           programs.add(item);
         }
+
         isLoading.value = false;
       } else {
         throw Exception("Failed to fetch programs");
@@ -69,22 +83,22 @@ class HomePageController extends GetxController {
   }
 
   Future<void> fetchExtra() async {
-    isLoading.value = true;
     final url = "https://talentaku.site/api/programs/category/2";
     var headers = {
       'Accept': 'Application/json',
     };
     try {
+      isLoading.value = true;
       final response = await http.get(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         final items = jsonData['data'];
         contenExtra.clear();
-        programs.clear();
+        extra.clear();
         for (var item in items) {
           contenExtra.add(item['name']);
-          programs.add(item);
+          extra.add(item);
         }
         isLoading.value = false;
       } else {
@@ -100,30 +114,46 @@ class HomePageController extends GetxController {
     int id,
     String name,
     String desc,
-    String photo,
+    File photo,
     int categoryId,
   ) async {
     final token = box.read('token');
     final url = "https://talentaku.site/api/programs/$id";
+
     var headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
     };
-    var body = jsonEncode({
-      'name': name,
-      'desc': desc,
-      'photo': photo,
-      'category_id': categoryId.toString(),
-    });
 
     try {
-      final response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll(headers);
+
+      // Add text fields to the request
+      request.fields['name'] = name;
+      request.fields['desc'] = desc;
+      request.fields['category_id'] = categoryId.toString();
+
+      // Add the photo file to the request
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'photo',
+          photo.path,
+          contentType: MediaType(
+            'image',
+            'jpeg',
+          ), // Adjust this to the correct file type
+        ),
+      );
+
+      // Send the request
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print("Update Success: ${responseData['message']}");
+        Get.back();
       } else {
         final responseData = json.decode(response.body);
         throw Exception('Error: ${responseData['message']}');
