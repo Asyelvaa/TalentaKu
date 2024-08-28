@@ -53,6 +53,8 @@ class HomePageController extends GetxController {
     }
   }
 
+  
+
   Future<void> fetchProgram() async {
     final url = "https://talentaku.site/api/programs/category/1";
     var headers = {
@@ -128,13 +130,10 @@ class HomePageController extends GetxController {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.headers.addAll(headers);
-
-      // Add text fields to the request
       request.fields['name'] = name;
       request.fields['desc'] = desc;
       request.fields['category_id'] = categoryId.toString();
 
-      // Add the photo file to the request
       request.files.add(
         await http.MultipartFile.fromPath(
           'photo',
@@ -246,10 +245,10 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() {
-    fetchContactAndInformation();
-    fetchInformationList();
     fetchProgram();
     fetchExtra();
+    fetchContactAndInformation();
+    fetchInformationList();
     super.onInit();
     fetchCurrentUser();
   }

@@ -183,7 +183,7 @@ class ClassDetailController extends GetxController
     }
   }
 
-  void fetchAlbums() async {
+  Future<void> fetchAlbums() async {
     try {
       isLoading(true);
       var fetchedAlbums = await ApiServiceAlbum().getAllAlbum(classItem['id']);

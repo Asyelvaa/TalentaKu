@@ -105,6 +105,26 @@ class EditProgramPopup extends GetView<HomePageController> {
                   ),
                 ),
                 SizedBox(height: 16),
+                TextFormField(
+                  controller: categoryIdController,
+                  decoration: InputDecoration(
+                    labelText: "Kategori",
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.blue500),
+                    ),
+                  ),
+                ),
+                defaultHeightSpace,
                 GestureDetector(
                   onTap: () {
                     controller.pickImage();
@@ -153,7 +173,6 @@ class EditProgramPopup extends GetView<HomePageController> {
                           File(controller.selectedImages.value),
                           int.parse(categoryIdController.text),
                         );
-                        
                       } catch (e) {
                         print('Error: $e');
                       }

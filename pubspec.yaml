@@ -10,6 +10,7 @@ dependencies:
   auto_size_text: ^3.0.0
   cupertino_calendar_picker: ^1.1.2
   cupertino_icons: ^1.0.2
+  custom_refresh_indicator: ^4.0.1
   file_picker: ^8.0.5
   flutter:
     sdk: flutter
@@ -23,7 +24,9 @@ dependencies:
   intl: ^0.18.1
   pdfx: ^2.6.0
   persistent_bottom_nav_bar: ^5.0.2
+  pull_to_refresh: ^2.0.0
   readmore: ^3.0.0
+  shimmer_animation: ^2.1.0+1
   url_launcher: ^6.3.0
 
 dev_dependencies:
