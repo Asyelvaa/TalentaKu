@@ -1,15 +1,36 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'dart:io';
-// import 'package:pdfx/pdfx.dart';
+import 'package:flutter/material.dart';
 
-// class PDFViewerScreen extends StatelessWidget {
-//   final File file;
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-//   PDFViewerScreen({required this.file});
+import '../../../../infrastructure/theme/theme.dart';
 
-//   @override
-//   Widget build(BuildContext context) {
+class PDFViewerScreen extends StatelessWidget {
+  final String fileUrl;
+  final String fileName;
+
+  PDFViewerScreen({Key? key, required this.fileUrl, required this.fileName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          fileName, 
+          style: AppTextStyle.tsSmallRegular(AppColor.white), 
+          overflow: TextOverflow.ellipsis),
+        backgroundColor: AppColor.blue600
+      ),
+      // body: SfPdfViewer.network(
+      //   fileUrl,
+      //   canShowPaginationDialog: true,
+      //   canShowScrollHead: true,
+      //   canShowScrollStatus: true,
+      //   enableTextSelection: true,
+      // ),
+      
+    );
+  }
+}
 //     return FutureBuilder<PdfController>(
 //       future: _initPdfController(file),
 //       builder: (context, snapshot) {

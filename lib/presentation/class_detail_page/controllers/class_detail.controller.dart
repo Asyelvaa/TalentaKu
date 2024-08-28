@@ -70,20 +70,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     fetchStudentsFromApi();
     fetchStream();
   }
-  // Future<void> inituser() async {
-  //   await getUserData();
-  //   print(currentUser.value.name);
-  // }
 
-  // Future<void> getUserData() async {
-  //   try {
-  //     isLoading.value = true;
-  //     var data = await ApiServiceUser().getUserData();
-  //     currentUser.value = data;
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 
   Future<void> fetchGradeDetails() async {
     try {
@@ -187,7 +174,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     }
   }
 
-  void fetchAlbums() async {
+  Future<void> fetchAlbums() async {
     try {
       isLoading(true);
       var fetchedAlbums = await _apiServiceAlbum.getAllAlbum(classItem['id']);
@@ -306,9 +293,11 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     print(announcementController.text);
     print(pickedFiles.toString());
     try {
-      final newAnnouncement = await ApiServiceAnnouncements()
-          .createAnnouncement(
-              announcementController.text, pickedFiles.toList(), gradeId);
+      final newAnnouncement = await 
+      ApiServiceAnnouncements().createAnnouncement(
+        announcementController.text, 
+        pickedFiles.toList(), 
+        gradeId);
       announcement.value = newAnnouncement;
       Get.back();
       dialogSuccess('Pengumuman berhasil dibuat');
@@ -327,8 +316,10 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     try {
       await ApiServiceAnnouncements().deleteAnnouncement(gradeId, commentId);
       Get.snackbar('Success', 'Announcement deleted successfully');
+      print('berhasil hapus announcement ');
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete announcement');
+      print('Gagal hapus announcement ');
     } finally {
       isLoading(false);
     }

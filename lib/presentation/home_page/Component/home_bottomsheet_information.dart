@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'edit_program.dart';
 import '../controllers/home_page.controller.dart';
 
@@ -22,154 +23,209 @@ class HomeBottomsheetInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomePageController());
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: AppColor.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[300],
-            ),
+    return Obx(() {
+      if (_homePageController.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      } else {
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: AppColor.white,
           ),
-          SizedBox(height: 10),
-          Text(
-            informationTitle,
-            style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
-          ),
-          SizedBox(height: 20),
-          Container(
-            height: 200,
-            color: Colors.grey[200],
-            child: photoList.isEmpty
-                ? Center(child: Text("No photos available"))
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      'https://talentaku.site/image/program/$photoList',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey,
-                          child: Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-          ),
-          SizedBox(height: 20),
-          Flexible(
-            child: Text(descriptionContent, style: AppTextStyle.tsNormal),
-          ),
-          SizedBox(height: 20),
-          if (controller.userRole.any((role)=> role.contains('Guru')))
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                  _showEditBottomSheet(context);
-                },
-                child: Container(
-                  height: 50,
-                  width: Get.width * 0.4,
-                  decoration: BoxDecoration(
-                    color: AppColor.blue200,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Edit',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
-                      ),
-                    ),
-                  ),
+              Container(
+                width: 40,
+                height: 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[300],
                 ),
               ),
-              SizedBox(
-                width: Get.width * 0.08,
+              SizedBox(height: 10),
+              Text(
+                informationTitle,
+                style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
               ),
-              GestureDetector(
-                onTap: () async {
-                  try {
-                    await _homePageController.deleteProgram(programId);
-
-                    Get.snackbar('Success', 'Program deleted successfully');
-                  } catch (e) {
-                    Get.snackbar('Error', 'Failed to delete program: $e');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: Get.width * 0.4,
-                  decoration: BoxDecoration(
-                    color: AppColor.red,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Delete',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
+              SizedBox(height: 20),
+              Container(
+                height: 200,
+                child: photoList.isEmpty
+                    ? Shimmer(
+                        duration: Duration(seconds: 2),
+                        color: Colors.grey.shade400,
+                        enabled: true,
+                        child: Container(),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          _showFullScreenImage(context, photoList);
+                        },
+                        child: Container(
+                          height: heightScreen,
+                          width: widthScreen * 0.5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1),
+                            child: Image.network(
+                              'https://talentaku.site/image/program/$photoList',
+                              fit: BoxFit.scaleDown,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey,
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               ),
+              SizedBox(height: 20),
+              Flexible(
+                child: Text(descriptionContent, style: AppTextStyle.tsNormal),
+              ),
+              SizedBox(height: 20),
+              Obx(() {
+                if (_homePageController.userRole
+                    .any((role) => role.contains('Guru'))) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                          _showEditBottomSheet(context);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: Get.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: AppColor.blue600,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Edit',
+                              style: AppTextStyle.tsNormal.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: Get.width * 0.08),
+                      GestureDetector(
+                        onTap: () async {
+                          try {
+                            await _homePageController.deleteProgram(programId);
+                            Get.snackbar(
+                                'Success', 'Program deleted successfully');
+                          } catch (e) {
+                            Get.snackbar(
+                                'Error', 'Failed to delete program: $e');
+                          }
+                        },
+                        child: Container(
+                          height: 50,
+                          width: Get.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: AppColor.red,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Delete',
+                              style: AppTextStyle.tsNormal.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
             ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+    });
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    Get.bottomSheet(
-      EditProgramPopup(
-        programId: programId,
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+            color: AppColor.white,
+          ),
+          child: EditProgramPopup(
+            programId: programId,
             initialName: informationTitle,
             initialDesc: descriptionContent,
             initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
             initialCategoryId: 1,
-      ),
-      isScrollControlled: true,
+          ),
+        );
+      },
     );
-    // showModalBottomSheet(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   backgroundColor: Colors.transparent,
-    //   builder: (BuildContext context) {
-    //     return Container(
-    //       height: heightScreen * 0.5,
-    //       padding: EdgeInsets.all(5),
-    //       decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-    //         color: AppColor.white,
-    //       ),
-    //       child: EditProgramPopup(
-    //         programId: programId,
-    //         initialName: informationTitle,
-    //         initialDesc: descriptionContent,
-    //         initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
-    //         initialCategoryId: 1,
-    //       ),
-    //     );
-    //   },
-    // );
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImage(imageUrl: imageUrl),
+      ),
+    );
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imageUrl;
+
+  FullScreenImage({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Image.network(
+            'https://talentaku.site/image/program/$imageUrl',
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey,
+                child: Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
