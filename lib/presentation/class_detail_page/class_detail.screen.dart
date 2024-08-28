@@ -95,9 +95,9 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                   bottom: TabBar(
                     controller: controller.tabController,
                     dividerColor: AppColor.background,
-                    indicatorColor: AppColor.blue100,
-                    labelColor: AppColor.white,
-                    unselectedLabelColor: AppColor.white,
+                    indicatorColor: AppColor.blue300,
+                    labelColor: AppColor.blue300,
+                    unselectedLabelColor: AppColor.black,
                     labelStyle: AppTextStyle.tsSmallBold(AppColor.white),
                     tabs: [
                       Tab(text: 'Beranda'),

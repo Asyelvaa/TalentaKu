@@ -15,6 +15,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -175,22 +176,17 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
             ),
             defaultHeightSpace,
             Text(
-              "Kegiatan Inti Satu",
+              "Kegiatan Inti",
               style: AppTextStyle.tsBodyBold(Colors.black),
             ),
             spaceHeightSmall,
-
             FormSection(
               textController: controller.kegiatan_inti_satuTextController,
               controller: controller,
               sectionTitle: "Kegiatan Inti",
               pointType: 'Muncul',
             ),
-            defaultHeightSpace,
-            Text(
-              "Kegiatan Inti Dua",
-              style: AppTextStyle.tsBodyBold(Colors.black),
-            ),
+
             spaceHeightSmall,
             FormSection(
               textController: controller.kegiatan_inti_duaTextController,
@@ -198,11 +194,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               sectionTitle: "Kegiatan Inti dua",
               pointType: 'Belum Muncul',
             ),
-            defaultHeightSpace,
-            Text(
-              "Kegiatan Inti Tiga",
-              style: AppTextStyle.tsBodyBold(Colors.black),
-            ),
+
             spaceHeightSmall,
             FormSection(
               textController: controller.kegiatan_inti_tigaTextController,

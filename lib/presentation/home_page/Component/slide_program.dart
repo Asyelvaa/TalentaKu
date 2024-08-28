@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_talentaku/presentation/common_widget/text_background.dart';
+import 'package:flutter_talentaku/presentation/home_page/Component/add_new_data.dart';
 import 'package:flutter_talentaku/presentation/home_page/controllers/home_page.controller.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +10,7 @@ import '../models/program_data.dart';
 import 'header_content.dart';
 import 'home_bottomsheet_information.dart';
 
-class SlideInformation extends StatelessWidget {
+class SlideInformation extends GetView<HomePageController> {
   final String headerContent;
   final List<String> contentTitles;
   final void Function()? onTap;
@@ -33,19 +35,56 @@ class SlideInformation extends StatelessWidget {
             padding: EdgeInsets.only(left: 20),
             width: double.infinity,
             height: 100,
-            child: ListView.builder(
+            child: ListView(
               shrinkWrap: true,
-              itemCount: contentTitles.length,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: onTap,
-                  child: Content(
-                    contentTitle: contentTitles[index],
-                    index: index,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: contentTitles.length,
+                  scrollDirection: Axis.horizontal,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: onTap,
+                      child: Content(
+                        contentTitle: contentTitles[index],
+                        index: index,
+                      ),
+                    );
+                  },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.bottomSheet(
+                      Container(
+                          height: heightScreen * 0.5,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(22)),
+                            color: AppColor.white,
+                          ),
+                          child: AddNewData(
+                            initialName: controller.nameController.text,
+                            initialDesc: controller.descController.text,
+                            initialPhoto: controller.selectedImages.value,
+                            initialCategoryId: controller.categoryId.text,
+                          )),
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                    );
+                  },
+                  child: Container(
+                    height: heightScreen * 0.3,
+                    width: widthScreen * 0.3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: AppColor.white),
+                    child: Icon(Icons.add),
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
         ],
