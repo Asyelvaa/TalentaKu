@@ -39,7 +39,7 @@ class ClassItem extends GetView<ClassController> {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: heightScreen * 0.03),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
@@ -62,11 +62,7 @@ class ClassItem extends GetView<ClassController> {
                       style: AppTextStyle.tsSmallRegular(AppColor.black),
                     ),                    
                   ],
-                ),
-                Image.asset(
-                  "assets/images/abc.png",
-                  scale: 1.5,
-                ),
+                ),                
               ],
             ),
           ),

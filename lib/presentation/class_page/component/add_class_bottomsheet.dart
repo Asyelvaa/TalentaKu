@@ -67,10 +67,44 @@ class AddClassBottomSheet extends GetView<ClassController> {
                       labelText: "Deskripsi Kelas",
                     ),
                     spaceHeightNormal,
-                    CustomTextFormField(
-                      loginController: controller.classLevelController,
-                      labelText: "Level Kelas",
+                    // CustomTextFormField(
+                    //   loginController: controller.classLevelController,
+                    //   labelText: "Level Kelas",
+                    // ),
+                    DropdownButtonFormField<int>(
+                    value: controller.selectedLevel.value,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: heightScreen * 0.02,
+                        horizontal: widthScreen * 0.05,
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColor.blue500),
+                      ),
+                      labelText: 'Level Kelas',
+                      labelStyle: AppTextStyle.tsSmallRegular(AppColor.black),
                     ),
+                    items: [
+                      DropdownMenuItem(
+                        value: 1,
+                        child: Text('Kelompok Bermain', style: AppTextStyle.tsBodyRegular(AppColor.black)),
+                      ),
+                      DropdownMenuItem(
+                        value: 2,
+                        child: Text('Sekolah Dasar', style: AppTextStyle.tsBodyRegular(AppColor.black)),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      controller.selectedLevel.value = value!;
+                    },
+                    dropdownColor: AppColor.white,                    
+                  ),
+
                   ],
                 ),
               ),   

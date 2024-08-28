@@ -224,18 +224,18 @@ class ClassDetailController extends GetxController
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
-    final url = 'https://talentaku.site/api/grades/teacher';
+    final url = 'https://talentaku.site/api/grades/${classItem['id']}';
 
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> grades = jsonResponse['data'];
-        students.clear();
-        for (var grade in grades) {
-          if (grade['members'] != null) {
-            final List<dynamic> members = grade['members'];
-            for (var member in members) {
+        final data = jsonResponse['data'];
+        if (data != null && data['members'] is List) {
+          final List<dynamic> members = data['members'];
+          students.clear(); 
+          for (var member in members) {
+            if (member != null && member['id'] != null) {
               if (!students.any((student) => student.id == member['id'])) {
                 students.add(Student.fromJson(member));
               }
@@ -245,9 +245,6 @@ class ClassDetailController extends GetxController
         print("Fetched students data: ${students}");
       } else {
         print('error fetching students: ${response.statusCode}');
-        // Get.snackbar(
-        //     'Error', 'Failed to fetch students: ${response.statusCode}',
-        //     backgroundColor: AppColor.red);
       }
     } catch (e) {
       Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
@@ -290,8 +287,8 @@ class ClassDetailController extends GetxController
       return;
     }
     final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-    // await _picker.pickVideo(source: ImageSource.gallery);
+      await _picker.pickImage(source: ImageSource.gallery);
+      // await _picker.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
       pickedFiles.add(File(pickedFile.path));
     }

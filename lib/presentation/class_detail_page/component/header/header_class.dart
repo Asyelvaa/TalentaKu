@@ -46,14 +46,13 @@ class HeaderClass extends GetView<ProfileUserController> {
                 itemCount: controller.students.length,
                 itemBuilder: (context, index) {
                   final student = controller.students[index];
-                  final isSelected =
-                      controller.selectedStudents.contains(student);
+                  final isSelected = controller.selectedStudents.contains(student);
                   final storedImage = controller.image.value;
                   return GestureDetector(
                     onTap: () {
-                      controller.toggleSelection(student);
-
-                      Get.toNamed(Routes.PROFILE_USER,
+                      if (controller.userRole.any((role)=> role.contains('Guru'))) {
+                        controller.toggleSelection(student);
+                        Get.toNamed(Routes.PROFILE_USER,
                           // arguments: {
                           //   'student': student,
                           //   'classId': controller.classItem['id']
@@ -62,6 +61,7 @@ class HeaderClass extends GetView<ProfileUserController> {
                             controller.students[index],
                             controller.classItem['id']
                           ]);
+                      }                     
                     },
                     child: Container(
                       width: widthScreen * 0.2,

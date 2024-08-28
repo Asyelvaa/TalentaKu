@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 
 import 'content.dart';
 import 'header_content.dart';
@@ -27,7 +28,7 @@ class SlideExtra extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 20),
             width: double.infinity,
-            height: 100,
+            height: heightScreen * 0.13,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: contenExtra.length,

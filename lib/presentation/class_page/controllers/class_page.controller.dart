@@ -17,9 +17,10 @@ class ClassController extends GetxController {
   List<Map<String, dynamic>> get inactiveClasses =>
       gradeList.where((classItem) => classItem['is_active'] != 'true').toList();
 
+  final RxInt selectedLevel = 1.obs;
   final classNameController = TextEditingController();
   final classDescController = TextEditingController();
-  final classLevelController = TextEditingController();
+  // final classLevelController = TextEditingController();
   final classCodeController = TextEditingController();
 
   var isLoading = false.obs;
@@ -47,7 +48,7 @@ class ClassController extends GetxController {
   Future<void> createNewClass() async {
     final name = classNameController.text;
     final desc = classDescController.text;
-    final levelId = int.parse(classLevelController.text);
+    final levelId = selectedLevel.value;
 
     if (name.isEmpty || desc.isEmpty || levelId == null) {
       print('All fields are required');

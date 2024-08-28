@@ -46,7 +46,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
             },
             child: Stack(clipBehavior: Clip.none, children: [
               Container(
-                  height: heightScreen * 0.075,
+                  // height: heightScreen * 0.075,
                   width: widthScreen,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
                             ),
                             AutoSizeText(
                               'Laporan Pembelajaran',
-                              style: AppTextStyle.tsSmallBold(AppColor.black),
+                              style: AppTextStyle.tsBodyBold(AppColor.black),
                               minFontSize: 10,
                             )
                           ]),
@@ -80,7 +80,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
                   bottom: 0,
                   child: Image.asset(
                     'assets/images/stiker_laporan.png',
-                    scale: 9,
+                    scale: 8,
                   ))
             ]),
           ))

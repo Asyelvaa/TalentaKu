@@ -88,21 +88,25 @@ class ClassBottomsheetActionTeacher extends GetView<ClassDetailController> {
                     CustomWidgetClassButtonActionItem(
                       buttonName: 'Unggah Tugas',
                       buttonIcon: Icons.assignment_add,
-                      onTap: () => Get.to(() => 
-                      AssignemntFormPageScreen(), 
-                      arguments: {
-                        'taskId' : '',
-                        'gradeId': controller.classItem['id'].toString()
-                      }),
+                      onTap: () { 
+                        Get.back();
+                        Get.to(() => AssignemntFormPageScreen(), 
+                        arguments: {
+                          'taskId' : '',
+                          'gradeId': controller.classItem['id'].toString()
+                        });
+                      }
                     ),
                     spaceHeightSmall,
                     CustomWidgetClassButtonActionItem(
                       buttonName: 'Unggah Foto / Video',
                       buttonIcon: Icons.image,
-                      onTap: () => Get.to(
-                      () => AlbumFormScreen(), 
-                      arguments: {'gradeId' : controller.classItem['id'].toString()}
-                    ),
+                      onTap: () { 
+                        Get.back();
+                        Get.to( () => AlbumFormScreen(), 
+                        arguments: {'gradeId' : controller.classItem['id'].toString()}
+                        );
+                      }
                     ),
                   ],
                 ),
