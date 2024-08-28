@@ -3,87 +3,78 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_talentaku/domain/models/grade_model.dart';
-import 'package:flutter_talentaku/domain/models/stream_item.dart';
-import 'package:flutter_talentaku/infrastructure/dal/services/api_user.dart';
-import 'package:flutter_talentaku/presentation/student_report_form/model/Student.dart';
-import 'package:flutter_talentaku/presentation/class_page/controllers/class_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../domain/models/album_model.dart';
 import '../../../domain/models/class_announcement_model.dart';
-import '../../../domain/models/task_model.dart';
 import '../../../domain/models/class_member_model.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
-import '../../../domain/models/user_model.dart';
+import '../../../domain/models/grade_model.dart';
+import '../../../presentation/student_report_form/model/Student.dart';
 import '../../../infrastructure/dal/services/api_album.dart';
 import '../../../infrastructure/dal/services/api_class.dart';
 import '../../../infrastructure/dal/services/api_class_announcement.dart';
 import '../../../infrastructure/dal/services/api_task.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../../class_page/controllers/class_page.controller.dart';
 
-import 'package:http/http.dart' as http;
-
-class ClassDetailController extends GetxController
-    with GetSingleTickerProviderStateMixin {
-  final ApiServiceClass apiService = ApiServiceClass();
+class ClassDetailController extends GetxController with GetTickerProviderStateMixin {
+  final ApiServiceClass _apiServiceClass = ApiServiceClass();
+  final ApiServiceAlbum _apiServiceAlbum = ApiServiceAlbum();
+  final ApiServiceTask _apiServiceTask = ApiServiceTask();
+  final ApiServiceAnnouncements _apiServiceAnnouncements = ApiServiceAnnouncements();
 
   Rx<GradeModel> dataClass = GradeModel().obs;
   RxList<ClassMemberModel> classMembers = <ClassMemberModel>[].obs;
-  Rx<UserModel> currentUser = UserModel().obs;
-  final RxList<Student> selectedStudents = <Student>[].obs;
-  final box = GetStorage();
+  // Rx<UserModel> currentUser = UserModel().obs;
+  RxList<Student> selectedStudents = <Student>[].obs;
+  RxList<Student> students = <Student>[].obs;
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> teacherTasks = <Task>[].obs;
-  final RxList<Student> students = <Student>[].obs;
-  final username = GetStorage().read('dataUser')?['username'];
-  Rx<File?> image = Rx<File?>(null);
   RxList<TaskStudentModel> studentTasks = <TaskStudentModel>[].obs;
-  late Map<String, dynamic> classItem;
+  Rx<File?> image = Rx<File?>(null);
+  RxBool isLoading = false.obs;
+
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController classDescController = TextEditingController();
   final TextEditingController classLevelController = TextEditingController();
+  final TextEditingController announcementController = TextEditingController();
 
-  var isLoading = true.obs;
+  late List<String> userRole;
+  late TabController tabController;
+  late Map<String, dynamic> classItem;
+  var username = ''.obs;
+  final announcement = ClassAnnouncementModel().obs;
+  final ImagePicker _picker = ImagePicker();
+  final RxList<File> pickedFiles = <File>[].obs;
+  final box = GetStorage();
 
-  late final List<String> userRole;
-  late final TabController tabController;
 
   @override
   void onInit() {
+    super.onInit();
+
     tabController = TabController(length: 3, vsync: this);
     userRole = GetStorage().read('dataUser')['role'];
-    print(userRole);
+    username.value = GetStorage().read('dataUser')?['username'];
     classItem = Get.arguments as Map<String, dynamic>;
+    print({username, userRole.toString()});
+
     fetchAlbums();
     fetchGradeDetails();
     fetchAllTask();
     fetchStudentsFromApi();
     fetchStream();
-    print(username);
-    super.onInit();
   }
 
-  Future<void> inituser() async {
-    await getUserData();
-    print(currentUser.value.name);
-  }
-
-  Future<void> getUserData() async {
-    try {
-      isLoading.value = true;
-      var data = await ApiServiceUser().getUserData();
-      currentUser.value = data;
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
   Future<void> fetchGradeDetails() async {
     try {
-      GradeModel gradeDetail = await apiService.getDetailClass(classItem['id']);
+      GradeModel gradeDetail = await _apiServiceClass.getDetailClass(classItem['id']);
       dataClass.value = gradeDetail;
       classMembers.assignAll(gradeDetail.member!);
       print('Detail class: ${gradeDetail.name}');
@@ -96,7 +87,7 @@ class ClassDetailController extends GetxController
   Future<void> toggleActiveStatus(bool isActive) async {
     final controller = Get.put(ClassController());
     try {
-      final response = await apiService.classStatus(dataClass.value.id!);
+      final response = await _apiServiceClass.classStatus(dataClass.value.id!);
       if (response != null) {
         dataClass.update((val) {
           val!.isActiveStatus = isActive ? 'active' : 'inactive';
@@ -124,7 +115,7 @@ class ClassDetailController extends GetxController
 
   void removeMember(String memberId) {
     try {
-      apiService.deleteMember(dataClass.value.id!.toString(), memberId);
+      _apiServiceClass.deleteMember(dataClass.value.id!.toString(), memberId);
       classMembers.removeWhere((element) => element.id == memberId);
       fetchGradeDetails();
       Get.snackbar('Success', 'Member removed successfully');
@@ -139,7 +130,7 @@ class ClassDetailController extends GetxController
     final controller = Get.put(ClassController());
     final classId = dataClass.value.id!.toString();
     try {
-      final response = await apiService.deleteClass(classId);
+      final response = await _apiServiceClass.deleteClass(classId);
       if (response != null && response.statusCode == 200) {
         Get.snackbar('Success', 'Class deleted successfully');
         print('Class with id $classId deleted successfully');
@@ -165,7 +156,7 @@ class ClassDetailController extends GetxController
           ? int.parse(classLevelController.text)
           : dataClass.value.levelId!;
 
-      await apiService.updateClass(
+      await _apiServiceClass.updateClass(
           name, desc, levelId, dataClass.value.id!.toString());
       dataClass.update((val) {
         if (val != null) {
@@ -186,7 +177,7 @@ class ClassDetailController extends GetxController
   Future<void> fetchAlbums() async {
     try {
       isLoading(true);
-      var fetchedAlbums = await ApiServiceAlbum().getAllAlbum(classItem['id']);
+      var fetchedAlbums = await _apiServiceAlbum.getAllAlbum(classItem['id']);
       fetchedAlbums.sort((a, b) => b.date!.compareTo(a.date!));
       albums.assignAll(fetchedAlbums);
     } catch (e) {
@@ -202,12 +193,12 @@ class ClassDetailController extends GetxController
       isLoading(true);
       if (userRole.any((role) => role.contains('Guru'))) {
         taskList =
-            ApiServiceTask().getAllTaskTeacher(classItem['id'].toString());
+            _apiServiceTask.getAllTaskTeacher(classItem['id'].toString());
         teacherTasks.assignAll(await taskList);
         print(teacherTasks);
       } else if (userRole.any((role) => role.contains('Murid'))) {
         taskList =
-            ApiServiceTask().getAllTaskStudent(classItem['id'].toString());
+            _apiServiceTask.getAllTaskStudent(classItem['id'].toString());
         studentTasks.assignAll(await taskList);
         print(studentTasks);
         update();
@@ -271,10 +262,7 @@ class ClassDetailController extends GetxController
   // }
 
   // Method to pick PDF file from storage
-  final _picker = ImagePicker();
-  final pickedFiles = <File>[].obs;
-  final TextEditingController announcementController = TextEditingController();
-  final announcement = ClassAnnouncementModel().obs;
+
 
   Future<void> pickFile() async {
     FilePickerResult? pdfResult = await FilePicker.platform.pickFiles(
@@ -305,9 +293,11 @@ class ClassDetailController extends GetxController
     print(announcementController.text);
     print(pickedFiles.toString());
     try {
-      final newAnnouncement = await ApiServiceAnnouncements()
-          .createAnnouncement(
-              announcementController.text, pickedFiles.toList(), gradeId);
+      final newAnnouncement = await 
+      ApiServiceAnnouncements().createAnnouncement(
+        announcementController.text, 
+        pickedFiles.toList(), 
+        gradeId);
       announcement.value = newAnnouncement;
       Get.back();
       dialogSuccess('Pengumuman berhasil dibuat');
@@ -326,8 +316,10 @@ class ClassDetailController extends GetxController
     try {
       await ApiServiceAnnouncements().deleteAnnouncement(gradeId, commentId);
       Get.snackbar('Success', 'Announcement deleted successfully');
+      print('berhasil hapus announcement ');
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete announcement');
+      print('Gagal hapus announcement ');
     } finally {
       isLoading(false);
     }
@@ -364,8 +356,8 @@ class ClassDetailController extends GetxController
 
   Future<void> fetchStream() async {
     late final token = box.read('token');
-
-    final url = 'https://talentaku.site/api/grades/1/announcements';
+    final gradeId = classItem['id'].toString();
+    final url = 'https://talentaku.site/api/grades/$gradeId/announcements';
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',

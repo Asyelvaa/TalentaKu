@@ -28,12 +28,12 @@ class InformasiSiswa extends StatelessWidget {
         return CustomScrollView(
           shrinkWrap: true,
           slivers: [
-            ...buildTaskSection(
-              title: 'Informasi',
-              tasks: notSubmittedTasks,
-              emptyMessage: 'Tidak ada tugas',
-              controller: controller,
-            ),
+            // ...buildTaskSection(
+            //   title: 'Informasi',
+            //   tasks: notSubmittedTasks,
+            //   emptyMessage: 'Tidak ada tugas',
+            //   controller: controller,
+            // ),
             SliverToBoxAdapter(
               child: AnnouncementComponent(),
             ),

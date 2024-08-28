@@ -52,7 +52,6 @@ class HomeBottomsheetInformation extends StatelessWidget {
               SizedBox(height: 20),
               Container(
                 height: 200,
-                color: Colors.grey[200],
                 child: photoList.isEmpty
                     ? Shimmer(
                         duration: Duration(seconds: 2),
@@ -71,7 +70,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
                             padding: const EdgeInsets.all(1),
                             child: Image.network(
                               'https://talentaku.site/image/program/$photoList',
-                              fit: BoxFit.cover,
+                              fit: BoxFit.scaleDown,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: Colors.grey,

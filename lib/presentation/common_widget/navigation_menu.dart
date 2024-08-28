@@ -26,27 +26,27 @@ class NavbarMenu extends StatelessWidget {
               controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
-              icon: Icon(Iconsax.home_11),
+              icon: Icon(Iconsax.home),
               selectedIcon: Icon(
-                Iconsax.home_11,
+                Iconsax.home,
                 color: AppColor.blue500,
               ),
               // New line: selected icon
               label: "Home",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.book_11),
+              icon: Icon(Iconsax.book_14),
               selectedIcon: Icon(
-                Iconsax.book_11,
+                Iconsax.book_14,
                 color: AppColor.blue500,
               ),
               // New line: selected icon
               label: "Class",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.profile_2user),
+              icon: Icon(Iconsax.profile_circle4),
               selectedIcon: Icon(
-                Iconsax.profile_2user,
+                Iconsax.profile_circle5,
                 color: AppColor.blue500,
               ),
               // New line: selected icon

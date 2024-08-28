@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_textFormField.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/back_appbar.dart';
@@ -30,140 +33,167 @@ class AssignemntFormPageScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                TextFormField(
-                  controller: controller.titleController,
-                  decoration: InputDecoration(
-                    hintText: 'Tambahkan Judul...',
-                    hintStyle: AppTextStyle.tsSmallRegular(AppColor.black),
-                    labelText: 'Judul',
-                    labelStyle: AppTextStyle.tsBodyRegular(AppColor.black),
-                    fillColor: AppColor.white,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
-                  ),
-                  maxLines: null,
-                  minLines: 1,
-                ),
+                CustomTextFormField(
+                  loginController: controller.titleController, 
+                  labelText: 'Judul Tugas'
+                ),                
                 spaceHeightSmall,
-                TextFormField(
-                  controller: controller.descController,
-                  decoration: InputDecoration(
-                    hintText: 'Tambahkan deskripsi...',
-                    hintStyle: AppTextStyle.tsSmallRegular(AppColor.black),
-                    labelText: 'Deskripsi',
-                    labelStyle: AppTextStyle.tsBodyRegular(AppColor.black),
-                    fillColor: AppColor.white,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
+                 CustomTextFormField(
+                  loginController: controller.descController, 
+                  labelText: 'Deskripsi Tugas'
+                ),                  
+                spaceHeightNormal,                
+                Row(
+                  children: [
+                    IconButton(
+                    icon: Icon(Icons.file_upload_rounded),
+                      color: AppColor.blue600,
+                      onPressed: () => controller.pickMedia(ImageSource.gallery)
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
+                    Text(
+                      'Upload File',
+                      style: AppTextStyle.tsBodyBold(AppColor.black),
                     ),
-                  ),
-                  maxLines: null,
-                  minLines: 1,
+                  ],
                 ),
-                SizedBox(height: 12),
+                Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: controller.selectedFiles.map((file) {
+                              return Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      barrierLabel:MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                      barrierColor: AppColor.black,
+                                      pageBuilder: (BuildContext context, Animation first, Animation second) {
+                                        return Scaffold(
+                                          backgroundColor: Colors.transparent,
+                                          body: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.close, color: Colors.white),
+                                                onPressed: () => Get.back(),
+                                              ),
+                                              SizedBox(height: 16.0),
+                                              InteractiveViewer(
+                                                child: Image.file(File(file.path)),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.file(
+                                        File(file.path),
+                                        width: widthScreen * 0.3,
+                                        height: heightScreen * 0.15,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 4,
+                                    top: 4,
+                                    child: GestureDetector(
+                                      onTap: () => controller.removeSelectedFile(file),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //     icon: Icon(Icons.link_rounded),
+                //       color: AppColor.blue600,
+                //       onPressed: () => controller.addLink()
+                //     ),
+                //     Text(
+                //       'Upload Link',
+                //       style: AppTextStyle.tsBodyBold(AppColor.black),
+                //     ),
+                //   ],
+                // ),
+                // Obx(() => Row(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // children: controller.links
+                //     .map((link) => Text(link, overflow: TextOverflow.ellipsis,))
+                //     .toList(),
+                // )),                            
+                spaceHeightExtraSmall,
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
-                    children: [
+                    children: [                      
                       Text('Tenggat :', style: AppTextStyle.tsBodyBold(AppColor.black),),
                       IconButton(
                         onPressed: () => controller.pickDate(context),
                         icon: Icon(Icons.calendar_today),
                       ),
                       Obx(() {
-                        return Text(
+                        return AutoSizeText(
                           controller.selectedDate.value != null
-                              ? '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}'
+                              ? DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(controller.selectedDate.value!)
                               : 'Tidak ada tanggal terpilih',
                           style: AppTextStyle.tsBodyRegular(AppColor.black),
+                          minFontSize: 10,
+                          softWrap: true,
                         );
                       }),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Row(
-                    children: [
-                      CircularIconButton(
-                        icon: Icons.file_upload, 
-                        onPressed: () => controller.pickMedia(ImageSource.gallery)
-                      ),
-                      SizedBox(width: 8),
-                      CircularIconButton(
-                        icon: Icons.link_rounded, 
-                        onPressed: () => controller.addLink()
-                      )
-                    ],
-                  ),
-                ),
+                ),                
+                spaceHeightLarge,
                 Obx(() {
-                  if (controller.isLinkInputVisible.value) {
-                    return Column(
-                      children: [
-                        TextField(
-                          controller: controller.linkController,
-                          decoration: InputDecoration(
-                            labelText: 'Masukkan link',
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.check),
-                              onPressed: () => controller.submitLink(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  return SizedBox.shrink();
-                }),
-                Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: controller.links
-                    .map((link) => Text(link, overflow: TextOverflow.ellipsis,))
-                    .toList(),
-                )),
-                Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.start ,
-                  children: controller.selectedFiles
-                      .map((file) => Image.file(File(file.path), width: 60, height: 80, fit: BoxFit.cover))
-                      // .map((file) => Text(file.path.split('/').last))
-                      .toList(),
-                )),
-                defaultHeightSpace,
-                ElevatedButton(
-                    onPressed: () async {
-                      await controller.createTask();
-                    }, 
-                    child: Center(
-                      child: Text(
-                        'Buat Tugas',
-                        style: AppTextStyle.tsBodyRegular(AppColor.black),
-                      ),
-                    ),
+                  return ElevatedButton(
+                    onPressed: controller.isLoading.value ? null : controller.createTask,
                     style: ElevatedButton.styleFrom(
-                      fixedSize: Size.fromHeight(50),
-                      backgroundColor: AppColor.blue100,
+                      minimumSize: Size(double.infinity, 50), 
+                      backgroundColor: AppColor.blue600,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: defaultBorderRadius,
                       ),
+                      elevation: 0,
                     ),
-                  ),
-                // ElevatedButton(onPressed: () {Get.to(AssignmentPageScreen());}, child: Text('Assignment Page View')),  
+                    child: controller.isLoading.value
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColor.blue200),
+                          )
+                        : Text(
+                            "Buat Tugas",
+                            style: AppTextStyle.tsBodyBold(AppColor.white),
+                          ),
+                        );
+                      }),                
               ],
             ),
           ),

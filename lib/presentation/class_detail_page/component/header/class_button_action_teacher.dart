@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../../infrastructure/theme/theme.dart';
 import 'class_bottomsheet_action_teacher.dart';
@@ -30,7 +31,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
               decoration: BoxDecoration(
                   color: AppColor.blue50, borderRadius: defaultBorderRadius),
               child: Icon(
-                Icons.list,
+                Iconsax.add,
                 size: 30,
                 color: AppColor.black,
               ),

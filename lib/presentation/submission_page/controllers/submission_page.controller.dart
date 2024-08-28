@@ -12,27 +12,30 @@ import '../../../infrastructure/theme/theme.dart';
 
 class SubmissionPageController extends GetxController {
 
-  late String gradeId;
-  late String taskId;
-  late String studentIdSubmitted;
+  var gradeId = ''.obs;
+  var taskId = ''.obs;
+  var studentIdSubmitted = ''.obs;
+  var completionsId = ''.obs;
   Rx<Task> task = Task().obs;
   RxBool isLoading = false.obs;
   Rx<SubmissionDetailModel> submission = SubmissionDetailModel().obs;
-  RxString selectedScore = ''.obs; 
+  RxString selectedScore = 'A'.obs; 
   TextEditingController scoreController = TextEditingController();
   
   @override
   void onInit() {
     super.onInit();
     final arguments = Get.arguments as Map<String, dynamic>;
-    taskId = arguments['taskId'] as String;
-    gradeId = arguments['gradeId'] as String;
-    studentIdSubmitted = arguments['studentIdSubmitted'] as String;
-    
+    taskId.value = arguments['taskId'].toString();
+    gradeId.value = arguments['gradeId'].toString();
+    studentIdSubmitted.value = arguments['studentIdSubmitted'].toString();
+    completionsId.value = arguments['completionsId'].toString();
     print('pass arg in submission: $taskId, $gradeId, $studentIdSubmitted');
     print(studentIdSubmitted);
     fetchSubmissionsById();
     fetchTaskDetails();
+    fetchSubmissionCompleteById();
+
   }
   
   // Future<void> fetchSubmissionsById(String taskId) async {
@@ -54,15 +57,17 @@ class SubmissionPageController extends GetxController {
   Future<void> fetchSubmissionsById() async {
   isLoading.value = true;
   try {
-    final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId, taskId);
+    final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId.value, taskId.value);
     
     if (response.containsKey('data')) {
       List<dynamic> submissionsData = response['data'];
 
       var filteredSubmissions = submissionsData.where((submission) {
-          return submission['task_id'].toString() == taskId &&
-                 submission['student_submitted']['id'] == studentIdSubmitted;
+          return submission['task_id'].toString() == taskId.value &&
+                 submission['student_submitted']['id'].toString() == studentIdSubmitted.value;
         }).toList();
+
+        print('filteredSubmissions $filteredSubmissions');
 
       if (filteredSubmissions.isNotEmpty) {
           submission.value = SubmissionDetailModel.fromJson(filteredSubmissions.first);
@@ -74,7 +79,7 @@ class SubmissionPageController extends GetxController {
       throw Exception('Invalid response format: "data" key not found');
     }
   } catch (e) {
-    print('Error fetching submissions detail: $e');
+    print('Error fetching submissions list: $e');
   } finally {
     isLoading.value = false;
   }
@@ -82,7 +87,7 @@ class SubmissionPageController extends GetxController {
   Future<void> fetchTaskDetails() async {
     isLoading.value = true;
     try {
-      final taskDetail = await ApiServiceTask().getDetailTask(gradeId, taskId);
+      final taskDetail = await ApiServiceTask().getDetailTask(gradeId.value, taskId.value);
       task.value = taskDetail;      
     } catch (e) {
       print('Error fetching task details: $e');
@@ -91,13 +96,12 @@ class SubmissionPageController extends GetxController {
     }
   }
 
-
   Future<void> scoringSubmission() async {
     var score = scoreController.text; 
     var submissionId = submission.value.submissionId.toString();
     isLoading.value = true;
     try {
-      final response = await ApiServiceTask().correctionTask(gradeId, taskId, submissionId, score);
+      final response = await ApiServiceTask().correctionTask(gradeId.value, taskId.value, submissionId, selectedScore.value,);
       submission.value = SubmissionDetailModel.fromJson(response['data']);
       Get.back();
       // Get.to(SubmissionCompletePageScreem());
@@ -110,14 +114,23 @@ class SubmissionPageController extends GetxController {
       isLoading.value = false;
     }
   }
-  
-  Future<void> fetchSubmissionCompleteById(String completionsId) async {
+
+  // Rx<SubmissionDetailModel> submissionComplete = SubmissionDetailModel().obs;
+  var submissionComplete = {}.obs;
+  Future<void> fetchSubmissionCompleteById() async {
     isLoading.value = true;
     try {
-      submission.value = await ApiServiceTask().getSubmissionById(gradeId, taskId, completionsId);
-      print(submission.value.studentSubmitted);
-      print(submission.value.submissionId);
-      print(submission.value.submissionMedia);
+      List<dynamic> data = await ApiServiceTask().getSubmissionById(
+        gradeId.value, 
+        taskId.value, 
+        completionsId.value,
+      );
+      // submissionComplete.value = data[0];
+      if (data.isNotEmpty) {
+      submissionComplete.value = data[0];  // Mengambil elemen pertama dari array
+    } else {
+      print('No submissions found.');
+    }
     } catch (e) {
       print('Error fetching submission details: $e');
     } finally {

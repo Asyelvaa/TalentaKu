@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:flutter_talentaku/presentation/common_widget/custom_textFormField.dart';
 import 'package:get/get.dart';
 
 import '../controllers/home_page.controller.dart';
@@ -32,15 +33,12 @@ class EditProgramPopup extends GetView<HomePageController> {
     descController.text = initialDesc;
     categoryIdController.text = initialCategoryId.toString();
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
+    return 
+          Container(
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppColor.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
               children: [
@@ -194,9 +192,7 @@ class EditProgramPopup extends GetView<HomePageController> {
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
+          );
+
   }
 }

@@ -31,7 +31,7 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
           await controller.fetchStream();
           await controller.fetchAllTask();
           await controller.fetchAlbums();
-
+  
           refreshController.refreshCompleted();
         },
         child: NestedScrollView(

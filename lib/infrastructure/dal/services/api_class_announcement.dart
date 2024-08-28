@@ -45,7 +45,7 @@ class ApiServiceAnnouncements {
       final response = await http.Response.fromStream(streamedResponse);
       print(response.body);
       if (response.statusCode == 201) {
-        var jsonResponse = jsonDecode(response.body)['announcements'];
+        var jsonResponse = jsonDecode(response.body)['data'];
         return ClassAnnouncementModel.fromJson(jsonResponse);
       } else {
         throw Exception('Failed to create announcement: ${response.body}');
@@ -64,12 +64,13 @@ class ApiServiceAnnouncements {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
-
+    print(url);
     try {
       final response = await http.delete(
         Uri.parse(url),
         headers: headers,
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         print('Announcement deleted');
       } else {

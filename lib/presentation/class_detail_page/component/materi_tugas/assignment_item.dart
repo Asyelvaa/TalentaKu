@@ -63,8 +63,8 @@ class AssignmentItem extends GetView<ClassDetailController> {
                       title,
                       style: AppTextStyle.tsSmallBold(AppColor.black),
                       minFontSize: 12,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: null,
+                      overflow: TextOverflow.clip,
                     ),
                     Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
                   ],)                  

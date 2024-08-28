@@ -136,18 +136,21 @@ class ApiServiceTask {
   // CORRECTION TASK / SCORING TASK
   Future<Map<String, dynamic>> correctionTask(String gradeId, String taskId, String submissionId, String score) async {
     final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/submissions/$submissionId";
+    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/submission/$submissionId";
     final headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    final body = jsonEncode({'score': score});
-    
+    final body = {'score': score};
+    print(url);
+    print(body);
     var response = await http.post(Uri.parse(url), headers: headers, body: body);
+    print(response.statusCode);
     if (response.statusCode == 201) {
       return jsonDecode(response.body); 
     } else {
       throw Exception('Failed to score submission');
+      
     }
   }
 
@@ -256,9 +259,10 @@ class ApiServiceTask {
   }
 
   // SHOW SUBMISSION BY ID
-  Future<SubmissionDetailModel> getSubmissionById(String gradeId, String taskId, String completionsId) async {
+  Future<List<dynamic>> getSubmissionById(String gradeId, String taskId, String completionsId) async {
     final token = box.read('token');
     final url = "$baseUrl/grades/$gradeId/tasks/$taskId/completions/$completionsId";
+    print(url);
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
@@ -267,8 +271,12 @@ class ApiServiceTask {
     var response = await http.get(Uri.parse(url), headers: headers);
     print(url);
     print(response.body);
-    if (response.statusCode == 200) {      
-      return SubmissionDetailModel.fromJson(jsonDecode(response.body));
+    print('response sub complete ${response.statusCode}');
+    if (response.statusCode == 200) {  
+      // return SubmissionDetailModel.fromJson(json.decode(response.body)['data']);
+      // Map<String, dynamic> data = json.decode(response.body)['data'];
+      return json.decode(response.body)['data'] as List<dynamic>;
+      // return data;
     } else {
       throw Exception('Failed to load submissions detail');
     }

@@ -62,6 +62,10 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
     }
   }
 
+  void removeSelectedFile(File file) {
+     selectedFiles.removeWhere((element) => element.path == file.path);
+  }
+
   void addLink() {isLinkInputVisible.value = true;}
 
   void submitLink() {

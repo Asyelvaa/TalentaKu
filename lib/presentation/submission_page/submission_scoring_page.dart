@@ -101,8 +101,7 @@ class SubmissionScoringPage extends StatelessWidget {
                                   style: AppTextStyle.tsSmallBold(AppColor.black)),
                               Text(
                                 DateFormat('EEE, d/M/yyyy').format(
-                                        controller.submission.value.submittedAt!) ??
-                                    '',
+                                        controller.submission.value.submittedAt ?? DateTime.now()) ,
                                 style: AppTextStyle.tsSmallRegular(AppColor.black),
                               ),
                             ],
@@ -162,7 +161,7 @@ class SubmissionScoringPage extends StatelessWidget {
                     final media =
                         controller.submission.value.submissionMedia![index];
                     return Image.network(
-                      'https://talentaku.site/image/task-submission/${media.fileName}' ??
+                      '${media.fileName}' ??
                           'unknown',
                       fit: BoxFit.scaleDown,
                     );
