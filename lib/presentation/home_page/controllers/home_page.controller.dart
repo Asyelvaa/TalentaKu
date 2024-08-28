@@ -19,7 +19,9 @@ class HomePageController extends GetxController {
   final userData = {}.obs;
   final role = [].obs;
   var selectedImages = ''.obs;
-
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+  final TextEditingController categoryId = TextEditingController();
   final desc = [].obs;
   final informationList = <Information>[].obs;
   final contentTitles = <String>[].obs;
@@ -52,8 +54,6 @@ class HomePageController extends GetxController {
       selectedImages.value = pickedFile.path;
     }
   }
-
-  
 
   Future<void> fetchProgram() async {
     final url = "https://talentaku.site/api/programs/category/1";
@@ -160,6 +160,56 @@ class HomePageController extends GetxController {
     } catch (e) {
       print('Error updating program: $e');
       throw Exception('Error updating program: $e');
+    }
+  }
+
+  Future<void> createProgram(
+    String name,
+    String desc,
+    File photo,
+    int categoryId,
+  ) async {
+    final token = box.read('token');
+    final url = "https://talentaku.site/api/programs";
+
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll(headers);
+      request.fields['name'] = name;
+      request.fields['desc'] = desc;
+      request.fields['category_id'] = categoryId.toString();
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'photo',
+          photo.path,
+          contentType: MediaType(
+            'image',
+            'jpeg',
+          ),
+        ),
+      );
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 201) {
+        final responseData = json.decode(response.body);
+        print(" Success: ${responseData['message']}");
+        await fetchProgram();
+        Get.back();
+      } else {
+        final responseData = json.decode(response.body);
+        throw Exception('Error: ${responseData['message']}');
+      }
+    } catch (e) {
+      print('Error create: $e');
+      throw Exception('Error create program: $e');
     }
   }
 

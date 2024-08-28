@@ -51,8 +51,13 @@ class HomeBottomSheetExtra extends StatelessWidget {
                 style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
               ),
               SizedBox(height: 20),
+              Flexible(
+                child:
+                    Text(descriptionContentExtra, style: AppTextStyle.tsNormal),
+              ),
+              defaultHeightSpace,
               Container(
-                height: 200,
+                height: 120,
                 color: Colors.grey[200],
                 child: photoListExtra.isEmpty
                     ? Shimmer(
@@ -67,32 +72,24 @@ class HomeBottomSheetExtra extends StatelessWidget {
                         },
                         child: Container(
                           height: heightScreen,
-                          width: widthScreen * 0.5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(1),
-                            child: Image.network(
-                              'https://talentaku.site/image/program/$photoListExtra',
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey,
-                                  child: Icon(
-                                    Icons.error,
-                                    color: Colors.red,
-                                  ),
-                                );
-                              },
-                            ),
+                          width: widthScreen ,
+                          child: Image.network(
+                            'https://talentaku.site/image/program/$photoListExtra',
+                            fit: BoxFit.scaleDown,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey,
+                                child: Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
               ),
-              SizedBox(height: 20),
-              Flexible(
-                child:
-                    Text(descriptionContentExtra, style: AppTextStyle.tsNormal),
-              ),
-              SizedBox(height: 20),
+              defaultHeightSpace,
               Obx(() {
                 if (_homePageController.userRole
                     .any((role) => role.contains('Guru'))) {
@@ -166,27 +163,24 @@ class HomeBottomSheetExtra extends StatelessWidget {
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
+      Container(
+        height: heightScreen * 0.5,
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+          color: AppColor.white,
+        ),
+        child: EditProgramPopup(
+          programId: extraId,
+          initialName: informationTitleExtra,
+          initialDesc: descriptionContentExtra,
+          initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
+          initialCategoryId: 2,
+        ),
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-            color: AppColor.white,
-          ),
-          child: EditProgramPopup(
-            programId: extraId,
-            initialName: informationTitleExtra,
-            initialDesc: descriptionContentExtra,
-            initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
-            initialCategoryId: 2,
-          ),
-        );
-      },
     );
   }
 
