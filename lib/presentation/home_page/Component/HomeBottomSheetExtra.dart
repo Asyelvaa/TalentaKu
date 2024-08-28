@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'edit_program.dart';
 import '../controllers/home_page.controller.dart';
+import 'home_bottomsheet_information.dart';
 
 class HomeBottomSheetExtra extends StatelessWidget {
   final String informationTitleExtra;
@@ -22,118 +24,145 @@ class HomeBottomSheetExtra extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: AppColor.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[300],
-            ),
+    return Obx(() {
+      if (_homePageController.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      } else {
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: AppColor.white,
           ),
-          SizedBox(height: 10),
-          Text(
-            informationTitleExtra,
-            style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
-          ),
-          SizedBox(height: 20),
-          Container(
-            height: 200,
-            color: Colors.grey[200],
-            child: photoListExtra.isEmpty
-                ? Center(child: Text("No photos available"))
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      'https://talentaku.site/image/program/$photoListExtra',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey,
-                          child: Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-          ),
-          SizedBox(height: 20),
-          Flexible(
-            child: Text(descriptionContentExtra, style: AppTextStyle.tsNormal),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                  _showEditBottomSheet(context);
-                },
-                child: Container(
-                  height: 50,
-                  width: Get.width * 0.4,
-                  decoration: BoxDecoration(
-                    color: AppColor.blue200,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Edit',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
-                      ),
-                    ),
-                  ),
+              Container(
+                width: 40,
+                height: 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[300],
                 ),
               ),
-              SizedBox(
-                width: Get.width * 0.08,
+              SizedBox(height: 10),
+              Text(
+                informationTitleExtra,
+                style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
               ),
-              GestureDetector(
-                onTap: () async {
-                  try {
-                    await _homePageController.deleteProgram(extraId);
-
-                    Get.snackbar('Success', 'Program deleted successfully');
-                  } catch (e) {
-                    Get.snackbar('Error', 'Failed to delete program: $e');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: Get.width * 0.4,
-                  decoration: BoxDecoration(
-                    color: AppColor.red,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Delete',
-                      style: AppTextStyle.tsNormal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.background,
+              SizedBox(height: 20),
+              Container(
+                height: 200,
+                color: Colors.grey[200],
+                child: photoListExtra.isEmpty
+                    ? Shimmer(
+                        duration: Duration(seconds: 2),
+                        color: Colors.grey.shade400,
+                        enabled: true,
+                        child: Container(),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          _showFullScreenImage(context, photoListExtra);
+                        },
+                        child: Container(
+                          height: heightScreen,
+                          width: widthScreen * 0.5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1),
+                            child: Image.network(
+                              'https://talentaku.site/image/program/$photoListExtra',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey,
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               ),
+              SizedBox(height: 20),
+              Flexible(
+                child:
+                    Text(descriptionContentExtra, style: AppTextStyle.tsNormal),
+              ),
+              SizedBox(height: 20),
+              Obx(() {
+                if (_homePageController.userRole
+                    .any((role) => role.contains('Guru'))) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                          _showEditBottomSheet(context);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: Get.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: AppColor.blue200,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Edit',
+                              style: AppTextStyle.tsNormal.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: Get.width * 0.08),
+                      GestureDetector(
+                        onTap: () async {
+                          try {
+                            await _homePageController.deleteProgram(extraId);
+                            Get.snackbar(
+                                'Success', 'Program deleted successfully');
+                          } catch (e) {
+                            Get.snackbar(
+                                'Error', 'Failed to delete program: $e');
+                          }
+                        },
+                        child: Container(
+                          height: 50,
+                          width: Get.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: AppColor.red,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Delete',
+                              style: AppTextStyle.tsNormal.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
             ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+    });
   }
 
   void _showEditBottomSheet(BuildContext context) {
@@ -143,7 +172,7 @@ class HomeBottomSheetExtra extends StatelessWidget {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Container(
-          height: heightScreen * 0.5,
+          height: MediaQuery.of(context).size.height * 0.5,
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
@@ -153,11 +182,20 @@ class HomeBottomSheetExtra extends StatelessWidget {
             programId: extraId,
             initialName: informationTitleExtra,
             initialDesc: descriptionContentExtra,
-            // initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
-            initialCategoryId: 1,
+            initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
+            initialCategoryId: 2,
           ),
         );
       },
+    );
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImage(imageUrl: imageUrl),
+      ),
     );
   }
 }

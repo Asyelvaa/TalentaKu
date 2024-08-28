@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 
@@ -17,7 +16,8 @@ class ProfileDataContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width * 0.4,
+      // height: 60,
+      width: widthScreen * 0.4,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
           border: Border.all(width: 1.5, color: AppColor.blue500),
@@ -27,6 +27,10 @@ class ProfileDataContainer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Icon(
+            //   icon,
+            //   size: 20,
+            // ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

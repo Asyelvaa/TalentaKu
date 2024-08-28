@@ -36,12 +36,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
             ),
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: ProfilePicture(
-                    photo: student.photo,
-                  ),
-                ),
+                Container(alignment: Alignment.center, child: ProfilePicture()),
                 SizedBox(height: 12),
                 Obx(() {
                   if (controller.isLoading.value) {
