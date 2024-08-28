@@ -32,8 +32,10 @@ class ContentAssignment extends GetView<AssignmentPageController> {
           } else {
             final task = controller.taskDetail.value!;
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -78,11 +80,11 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                     ),
                     spaceHeightExtraSmall,
                     Text(
-                      task.desc!.join('\n') ?? '',
+                     'Deskripsi tugas: ${ task.desc!.join('\n')}' ?? '',
                       style: AppTextStyle.tsBodyRegular(AppColor.black),
                       textAlign: TextAlign.start,
                     ),
-                    spaceHeightExtraSmall,
+                    spaceHeightNormal,
                     if (task.media!.isNotEmpty)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -178,7 +180,7 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                 ),
                 spaceHeightNormal,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -229,25 +231,25 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        // await controller.updateTask();
-                      },
-                      child: Center(
-                        child: Text(
-                          'Edit Tugas',
-                          style: AppTextStyle.tsSmallBold(AppColor.white),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size.fromHeight(44),
-                        elevation: 0,
-                        backgroundColor: AppColor.blue600,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     // await controller.updateTask();
+                    //   },
+                    //   child: Center(
+                    //     child: Text(
+                    //       'Edit Tugas',
+                    //       style: AppTextStyle.tsSmallBold(AppColor.white),
+                    //     ),
+                    //   ),
+                    //   style: ElevatedButton.styleFrom(
+                    //     fixedSize: Size.fromHeight(44),
+                    //     elevation: 0,
+                    //     backgroundColor: AppColor.blue600,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(16),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

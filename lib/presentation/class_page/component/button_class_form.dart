@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../infrastructure/theme/theme.dart';
 import '../controllers/class_page.controller.dart';
@@ -51,7 +52,7 @@ class ButtonClassForm extends GetView<ClassController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image.asset( AppImage.logoTalentaku, scale: 15,),
+            Icon(Iconsax.add, color: AppColor.white, weight: 28,),
             Expanded(
               child: AutoSizeText(
                 "Klik bagian ini untuk mendapatkan kelas baru",

@@ -70,24 +70,24 @@ class HeaderClass extends GetView<ProfileUserController> {
                             radius: 30,
                             backgroundColor: AppColor.white,
                             child: student.photo != null
-                                ? ClipOval(
-                                    child: Image.network(
-                                      student.photo!,
-                                      width: 30,
-                                      height: 30,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Image.asset(
+                                // ? ClipOval(
+                                //     child: Image.network(
+                                //       student.photo!,
+                                //       width: 30,
+                                //       height: 30,
+                                //       fit: BoxFit.cover,
+                                //     ),
+                                //   )
+                                ? Image.asset(
                                     'assets/images/student.png',
                                     fit: BoxFit.cover,
-                                  )),
-                        // : AutoSizeText(
-                        //     getInitials(student.name!),
-                        //     style: AppTextStyle.tsBodyBold(
-                        //         AppColor.black),
-                        //     minFontSize: 12,
-                        //   )),
+                                  )
+                        : AutoSizeText(
+                            getInitials(student.name!),
+                            style: AppTextStyle.tsBodyBold(
+                                AppColor.black),
+                            minFontSize: 12,
+                          )),
                         AutoSizeText(
                           student.name!,
                           style: AppTextStyle.tsSmallRegular(AppColor.white),

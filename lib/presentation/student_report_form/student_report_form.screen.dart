@@ -494,6 +494,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                               inklusiDoaHasil:
                                   controller.selectedOptions['Doa']!,
                             );
+                            
                           } else {
                             Get.snackbar('Peringatan', 'Harap pilih siswa',
                                 backgroundColor: AppColor.red);

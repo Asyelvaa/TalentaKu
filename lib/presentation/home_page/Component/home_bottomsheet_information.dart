@@ -22,6 +22,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomePageController());
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -72,6 +73,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
             child: Text(descriptionContent, style: AppTextStyle.tsNormal),
           ),
           SizedBox(height: 20),
+          if (controller.userRole.any((role)=> role.contains('Guru')))
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -137,27 +139,37 @@ class HomeBottomsheetInformation extends StatelessWidget {
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: heightScreen * 0.5,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-            color: AppColor.white,
-          ),
-          child: EditProgramPopup(
-            programId: programId,
+    Get.bottomSheet(
+      EditProgramPopup(
+        programId: programId,
             initialName: informationTitle,
             initialDesc: descriptionContent,
             initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
             initialCategoryId: 1,
-          ),
-        );
-      },
+      ),
+      isScrollControlled: true,
     );
+    // showModalBottomSheet(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (BuildContext context) {
+    //     return Container(
+    //       height: heightScreen * 0.5,
+    //       padding: EdgeInsets.all(5),
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+    //         color: AppColor.white,
+    //       ),
+    //       child: EditProgramPopup(
+    //         programId: programId,
+    //         initialName: informationTitle,
+    //         initialDesc: descriptionContent,
+    //         initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
+    //         initialCategoryId: 1,
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

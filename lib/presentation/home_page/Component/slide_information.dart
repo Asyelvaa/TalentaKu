@@ -78,7 +78,7 @@ class Content extends GetView<HomePageController> {
         programId: program['id'],
         initialName: program['name'],
         initialDesc: program['desc'],
-        // initialPhoto: program['photo'],
+        initialPhoto: program['photo'],
         initialCategoryId: int.parse(program['category_id']),
       ),
     );

@@ -172,14 +172,18 @@ class AlbumFormScreen extends StatelessWidget {
                 // BUTTON UPLOAD
                 ElevatedButton(
                   onPressed: () async {
-                  await controller.uploadAlbumPost(gradeId,);
-                  }, 
-                  child: Center(
-                    child: Text(
-                      'Unggah',
-                      style: AppTextStyle.tsLittle,
-                    ),
-                  ),
+                    await controller.uploadAlbumPost(gradeId);                    
+                  },
+                  child: Obx(() {
+                    return controller.isLoading.value
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          )
+                        : Text(
+                            'Unggah',
+                            style: AppTextStyle.tsLittle,
+                          );
+                  }),
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size.fromHeight(50),
                     backgroundColor: AppColor.blue100,

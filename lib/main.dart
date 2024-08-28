@@ -8,7 +8,7 @@ import 'infrastructure/navigation/routes.dart';
 void main() async {
   var initialRoute = await Routes.initialRoute;
   initializeDateFormatting('id_ID');
-  runApp(Main(initialRoute));
+  runApp(Main(initialRoute));;
 }
 
 class Main extends StatelessWidget {

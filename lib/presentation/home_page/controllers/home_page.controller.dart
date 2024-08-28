@@ -149,10 +149,12 @@ class HomePageController extends GetxController {
       // Send the request
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
-
+      print("Response status: ${response.statusCode}");
+      print(photo.path);
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print("Update Success: ${responseData['message']}");
+        print(responseData);
         Get.back();
       } else {
         final responseData = json.decode(response.body);

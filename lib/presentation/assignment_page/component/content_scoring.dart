@@ -50,6 +50,7 @@ class ContentScoring extends StatelessWidget {
                       onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
                         'taskId': Get.arguments['taskId'],
                         'gradeId': Get.arguments['gradeId'],
+                        'studentIdSubmitted' : submission.studentSubmitted?.id ?? 0,
                         'studentSubmitted': submission.studentSubmitted?.name ?? 'Unknown',
                       });},
                     );
@@ -75,16 +76,17 @@ class ContentScoring extends StatelessWidget {
                       studentName: submission.studentSubmitted?.name ?? 'Unknown',
                       score: submission.score,
                       submittedAt: submission.submittedAt!,
-                      onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
-                        'taskId': Get.arguments['taskId'],
+                      // onTap: () { Get.to(() => SubmissionScoringPage(), arguments: {
+                      //   'taskId': Get.arguments['taskId'],
+                      //   'gradeId': Get.arguments['gradeId'],
+                      //   'studentIdSubmitted' : submission.studentSubmitted?.id ?? 0,
+                      //   'studentSubmitted': submission.studentSubmitted?.name ?? 'Unknown',
+                      // });
+                      onTap: () { Get.to(() => SubmissionCompletePageScreem(), arguments: {
+                        'taskId': taskId,
                         'gradeId': Get.arguments['gradeId'],
-                        'studentSubmitted': submission.studentSubmitted?.name ?? 'Unknown',
+                        'completionsId': submission.submissionId.toString(),
                       });
-                      // onTap: () { Get.to(() => SubmissionCompletePageScreen(
-                      //   taskId: taskId,
-                      //   gradeId: Get.arguments['gradeId'],
-                      //   completionsId: submission.completionsId.toString(),
-                      // ));
                         
                       },
                     );

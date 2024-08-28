@@ -137,27 +137,37 @@ class HomeBottomSheetExtra extends StatelessWidget {
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
+      EditProgramPopup(
+        programId: extraId,
+        initialName: informationTitleExtra,
+        initialDesc: descriptionContentExtra,
+        initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
+        initialCategoryId: 1,
+      ),
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: heightScreen * 0.5,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-            color: AppColor.white,
-          ),
-          child: EditProgramPopup(
-            programId: extraId,
-            initialName: informationTitleExtra,
-            initialDesc: descriptionContentExtra,
-            // initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
-            initialCategoryId: 1,
-          ),
-        );
-      },
     );
+    // showModalBottomSheet(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (BuildContext context) {
+    //     return Container(
+    //       height: heightScreen * 0.5,
+    //       padding: EdgeInsets.all(5),
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+    //         color: AppColor.white,
+    //       ),
+    //       child: EditProgramPopup(
+    //         programId: extraId,
+    //         initialName: informationTitleExtra,
+    //         initialDesc: descriptionContentExtra,
+    //         initialPhoto: photoListExtra.isNotEmpty ? photoListExtra[0] : '',
+    //         initialCategoryId: 1,
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

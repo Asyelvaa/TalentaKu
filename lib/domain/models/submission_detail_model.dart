@@ -35,7 +35,7 @@ class SubmissionDetailModel {
       studentSubmitted: StudentSubmitted.fromJson(studentSubmittedJson),
       submissionMedia: (json['submmision_media'] as List<dynamic>?)
           ?.map((media) => SubmissionMedia.fromJson(media as Map<String, dynamic>))
-          .toList(),
+          .toList(),  
       submittedAt:  DateTime.parse(json['submitted_at']),
       isLate: json['is_late'],
       status: json['status'],

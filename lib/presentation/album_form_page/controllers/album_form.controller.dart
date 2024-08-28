@@ -19,6 +19,7 @@ class AlbumFormController extends GetxController {
   final RxList<File> selectedMedia = <File>[].obs;
   final RxInt currentPage = 0.obs;
   late PageController pageController;
+  var isLoading = false.obs;
 
   @override
   void onInit() {
@@ -75,6 +76,7 @@ class AlbumFormController extends GetxController {
   Future<void> uploadAlbumPost(gradeId) async {
     final controller = Get.put(ClassDetailController());
     try {
+      isLoading.value = true;
       print('Starting uploadAlbumPost');
       print('Description: ${descriptionController.text}');
       print('Selected Media: ${selectedMedia.map((file) => file.path).toList()}');
@@ -98,6 +100,7 @@ class AlbumFormController extends GetxController {
       Get.snackbar('Error', 'Error uploading album post');
       print('Error uploading album post: $e');
     } finally {
+      isLoading.value = false;
       Get.back();
       print('uploadAlbumPost finished');
     }
