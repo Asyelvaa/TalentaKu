@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 
 import '../controllers/home_page.controller.dart';
 
-class AddNewData extends GetView<HomePageController> {
+class AddExtra extends GetView<HomePageController> {
   final String initialName;
   final String initialDesc;
   final String initialPhoto;
   final String initialCategoryId;
-  AddNewData({
+  AddExtra({
     Key? key,
     required this.initialName,
     required this.initialDesc,
@@ -25,9 +25,10 @@ class AddNewData extends GetView<HomePageController> {
   Widget build(BuildContext context) {
     controller.nameController.text = initialName;
     controller.descController.text = initialDesc;
-    categoryIdController.text = initialCategoryId.toString();
+    categoryIdController.text = 2.toString();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Center(
           child: Container(

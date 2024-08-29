@@ -128,9 +128,9 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 spaceHeightNormal,
 
                 CustomButton(
-                  text: "Reset Password",
-                  colorButton: AppColor.red,
-                  colorText: AppColor.white,
+                  text: "Reset akun password",
+                  colorButton: AppColor.white,
+                  colorText: AppColor.black,
                   onPressed: () {
                     Get.to(
                       UpdatePassword(),
