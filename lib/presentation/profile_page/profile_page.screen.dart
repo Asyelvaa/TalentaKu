@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/profile_page/component/reset_password.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -126,29 +127,17 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                 }),
                 spaceHeightNormal,
 
-                // LAPORAN PEMBELAJARAN
-                // Obx(() {
-                //   var roles = user.roles;
-                //   if (roles != null && roles.any((role) => role.startsWith('Murid'))) {
-                //     return CustomButtonWithIcon(
-                //       text: "Laporan Pembelajaran",
-                //       icon: Icons.arrow_forward_rounded,
-                //       colorButton: AppColor.white,
-                //       colorIcon: AppColor.black,
-                //       colorText: AppColor.black,
-                //       onPressed: () {
-                //         Get.toNamed(Routes.REPORT_LIST_PAGE,
-                //         arguments: [user.id]
-                //         );
-
-                //       },
-                //     );
-                //   } else {
-                //     return Container();
-                //   }
-                // }),
-                // spaceHeightSmall,
-
+                CustomButton(
+                  text: "Reset Password",
+                  colorButton: AppColor.red,
+                  colorText: AppColor.white,
+                  onPressed: () {
+                    Get.to(
+                      UpdatePassword(),
+                    );
+                  },
+                ),
+                spaceHeightNormal,
                 // LOGOUT
                 CustomButton(
                   text: "Logout",

@@ -37,6 +37,36 @@ class ApiServiceUser {
     }
   }
 
+ Future<Map<String, dynamic>> updateUserPassword(
+      String currentPassword, String newPassword, String newPasswordConfirmation) async {
+    final token = box.read('token');
+    final url = "$baseUrl/user/update-password";
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Added missing Content-Type header
+    };
+    final body = jsonEncode({
+      'current_password': currentPassword,
+      'new_password': newPassword,
+      'new_password_confirmation': newPasswordConfirmation,
+    });
+
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        return {'success': true, 'message': 'Password updated successfully'};
+      } else {
+        print('Failed to update password: ${response.statusCode} ${response.body}');
+        return {'success': false, 'message': 'Failed to update password: ${response.body}'};
+      }
+    } catch (e) {
+      print('Error occurred during password update: $e');
+      return {'success': false, 'message': 'An error occurred during password update: $e'};
+    }
+  }
+
   Future<void> logout() async {
     final token = box.read('token');
     final url = "$baseUrl/auth/logout";
@@ -90,37 +120,20 @@ class ApiServiceUser {
     }
   }
 
-  Future<Map<String, dynamic>> updateUserPassword(String currentPassword,
-      String newPassword, String newPasswordConfirmation) async {
-    final token = box.read('token');
+   Future<http.Response> updatePassword(Map<String, dynamic> body) async {
+    final token = GetStorage().read('token');
     final url = "$baseUrl/user/update-password";
     final headers = {
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', 
     };
-    final body = jsonEncode({
-      'current_password': currentPassword,
-      'new_password': newPassword,
-      'new_password_confirmation': newPasswordConfirmation,
-    });
-    try {
-      final response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
 
-      if (response.statusCode == 200) {
-        return {'success': true, 'message': 'Password updated successfully'};
-      } else {
-        return {
-          'success': false,
-          'message': 'Failed to update password: ${response.body}'
-        };
-      }
-    } catch (e) {
-      return {
-        'success': false,
-        'message': 'An error occurred during password update: $e'
-      };
-    }
+    return await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(body),
+    );
   }
 
   Future<UserModel> getUserData() async {

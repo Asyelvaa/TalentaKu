@@ -37,6 +37,47 @@ class ProfilePageController extends GetxController {
     }
   }
 
+  Future<void> updatePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
+  try {
+    isLoading.value = true;
+
+    Map<String, dynamic> body = {
+      'current_password': currentPassword,
+      'new_password': newPassword,
+      'new_password_confirmation': newPasswordConfirmation,
+    };
+
+    final response = await apiService.updatePassword(body);
+
+    if (response.statusCode == 201) {
+      Get.snackbar(
+        'Success',
+        'Password updated successfully.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } else {
+      final errorData = json.decode(response.body);
+      Get.snackbar(
+        'Update Failed',
+        errorData['message'] ?? 'An error occurred while updating the password.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  } catch (e) {
+    print('Error: $e');
+    Get.snackbar(
+      'Update Failed',
+      'An error occurred while updating the password. Please try again.',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+
+   
+
   Future<void> logout() async {
     try {
       await apiService.logout();

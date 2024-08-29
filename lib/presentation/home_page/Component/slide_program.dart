@@ -16,13 +16,14 @@ class SlideInformation extends GetView<HomePageController> {
   final void Function()? onTap;
   final String image;
 
-  const SlideInformation({
+  SlideInformation({
     Key? key,
     required this.headerContent,
     required this.contentTitles,
     this.onTap,
     required this.image,
   }) : super(key: key);
+  final HomePageController _homePageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +55,12 @@ class SlideInformation extends GetView<HomePageController> {
                     );
                   },
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.bottomSheet(
-                      Container(
+                if (_homePageController.userRole
+                    .any((role) => role.contains('Guru')))
+                  GestureDetector(
+                    onTap: () {
+                      Get.bottomSheet(
+                        Container(
                           height: heightScreen * 0.5,
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -70,20 +73,23 @@ class SlideInformation extends GetView<HomePageController> {
                             initialDesc: controller.descController.text,
                             initialPhoto: controller.selectedImages.value,
                             initialCategoryId: controller.categoryId.text,
-                          )),
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                    );
-                  },
-                  child: Container(
-                    height: heightScreen * 0.3,
-                    width: widthScreen * 0.3,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: AppColor.white),
-                    child: Icon(Icons.add),
+                          ),
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                    child: Container(
+                      height: heightScreen * 0.3,
+                      width: widthScreen * 0.3,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColor.white,
+                          border:
+                              Border.all(color: AppColor.blue600, width: 1)),
+                      child: Icon(Icons.add),
+                    ),
                   ),
-                ),
               ],
             ),
           ),

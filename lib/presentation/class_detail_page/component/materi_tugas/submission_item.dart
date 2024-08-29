@@ -12,39 +12,36 @@ class SubmissionItem extends GetView<ClassDetailController> {
   final String tenggat;
   final String taskId;
   final String gradeId;
-  const SubmissionItem({
-    super.key,
-    required this.title,
-    required this.tenggat,
-    required this.taskId,
-    required this.gradeId
-  });
+  const SubmissionItem(
+      {super.key,
+      required this.title,
+      required this.tenggat,
+      required this.taskId,
+      required this.gradeId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SubmissionCompletePageScreem(), 
-        arguments: {
+        Get.to(() => SubmissionCompletePageScreem(), arguments: {
           'taskId': taskId,
-          'gradeId' : gradeId,
-          'studentIdSubmitted' : GetStorage().read('dataUser')?['id'].toString()
+          'gradeId': gradeId,
+          'studentIdSubmitted': GetStorage().read('dataUser')['id'].toString()
         });
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 12),
         width: widthScreen,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), 
+            borderRadius: BorderRadius.circular(20),
             color: AppColor.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2), 
-                blurRadius: 2, 
-                offset: Offset(0, 1), 
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 2,
+                offset: Offset(0, 1),
               )
-            ]
-        ),
+            ]),
         child: Column(
           children: [
             Padding(
@@ -52,23 +49,31 @@ class SubmissionItem extends GetView<ClassDetailController> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    child: Icon(Icons.assignment, color: AppColor.black,size: 20  ,),
+                    child: Icon(
+                      Icons.assignment,
+                      color: AppColor.black,
+                      size: 20,
+                    ),
                     backgroundColor: AppColor.blue100,
                     radius: 16,
                   ),
                   defaultWidthtSpace,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [                    
-                    AutoSizeText(
-                      title,
-                      style: AppTextStyle.tsSmallBold(AppColor.black),
-                      minFontSize: 12,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
-                  ],)                  
+                    children: [
+                      AutoSizeText(
+                        title,
+                        style: AppTextStyle.tsSmallBold(AppColor.black),
+                        minFontSize: 12,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        tenggat,
+                        style: AppTextStyle.tsSmallRegular(AppColor.black),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

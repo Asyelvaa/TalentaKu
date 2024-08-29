@@ -18,7 +18,7 @@
 //           preferredSize: Size.fromHeight(kToolbarHeight),
 //           child: BackAppbar(titleAppbar: 'Pengumpulan Tugas'),
 //         ),
-        
+
 //     );
 //   }
 // }
@@ -36,7 +36,7 @@ import '../common_widget/text_background.dart';
 class SubmissionCompletePageScreem extends StatelessWidget {
   // final completionsId;
   const SubmissionCompletePageScreem({
-    super.key, 
+    super.key,
     // required this.completionsId
   });
 
@@ -76,15 +76,15 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                         style: AppTextStyle.tsSmallBold(AppColor.black),
                       ),
                     ],
-                  ),                  
+                  ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: AppColor.blue200,
-                        shape: BoxShape.circle
-                        ),
-                    child: Text('${submission['score']}', style: AppTextStyle.tsBodyBold(AppColor.black),)
-                  )
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: AppColor.blue200, shape: BoxShape.circle),
+                      child: Text(
+                        '${submission['score']}',
+                        style: AppTextStyle.tsBodyBold(AppColor.black),
+                      ))
                 ],
               ),
               Row(
@@ -108,12 +108,14 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Tenggat Tugas',
-                                  style: AppTextStyle.tsSmallBold(AppColor.black)),
+                                  style:
+                                      AppTextStyle.tsSmallBold(AppColor.black)),
                               Text(
-                                DateFormat('EEE, d/M/yyyy')
-                                        .format(controller.task.value.endDate!) ??
+                                DateFormat('EEE, d/M/yyyy').format(
+                                        controller.task.value.endDate!) ??
                                     '',
-                                style: AppTextStyle.tsSmallRegular(AppColor.black),
+                                style:
+                                    AppTextStyle.tsSmallRegular(AppColor.black),
                               ),
                             ],
                           ),
@@ -121,7 +123,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width:4),
+                  SizedBox(width: 4),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(8),
@@ -140,11 +142,16 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Dikumpulkan',
-                                  style: AppTextStyle.tsSmallBold(AppColor.black)),
+                                  style:
+                                      AppTextStyle.tsSmallBold(AppColor.black)),
                               Text(
-                                DateFormat('EEE, d/M/yyyy').format(DateTime.parse(submission['submitted_at'])) ??
+                                DateFormat('EEE, d/M/yyyy')
+                                        .format(DateTime.parse(
+                                            submission['submitted_at']))
+                                        .toString() ??
                                     '',
-                                style: AppTextStyle.tsSmallRegular(AppColor.black),
+                                style:
+                                    AppTextStyle.tsSmallRegular(AppColor.black),
                               ),
                             ],
                           ),
@@ -175,7 +182,6 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                         '${controller.task.value.desc!.join(', ')}',
                         style: AppTextStyle.tsBodyRegular(AppColor.black),
                       ),
-                      
                     ],
                   ),
                 ),
@@ -194,7 +200,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
               spaceHeightSmall,
               Container(
                 height: 100,
-                child:  ListView.builder(
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: submission['submmision_media']?.length ?? 0,
                   itemBuilder: (context, index) {
@@ -202,14 +208,14 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Image.network(
-                        'https://talentaku.site/image/${media['fileName']}' ?? 'unknown',
+                        'https://talentaku.site/image/${media['fileName']}' ??
+                            'unknown',
                         fit: BoxFit.cover,
                       ),
                     );
                   },
                 ),
-              ),             
-              
+              ),
             ],
           ),
         );
