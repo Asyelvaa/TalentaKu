@@ -81,8 +81,9 @@ class StudentReportFormController extends GetxController {
     }
   }
 
-  void removeImage(int index) {
-    selectedImages.removeAt(index);
+  void removeImage(File file) {
+    selectedImages.removeWhere((element) => element.path == file.path);
+    // selectedImages.removeAt(index);
   }
 
   void fetchStudentsFromApi() async {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/back_appbar.dart';
+import '../common_widget/custom_textFormField.dart';
 import 'controllers/album_form.controller.dart';
 
 class AlbumFormScreen extends StatelessWidget {
@@ -133,11 +134,14 @@ class AlbumFormScreen extends StatelessWidget {
                 Container(
                   alignment: Alignment.center,
                   child: ElevatedButton.icon(
-                    onPressed: () => Get.bottomSheet(ShowUploadOptionsBottomSheet()),
+                    // onPressed: () => Get.bottomSheet(ShowUploadOptionsBottomSheet()),
+                    onPressed: () {
+                      controller.pickMedia();
+                    },
                     icon: Icon(Icons.add, color: AppColor.black),
                     label: Text(
-                      'Unggah Foto / Video Baru',
-                      style: AppTextStyle.tsLittle.copyWith(fontWeight: FontWeight.bold)
+                      'Unggah Foto Baru',
+                      style: AppTextStyle.tsBodyRegular(AppColor.black)
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.white,
@@ -149,25 +153,10 @@ class AlbumFormScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 12,),
                 // DESKRIPSI
-                TextFormField(
-                  controller: controller.descriptionController,
-                  decoration: InputDecoration(
-                    hintText: 'Tambahkan deskripsi...',
-                    hintStyle: AppTextStyle.tsLittle,
-                    fillColor: AppColor.white,
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(color: AppColor.blue500),
-                    ),
-                  ),
-                  maxLines: null,
-                  minLines: 1,
-                ),
+                CustomTextFormField(
+                  loginController: controller.descriptionController, 
+                  labelText:  'Tambahkan deskripsi...',
+                ),                
                 SizedBox(height: 12,),
                 // BUTTON UPLOAD
                 ElevatedButton(
@@ -181,12 +170,12 @@ class AlbumFormScreen extends StatelessWidget {
                           )
                         : Text(
                             'Unggah',
-                            style: AppTextStyle.tsLittle,
+                            style: AppTextStyle.tsBodyBold(AppColor.white),
                           );
                   }),
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size.fromHeight(50),
-                    backgroundColor: AppColor.blue100,
+                    fixedSize: Size(widthScreen, 50), 
+                    backgroundColor: AppColor.blue600,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),

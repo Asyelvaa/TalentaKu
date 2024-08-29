@@ -30,7 +30,7 @@ class CustomButtonWithIcon extends StatelessWidget {
               EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(12),
           ))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +41,7 @@ class CustomButtonWithIcon extends StatelessWidget {
           ),
           Icon(
             icon,
-            color: AppColor.black,
+            color: colorIcon,
           ),
         ],
       ),

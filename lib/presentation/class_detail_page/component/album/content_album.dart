@@ -80,6 +80,7 @@ class ContentAlbum extends GetView<ClassDetailController> {
                   child: Text('Belum ada foto yang diunggah', style: AppTextStyle.tsBodyRegular(AppColor.black),),),)
               );
             } else {
+              var reversedAlbums = controller.albums.reversed.toList();
               return SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -88,7 +89,7 @@ class ContentAlbum extends GetView<ClassDetailController> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var album = controller.albums[index];
+                    var album = reversedAlbums[index];
 
                     return GestureDetector(
                       onTap: () => Get.to(AlbumDetailPage(), arguments: album),

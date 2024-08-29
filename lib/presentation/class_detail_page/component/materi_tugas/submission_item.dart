@@ -26,8 +26,7 @@ class SubmissionItem extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SubmissionCompletePageScreem(), 
-        arguments: {
+        Get.to(() => SubmissionCompletePageScreem(), arguments: {
           'taskId': taskId,
           'gradeId' : gradeId,
           'completionsId': completionsId
@@ -39,16 +38,15 @@ class SubmissionItem extends GetView<ClassDetailController> {
         margin: EdgeInsets.only(bottom: 12),
         width: widthScreen,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), 
+            borderRadius: BorderRadius.circular(20),
             color: AppColor.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2), 
-                blurRadius: 2, 
-                offset: Offset(0, 1), 
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 2,
+                offset: Offset(0, 1),
               )
-            ]
-        ),
+            ]),
         child: Column(
           children: [
             Padding(
@@ -56,7 +54,11 @@ class SubmissionItem extends GetView<ClassDetailController> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    child: Icon(Icons.assignment, color: AppColor.black,size: 20  ,),
+                    child: Icon(
+                      Icons.assignment,
+                      color: AppColor.black,
+                      size: 20,
+                    ),
                     backgroundColor: AppColor.blue100,
                     radius: 16,
                   ),

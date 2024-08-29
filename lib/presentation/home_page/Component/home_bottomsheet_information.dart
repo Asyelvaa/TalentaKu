@@ -50,6 +50,10 @@ class HomeBottomsheetInformation extends StatelessWidget {
                 style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
               ),
               SizedBox(height: 20),
+              Flexible(
+                child: Text(descriptionContent, style: AppTextStyle.tsNormal),
+              ),
+              SizedBox(height: 20),
               Container(
                 height: 200,
                 child: photoList.isEmpty
@@ -84,10 +88,6 @@ class HomeBottomsheetInformation extends StatelessWidget {
                           ),
                         ),
                       ),
-              ),
-              SizedBox(height: 20),
-              Flexible(
-                child: Text(descriptionContent, style: AppTextStyle.tsNormal),
               ),
               SizedBox(height: 20),
               Obx(() {
@@ -163,27 +163,24 @@ class HomeBottomsheetInformation extends StatelessWidget {
   }
 
   void _showEditBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
+      Container(
+        height: heightScreen * 0.5,
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+          color: AppColor.white,
+        ),
+        child: EditProgramPopup(
+          programId: programId,
+          initialName: informationTitle,
+          initialDesc: descriptionContent,
+          initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
+          initialCategoryId: 1,
+        ),
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-            color: AppColor.white,
-          ),
-          child: EditProgramPopup(
-            programId: programId,
-            initialName: informationTitle,
-            initialDesc: descriptionContent,
-            initialPhoto: photoList.isNotEmpty ? photoList[0] : '',
-            initialCategoryId: 1,
-          ),
-        );
-      },
     );
   }
 

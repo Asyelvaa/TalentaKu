@@ -29,120 +29,107 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            child: Column(
-              children: [
-                Container(alignment: Alignment.center, child: ProfilePicture()),
-                SizedBox(height: 12),
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return Column(
-                      children: [
-                        Text('Loading...', style: AppTextStyle.tsTitle),
-                        Text(
-                          'Loading...',
-                          style: AppTextStyle.tsNormal
-                              .copyWith(color: AppColor.blue600),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        Text(
-                          student.name ?? 'Unknown',
-                          style: AppTextStyle.tsTitle,
-                        ),
-                        Text(
-                          student.roles.join(', '),
-                          style: AppTextStyle.tsNormal
-                              .copyWith(color: AppColor.blue600),
-                        ),
-                      ],
-                    );
-                  }
-                }),
-                defaultHeightSpace,
-                // Display additional profile information here
-                Container(
-                  width: Get.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
+            children: [
+              CircleAvatar(
+                        radius: 60,
+                        backgroundColor: AppColor.blue600,
+                        child: Text(student.name.substring(2).toUpperCase(),
+                            style: AppTextStyle.tsSmallBold(AppColor.white))),             
+              SizedBox(height: 12),
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return Column(
                     children: [
-                      ProfileDataContainer(
-                        title: "NIS",
-                        dataUser: student.identificationNumber ?? '-',
-                      ),
-                      ProfileDataContainer(
-                        title: "Kelompok",
-                        dataUser:
-                            student.grades.isNotEmpty ? student.grades[0] : '-',
+                      Text('Loading...', style: AppTextStyle.tsTitle),
+                      Text(
+                        'Loading...',
+                        style: AppTextStyle.tsNormal
+                            .copyWith(color: AppColor.blue600),
                       ),
                     ],
-                  ),
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Text(
+                        student.name ?? 'Unknown',
+                        style: AppTextStyle.tsTitle,
+                      ),
+                      Text(
+                        student.roles.join(', '),
+                        style: AppTextStyle.tsNormal
+                            .copyWith(color: AppColor.blue600),
+                      ),
+                    ],
+                  );
+                }
+              }),
+              defaultHeightSpace,                
+              Obx(() => controller.isLoading.value
+                  ? Column(
+                      children: [
+                        ProfileList(
+                          title: "Nama Lengkap",
+                          description: "Loading...",
+                        ),
+                        ProfileList(
+                          title: "NIS",
+                          description: "Loading...",
+                        ),
+                        ProfileList(
+                          title: "Kelas",
+                          description: "Loading...",
+                        ),
+                        ProfileList(
+                          title: "Alamat",
+                          description: "Loading...",
+                        ),
+                        // ProfileList(
+                        //   title: "Mulai di RBA",
+                        //   description: "Loading...",
+                        // ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        ProfileList(
+                          title: "Nama Lengkap",
+                          description: student.name ?? '-',
+                        ),
+                        ProfileList(
+                          title: "NIS",
+                          description: student.identificationNumber ?? '-',
+                        ),
+                        ProfileList(
+                          title: "Kelas",
+                          description: student.grades.isNotEmpty ? student.grades[0] : '-',
+                        ),
+                        ProfileList(
+                          title: "Alamat",
+                          description: student.address ?? '-',
+                        ),
+                        // ProfileList(
+                        //   title: "Mulai di RBA",
+                        //   description: '-',
+                        // ),
+                      ],
+                    )),
+              defaultHeightSpace,
+              if (student.roles.contains('Murid KB') ||
+                  student.roles.contains('Murid SD'))
+                CustomButtonWithIcon(
+                  text: "Laporan Pembelajaran",
+                  icon: Icons.arrow_forward_ios,
+                  colorButton: AppColor.white,
+                  colorIcon: AppColor.black,
+                  colorText: AppColor.black,
+                  onPressed: () {
+                    Get.toNamed(Routes.REPORT_LIST_USER_PAGE,
+                        arguments: [student.id, arguments[1]]);
+                  },
                 ),
-                defaultHeightSpace,
-                Obx(() => controller.isLoading.value
-                    ? Column(
-                        children: [
-                          ProfileList(
-                            title: "Nama Lengkap",
-                            description: "Loading...",
-                          ),
-                          ProfileList(
-                            title: "Tempat, Tanggal Lahir",
-                            description: "Loading...",
-                          ),
-                          ProfileList(
-                            title: "Alamat",
-                            description: "Loading...",
-                          ),
-                          ProfileList(
-                            title: "Mulai di RBA",
-                            description: "Loading...",
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          ProfileList(
-                            title: "Nama Lengkap",
-                            description: student.name ?? '-',
-                          ),
-                          ProfileList(
-                            title: "Tempat, Tanggal Lahir",
-                            description: student.birthInformation ?? '-',
-                          ),
-                          ProfileList(
-                            title: "Alamat",
-                            description: student.address ?? '-',
-                          ),
-                          ProfileList(
-                            title: "Mulai di RBA",
-                            description: '-',
-                          ),
-                        ],
-                      )),
-                defaultHeightSpace,
-                if (student.roles.contains('Murid KB') ||
-                    student.roles.contains('Murid SD'))
-                  CustomButtonWithIcon(
-                    text: "Laporan Pembelajaran",
-                    icon: Icons.arrow_forward_ios,
-                    colorButton: AppColor.white,
-                    colorIcon: AppColor.blue600,
-                    colorText: AppColor.blue600,
-                    onPressed: () {
-                      Get.toNamed(Routes.REPORT_LIST_USER_PAGE,
-                          arguments: [student.id, arguments[1]]);
-                    },
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
