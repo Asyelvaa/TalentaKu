@@ -59,37 +59,40 @@ class SlideInformation extends GetView<HomePageController> {
                     .any((role) => role.contains('Guru')))
                   GestureDetector(
                     onTap: () {
-                      Get.bottomSheet(
-                        Container(
-                          height: heightScreen * 0.5,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(22)),
-                            color: AppColor.white,
-                          ),
-                          child: AddNewData(
-                            initialName: controller.nameController.text,
-                            initialDesc: controller.descController.text,
-                            initialPhoto: controller.selectedImages.value,
-                            initialCategoryId: controller.categoryId.text,
-                          ),
-                        ),
+                      showModalBottomSheet(
+                        context: context,
                         isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.black12,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: heightScreen * 0.7,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(22)),
+                              color: AppColor.white,
+                            ),
+                            child: AddNewData(
+                              initialName: controller.nameController.text,
+                              initialDesc: controller.descController.text,
+                              initialPhoto: controller.selectedImages.value,
+                              initialCategoryId: 1.toString(),
+                            ),
+                          );
+                        },
                       );
                     },
                     child: Container(
                       height: heightScreen * 0.3,
                       width: widthScreen * 0.3,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppColor.white,
-                          border:
-                              Border.all(color: AppColor.blue600, width: 1)),
+                        borderRadius: BorderRadius.circular(12),
+                        color: AppColor.white,
+                        border: Border.all(color: AppColor.blue600, width: 1),
+                      ),
                       child: Icon(Icons.add),
                     ),
-                  ),
+                  )
               ],
             ),
           ),

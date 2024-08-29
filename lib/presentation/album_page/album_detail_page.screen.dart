@@ -5,7 +5,6 @@ import 'package:flutter_talentaku/presentation/common_widget/back_appbar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 // import 'package:image_downloader/image_downloader.dart';
 import '../../domain/models/album_model.dart';
 import 'component/post_card.dart';
@@ -41,38 +40,23 @@ class AlbumDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(
-                () => Container(
-                  height: heightScreen * 0.4,
-                  child: PageView.builder(
-                    controller: controller.pageController,
-                    itemCount: album.media?.length ?? 0,
-                    itemBuilder: (BuildContext context, int index) {
-                      var media = album.media![index];
-
-                      return media.filePath != null
-                          ? Shimmer(
-                              duration: Duration(seconds: 2),
-                              color: Colors.grey.shade300,
-                              enabled: true,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                  image: NetworkImage(media.filePath!),
-                                  fit: BoxFit.scaleDown,
-                                ),
-                              ),
-                            );
-                    },
-                  ),
+              Container(
+                height: heightScreen * 0.4,
+                child: PageView.builder(
+                  controller: controller.pageController,
+                  itemCount: album.media?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    var media = album.media![index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: DecorationImage(
+                          image: NetworkImage(media.filePath!),
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               Row(
