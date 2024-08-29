@@ -22,6 +22,9 @@ class HomePageController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   final TextEditingController categoryId = TextEditingController();
+    final TextEditingController nameExtraController = TextEditingController();
+  final TextEditingController descExtraController = TextEditingController();
+  final TextEditingController categoryIdExtra = TextEditingController();
   final desc = [].obs;
   final informationList = <Information>[].obs;
   final contentTitles = <String>[].obs;
