@@ -202,7 +202,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Image.network(
-                        'https://talentaku.site/image/${media['fileName']}' ?? 'unknown',
+                        ' https://talentaku.site/image/task-submission/${media['fileName']}' ?? 'unknown',
                         fit: BoxFit.cover,
                       ),
                     );

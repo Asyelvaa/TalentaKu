@@ -30,6 +30,8 @@ class ApiServiceUser {
   
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
+    } else if(response.statusCode == 422) {
+      return jsonDecode(response.body);
     } else {
       print(response.statusCode);
       print(response.body);

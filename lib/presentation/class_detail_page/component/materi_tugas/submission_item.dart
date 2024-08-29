@@ -12,12 +12,14 @@ class SubmissionItem extends GetView<ClassDetailController> {
   final String tenggat;
   final String taskId;
   final String gradeId;
+  final String completionsId;
   const SubmissionItem({
     super.key,
     required this.title,
     required this.tenggat,
     required this.taskId,
-    required this.gradeId
+    required this.gradeId,
+    required this.completionsId
   });
 
   @override
@@ -28,7 +30,9 @@ class SubmissionItem extends GetView<ClassDetailController> {
         arguments: {
           'taskId': taskId,
           'gradeId' : gradeId,
-          'studentIdSubmitted' : GetStorage().read('dataUser')?['id'].toString()
+          'completionsId': completionsId
+          // controller.submissionsWithScore[index].submissionId.toString(),
+          // 'studentIdSubmitted' : GetStorage().read('dataUser')?['id'].toString()
         });
       },
       child: Container(
@@ -57,18 +61,20 @@ class SubmissionItem extends GetView<ClassDetailController> {
                     radius: 16,
                   ),
                   defaultWidthtSpace,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [                    
-                    AutoSizeText(
-                      title,
-                      style: AppTextStyle.tsSmallBold(AppColor.black),
-                      minFontSize: 12,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
-                  ],)                  
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [                    
+                      AutoSizeText(
+                        title,
+                        style: AppTextStyle.tsSmallBold(AppColor.black),
+                        minFontSize: 12,
+                        maxLines: null,
+                        overflow: TextOverflow.visible,
+                      ),
+                      Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
+                    ],),
+                  )                  
                 ],
               ),
             ),

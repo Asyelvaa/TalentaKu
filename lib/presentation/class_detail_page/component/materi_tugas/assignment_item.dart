@@ -56,18 +56,20 @@ class AssignmentItem extends GetView<ClassDetailController> {
                     radius: 16,
                   ),
                   defaultWidthtSpace,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [                    
-                    AutoSizeText(
-                      title,
-                      style: AppTextStyle.tsSmallBold(AppColor.black),
-                      minFontSize: 12,
-                      maxLines: null,
-                      overflow: TextOverflow.clip,
-                    ),
-                    Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
-                  ],)                  
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [                    
+                      AutoSizeText(
+                        title,
+                        style: AppTextStyle.tsSmallBold(AppColor.black),
+                        minFontSize: 12,
+                        maxLines: null,
+                        overflow: TextOverflow.visible,
+                      ),
+                      Text(tenggat, style: AppTextStyle.tsSmallRegular(AppColor.black),)
+                    ],),
+                  )                  
                 ],
               ),
             ),

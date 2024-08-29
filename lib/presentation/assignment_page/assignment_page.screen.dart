@@ -41,7 +41,7 @@ class AssignmentPageScreen extends StatelessWidget {
                     Text('Tugas Pembelajaran', style: AppTextStyle.tsTitleBold(AppColor.white)),
                     Obx( () => controller.isLoading.value 
                       ? Text('...', style: AppTextStyle.tsSmallRegular(AppColor.white))
-                      : Text( DateFormat('EEE, d MMMM yyyy').format(controller.taskDetail.value!.startDate!) ?? '',
+                      : Text( DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(controller.taskDetail.value!.startDate!) ?? '',
                               style: AppTextStyle.tsSmallRegular(AppColor.white),
                             ), 
                       )                    

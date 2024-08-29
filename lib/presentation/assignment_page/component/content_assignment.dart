@@ -51,7 +51,7 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                         Text('Tenggat : ',
                             style: AppTextStyle.tsSmallBold(AppColor.black)),
                         Text(
-                          DateFormat('EEE, d MMMM yyyy')
+                          DateFormat('EEEE, d MMMM yyyy', 'id_ID')
                                   .format(task.endDate!) ??
                               '',
                           style: AppTextStyle.tsSmallRegular(AppColor.black),
@@ -63,17 +63,21 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                       children: [
                         Icon(Icons.assignment, color: AppColor.blue600),
                         defaultWidthtSpace,
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: heightScreen * 0.01,
-                              horizontal: widthScreen * 0.05),
-                          decoration: BoxDecoration(
-                              color: AppColor.white,
-                              borderRadius: defaultBorderRadius),
-                          child: Text(
-                            task.title! ?? '',
-                            style: AppTextStyle.tsBodyBold(AppColor.black),
-                            textAlign: TextAlign.justify,
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: heightScreen * 0.01,
+                                horizontal: widthScreen * 0.05),
+                            decoration: BoxDecoration(
+                                color: AppColor.white,
+                                borderRadius: defaultBorderRadius),
+                            child: Text(
+                              task.title! ?? '',
+                              style: AppTextStyle.tsBodyBold(AppColor.black),
+                              // textAlign: TextAlign.justify,
+                              maxLines: null,
+                              overflow: TextOverflow.visible,
+                            ),
                           ),
                         ),
                       ],

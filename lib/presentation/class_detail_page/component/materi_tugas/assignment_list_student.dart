@@ -28,14 +28,14 @@ class AssignmentListStudent extends StatelessWidget {
 
         return CustomScrollView(
           slivers: [
-            ... buildTaskSection(
+            _buildSection(
               title: 'Tugas Belum Dikerjakan:',
               tasks: notSubmittedTasks,
               emptyMessage: 'Tidak ada tugas',
               controller: controller,
               isSubmission: false,
             ),
-            ... buildTaskSection(
+            _buildSection(
               title: 'Tugas Sudah Dikerjakan:',
               tasks: submittedTasks,
               emptyMessage: 'Tidak ada tugas yang sudah dikerjakan',
@@ -48,67 +48,51 @@ class AssignmentListStudent extends StatelessWidget {
     });
   }
 
-  SliverToBoxAdapter buildSectionTitle(String title) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Text(title, style: AppTextStyle.tsBodyBold(AppColor.black)),
-      ),
-    );
-  }
-
-  SliverList buildTaskList({
-    required List<TaskStudentModel> tasks,
-    required ClassDetailController controller,
-    required bool isSubmission,
-  }) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          var task = tasks[index];
-          if (isSubmission) {
-            return SubmissionItem(
-              title: task.title ?? 'No title',
-              tenggat: task.endDate != null
-                  ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
-                  : 'No end date',
-              taskId: task.taskId.toString(),
-              gradeId: controller.classItem['id'].toString(),
-            );
-          } else {
-            return AssignmentItem(
-              title: task.title ?? 'No title',
-              tenggat: task.endDate != null
-                  ? 'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}'
-                  : 'No end date',
-              taskId: task.taskId.toString(),
-              gradeId: controller.classItem['id'].toString(),
-            );
-          }
-        },
-        childCount: tasks.length,
-      ),
-    );
-  }
-
-  List<Widget> buildTaskSection({
+  Widget _buildSection({
     required String title,
     required List<TaskStudentModel> tasks,
     required String emptyMessage,
     required ClassDetailController controller,
     required bool isSubmission,
   }) {
-    return [
-      buildSectionTitle(title),
-      if (tasks.isEmpty)
-        SliverToBoxAdapter(
-          child: Padding(
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(emptyMessage, style: AppTextStyle.tsBodyRegular(AppColor.black)),
+            child: Text(title, style: AppTextStyle.tsBodyBold(AppColor.black)),
           ),
-        )
-      else
-        buildTaskList(tasks: tasks, controller: controller, isSubmission: isSubmission),
-    ];
+          if (tasks.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(emptyMessage, style: AppTextStyle.tsBodyRegular(AppColor.black)),
+            )
+          else
+            ...tasks.map((task) {
+              return isSubmission
+                  ? SubmissionItem(
+                      title: task.title ?? 'No title',
+                      tenggat: task.endDate != null
+                          ? 'Tenggat: ${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(task.endDate!)}'
+                          : 'No end date',
+                      taskId: task.taskId.toString(),
+                      gradeId: controller.classItem['id'].toString(),
+                      completionsId: 10.toString(),
+                      // completionsId: controller.submissionsWithScore.firstWhere((submission) => submission.taskId == task.taskId)
+                      //     .submissionId
+                      //     .toString(),
+                    )
+                  : AssignmentItem(
+                      title: task.title ?? 'No title',
+                      tenggat: task.endDate != null
+                          ? 'Tenggat: ${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(task.endDate!)}'
+                          : 'No end date',
+                      taskId: task.taskId.toString(),
+                      gradeId: controller.classItem['id'].toString(),
+                    );
+            }).toList(),
+        ],
+      ),
+    );
   }
 }
