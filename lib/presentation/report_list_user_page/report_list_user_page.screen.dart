@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../common_widget/back_appbar.dart';
+import '../edit__report_user_page/edit_report_user_page.screen.dart';
 import 'controllers/report_list_user_page.controller.dart';
 
 class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
@@ -12,9 +13,8 @@ class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
 
   @override
   Widget build(BuildContext context) {
-    final RefreshController refreshController =
-        RefreshController(initialRefresh: false);
-    final Rx<DateTime?> selectedDate = Rx<DateTime?>(null); // For storing selected date
+    final RefreshController refreshController = RefreshController(initialRefresh: false);
+    final Rx<DateTime?> selectedDate = Rx<DateTime?>(null); 
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -123,8 +123,13 @@ class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
                           style: AppTextStyle.tsBodyRegular(AppColor.black),
                         ),
                         onTap: () async {
-                          await Get.toNamed(Routes.CLASS_DETAIL,
-                              arguments: ['edit', report])?.then((value) {
+                          // Get.to(() => EditReportUserPageScreen(),
+                          // arguments: {
+                          //   'reportId': report['id'].toString()
+                          // }
+                          // );
+                          await Get.to( () =>
+                           EditReportUserPageScreen(), arguments: ['edit', report])?.then((value) {
                             if (value == 'success') {
                               controller.fetchUserReport();
                             }
