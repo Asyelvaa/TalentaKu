@@ -5,14 +5,7 @@ import 'package:http/http.dart' as http;
 
 
 class ApiServiceInformation {
-  static final ApiServiceInformation _singleton = ApiServiceInformation._internal();
-  static const String baseUrl = 'https://talentaku.site/api';
-
-  factory ApiServiceInformation() {
-    return _singleton;
-  }
-
-  ApiServiceInformation._internal();
+  static const String baseUrl =  'https://talentaku.site/api';
   final box = GetStorage();
 
   Future<Map<String, dynamic>> fetchProgram() async {

@@ -27,10 +27,9 @@ class SubmissionPageController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     taskId.value = arguments['taskId'].toString();
     gradeId.value = arguments['gradeId'].toString();
-    studentIdSubmitted.value = arguments['studentIdSubmitted'].toString();
+    // studentIdSubmitted.value = arguments['studentIdSubmitted'].toString();
     completionsId.value = arguments['completionsId'].toString();
-    print(
-        'pass arg in submission: $taskId, $gradeId, $studentIdSubmitted, $completionsId');
+    print('pass arg in submission: $taskId, $gradeId, $studentIdSubmitted, $completionsId');
     print(studentIdSubmitted);
     fetchSubmissionsById();
     fetchTaskDetails();

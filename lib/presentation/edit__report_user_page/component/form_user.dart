@@ -22,6 +22,10 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //  if (textController.text.isEmpty && controller.reportData.containsKey(sectionTitle)) {
+    //   textController.text = controller.reportData[sectionTitle] ?? '';
+    // }
+
     return Obx(() {
       String? selectedOption = controller.selectedOptions[sectionTitle];
 

@@ -7,16 +7,8 @@ import '../../../presentation/student_report_page/model/reportModel.dart';
 
 
 class ApiServiceReport {
-  static final ApiServiceReport _singleton = ApiServiceReport._internal();
-  static const String baseUrl = 'https://talentaku.site/api';
-
-  factory ApiServiceReport() {
-    return _singleton;
-  }
-
-  ApiServiceReport._internal();
+  static const String baseUrl =  'https://talentaku.site/api';
   final box = GetStorage();
-
 
   // CREATE REPORT
 

@@ -9,6 +9,8 @@ import '../../../domain/models/user_model.dart';
 class ApiServiceUser {
   static final ApiServiceUser _singleton = ApiServiceUser._internal();
   static const String baseUrl = 'https://talentaku.site/api';
+  // static const String baseUrl = 'https://talentaku-api.rplrus.com/api';
+  
 
   factory ApiServiceUser() {
     return _singleton;

@@ -10,7 +10,7 @@ import '../../../domain/models/album_model.dart';
 
 class ApiServiceAlbum {
   static final ApiServiceAlbum _singleton = ApiServiceAlbum._internal();
-  static const String baseUrl = 'https://talentaku.site/api';
+  static const String baseUrl =  'https://talentaku.site/api';
 
   factory ApiServiceAlbum() {
     return _singleton;

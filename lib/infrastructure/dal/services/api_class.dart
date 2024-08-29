@@ -5,14 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServiceClass {
-  static final ApiServiceClass _singleton = ApiServiceClass._internal();
-  static const String baseUrl = 'https://talentaku.site/api';
-
-  factory ApiServiceClass() {
-    return _singleton;
-  }
-
-  ApiServiceClass._internal();
+  static const String baseUrl =  'https://talentaku.site/api';
   final box = GetStorage();
 
   Future<Map<String, dynamic>> createClass(

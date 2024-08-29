@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_talentaku/presentation/edit__report_user_page/component/form_user.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../infrastructure/theme/theme.dart';
 import 'controllers/edit_report_user_page.controller.dart';
 
-class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
+class EditReportUserPageScreen extends StatelessWidget {
   const EditReportUserPageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final heightScreen = MediaQuery.of(context).size.height;
     final widthScreen = MediaQuery.of(context).size.width;
+    final controller = Get.put(EditReportUserPageController());
 
     return Scaffold(
       appBar: AppBar(
@@ -34,90 +36,9 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
           children: [
             Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          height: 250,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(22)),
-                                  color: AppColor.background,
-                                ),
-                                child: CupertinoDatePicker(
-                                  initialDateTime: DateTime.now(),
-                                  onDateTimeChanged: (DateTime newDateTime) {
-                                    controller.createdController.text =
-                                        "${newDateTime.year}/${newDateTime.month}/${newDateTime.day}";
-                                  },
-                                  use24hFormat: true,
-                                  mode: CupertinoDatePickerMode.date,
-                                ),
-                              ),
-                              CupertinoButton(
-                                color: AppColor.blue100,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                child: Text(
-                                  'Done',
-                                  style: AppTextStyle.tsLittle,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 155,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.5, color: AppColor.blue500),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    alignment: Alignment.center,
-                    child: TextFormField(
-                      controller: controller.createdController,
-                      decoration: InputDecoration(
-                        labelText: "YYYY/MM/DD",
-                        hintStyle: AppTextStyle.tsLittle,
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      ),
-                      enabled: false,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Container(
-                  height: 50,
-                  width: 155,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.5, color: AppColor.blue500),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: TextFormField(
-                    controller: controller.semesterIdController,
-                    decoration: InputDecoration(
-                      labelText: "Semester ID",
-                      hintStyle: AppTextStyle.tsLittle,
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    ),
-                  ),
-                ),
+                Icon(Icons.calendar_month, color: AppColor.blue500,),
+                defaultWidthtSpace,
+                Text('${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(DateTime.now())}', style: AppTextStyle.tsTitle),
               ],
             ),
             SizedBox(height: heightScreen * 0.02),
@@ -233,71 +154,99 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
               ),
             ),
             SizedBox(height: heightScreen * 0.02),
-            GestureDetector(
-              onTap: () {
-                controller.pickImage();
-              },
-              child: Obx(() {
-                return Container(
-                  height: heightScreen * 0.4,
-                  width: widthScreen * 1,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.5, color: AppColor.blue500),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  alignment: Alignment.center,
-                  child: controller.selectedImage.value != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.file(
-                            controller.selectedImage.value!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        )
-                      : Text("+ Foto / Video Baru",
-                          style: AppTextStyle.tsNormal),
-                );
-              }),
+            Row(
+              children: [
+                IconButton(
+                    icon: Icon(Icons.file_upload_rounded),
+                    color: AppColor.blue600,
+                    onPressed: () => controller.pickImage()),
+                Text(
+                  'Upload Foto ',
+                  style: AppTextStyle.tsBodyBold(AppColor.black),
+                ),
+              ],
             ),
-            SizedBox(height: heightScreen * 0.02),
-            // Text("Kirim Laporan untuk", style: AppTextStyle.tsTitle),
-            // SizedBox(height: heightScreen * 0.02),
+            spaceHeightExtraSmall,
             // Obx(() {
-            //   if (controller.isLoading.value) {
-            //     return Center(child: CircularProgressIndicator());
-            //   }
-            //   if (controller.students.isEmpty) {
-            //     return Center(child: Text("Tidak ada murid"));
-            //   }
-            //   return Wrap(
-            //     spacing: 10,
-            //     children: controller.students.map((student) {
-            //       final isSelected =
-            //           controller.selectedStudents.contains(student);
-            //       return GestureDetector(
-            //         onTap: () => controller.toggleSelection(student),
-            //         child: Column(
-            //           children: [
-            //             CircleAvatar(
-            //               radius: 30,
-            //               backgroundImage: student.photo != null
-            //                   ? NetworkImage(student.photo!)
-            //                   : AssetImage('assets/images/anak.png')
-            //                       as ImageProvider,
-            //               backgroundColor:
-            //                   isSelected ? Colors.blue : Colors.grey,
-            //             ),
-            //             SizedBox(height: 5),
-            //             Text(student.name),
-            //           ],
+            //   return Row(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     children: [
+            //       SingleChildScrollView(
+            //         scrollDirection: Axis.horizontal,
+            //         child: Wrap(
+            //           spacing: 8.0,
+            //           runSpacing: 8.0,
+            //           children: controller.selectedImage.value.map((file) {
+            //             return Stack(
+            //               children: [
+            //                 GestureDetector(
+            //                   onTap: () => showGeneralDialog(
+            //                     context: context,
+            //                     barrierDismissible: true,
+            //                     barrierLabel: MaterialLocalizations.of(context)
+            //                         .modalBarrierDismissLabel,
+            //                     barrierColor: AppColor.black,
+            //                     pageBuilder: (BuildContext context,
+            //                         Animation first, Animation second) {
+            //                       return Scaffold(
+            //                         backgroundColor: Colors.transparent,
+            //                         body: Column(
+            //                           mainAxisAlignment:
+            //                               MainAxisAlignment.center,
+            //                           crossAxisAlignment:
+            //                               CrossAxisAlignment.end,
+            //                           children: [
+            //                             IconButton(
+            //                               icon: Icon(Icons.close,
+            //                                   color: Colors.white),
+            //                               onPressed: () => Get.back(),
+            //                             ),
+            //                             SizedBox(height: 16.0),
+            //                             InteractiveViewer(
+            //                               child: Image.file(File(file.path)),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                       );
+            //                     },
+            //                   ),
+            //                   child: ClipRRect(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                     child: Image.file(
+            //                       File(file.path),
+            //                       width: widthScreen * 0.3,
+            //                       height: heightScreen * 0.15,
+            //                       fit: BoxFit.cover,
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 Positioned(
+            //                   right: 4,
+            //                   top: 4,
+            //                   child: GestureDetector(
+            //                     onTap: () => controller.removeImage(file),
+            //                     child: Container(
+            //                       decoration: BoxDecoration(
+            //                         color: Colors.red,
+            //                         shape: BoxShape.circle,
+            //                       ),
+            //                       child: Icon(
+            //                         Icons.close,
+            //                         color: Colors.white,
+            //                         size: 20,
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             );
+            //           }).toList(),
             //         ),
-            //       );
-            //     }).toList(),
+            //       ),
+            //     ],
             //   );
-            // }),
-            SizedBox(height: heightScreen * 0.03),
+            // }),            
+            SizedBox(height: heightScreen * 0.02),            
             Row(
               children: [
                 Expanded(
@@ -305,46 +254,24 @@ class EditReportUserPageScreen extends GetView<EditReportUserPageController> {
                     onTap: () {
                       final int reportId = controller.reportUser['id'] ?? 0;
 
-                      controller.editReport(
-                        created: controller.createdController.text,
-                        semesterId:
-                            int.parse(controller.semesterIdController.text),
-                        kegiatan_awal_dihalaman: controller
-                            .kegiatan_awal_dihalamanTextController.text,
-                        dihalaman_hasil: controller
-                                .selectedOptions['kegiatan_awal_dihalaman'] ??
-                            '',
-                        kegiatan_awal_berdoa:
-                            controller.kegiatan_awal_berdoaTextController.text,
-                        berdoa_hasil: controller
-                                .selectedOptions['kegiatan_awal_berdoa'] ??
-                            '',
-                        kegiatan_inti_satu:
-                            controller.kegiatan_inti_satuTextController.text,
-                        inti_satu_hasil:
-                            controller.selectedOptions['kegiatan_inti_satu'] ??
-                                '',
-                        kegiatan_inti_dua:
-                            controller.kegiatan_inti_duaTextController.text,
-                        inti_dua_hasil:
-                            controller.selectedOptions['kegiatan_inti_dua'] ??
-                                '',
-                        kegiatan_inti_tiga:
-                            controller.kegiatan_inti_tigaTextController.text,
-                        inti_tiga_hasil:
-                            controller.selectedOptions['kegiatan_inti_tiga'] ??
-                                '',
-                        inklusi_penutup:
-                            controller.inklusi_penutupTextController.text,
-                        inklusi_penutup_hasil:
-                            controller.selectedOptions['inklusi_penutup'] ?? '',
+                      controller.editReport(                        
+                        kegiatan_awal_dihalaman: controller.kegiatan_awal_dihalamanTextController.text,
+                        dihalaman_hasil: controller.selectedOptions['kegiatan_awal_dihalaman'] ?? '',
+                        kegiatan_awal_berdoa:controller.kegiatan_awal_berdoaTextController.text,
+                        berdoa_hasil: controller.selectedOptions['kegiatan_awal_berdoa'] ??'',
+                        kegiatan_inti_satu:controller.kegiatan_inti_satuTextController.text,
+                        inti_satu_hasil:controller.selectedOptions['kegiatan_inti_satu'] ??    '',
+                        kegiatan_inti_dua:controller.kegiatan_inti_duaTextController.text,
+                        inti_dua_hasil:controller.selectedOptions['kegiatan_inti_dua'] ??    '',
+                        kegiatan_inti_tiga:controller.kegiatan_inti_tigaTextController.text,
+                        inti_tiga_hasil:controller.selectedOptions['kegiatan_inti_tiga'] ??    '',
+                        inklusi_penutup:controller.inklusi_penutupTextController.text,
+                        inklusi_penutup_hasil:controller.selectedOptions['inklusi_penutup'] ?? '',
                         inklusi_doa: controller.inklusi_doaTextController.text,
-                        doa_hasil:
-                            controller.selectedOptions['inklusi_doa'] ?? '',
+                        doa_hasil:controller.selectedOptions['inklusi_doa'] ?? '',
                         snack: controller.SnackTextController.text,
                         inklusi: controller.inklusiTextController.text,
-                        inklusi_hasil:
-                            controller.selectedOptions['inklusi'] ?? '',
+                        inklusi_hasil:controller.selectedOptions['inklusi'] ?? '',
                         catatan: controller.catatanController.text,
                         media: controller.selectedImage.value != null
                             ? [controller.selectedImage.value!]

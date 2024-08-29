@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import '../../../domain/models/album_model.dart';
 import '../../../domain/models/class_announcement_model.dart';
 import '../../../domain/models/class_member_model.dart';
+import '../../../domain/models/submission_detail_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
 import '../../../domain/models/grade_model.dart';
@@ -36,6 +37,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
   RxList<Album> albums = <Album>[].obs;
   RxList<Task> teacherTasks = <Task>[].obs;
   RxList<TaskStudentModel> studentTasks = <TaskStudentModel>[].obs;
+  RxList<SubmissionDetailModel> submissionsWithScore = <SubmissionDetailModel>[].obs;
   Rx<File?> image = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
@@ -205,6 +207,24 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
       }
     } catch (e) {
       print('failed fetch task: $e');
+    }
+  }
+
+   Future<void> fetchSubmission(String taskId) async {
+    isLoading.value = true;
+    try {
+      final response = await ApiServiceTask().getSubmissionWithScore(classItem['id'], taskId);
+      if (response.containsKey('data')) {
+        submissionsWithScore.assignAll((response['data'] as List)
+        .map((submission) => SubmissionDetailModel.fromJson(submission)).toList());
+      } else {
+        throw Exception('Invalid response format: "data" key not found');
+      }
+      print('Submissions with score: $submissionsWithScore');
+    } catch (e) {
+      print('Error fetching submissions with score: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 

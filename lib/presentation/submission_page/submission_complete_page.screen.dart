@@ -45,6 +45,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
     final controller = Get.put(SubmissionPageController());
     // var submission = controller.submission.value;
     // var task = controller.task;
+    print('${controller.task.value.desc!}',);
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -179,7 +180,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                         color: AppColor.blue600,
                       ),
                       Text(
-                        '${controller.task.value.desc!.join(', ')}',
+                        '${controller.task.value.desc?.toList().join('\n') ?? ''}',
                         style: AppTextStyle.tsBodyRegular(AppColor.black),
                       ),
                     ],
@@ -199,7 +200,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
               ),
               spaceHeightSmall,
               Container(
-                height: 100,
+                height: heightScreen * 0.3,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: submission['submmision_media']?.length ?? 0,
@@ -208,9 +209,8 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Image.network(
-                        'https://talentaku.site/image/${media['fileName']}' ??
-                            'unknown',
-                        fit: BoxFit.cover,
+                        'https://talentaku.site/image/task-submission/${media['file_name']}' ?? 'unknown',
+                        fit: BoxFit.scaleDown,
                       ),
                     );
                   },

@@ -20,7 +20,7 @@ class SubmissionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = submittedAt != null ? DateFormat.yMMMd().format(submittedAt) : 'Unknown';
+    final formattedDate = submittedAt != null ? DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(submittedAt) : 'Unknown';
 
     return GestureDetector(
       // onTap: () { Get.to(() {});},

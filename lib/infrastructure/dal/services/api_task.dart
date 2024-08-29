@@ -11,14 +11,7 @@ import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
 
 class ApiServiceTask {
-  static final ApiServiceTask _singleton = ApiServiceTask._internal();
-  static const String baseUrl = 'https://talentaku.site/api';
-
-  factory ApiServiceTask() {
-    return _singleton;
-  }
-
-  ApiServiceTask._internal();
+  static const String baseUrl = 'https://talentaku.site/api';  
   final box = GetStorage();
 
   Future<Map<String, dynamic>> createTask(

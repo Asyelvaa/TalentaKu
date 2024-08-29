@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/header_class.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../common_widget/custom_textFormField.dart';
 import 'component/form.dart';
 import 'controllers/student_report_form.controller.dart';
 
@@ -38,7 +42,7 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 155,
+                  width: widthScreen * 0.4,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
                     borderRadius: BorderRadius.circular(16),
@@ -53,83 +57,21 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                         ),
                       ),
                       Obx(() {
-                        return Text(
-                          controller.selectedDate.value != null
-                              ? '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}'
-                              : 'Pilih tanggal',
-                          style: AppTextStyle.tsNormal,
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            controller.selectedDate.value != null
+                                ? '${DateFormat('dd - MM - yyyy', 'id_ID').format(controller.selectedDate.value!)}'
+                                : 'Pilih tanggal',
+                            style: AppTextStyle.tsNormal,
+                          ),
                         );
                       }),
                     ],
                   ),
                 ),
-                // Container(
-                //   height: 50,
-                //   width: 155,
-                //   decoration: BoxDecoration(
-                //     border: Border.all(width: 1.5, color: AppColor.blue500),
-                //     borderRadius: BorderRadius.circular(16),
-                //   ),
-                //   alignment: Alignment.center,
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       showModalBottomSheet(
-                //         context: context,
-                //         builder: (context) {
-                //           return Container(
-                //             height: 250,
-                //             child: Column(
-                //               children: [
-                //                 Container(
-                //                   height: 200,
-                //                   decoration: BoxDecoration(
-                //                       borderRadius:
-                //                           BorderRadius.all(Radius.circular(22)),
-                //                       color: AppColor.background),
-                //                   child: CupertinoDatePicker(
-                //                     initialDateTime: DateTime.now(),
-                //                     onDateTimeChanged: (DateTime newDateTime) {
-                //                       controller.createdController.text =
-                //                           "${newDateTime.year}/${newDateTime.month}/${newDateTime.day}";
-                //                     },
-                //                     use24hFormat: true,
-                //                     mode: CupertinoDatePickerMode.date,
-                //                   ),
-                //                 ),
-                //                 CupertinoButton(
-                //                   color: AppColor.blue100,
-                //                   borderRadius:
-                //                       BorderRadius.all(Radius.circular(12)),
-                //                   child: Text(
-                //                     'Done',
-                //                     style: AppTextStyle.tsLittle,
-                //                   ),
-                //                   onPressed: () {
-                //                     Navigator.of(context).pop();
-                //                   },
-                //                 )
-                //               ],
-                //             ),
-                //           );
-                //         },
-                //       );
-                //     },
-                //     child: TextFormField(
-                //       controller: controller.createdController,
-                //       decoration: InputDecoration(
-                //         labelText: "YYYY/MM/DD",
-                //         hintStyle: AppTextStyle.tsLittle,
-                //         border: InputBorder.none,
-                //         contentPadding:
-                //             EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                //       ),
-                //       enabled: false,
-                //     ),
-                //   ),
-                // ),
-
                 Container(
-                  width: 155,
+                  width: widthScreen * 0.4,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.5, color: AppColor.blue500),
                     borderRadius: BorderRadius.circular(16),
@@ -255,109 +197,172 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
             defaultHeightSpace,
             // Catatan section
             Text(
-              "Catatan",
-              style: AppTextStyle.tsSmallRegular(AppColor.black),
+              "Catatan Laporan",
+              style: AppTextStyle.tsBodyBold(AppColor.black),
             ),
             spaceHeightSmall,
-            Container(
-              height: heightScreen * 0.08,
-              width: widthScreen * 1,
-              decoration: BoxDecoration(
-                border: Border.all(width: 1.5, color: AppColor.blue500),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              alignment: Alignment.center,
-              child: TextFormField(
-                controller: controller.catatanController,
-                decoration: InputDecoration(
-                  hintText: "Masukkan Catatan",
-                  hintStyle: AppTextStyle.tsBodyBold(AppColor.black),
-                  border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                ),
-                onChanged: (value) {
-                  // Update catatan in the controller
-                  // Example: controller.catatan = value;
-                },
-              ),
+            CustomTextFormField(
+              loginController: controller.catatanController, 
+              labelText: "Masukkan Catatan",
             ),
-            spaceHeightSmall,
+            spaceHeightSmall,            
+            SizedBox(height: heightScreen * 0.01),
             Row(
               children: [
-                Icon(
-                  Iconsax.document_upload,
-                  color: AppColor.blue400,
+                IconButton(
+                    icon: Icon(Icons.file_upload_rounded),
+                    color: AppColor.blue600,
+                    onPressed: () => controller.pickImage()),
+                Text(
+                  'Upload Foto ',
+                  style: AppTextStyle.tsBodyBold(AppColor.black),
                 ),
-                SizedBox(width: widthScreen * 0.02),
-                Text("Upload Foto",
-                    style: AppTextStyle.tsBodyBold(AppColor.black))
               ],
             ),
-            SizedBox(height: heightScreen * 0.01),
-            GestureDetector(
-              onTap: () {
-                controller.pickImage();
-              },
-              child: Obx(() {
-                return controller.selectedImages.isNotEmpty
-                    ? GridView.builder(
-                        padding: EdgeInsets.all(8),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemCount: controller.selectedImages.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
+            spaceHeightExtraSmall,
+            Obx(() {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: controller.selectedImages.map((file) {
+                        return Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () => showGeneralDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                barrierLabel: MaterialLocalizations.of(context)
+                                    .modalBarrierDismissLabel,
+                                barrierColor: AppColor.black,
+                                pageBuilder: (BuildContext context,
+                                    Animation first, Animation second) {
+                                  return Scaffold(
+                                    backgroundColor: Colors.transparent,
+                                    body: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close,
+                                              color: Colors.white),
+                                          onPressed: () => Get.back(),
+                                        ),
+                                        SizedBox(height: 16.0),
+                                        InteractiveViewer(
+                                          child: Image.file(File(file.path)),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
                                 child: Image.file(
-                                  controller.selectedImages[index],
+                                  File(file.path),
+                                  width: widthScreen * 0.3,
+                                  height: heightScreen * 0.15,
                                   fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
                                 ),
                               ),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: GestureDetector(
-                                  onTap: () => controller.removeImage(index),
+                            ),
+                            Positioned(
+                              right: 4,
+                              top: 4,
+                              child: GestureDetector(
+                                onTap: () => controller.removeImage(file),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
                                   child: Icon(
-                                    Icons.close_outlined,
-                                    color: AppColor.red,
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 20,
                                   ),
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                      )
-                    : Container(
-                        height: heightScreen * 0.1,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1.5, color: AppColor.blue500),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Tambah Foto",
-                          style: AppTextStyle.tsNormal,
-                        ),
-                      );
-              }),
-            ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              );
+            }),
+            spaceHeightNormal,
+            // GestureDetector(
+            //   onTap: () {
+            //     controller.pickImage();
+            //   },
+            //   child: Obx(() {
+            //     return controller.selectedImages.isNotEmpty
+            //         ? GridView.builder(
+            //             padding: EdgeInsets.all(8),
+            //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //               crossAxisCount: 2,
+            //               crossAxisSpacing: 8,
+            //               mainAxisSpacing: 8,
+            //             ),
+            //             itemCount: controller.selectedImages.length,
+            //             shrinkWrap: true,
+            //             physics: NeverScrollableScrollPhysics(),
+            //             itemBuilder: (context, index) {
+            //               return Stack(
+            //                 children: [
+            //                   ClipRRect(
+            //                     borderRadius: BorderRadius.circular(16),
+            //                     child: Image.file(
+            //                       controller.selectedImages[index],
+            //                       fit: BoxFit.cover,
+            //                       width: double.infinity,
+            //                       height: double.infinity,
+            //                     ),
+            //                   ),
+            //                   Positioned(
+            //                     right: 8,
+            //                     top: 8,
+            //                     child: GestureDetector(
+            //                       onTap: () => controller.removeImage(index),
+            //                       child: Icon(
+            //                         Icons.close_outlined,
+            //                         color: AppColor.red,
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               );
+            //             },
+            //           )
+            //         : Container(
+            //             height: heightScreen * 0.1,
+            //             decoration: BoxDecoration(
+            //               border:
+            //                   Border.all(width: 1.5, color: AppColor.blue500),
+            //               borderRadius: BorderRadius.circular(16),
+            //             ),
+            //             alignment: Alignment.center,
+            //             child: Text(
+            //               "Tambah Foto",
+            //               style: AppTextStyle.tsNormal,
+            //             ),
+            //           );
+            //   }),
+            // ),
 
             spaceHeightSmall,
             Text(
               "Kirim Laporan untuk",
-              style: AppTextStyle.tsTitle,
+              style: AppTextStyle.tsTitleBold(AppColor.black),
             ),
             spaceHeightSmall,
             Obx(() {
@@ -396,27 +401,19 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
-                                          padding: EdgeInsets.all(2),
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: selected.value
                                                   ? Border.all(
-                                                      width: 2,
-                                                      color: AppColor.blue800)
+                                                      width: 3,
+                                                      color: AppColor.blue600)
                                                   : null),
                                           child: CircleAvatar(
                                               radius: 30,
-                                              backgroundColor: AppColor.blue200,
-                                              child: CircleAvatar(
-                                                child: Image.network(
-                                                  student.photo == null
-                                                      ? 'https://ui-avatars.com/api/?name=${student.name}&background=C1CDFF'
-                                                      : student.photo!,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )),
+                                              child: Image.asset(
+                                                  'assets/images/student.png')),
                                         ),
-                                        SizedBox(height: 10),
+                                        spaceHeightSmall,
                                         AutoSizeText(
                                           student.name!,
                                           style: AppTextStyle.tsSmallRegular(
@@ -486,7 +483,6 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                               inklusiDoaHasil:
                                   controller.selectedOptions['Doa']!,
                             );
-                            
                           } else {
                             Get.snackbar('Peringatan', 'Harap pilih siswa',
                                 backgroundColor: AppColor.red);

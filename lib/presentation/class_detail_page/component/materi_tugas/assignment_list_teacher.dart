@@ -59,7 +59,7 @@ class AssignmentListTeacher extends StatelessWidget {
                     return AssignmentItem(
                       title: task.title!,
                       tenggat:
-                          'Tenggat: ${DateFormat('dd-MM-yyyy').format(task.endDate!)}',
+                          'Tenggat: ${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(task.endDate!)}',
                       taskId: task.id.toString(),
                       gradeId: controller.classItem['id'].toString(),
                     );
