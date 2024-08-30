@@ -234,7 +234,8 @@ class StudentReportFormController extends GetxController {
       final response = await request.send();
       if (response.statusCode == 201) {
         Get.back();
-        Get.snackbar('Sukses', 'Laporan telah dikirim', backgroundColor: AppColor.blue100);
+        Get.snackbar('Sukses', 'Laporan telah dikirim',
+            backgroundColor: AppColor.blue100);
       } else {
         Get.snackbar('Error', 'Gagal mengirim laporan: ${response.statusCode}',
             backgroundColor: AppColor.red);

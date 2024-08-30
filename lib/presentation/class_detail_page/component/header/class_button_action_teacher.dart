@@ -41,7 +41,8 @@ class ClassButtonActionTeacher extends StatelessWidget {
           Expanded(
               child: GestureDetector(
             onTap: () {
-              Get.toNamed('/student-report-form', arguments: {
+              Get.toNamed('/student-report-form',
+               arguments: {
                 "gradeId": controller.classItem["id"].toString()
               });
             },

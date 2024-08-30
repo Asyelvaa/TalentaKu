@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_talentaku/presentation/edit__report_user_page/component/form_user.dart';
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
+import 'package:flutter_talentaku/presentation/edit__report_user_page/model/Studen.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../infrastructure/theme/theme.dart';
+import 'component/form_user.dart';
 import 'controllers/edit_report_user_page.controller.dart';
 
 class EditReportUserPageScreen extends StatelessWidget {
@@ -36,9 +43,15 @@ class EditReportUserPageScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.calendar_month, color: AppColor.blue500,),
+                Icon(
+                  Icons.calendar_month,
+                  color: AppColor.blue500,
+                ),
                 defaultWidthtSpace,
-                Text('${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(DateTime.now())}', style: AppTextStyle.tsTitle),
+                Text(
+                  '${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(DateTime.now())}',
+                  style: AppTextStyle.tsTitle,
+                ),
               ],
             ),
             SizedBox(height: heightScreen * 0.02),
@@ -61,7 +74,7 @@ class EditReportUserPageScreen extends StatelessWidget {
             ),
             defaultHeightSpace,
             Text(
-              "Kegiatan Inti Satu",
+              "Kegiatan Inti",
               style: AppTextStyle.tsTitle,
             ),
             spaceHeightNormal,
@@ -71,22 +84,12 @@ class EditReportUserPageScreen extends StatelessWidget {
               sectionTitle: "kegiatan_inti_satu",
               pointType: 'Kurang',
             ),
-            defaultHeightSpace,
-            Text(
-              "Kegiatan Inti Dua",
-              style: AppTextStyle.tsTitle,
-            ),
             spaceHeightNormal,
             FormSection(
               textController: controller.kegiatan_inti_duaTextController,
               controller: controller,
               sectionTitle: "kegiatan_inti_dua",
               pointType: 'Kurang',
-            ),
-            spaceHeightNormal,
-            Text(
-              "Kegiatan Inti Tiga",
-              style: AppTextStyle.tsTitle,
             ),
             spaceHeightNormal,
             FormSection(
@@ -97,12 +100,27 @@ class EditReportUserPageScreen extends StatelessWidget {
             ),
             spaceHeightNormal,
             Text("Snack", style: AppTextStyle.tsTitle),
-            spaceHeightNormal,
-            FormSection(
-              textController: controller.SnackTextController,
-              controller: controller,
-              sectionTitle: "snack",
-              pointType: 'Belum Muncul',
+            spaceHeightSmall,
+            Container(
+              height: heightScreen * 0.08,
+              width: widthScreen * 1,
+              decoration: BoxDecoration(
+                border: Border.all(width: 1.5, color: AppColor.blue500),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              alignment: Alignment.center,
+              child: TextFormField(
+                controller: controller.SnackTextController,
+                decoration: InputDecoration(
+                  hintText: "Snack",
+                  hintStyle: AppTextStyle.tsLittle,
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                ),
+                maxLines: null,
+                minLines: 1,
+              ),
             ),
             spaceHeightNormal,
             Text("Inklusi Doa", style: AppTextStyle.tsTitle),
@@ -157,9 +175,10 @@ class EditReportUserPageScreen extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                    icon: Icon(Icons.file_upload_rounded),
-                    color: AppColor.blue600,
-                    onPressed: () => controller.pickImage()),
+                  icon: Icon(Icons.file_upload_rounded),
+                  color: AppColor.blue600,
+                  onPressed: () => controller.pickImage(),
+                ),
                 Text(
                   'Upload Foto ',
                   style: AppTextStyle.tsBodyBold(AppColor.black),
@@ -167,86 +186,93 @@ class EditReportUserPageScreen extends StatelessWidget {
               ],
             ),
             spaceHeightExtraSmall,
-            // Obx(() {
-            //   return Row(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     children: [
-            //       SingleChildScrollView(
-            //         scrollDirection: Axis.horizontal,
-            //         child: Wrap(
-            //           spacing: 8.0,
-            //           runSpacing: 8.0,
-            //           children: controller.selectedImage.value.map((file) {
-            //             return Stack(
-            //               children: [
-            //                 GestureDetector(
-            //                   onTap: () => showGeneralDialog(
-            //                     context: context,
-            //                     barrierDismissible: true,
-            //                     barrierLabel: MaterialLocalizations.of(context)
-            //                         .modalBarrierDismissLabel,
-            //                     barrierColor: AppColor.black,
-            //                     pageBuilder: (BuildContext context,
-            //                         Animation first, Animation second) {
-            //                       return Scaffold(
-            //                         backgroundColor: Colors.transparent,
-            //                         body: Column(
-            //                           mainAxisAlignment:
-            //                               MainAxisAlignment.center,
-            //                           crossAxisAlignment:
-            //                               CrossAxisAlignment.end,
-            //                           children: [
-            //                             IconButton(
-            //                               icon: Icon(Icons.close,
-            //                                   color: Colors.white),
-            //                               onPressed: () => Get.back(),
-            //                             ),
-            //                             SizedBox(height: 16.0),
-            //                             InteractiveViewer(
-            //                               child: Image.file(File(file.path)),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                       );
-            //                     },
-            //                   ),
-            //                   child: ClipRRect(
-            //                     borderRadius: BorderRadius.circular(8),
-            //                     child: Image.file(
-            //                       File(file.path),
-            //                       width: widthScreen * 0.3,
-            //                       height: heightScreen * 0.15,
-            //                       fit: BoxFit.cover,
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 Positioned(
-            //                   right: 4,
-            //                   top: 4,
-            //                   child: GestureDetector(
-            //                     onTap: () => controller.removeImage(file),
-            //                     child: Container(
-            //                       decoration: BoxDecoration(
-            //                         color: Colors.red,
-            //                         shape: BoxShape.circle,
-            //                       ),
-            //                       child: Icon(
-            //                         Icons.close,
-            //                         color: Colors.white,
-            //                         size: 20,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ],
-            //             );
-            //           }).toList(),
-            //         ),
-            //       ),
-            //     ],
-            //   );
-            // }),            
-            SizedBox(height: heightScreen * 0.02),            
+            Obx(() {
+              return controller.selectedImage.value != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: [
+                              Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: AppColor.black,
+                                      pageBuilder: (BuildContext context,
+                                          Animation first, Animation second) {
+                                        return Scaffold(
+                                          backgroundColor: Colors.transparent,
+                                          body: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.close,
+                                                    color: Colors.white),
+                                                onPressed: () => Get.back(),
+                                              ),
+                                              SizedBox(height: 16.0),
+                                              InteractiveViewer(
+                                                child: Image.file(File(
+                                                    controller.selectedImage
+                                                        .value!.path)),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.file(
+                                        File(controller
+                                            .selectedImage.value!.path),
+                                        width: widthScreen * 0.3,
+                                        height: heightScreen * 0.15,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 4,
+                                    top: 4,
+                                    child: GestureDetector(
+                                      onTap: () =>
+                                          controller.selectedImage.value = null,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink();
+            }),
+            SizedBox(height: heightScreen * 0.02),
             Row(
               children: [
                 Expanded(
@@ -254,69 +280,73 @@ class EditReportUserPageScreen extends StatelessWidget {
                     onTap: () {
                       final int reportId = controller.reportUser['id'] ?? 0;
 
-                      controller.editReport(                        
-                        kegiatan_awal_dihalaman: controller.kegiatan_awal_dihalamanTextController.text,
-                        dihalaman_hasil: controller.selectedOptions['kegiatan_awal_dihalaman'] ?? '',
-                        kegiatan_awal_berdoa:controller.kegiatan_awal_berdoaTextController.text,
-                        berdoa_hasil: controller.selectedOptions['kegiatan_awal_berdoa'] ??'',
-                        kegiatan_inti_satu:controller.kegiatan_inti_satuTextController.text,
-                        inti_satu_hasil:controller.selectedOptions['kegiatan_inti_satu'] ??    '',
-                        kegiatan_inti_dua:controller.kegiatan_inti_duaTextController.text,
-                        inti_dua_hasil:controller.selectedOptions['kegiatan_inti_dua'] ??    '',
-                        kegiatan_inti_tiga:controller.kegiatan_inti_tigaTextController.text,
-                        inti_tiga_hasil:controller.selectedOptions['kegiatan_inti_tiga'] ??    '',
-                        inklusi_penutup:controller.inklusi_penutupTextController.text,
-                        inklusi_penutup_hasil:controller.selectedOptions['inklusi_penutup'] ?? '',
-                        inklusi_doa: controller.inklusi_doaTextController.text,
-                        doa_hasil:controller.selectedOptions['inklusi_doa'] ?? '',
+                      controller.editReport(
+                        kegiatan_awal_dihalaman: controller
+                            .kegiatan_awal_dihalamanTextController.text,
+                        dihalaman_hasil: controller
+                                .selectedOptions['kegiatan_awal_dihalaman'] ??
+                            '',
+                        kegiatan_awal_berdoa:
+                            controller.kegiatan_awal_berdoaTextController.text,
+                        berdoa_hasil: controller
+                                .selectedOptions['kegiatan_awal_berdoa'] ??
+                            '',
+                        kegiatan_inti_satu:
+                            controller.kegiatan_inti_satuTextController.text,
+                        inti_satu_hasil:
+                            controller.selectedOptions['kegiatan_inti_satu'] ??
+                                '',
+                        kegiatan_inti_dua:
+                            controller.kegiatan_inti_duaTextController.text,
+                        inti_dua_hasil:
+                            controller.selectedOptions['kegiatan_inti_dua'] ??
+                                '',
+                        kegiatan_inti_tiga:
+                            controller.kegiatan_inti_tigaTextController.text,
+                        inti_tiga_hasil:
+                            controller.selectedOptions['kegiatan_inti_tiga'] ??
+                                '',
                         snack: controller.SnackTextController.text,
+                        inklusi_doa: controller.inklusi_doaTextController.text,
+                        doa_hasil:
+                            controller.selectedOptions['inklusi_doa'] ?? '',
+                        inklusi_penutup:
+                            controller.inklusi_penutupTextController.text,
+                        inklusi_penutup_hasil:
+                            controller.selectedOptions['inklusi_penutup'] ?? '',
                         inklusi: controller.inklusiTextController.text,
-                        inklusi_hasil:controller.selectedOptions['inklusi'] ?? '',
+                        inklusi_hasil:
+                            controller.selectedOptions['inklusi'] ?? '',
                         catatan: controller.catatanController.text,
                         media: controller.selectedImage.value != null
                             ? [controller.selectedImage.value!]
                             : [],
                         reportId: reportId,
                       );
-                      Get.back(result: 'success $reportId');
                     },
                     child: Container(
-                      height: heightScreen * 0.07,
+                      height: heightScreen * 0.06,
                       decoration: BoxDecoration(
-                        color: AppColor.blue100,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        color: AppColor.blue500,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Center(
-                        child:
-                            Text("Edit Laporan", style: AppTextStyle.tsNormal),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      int reportId = controller.reportUser['id'] ?? 1;
-                      controller.deleteReport(reportId);
-                      Get.back(result: 'success');
-                    },
-                    child: Container(
-                      height: heightScreen * 0.07,
-                      decoration: BoxDecoration(
-                        color: AppColor.red,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Center(
-                        child: Text("Hapus Laporan",
-                            style: AppTextStyle.tsNormal
-                                .copyWith(color: Colors.white)),
-                      ),
+                      alignment: Alignment.center,
+                      child: Obx(() {
+                        return controller.isLoading.value
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Simpan',
+                                style: AppTextStyle.tsNormal,
+                              );
+                      }),
                     ),
                   ),
                 ),
               ],
             ),
+            SizedBox(height: heightScreen * 0.02),
           ],
         ),
       ),

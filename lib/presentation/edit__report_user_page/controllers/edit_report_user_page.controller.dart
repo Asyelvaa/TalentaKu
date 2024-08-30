@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../infrastructure/theme/theme.dart';
 
 class EditReportUserPageController extends GetxController {
-
   late final String reportId;
   late final gradeId;
   final box = GetStorage();
@@ -36,7 +35,6 @@ class EditReportUserPageController extends GetxController {
   var selectedOptions = <String, String>{}.obs;
   var selectedImage = Rxn<File>();
 
-
   Future<void> fetchDataReport() async {
     isLoading.value = true;
     final token = box.read('token');
@@ -47,30 +45,40 @@ class EditReportUserPageController extends GetxController {
     };
     print(url);
     try {
-      final response = await http.get(
-          Uri.parse(url),
-          headers: headers);
+      final response = await http.get(Uri.parse(url), headers: headers);
       print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         reportData.assignAll(jsonData['data']);
-
         if (reportData.isNotEmpty) {
           var data = reportData.first;
-          kegiatan_awal_dihalamanTextController.text = data['kegiatan_awal_dihalaman'][0] ?? '';
-          kegiatan_awal_berdoaTextController.text = data['kegiatan_awal_berdoa'][0] ?? '';
-          kegiatan_inti_satuTextController.text = data['kegiatan_inti_satu'][0] ?? '';
-          kegiatan_inti_duaTextController.text = data['kegiatan_inti_dua'][0] ?? '';
-          kegiatan_inti_tigaTextController.text = data['kegiatan_inti_tiga'][0] ?? '';
+          kegiatan_awal_dihalamanTextController.text =
+              data['kegiatan_awal_dihalaman'][0] ?? '';
+          selectedOptions['kegiatan_awal_dihalaman'] = data['dihalaman_hasil'];
+          kegiatan_awal_berdoaTextController.text =
+              data['kegiatan_awal_berdoa'][0] ?? '';
+          selectedOptions['kegiatan_awal_berdoa'] = data['berdoa_hasil'];
+          kegiatan_inti_satuTextController.text =
+              data['kegiatan_inti_satu'][0] ?? '';
+          selectedOptions['kegiatan_inti_satu'] = data['inti_satu_hasil'];
+          kegiatan_inti_duaTextController.text =
+              data['kegiatan_inti_dua'][0] ?? '';
+          selectedOptions['kegiatan_inti_dua'] = data['inti_dua_hasil'];
+          kegiatan_inti_tigaTextController.text =
+              data['kegiatan_inti_tiga'][0] ?? '';
+          selectedOptions['kegiatan_inti_tiga'] = data['inti_tiga_hasil'];
           SnackTextController.text = data['snack'][0] ?? '';
           inklusiTextController.text = data['inklusi'][0] ?? '';
+          selectedOptions['inklusi'] = data['inklusi_hasil'];
           inklusi_doaTextController.text = data['inklusi_doa'][0] ?? '';
+          selectedOptions['inklusi_doa'] = data['inklusi_doa_hasil'];
           inklusi_penutupTextController.text = data['inklusi_penutup'][0] ?? '';
+          selectedOptions['inklusi_penutup'] = data['inklusi_penutup_hasil'];
           catatanController.text = data['catatan'][0] ?? '';
           print(data);
         }
       } else {
-        print("Error fetching student report data");
+        print("Error fetching student report data ");
       }
     } catch (e) {
       print('Exception: $e');
@@ -100,10 +108,12 @@ class EditReportUserPageController extends GetxController {
     required String catatan,
     required List<File> media,
     required int reportId,
+    File? image,
   }) async {
     try {
-      final url ='$baseUrl/grades/${gradeId['grade_id']}/student-report/$reportId';
+      final url = '$baseUrl/grades/$gradeId/student-report/$reportId';
       final token = box.read('token');
+      print(url);
 
       var headers = {
         'Accept': 'application/json',
@@ -135,7 +145,10 @@ class EditReportUserPageController extends GetxController {
         'student_id': box.read('student_id')
       };
 
-      final request = http.MultipartRequest('POST',Uri.parse(url),);
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(url),
+      );
       request.headers.addAll(headers);
       formData.forEach((key, value) {
         request.fields[key] = value.toString();
@@ -154,10 +167,13 @@ class EditReportUserPageController extends GetxController {
       }
 
       final response = await request.send();
+      print('idhjhfkdhfkd : ${response.statusCode}');
       if (response.statusCode == 200) {
+        update();
+        Get.back();
         Get.snackbar('Success', 'Report has been updated',
             backgroundColor: AppColor.blue100);
-        Get.offAllNamed(Routes.REPORT_LIST_USER_PAGE);
+
         print(formData);
       } else {
         Get.snackbar('Error', 'Failed to update report: ${response.statusCode}',
@@ -236,18 +252,12 @@ class EditReportUserPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // final arguments = Get.arguments as Map<String, dynamic>;
-    // reportId = arguments['reportId'] as String;
-    // gradeId = arguments['gradeId'] as String;
     final arguments = Get.arguments;
-    if (arguments[0] == 'edit') {
-      fetchDataReport();
+    if (arguments != null && arguments[0] == 'edit') {
       reportUser.value = arguments[1];
-      gradeId = arguments[1];
-      print(gradeId);
-      // setValueText();
-      super.onInit();
+      gradeId = arguments[1]['grade_id'];
     }
+    print(gradeId);
     fetchDataReport();
   }
 }

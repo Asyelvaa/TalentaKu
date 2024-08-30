@@ -16,7 +16,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
   @override
   Widget build(BuildContext context) {
     final ProfileUserController controller = Get.put(ProfileUserController());
-    final Student student = Get.arguments[0] as Student;
+    final Student student = Get.arguments[0];
     final arguments = Get.arguments;
     controller.box.write('student_id', student.id);
 
@@ -32,10 +32,10 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
           child: Column(
             children: [
               CircleAvatar(
-                        radius: 60,
-                        backgroundColor: AppColor.blue600,
-                        child: Text(student.name.substring(2).toUpperCase(),
-                            style: AppTextStyle.tsSmallBold(AppColor.white))),             
+                  radius: 60,
+                  backgroundColor: AppColor.blue600,
+                  child: Text(student.name.substring(2).toUpperCase(),
+                      style: AppTextStyle.tsSmallBold(AppColor.white))),
               SizedBox(height: 12),
               Obx(() {
                 if (controller.isLoading.value) {
@@ -65,7 +65,7 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                   );
                 }
               }),
-              defaultHeightSpace,                
+              defaultHeightSpace,
               Obx(() => controller.isLoading.value
                   ? Column(
                       children: [
@@ -103,7 +103,9 @@ class ProfileUserScreen extends GetView<ProfileUserController> {
                         ),
                         ProfileList(
                           title: "Kelas",
-                          description: student.grades.isNotEmpty ? student.grades[0] : '-',
+                          description: student.grades.isNotEmpty
+                              ? student.grades[0]
+                              : '-',
                         ),
                         ProfileList(
                           title: "Alamat",
