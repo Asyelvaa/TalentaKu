@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/pdf_viewer_screen.dart';
-import 'package:get/get.dart';
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PDFWidget extends StatelessWidget {
   final String fileUrl;
@@ -15,18 +15,24 @@ class PDFWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () {
-        Get.to(() => PDFViewerScreen(fileUrl: fileUrl, fileName: fileName));
+      onTap: () async {
+        final url = fileUrl;
+        final uri = Uri.tryParse(url);
+        if (uri != null && await launchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        } else {
+          throw 'Could not launch $url';
+        }
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02), 
+        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
         child: Row(
           children: [
             Icon(
               Icons.picture_as_pdf,
               color: Colors.red,
             ),
-            SizedBox(width: screenWidth * 0.03), // Responsive spacing
+            SizedBox(width: screenWidth * 0.03),
             Expanded(
               child: Text(
                 fileName,
