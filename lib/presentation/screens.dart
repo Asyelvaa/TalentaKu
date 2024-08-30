@@ -13,3 +13,4 @@ export 'package:flutter_talentaku/presentation/report_list_user_page/report_list
 export 'package:flutter_talentaku/presentation/student_report_form/student_report_form.screen.dart';
 export 'package:flutter_talentaku/presentation/student_report_page/daily_report.screen.dart';
 export 'package:flutter_talentaku/presentation/submission_page/submission_complete_page.screen.dart';
+export 'package:flutter_talentaku/presentation/submission_page_student/submission_page_student.screen.dart';

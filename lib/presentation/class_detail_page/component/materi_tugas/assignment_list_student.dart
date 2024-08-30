@@ -77,6 +77,8 @@ class AssignmentListStudent extends StatelessWidget {
                           : 'No end date',
                       taskId: task.taskId.toString(),
                       gradeId: controller.classItem['id'].toString(),
+                      submissionId: controller.submissionId()                   
+                      // studentId: controller.studentId.toString()
                       // completionsId: 10.toString(),
                       // completionsId: controller.submissionsWithScore.firstWhere((submission) => submission.taskId == task.taskId)
                       //     .submissionId

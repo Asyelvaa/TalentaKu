@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/presentation/assignment_page/controllers/assignment_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,6 +51,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
   late TabController tabController;
   late Map<String, dynamic> classItem;
   var username = ''.obs;
+  // var studentId = GetStorage().read('dataUser')?['id'];
   final announcement = ClassAnnouncementModel().obs;
   final ImagePicker _picker = ImagePicker();
   final RxList<File> pickedFiles = <File>[].obs;
@@ -210,6 +212,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     }
   }
 
+
    Future<void> fetchSubmission(String taskId) async {
     isLoading.value = true;
     try {
@@ -226,6 +229,13 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     } finally {
       isLoading.value = false;
     }
+  }
+
+  var submissionId = ''.obs;
+  void getSubmissionId() {
+    final submissionController = Get.find<AssignmentPageController>();
+    submissionId.value = submissionController.submissionData.value.id.toString();
+    print('Submission ID: $submissionId');
   }
 
   void fetchStudentsFromApi() async {

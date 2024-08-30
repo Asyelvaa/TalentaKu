@@ -12,26 +12,24 @@ class SubmissionItem extends GetView<ClassDetailController> {
   final String tenggat;
   final String taskId;
   final String gradeId;
-  // final String completionsId;
+  final String submissionId;
   const SubmissionItem({
     super.key,
     required this.title,
     required this.tenggat,
     required this.taskId,
     required this.gradeId,
-    // required this.completionsId
+    required this.submissionId
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SubmissionCompletePageScreem(), arguments: {
+        Get.to(() => SubmissionPageStudentScreen(), arguments: {
           'taskId': taskId,
           'gradeId' : gradeId,
-          // 'completionsId': completionsId
-          // controller.submissionsWithScore[index].submissionId.toString(),
-          // 'studentIdSubmitted' : GetStorage().read('dataUser')?['id'].toString()
+          'submissionId' : submissionId
         });
       },
       child: Container(

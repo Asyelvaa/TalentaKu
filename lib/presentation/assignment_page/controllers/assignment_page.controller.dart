@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/models/submission_detail_model.dart';
+import '../../../domain/models/submission_model.dart';
 import '../../../domain/models/task_model.dart';
 import '../../../domain/models/task_student_model.dart';
 import '../../class_detail_page/controllers/class_detail.controller.dart';
@@ -140,16 +141,17 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
     }
   }
 
-
+  Rx<SubmissionModel> submissionData = SubmissionModel().obs;
   // SUBMIT TASK
   Future<void> submitTask(String taskId) async {
     try {
-      await ApiServiceTask().submitTask(
+      final response = await ApiServiceTask().submitTask(
         gradeId,
         taskId,
         submissionFiles
       );
       print('Task submitted successfully with ID: ${taskId}');
+      submissionData.value = response;
       controller.fetchAllTask();
       Get.back();
       dialogSuccess('Tugas Berhasil Dikumpulkan');

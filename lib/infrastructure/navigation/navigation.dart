@@ -109,5 +109,10 @@ class Nav {
       page: () => const EditReportUserPageScreen(),
       binding: EditReportUserPageControllerBinding(),
     ),
+    GetPage(
+      name: Routes.SUBMISSION_PAGE_STUDENT,
+      page: () => const SubmissionPageStudentScreen(),
+      binding: SubmissionPageStudentControllerBinding(),
+    ),
   ];
 }
