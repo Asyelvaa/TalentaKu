@@ -177,6 +177,7 @@ class ApiServiceTask {
     try {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
         return SubmissionModel.fromJson(responseData);
@@ -270,6 +271,28 @@ class ApiServiceTask {
       // Map<String, dynamic> data = json.decode(response.body)['data'];
       return json.decode(response.body)['data'] as List<dynamic>;
       // return data;
+    } else {
+      throw Exception('Failed to load submissions detail');
+    }
+  }
+
+  // SHOW SUBMISSION DETAIL
+  Future<SubmissionModel> getSubmissionDetail(String gradeId, String taskId, String completionsId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/completions/$completionsId";
+    print(url);
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    
+    var response = await http.get(Uri.parse(url), headers: headers);
+    print(url);
+    print(response.body);
+    print('response sub complete ${response.statusCode}');
+    if (response.statusCode == 200) {  
+      final data = json.decode(response.body)['data'];
+      return SubmissionModel.fromJson(data);
     } else {
       throw Exception('Failed to load submissions detail');
     }

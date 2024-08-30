@@ -8,6 +8,7 @@ class Routes {
     return LoginScreen;
   }
 
+  static const SPLASHSCREEN = '/splashscreen';
   static const String ADD_EDIT_POST = '/add-edit-post';
   static const String ALBUM_FORM_PAGE = '/album-form-page';
   static const String ASSIGNMENT_PAGE = '/assignment-page';
@@ -27,5 +28,5 @@ class Routes {
   static const String STYLE_ALBUM = '/style-album';
   static const String SUBMISSION_PAGE = '/submission-page';
   static const String TASK_PAGE = '/task-page';
-  static const SPLASHSCREEN = '/splashscreen';
+  static const SUBMISSION_PAGE_STUDENT = '/submission-page-student';
 }

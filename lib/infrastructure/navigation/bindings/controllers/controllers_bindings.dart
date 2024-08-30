@@ -14,3 +14,4 @@ export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/report_list_user_page.controller.binding.dart';  
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/student_report_form.controller.binding.dart'; 
 export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/submission_page.controller.binding.dart'; 
+export 'package:flutter_talentaku/infrastructure/navigation/bindings/controllers/submission_page_student.controller.binding.dart'; 
