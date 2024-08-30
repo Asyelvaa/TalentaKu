@@ -1,73 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
-import '../../../../infrastructure/theme/theme.dart';
-
-class PDFViewerScreen extends StatelessWidget {
+class PDFViewerScreen extends StatefulWidget {
   final String fileUrl;
   final String fileName;
 
-  PDFViewerScreen({Key? key, required this.fileUrl, required this.fileName});
+  PDFViewerScreen({required this.fileUrl, required this.fileName});
+
+  @override
+  _PDFViewerScreenState createState() => _PDFViewerScreenState();
+}
+
+class _PDFViewerScreenState extends State<PDFViewerScreen> {
+  bool _isLoading = true;
+  PDFDocument? _pdfDocument;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPdf();
+  }
+
+  Future<void> _loadPdf() async {
+    try {
+      final document = await PDFDocument.fromURL(widget.fileUrl);
+      setState(() {
+        _pdfDocument = document;
+        _isLoading = false;
+      });
+    } catch (e) {
+      // Handle the error (e.g., display an error message or log the error)
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          fileName, 
-          style: AppTextStyle.tsSmallRegular(AppColor.white), 
-          overflow: TextOverflow.ellipsis),
-        backgroundColor: AppColor.blue600
+        title: Text(widget.fileName),
       ),
-      // body: SfPdfViewer.network(
-      //   fileUrl,
-      //   canShowPaginationDialog: true,
-      //   canShowScrollHead: true,
-      //   canShowScrollStatus: true,
-      //   enableTextSelection: true,
-      // ),
-      
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _pdfDocument != null
+              ? PDFViewer(document: _pdfDocument!)
+              : Center(child: Text('Failed to load PDF')),
     );
   }
 }
-//     return FutureBuilder<PdfController>(
-//       future: _initPdfController(file),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return Center(child: CircularProgressIndicator());
-//         } else if (snapshot.hasError) {
-//           return Center(child: Text("Error opening PDF: ${snapshot.error}"));
-//         } else if (snapshot.hasData) {
-//           final pdfController = snapshot.data!;
-
-//           return Scaffold(
-//             appBar: AppBar(
-//               backgroundColor: Colors.black,
-//               leading: IconButton(
-//                 icon: Icon(Icons.close, color: Colors.white),
-//                 onPressed: () => Get.back(),
-//               ),
-//             ),
-//             body: PdfView(
-//               controller: pdfController,
-//             ),
-//           );
-//         } else {
-//           return Center(child: Text("Unknown error"));
-//         }
-//       },
-//     );
-//   }
-
-//   Future<PdfController> _initPdfController(File file) async {
-//     if (await file.exists()) {
-//       return PdfController(
-//         document: PdfDocument.openFile(file.path),
-//       );
-//     } else {
-//       throw Exception("File does not exist at path: ${file.path}");
-//     }
-//   }
-// }
-
