@@ -17,7 +17,5 @@ class ProfileUserController extends GetxController {
   void onInit() {
     super.onInit();
     // student.value = Get.arguments['student'] as ClassMemberModel;
-   
   }
-
 }

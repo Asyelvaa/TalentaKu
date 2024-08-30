@@ -46,22 +46,24 @@ class HeaderClass extends GetView<ProfileUserController> {
                 itemCount: controller.students.length,
                 itemBuilder: (context, index) {
                   final student = controller.students[index];
-                  final isSelected = controller.selectedStudents.contains(student);
+                  final isSelected =
+                      controller.selectedStudents.contains(student);
                   final storedImage = controller.image.value;
                   return GestureDetector(
                     onTap: () {
-                      if (controller.userRole.any((role)=> role.contains('Guru'))) {
+                      if (controller.userRole
+                          .any((role) => role.contains('Guru'))) {
                         controller.toggleSelection(student);
                         Get.toNamed(Routes.PROFILE_USER,
-                          // arguments: {
-                          //   'student': student,
-                          //   'classId': controller.classItem['id']
-                          // });
-                          arguments: [
-                            controller.students[index],
-                            controller.classItem['id']
-                          ]);
-                      }                     
+                            // arguments: {
+                            //   'student': student,
+                            //   'classId': controller.classItem['id']
+                            // });
+                            arguments: [
+                              controller.students[index],
+                              controller.classItem['id']
+                            ]);
+                      }
                     },
                     child: Container(
                       width: widthScreen * 0.2,
@@ -82,12 +84,12 @@ class HeaderClass extends GetView<ProfileUserController> {
                                     'assets/images/student.png',
                                     fit: BoxFit.cover,
                                   )
-                        : AutoSizeText(
-                            getInitials(student.name!),
-                            style: AppTextStyle.tsBodyBold(
-                                AppColor.black),
-                            minFontSize: 12,
-                          )),
+                                : AutoSizeText(
+                                    getInitials(student.name!),
+                                    style:
+                                        AppTextStyle.tsBodyBold(AppColor.black),
+                                    minFontSize: 12,
+                                  )),
                         AutoSizeText(
                           student.name!,
                           style: AppTextStyle.tsSmallRegular(AppColor.white),
