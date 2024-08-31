@@ -11,6 +11,7 @@ class ProfileUserController extends GetxController {
   final roles = <String>[].obs;
   final grades = <String>[].obs;
   final gradeId = 0.obs;
+  final studentId = 0.obs;
   final box = GetStorage();
 
   @override

@@ -14,6 +14,7 @@ import '../../../infrastructure/theme/theme.dart';
 class EditReportUserPageController extends GetxController {
   late final String reportId;
   late final gradeId;
+  late final studentId;
   final box = GetStorage();
   var isLoading = false.obs;
   var reportData = [].obs;
@@ -38,12 +39,21 @@ class EditReportUserPageController extends GetxController {
   Future<void> fetchDataReport() async {
     isLoading.value = true;
     final token = box.read('token');
-    final url = '$baseUrl/grades/$gradeId/student-report/student/7';
+    print(studentId);
+
+    if (studentId == null || studentId.isEmpty) {
+      print("Error: studentId is null or empty");
+      isLoading.value = false;
+      return;
+    }
+
+    final url = '$baseUrl/grades/$gradeId/student-report/student/$studentId';
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     print(url);
+
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       print(response.statusCode);
@@ -201,8 +211,7 @@ class EditReportUserPageController extends GetxController {
   }
 
   Future<void> deleteReport(int reportId) async {
-    final url =
-        '$baseUrl/grades/${gradeId['grade_id']}/student-report/$reportId';
+    final url = '$baseUrl/grades/$gradeId/student-report/$reportId';
     print(url);
     isLoading.value = true;
     final token = box.read('token');
@@ -219,6 +228,8 @@ class EditReportUserPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        update();
+        Get.back();
         Get.snackbar('Success', 'Report has been deleted',
             backgroundColor: AppColor.blue100);
       } else {
@@ -256,6 +267,7 @@ class EditReportUserPageController extends GetxController {
     if (arguments != null && arguments[0] == 'edit') {
       reportUser.value = arguments[1];
       gradeId = arguments[1]['grade_id'];
+      studentId = arguments[1]['student_id'];
     }
     print(gradeId);
     fetchDataReport();

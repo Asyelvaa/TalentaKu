@@ -275,6 +275,7 @@ class EditReportUserPageScreen extends StatelessWidget {
             SizedBox(height: heightScreen * 0.02),
             Row(
               children: [
+                // "Simpan" button
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -338,6 +339,42 @@ class EditReportUserPageScreen extends StatelessWidget {
                               )
                             : Text(
                                 'Simpan',
+                                style: AppTextStyle.tsNormal,
+                              );
+                      }),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10), // Space between buttons
+                // "Delete" button
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      final int reportId = controller.reportUser['id'] ?? 0;
+                      if (reportId != 0) {
+                        controller.deleteReport(reportId);
+                      } else {
+                        Get.snackbar(
+                          'Error',
+                          'Invalid report ID',
+                          backgroundColor: AppColor.red,
+                        );
+                      }
+                    },
+                    child: Container(
+                      height: heightScreen * 0.06,
+                      decoration: BoxDecoration(
+                        color: AppColor.red,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      alignment: Alignment.center,
+                      child: Obx(() {
+                        return controller.isLoading.value
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Hapus',
                                 style: AppTextStyle.tsNormal,
                               );
                       }),
