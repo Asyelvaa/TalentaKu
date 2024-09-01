@@ -53,7 +53,7 @@ class AssignmentPageScreen extends StatelessWidget {
           ),          
           Obx(() {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return Expanded(child: Center(child: CircularProgressIndicator(color: AppColor.blue200,)));
             } else if (controller.userRole.contains('Murid SD') || controller.userRole.contains('Murid TK')) {
               return ContentAssignmentSubmit();
             } else {

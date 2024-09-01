@@ -28,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/submission_page/controllers/submission_page.controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/back_appbar.dart';
@@ -45,7 +46,6 @@ class SubmissionCompletePageScreem extends StatelessWidget {
     final controller = Get.put(SubmissionPageController());
     // var submission = controller.submission.value;
     // var task = controller.task;
-    print('${controller.task.value.desc!}',);
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -112,7 +112,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                                   style:
                                       AppTextStyle.tsSmallBold(AppColor.black)),
                               Text(
-                                DateFormat('EEE, d/M/yyyy').format(
+                                DateFormat('d/M/yyyy').format(
                                         controller.task.value.endDate!) ??
                                     '',
                                 style:
@@ -146,7 +146,7 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                                   style:
                                       AppTextStyle.tsSmallBold(AppColor.black)),
                               Text(
-                                DateFormat('EEE, d/M/yyyy')
+                                DateFormat('d/M/yyyy')
                                         .format(DateTime.parse(
                                             submission['submitted_at']))
                                         .toString() ??
@@ -199,23 +199,42 @@ class SubmissionCompletePageScreem extends StatelessWidget {
                 ],
               ),
               spaceHeightSmall,
-              Container(
-                height: heightScreen * 0.3,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: submission['submmision_media']?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    final media = submission['submmision_media'][index];
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Image.network(
-                        'https://talentaku.site/image/task-submission/${media['file_name']}' ?? 'unknown',
-                        fit: BoxFit.scaleDown,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              Obx(() {
+              if (controller.isLoading.value) {
+                return Shimmer(
+                  child: Container(
+                    height: 100.0,
+                    color: Colors.white,
+                  ),
+                );
+              } else if ((submission['submmision_media']?.isEmpty ?? true)) {
+                return Center(
+                  child: Text(
+                    'Tidak ada lampiran',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                );
+              } else {
+                return Container(
+                  height: heightScreen * 0.3,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: submission['submmision_media']?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final media = submission['submmision_media'][index] ?? 'unknown';
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Image.network(
+                          'https://talentaku.site/image/task-submission/${media['file_name']}' ?? 'unkown',
+                          fit: BoxFit.scaleDown,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            }), 
+
             ],
           ),
         );

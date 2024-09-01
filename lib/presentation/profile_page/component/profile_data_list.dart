@@ -30,15 +30,22 @@ class ProfileList extends StatelessWidget {
         borderRadius: defaultBorderRadius
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            Title,
-            style: AppTextStyle.tsSmallRegular(AppColor.black),
+          Flexible(
+            child: Text(
+              Title,
+              style: AppTextStyle.tsSmallRegular(AppColor.black),
+            ),
           ),
-          Text(
-            Description ?? " Data User ",
-            style: AppTextStyle.tsBodyBold(AppColor.black),
+          Flexible(
+            child: Text(
+              Description ?? " Data User ",
+              style: AppTextStyle.tsBodyBold(AppColor.black),
+              maxLines: null,
+              overflow: TextOverflow.visible,
+            ),
           ),
         ],
       ),

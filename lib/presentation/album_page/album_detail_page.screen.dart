@@ -4,9 +4,11 @@ import 'package:flutter_talentaku/presentation/common_widget/back_appbar.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // import 'package:image_downloader/image_downloader.dart';
 import '../../domain/models/album_model.dart';
+import '../common_widget/custom_popup_dialog.dart';
 import 'component/post_card.dart';
 import 'controllers/style_album.controller.dart';
 import 'model/post_card_model.dart';
@@ -18,8 +20,8 @@ class AlbumDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final RefreshController refreshController =
         RefreshController(initialRefresh: false);
-    final Album album = Get.arguments as Album;
     final controller = Get.put(AlbumController());
+    final album = controller.album;
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -81,26 +83,100 @@ class AlbumDetailPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${album.date ?? 'N/A'}',
+                    '${DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(album.date!)}',
                     style: AppTextStyle.tsSmallBold(AppColor.black),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.save_alt),
-                    onPressed: () => controller.saveAllMedia(),
-                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.save_alt),
+                        // onPressed: () => controller.saveAllMedia(),
+                        onPressed: () {
+                          showCustomPopupDialog(
+                            'Konfirmasi',
+                            'Apakah Anda yakin ingin mengunduh semua foto?',
+                            [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: AppColor.white),
+                                onPressed: () => Get.back(),
+                                child: Text(
+                                  'Tidak',
+                                  style: AppTextStyle.tsBodyRegular(
+                                      AppColor.black),
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: AppColor.blue600),
+                                onPressed: () {
+                                  Get.back();
+                                  controller.saveAllMedia();
+                                },
+                                child: Text(
+                                  'Unduh Foto',
+                                  style: AppTextStyle.tsBodyRegular(
+                                      AppColor.white),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      if (controller.userRole
+                          .any((role) => role.contains('Guru')))
+                        IconButton(
+                          icon: Icon(Icons.delete_forever, color: AppColor.red),
+                          // onPressed: () => controller.saveAllMedia(),
+                          onPressed: () {
+                            showCustomPopupDialog(
+                              'Konfirmasi',
+                              'Apakah Anda yakin ingin menghapus semua foto?',
+                              [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: AppColor.white),
+                                  onPressed: () => Get.back(),
+                                  child: Text(
+                                    'Tidak',
+                                    style: AppTextStyle.tsBodyRegular(
+                                        AppColor.black),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: AppColor.blue600),
+                                  onPressed: () {
+                                    Get.back();
+                                    controller.delete();
+                                  },
+                                  child: Text(
+                                    'Hapus Foto',
+                                    style: AppTextStyle.tsBodyRegular(
+                                        AppColor.white),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                    ],
+                  )
                 ],
               ),
               spaceHeightExtraSmall,
               Container(
                 width: widthScreen,
                 decoration: BoxDecoration(
-                  borderRadius: defaultBorderRadius,
-                  color: AppColor.black.withOpacity(0.1),
-                ),
+                    borderRadius: defaultBorderRadius, color: AppColor.blue50),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12),
                   child: Text(
-                    album.desc?.join(', ') ?? '',
+                    album.desc?.join('\n') ?? '',
                     style: AppTextStyle.tsBodyRegular(AppColor.black),
                   ),
                 ),

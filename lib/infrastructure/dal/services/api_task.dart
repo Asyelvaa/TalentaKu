@@ -222,7 +222,7 @@ class ApiServiceTask {
     final response = await http.get(Uri.parse(url),headers: headers);
 
     if (response.statusCode == 200) {
-    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    final Map<String, dynamic> jsonResponse = json.decode(response.body)  ;
       if (jsonResponse.containsKey('data')) {
         List tasksData = jsonResponse['data'];
         return tasksData.map((task) => TaskStudentModel.fromJson(task)).toList();
@@ -246,11 +246,27 @@ class ApiServiceTask {
     print(response.body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      return Task.fromJson(json['data']);
+      return Task.fromJson(json['data']);      
     } else {
       throw Exception('Failed to load tasks');
     }
-  }
+  } 
+  Future<SubmissionDetailModel> getDetailSubmission(String gradeId, String taskId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/tasks/$taskId";
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(Uri.parse(url), headers: headers);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return SubmissionDetailModel.fromJson(json['submission']);      
+    } else {
+      throw Exception('Failed to load tasks');
+    }
+  } 
 
   // SHOW SUBMISSION BY ID
   Future<List<dynamic>> getSubmissionById(String gradeId, String taskId, String completionsId) async {
@@ -276,27 +292,27 @@ class ApiServiceTask {
     }
   }
 
-  // SHOW SUBMISSION DETAIL
-  Future<SubmissionModel> getSubmissionDetail(String gradeId, String taskId, String completionsId) async {
-    final token = box.read('token');
-    final url = "$baseUrl/grades/$gradeId/tasks/$taskId/completions/$completionsId";
-    print(url);
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
+  // // SHOW SUBMISSION DETAIL
+  // Future<SubmissionModel> getSubmissionDetail(String gradeId, String taskId, String completionsId) async {
+  //   final token = box.read('token');
+  //   final url = "$baseUrl/grades/$gradeId/tasks/$taskId/completions/$completionsId";
+  //   print(url);
+  //   var headers = {
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   };
     
-    var response = await http.get(Uri.parse(url), headers: headers);
-    print(url);
-    print(response.body);
-    print('response sub complete ${response.statusCode}');
-    if (response.statusCode == 200) {  
-      final data = json.decode(response.body)['data'];
-      return SubmissionModel.fromJson(data);
-    } else {
-      throw Exception('Failed to load submissions detail');
-    }
-  }
+  //   var response = await http.get(Uri.parse(url), headers: headers);
+  //   print(url);
+  //   print(response.body);
+  //   print('response sub complete ${response.statusCode}');
+  //   if (response.statusCode == 200) {  
+  //     final data = json.decode(response.body)['data'];
+  //     return SubmissionModel.fromJson(data);
+  //   } else {
+  //     throw Exception('Failed to load submissions detail');
+  //   }
+  // }
 
   // SHOW SUBMISSION NULL SCORE
    Future<Map<String, dynamic>> getSubmissionWithNullScore(String gradeId, String taskId) async {

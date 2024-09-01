@@ -95,7 +95,7 @@ class AnnouncementComponent extends GetView<ClassDetailController> {
           icon: Icon(Icons.more_vert, color: AppColor.black),
           onSelected: (value) {
             if (value == 1) {
-              showDeleteConfirmationDialog(context, announcement['id']);
+              showDeleteConfirmationDialog(context, announcement['id'].toString());
             }
           },
           itemBuilder: (context) => [

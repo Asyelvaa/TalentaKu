@@ -30,8 +30,9 @@ class ProfilePicture extends StatelessWidget {
                   radius: 60,
                   backgroundColor: AppColor.blue600,
                   child: Text(
-                  controller.username.substring(2).toUpperCase(),
-                  style: AppTextStyle.tsSmallBold(AppColor.white)
+                    getInitials('${controller.username}'),
+                  // controller.username.substring(2).toUpperCase(),
+                  style: AppTextStyle.tsBigTitleBold(AppColor.white)
                   )                 
               );
             }),
@@ -59,5 +60,13 @@ class ProfilePicture extends StatelessWidget {
           ),
         ],
       );
+  }
+}
+String getInitials(String name) {
+  List<String> nameParts = name.split(' ');
+  if (nameParts.length == 1) {
+    return nameParts[0].substring(0, 2).toUpperCase();
+  } else {
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
   }
 }

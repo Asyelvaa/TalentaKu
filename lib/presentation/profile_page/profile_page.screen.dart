@@ -19,7 +19,6 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final user = controller.currentUser.value;
     final RefreshController refreshController =
         RefreshController(initialRefresh: false);
 
@@ -49,6 +48,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                   height: 10,
                 ),
                 Obx(() {
+                 final user = controller.currentUser.value;
                   print(user);
                   if (controller.isLoading.value == true) {
                     return Column(
@@ -74,6 +74,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
 
                 // LIST INFORMATION USER
                 Obx(() {
+                   final user = controller.currentUser.value;
                   if (controller.isLoading.value)
                     return Column(
                       children: [
@@ -93,10 +94,10 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                           Title: "Alamat",
                           Description: "Loading...",
                         ),
-                        ProfileList(
-                          Title: "Mulai di RBA",
-                          Description: "Loading...",
-                        ),
+                        // ProfileList(
+                        //   Title: "Mulai di RBA",
+                        //   Description: "Loading...",
+                        // ),
                       ],
                     );
                   else
@@ -118,10 +119,10 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                           Title: "Alamat",
                           Description: user.address ?? '-',
                         ),
-                        ProfileList(
-                          Title: "Mulai di RBA",
-                          Description: '-',
-                        ),
+                        // ProfileList(
+                        //   Title: "Mulai di RBA",
+                        //   Description: '-',
+                        // ),
                       ],
                     );
                 }),
@@ -137,7 +138,7 @@ class ProfilePageScreen extends GetView<ProfilePageController> {
                     );
                   },
                 ),
-                spaceHeightNormal,
+                spaceHeightSmall,
                 // LOGOUT
                 CustomButton(
                   text: "Logout",

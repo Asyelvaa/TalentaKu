@@ -91,5 +91,25 @@ class ApiServiceAlbum {
   // GET DETAIL ALBUM
 
   // DELETE ALBUM
+  Future<void> deleteAlbum(String gradeId, String albumId) async {
+    final token = box.read('token');
+    final url = "$baseUrl/grades/$gradeId/albums/$albumId";
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    print(url);
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);        
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print('Error in deleteAlbum: $e');
+      rethrow;
+    }
+  }
 
 }
