@@ -62,10 +62,9 @@ class PickImageScreen extends GetView<PickimageController> {
                                       radius: 60,
                                       backgroundColor: AppColor.blue600,
                                       child: Text(
-                                          controller.username
-                                              .substring(2)
-                                              .toUpperCase(),
-                                          style: AppTextStyle.tsSmallBold(
+                                        getInitials('${controller.username}'),
+                                          // controller.username.split(' ')[0][0],
+                                          style: AppTextStyle.tsBigTitleBold(
                                               AppColor.white)),
                                     );
                             },
@@ -172,5 +171,13 @@ class PickImageScreen extends GetView<PickimageController> {
         ),
       ),
     );
+  }
+}
+String getInitials(String name) {
+  List<String> nameParts = name.split(' ');
+  if (nameParts.length == 1) {
+    return nameParts[0].substring(0, 2).toUpperCase();
+  } else {
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
   }
 }

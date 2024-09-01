@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_talentaku/presentation/assignment_page/controllers/assignment_page.controller.dart';
+import 'package:flutter_talentaku/presentation/class_page/class_page.screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +29,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
   final ApiServiceClass _apiServiceClass = ApiServiceClass();
   final ApiServiceAlbum _apiServiceAlbum = ApiServiceAlbum();
   final ApiServiceTask _apiServiceTask = ApiServiceTask();
-  final ApiServiceAnnouncements _apiServiceAnnouncements = ApiServiceAnnouncements();
+  // final ApiServiceAnnouncements _apiServiceAnnouncements = ApiServiceAnnouncements();
 
   Rx<GradeModel> dataClass = GradeModel().obs;
   RxList<ClassMemberModel> classMembers = <ClassMemberModel>[].obs;
@@ -67,7 +68,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     username.value = GetStorage().read('dataUser')?['username'];
     classItem = Get.arguments as Map<String, dynamic>;
     print({username, userRole.toString()});
-
+    
     fetchAlbums();
     fetchGradeDetails();
     fetchAllTask();
@@ -136,9 +137,10 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     try {
       final response = await _apiServiceClass.deleteClass(classId);
       if (response != null && response.statusCode == 200) {
+        controller.showAllGrades();
+        Get.offAll(ClassScreen());
         Get.snackbar('Success', 'Class deleted successfully');
         print('Class with id $classId deleted successfully');
-        controller.showAllGrades();
       } else {
         Get.snackbar('Error', 'Failed to delete class');
       }
@@ -229,13 +231,6 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     } finally {
       isLoading.value = false;
     }
-  }
-
-  var submissionId = ''.obs;
-  void getSubmissionId() {
-    final submissionController = Get.find<AssignmentPageController>();
-    submissionId.value = submissionController.submissionData.value.id.toString();
-    print('Submission ID: $submissionId');
   }
 
   void fetchStudentsFromApi() async {
@@ -329,8 +324,11 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
         pickedFiles.toList(), 
         gradeId);
       announcement.value = newAnnouncement;
+      await fetchStream();
       Get.back();
       dialogSuccess('Pengumuman berhasil dibuat');
+      pickedFiles.clear();
+      announcementController.clear();
     } catch (e) {
       Get.back();
       dialogError('Gagal membuat pengumuman');
@@ -345,6 +343,8 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     isLoading(true);
     try {
       await ApiServiceAnnouncements().deleteAnnouncement(gradeId, commentId);
+      announcementsList.clear();
+      await fetchStream();
       Get.snackbar('Success', 'Announcement deleted successfully');
       print('berhasil hapus announcement ');
     } catch (e) {

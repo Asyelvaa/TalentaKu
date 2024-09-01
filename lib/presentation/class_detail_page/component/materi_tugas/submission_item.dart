@@ -12,14 +12,14 @@ class SubmissionItem extends GetView<ClassDetailController> {
   final String tenggat;
   final String taskId;
   final String gradeId;
-  final String submissionId;
+  // final String submissionId;
   const SubmissionItem({
     super.key,
     required this.title,
     required this.tenggat,
     required this.taskId,
     required this.gradeId,
-    required this.submissionId
+    // required this.submissionId
   });
 
   @override
@@ -29,7 +29,7 @@ class SubmissionItem extends GetView<ClassDetailController> {
         Get.to(() => SubmissionPageStudentScreen(), arguments: {
           'taskId': taskId,
           'gradeId' : gradeId,
-          'submissionId' : submissionId
+          // 'submissionId' : submissionId
         });
       },
       child: Container(

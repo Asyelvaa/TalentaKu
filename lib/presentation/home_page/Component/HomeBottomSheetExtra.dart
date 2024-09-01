@@ -48,17 +48,17 @@ class HomeBottomSheetExtra extends StatelessWidget {
               SizedBox(height: 10),
               Text(
                 informationTitleExtra,
-                style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
+                style: AppTextStyle.tsTitleBold(AppColor.black)
               ),
               SizedBox(height: 20),
               Flexible(
                 child:
-                    Text(descriptionContentExtra, style: AppTextStyle.tsNormal),
+                    Text(descriptionContentExtra, style: AppTextStyle.tsBodyRegular(AppColor.black)),
               ),
               defaultHeightSpace,
               Container(
-                height: 120,
-                color: Colors.grey[200],
+                height: 200,
+                // color: Colors.grey[200],
                 child: photoListExtra.isEmpty
                     ? Shimmer(
                         duration: Duration(seconds: 2),
@@ -72,7 +72,7 @@ class HomeBottomSheetExtra extends StatelessWidget {
                         },
                         child: Container(
                           height: heightScreen,
-                          width: widthScreen ,
+                          width: widthScreen,
                           child: Image.network(
                             'https://talentaku.site/image/program/$photoListExtra',
                             fit: BoxFit.scaleDown,

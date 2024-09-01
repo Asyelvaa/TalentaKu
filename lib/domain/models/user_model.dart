@@ -32,8 +32,8 @@ class UserModel {
     photo = json['photo'];
     birthInformation = json['birth_information'];
     roles = (json['roles'] as List).cast<String>();
-    grades = (json['grades'] as List).cast<String>();
-  }
+    grades = json['grades'] is List ? (json['grades'] as List).cast<String>() : [];
+}
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

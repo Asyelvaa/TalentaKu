@@ -43,7 +43,7 @@ class ClassButtonActionStudent extends StatelessWidget {
             top: -5,
             child: Image.asset(
               'assets/images/stiker_laporan.png',
-              scale: 7,
+              scale: 8,
             ))
       ]),
     ));

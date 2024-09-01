@@ -101,6 +101,7 @@ class AddNewData extends GetView<HomePageController> {
                 SizedBox(height: 16),
                 TextFormField(
                   controller: categoryIdController,
+                  enabled: false,
                   decoration: InputDecoration(
                     labelText: "Kategori",
                     contentPadding:

@@ -102,8 +102,10 @@ class ClassController extends GetxController {
       if (grades != null) {
         gradeList.assignAll(grades);
       }
-    } finally {
+    } catch (e) {
+    print("Error fetching grades: $e");
+    }finally {
       isLoading(false);
-    }
-  }
+    } 
+  } 
 }

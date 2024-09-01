@@ -23,13 +23,13 @@ class HeaderClass extends GetView<ProfileUserController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(() {
-            if (controller.isLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.white,
-                ),
-              );
-            }
+            // if (controller.isLoading.value) {
+            //   return Center(
+            //     child: CircularProgressIndicator(
+            //       color: AppColor.white,
+            //     ),
+            //   );
+            // }
             if (controller.students.isEmpty) {
               return Expanded(
                 child: Center(

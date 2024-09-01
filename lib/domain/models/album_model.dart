@@ -1,7 +1,7 @@
 class Album {
  int? id;
  List<String>? desc;
- String? date;
+ DateTime? date;
  String? gradeId;
  String? teacherId;
  List<Media>? media;
@@ -23,12 +23,24 @@ class Album {
     return Album(
       id: json['id'],
       desc: List<String>.from(json['desc'] ?? []),
-      date: json['date'],
+      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
       gradeId: json['grade_id'],
       teacherId: json['teacher_id'],
       media: mediaList,
     );
   }
+
+ Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'desc': desc,
+      'date': date?.toIso8601String(),
+      'grade_id': gradeId,
+      'teacher_id': teacherId,
+      'media': media?.map((x) => x.toJson()).toList(),
+    };
+  }
+
 }
 
 class Media {
@@ -46,5 +58,12 @@ class Media {
       id: json['id'],
       filePath: baseUrl + json['file_name'],
     );
+  }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'file_name': filePath?.replaceFirst('https://talentaku.site/image/album-media/', ''),
+    };
   }
 }
