@@ -30,8 +30,7 @@ class StudentReportFormController extends GetxController {
   final inklusiTextController = TextEditingController();
   final inklusi_penutupTextController = TextEditingController();
   final inklusi_doaTextController = TextEditingController();
-
-  final studentId = 0.obs;
+  RxInt studentId = 0.obs;
   late final String gradeId;
   var selectedOptions = <String, String>{}.obs;
 
@@ -56,9 +55,20 @@ class StudentReportFormController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    gradeId = Get.arguments["gradeId"];
-    fetchStudentsFromApi();
     _loadStoredImage();
+    print(Get.arguments);
+    if (Get.arguments != null && Get.arguments["studentId"] != null) {
+      studentId.value = Get.arguments["studentId"];
+      print("Received studentId: ${studentId.value}");
+    } else {
+      print("No studentId received");
+    }
+    // if (Get.arguments["gradeId"] != null) {
+    //   gradeId = Get.arguments["gradeId"];
+    // } else {
+    //   print("grade id: {$gradeId}");
+    // }
+    gradeId = box.read('gradeId');
   }
 
   void pickDate(BuildContext context) {
@@ -83,42 +93,6 @@ class StudentReportFormController extends GetxController {
 
   void removeImage(File file) {
     selectedImages.removeWhere((element) => element.path == file.path);
-    // selectedImages.removeAt(index);
-  }
-
-  void fetchStudentsFromApi() async {
-    isLoading.value = true;
-    final token = box.read('token');
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    final url = 'https://talentaku.site/api/grades/$gradeId';
-
-    try {
-      final response = await http.get(Uri.parse(url), headers: headers);
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> membersJson = jsonResponse['data']['members'];
-        final List<ClassMemberModel> memberList = membersJson
-            .map((memberJson) => ClassMemberModel.fromJson(memberJson))
-            .toList();
-
-        isSelected.value =
-            List.generate(memberList.length, (index) => false.obs);
-        students.assignAll(memberList);
-        print("Fetched students data: ${students.length}");
-      } else {
-        Get.snackbar(
-            'Error', 'Failed to fetch students: ${response.statusCode}',
-            backgroundColor: AppColor.red);
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'An error occurred', backgroundColor: AppColor.red);
-      print(e);
-    } finally {
-      isLoading.value = false;
-    }
   }
 
   void pickImage() async {
@@ -158,6 +132,7 @@ class StudentReportFormController extends GetxController {
     required List<File> media,
     required int studentId,
   }) async {
+    studentId = this.studentId.value;
     // if (created.isEmpty ||
     //     semesterId == 0 ||
     //     kegiatanAwalDihalaman.isEmpty ||

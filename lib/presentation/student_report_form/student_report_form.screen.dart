@@ -206,10 +206,10 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
             ),
             spaceHeightSmall,
             CustomTextFormField(
-              loginController: controller.catatanController, 
+              loginController: controller.catatanController,
               labelText: "Masukkan Catatan",
             ),
-            spaceHeightSmall,            
+            spaceHeightSmall,
             SizedBox(height: heightScreen * 0.01),
             Row(
               children: [
@@ -304,138 +304,9 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
               );
             }),
             spaceHeightNormal,
-            // GestureDetector(
-            //   onTap: () {
-            //     controller.pickImage();
-            //   },
-            //   child: Obx(() {
-            //     return controller.selectedImages.isNotEmpty
-            //         ? GridView.builder(
-            //             padding: EdgeInsets.all(8),
-            //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //               crossAxisCount: 2,
-            //               crossAxisSpacing: 8,
-            //               mainAxisSpacing: 8,
-            //             ),
-            //             itemCount: controller.selectedImages.length,
-            //             shrinkWrap: true,
-            //             physics: NeverScrollableScrollPhysics(),
-            //             itemBuilder: (context, index) {
-            //               return Stack(
-            //                 children: [
-            //                   ClipRRect(
-            //                     borderRadius: BorderRadius.circular(16),
-            //                     child: Image.file(
-            //                       controller.selectedImages[index],
-            //                       fit: BoxFit.cover,
-            //                       width: double.infinity,
-            //                       height: double.infinity,
-            //                     ),
-            //                   ),
-            //                   Positioned(
-            //                     right: 8,
-            //                     top: 8,
-            //                     child: GestureDetector(
-            //                       onTap: () => controller.removeImage(index),
-            //                       child: Icon(
-            //                         Icons.close_outlined,
-            //                         color: AppColor.red,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               );
-            //             },
-            //           )
-            //         : Container(
-            //             height: heightScreen * 0.1,
-            //             decoration: BoxDecoration(
-            //               border:
-            //                   Border.all(width: 1.5, color: AppColor.blue500),
-            //               borderRadius: BorderRadius.circular(16),
-            //             ),
-            //             alignment: Alignment.center,
-            //             child: Text(
-            //               "Tambah Foto",
-            //               style: AppTextStyle.tsNormal,
-            //             ),
-            //           );
-            //   }),
-            // ),
-
-            spaceHeightSmall,
-            Text(
-              "Kirim Laporan untuk",
-              style: AppTextStyle.tsTitleBold(AppColor.black),
-            ),
-            spaceHeightSmall,
-            Obx(() {
-              if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (controller.students.isEmpty) {
-                return Center(child: Text("Tidak ada murid"));
-              } else {
-                return Container(
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: controller.students.length,
-                      itemBuilder: (context, index) {
-                        final student = controller.students[index];
-                        final selected = controller.isSelected[index];
-                        return GestureDetector(
-                          onTap: () {
-                            controller.isSelected.value = List.generate(
-                                controller.students.length,
-                                (index) => false.obs);
-                            controller.studentId.value = student.id!;
-                            selected.toggle();
-                          },
-                          child: Container(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Obx(
-                                () => Container(
-                                  margin: EdgeInsets.only(right: 12),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: selected.value
-                                                  ? Border.all(
-                                                      width: 3,
-                                                      color: AppColor.blue600)
-                                                  : null),
-                                          child: CircleAvatar(
-                                              radius: 30,
-                                              child: Image.asset(
-                                                  'assets/images/student.png')),
-                                        ),
-                                        spaceHeightSmall,
-                                        AutoSizeText(
-                                          student.name!,
-                                          style: AppTextStyle.tsSmallRegular(
-                                              AppColor.black),
-                                          minFontSize: 12,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ]),
-                                ),
-                              ),
-                            ],
-                          )),
-                        );
-                      }),
-                );
-              }
-            }),
-            SizedBox(height: heightScreen * 0.03),
+          
+           
+            defaultHeightSpace,
             Obx(() {
               return SizedBox(
                 width: double.infinity,

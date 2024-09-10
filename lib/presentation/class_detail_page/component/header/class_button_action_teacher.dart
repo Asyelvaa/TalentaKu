@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_talentaku/infrastructure/navigation/routes.dart';
 import 'package:flutter_talentaku/presentation/class_detail_page/controllers/class_detail.controller.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -39,10 +40,13 @@ class ClassButtonActionTeacher extends StatelessWidget {
         Expanded(
             child: GestureDetector(
           onTap: () {
-            Get.toNamed('/student-report-form',
-             arguments: {
-              "gradeId": controller.classItem["id"].toString()
-            });
+            controller.box
+                .write('gradeId', controller.classItem["id"].toString());
+            Get.toNamed('/list-siswa',
+                arguments: {"gradeId": controller.classItem["id"].toString()});
+            //  arguments: {
+            //   "gradeId": controller.classItem["id"].toString()
+            // });
           },
           child: Stack(clipBehavior: Clip.none, children: [
             Container(
@@ -50,8 +54,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
                 width: widthScreen,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    color: AppColor.blue50,
-                    borderRadius: defaultBorderRadius),
+                    color: AppColor.blue50, borderRadius: defaultBorderRadius),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -64,8 +67,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
                           Flexible(
                             child: AutoSizeText(
                             'Buat',
-                            style:
-                                AppTextStyle.tsSmallRegular(AppColor.black),
+                            style: AppTextStyle.tsSmallRegular(AppColor.black),
                             minFontSize: 10,
                             maxLines: 1,
                           ),

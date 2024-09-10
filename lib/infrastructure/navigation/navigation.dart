@@ -114,5 +114,10 @@ class Nav {
       page: () => const SubmissionPageStudentScreen(),
       binding: SubmissionPageStudentControllerBinding(),
     ),
+    GetPage(
+      name: Routes.LIST_SISWA,
+      page: () => const ListSiswaScreen(),
+      binding: ListSiswaControllerBinding(),
+    ),
   ];
 }

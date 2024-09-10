@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
-import 'package:flutter_talentaku/presentation/class_detail_page/component/beranda/pdf_viewer_screen.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class PDFWidget extends StatelessWidget {
