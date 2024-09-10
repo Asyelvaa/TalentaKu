@@ -38,7 +38,7 @@ class UpdatePassword extends GetView<ProfilePageController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Update Password",
+                  "Update Sandi Akun",
                   style: AppTextStyle.tsTitleBold(AppColor.black)
                 ),
                 SizedBox(height: heightScreen * 0.05),
@@ -47,7 +47,7 @@ class UpdatePassword extends GetView<ProfilePageController> {
                   controller: currentPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: "Password sekarang",
+                    labelText: "Sandi sekarang",
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                     enabledBorder: OutlineInputBorder(
@@ -85,6 +85,9 @@ class UpdatePassword extends GetView<ProfilePageController> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('sandi minimal 8 karakter', style: AppTextStyle.tsSmallRegular(AppColor.black.withOpacity(0.8)))),
                 SizedBox(height: 16),
                 // Confirm New Password Field
                 TextFormField(
@@ -119,7 +122,7 @@ class UpdatePassword extends GetView<ProfilePageController> {
                           confirmPasswordController.text.trim();
           
                       if (newPassword != confirmPassword) {
-                        dialogError('Password baru tidak sesuai');
+                        dialogError('  Sandi baru tidak sesuai');
                         // Get.snackbar(
                         //   'Error',
                         //   'New passwords do not match.',
@@ -135,7 +138,7 @@ class UpdatePassword extends GetView<ProfilePageController> {
                           confirmPassword,
                         );
                       } catch (e) {
-                        dialogError('Gagal memperbarui password');
+                        dialogError('Gagal memperbarui sandi akun');
                         print('Error: $e');
                       }
                     },

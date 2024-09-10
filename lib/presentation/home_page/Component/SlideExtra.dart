@@ -30,28 +30,19 @@ class SlideExtra extends GetView<HomePageController> {
         padding: const EdgeInsets.only(bottom: 10),
         child: Column(children: [
           HeaderContent(text: headerContent, imageName: image),
-          Container(
-            padding: EdgeInsets.only(left: 20),
-            width: double.infinity,
-            height: heightScreen * 0.13,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: contenExtra.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: onTap,
-                      child: Content(
-                        contenExtra: contenExtra[index],
-                        index: index,
-                      ),
-                    );
-                  },
-                ),
+          Wrap(
+            spacing: 10, 
+            runSpacing: 10, 
+            children: [
+              ...contenExtra.map((title) => 
+                  GestureDetector(
+                    onTap: onTap, 
+                    child: Content(
+                      contenExtra: title,
+                      index: contenExtra.indexOf(title),
+                    ),
+                  )
+                ),         
                 if (_homePageController.userRole
                     .any((role) => role.contains('Guru')))
                   GestureDetector(
@@ -84,8 +75,8 @@ class SlideExtra extends GetView<HomePageController> {
                       );
                     },
                     child: Container(
-                      height: heightScreen * 0.3,
-                      width: widthScreen * 0.3,
+                      height: heightScreen * 0.2,
+                      width: widthScreen * 0.45,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: AppColor.white,
@@ -95,8 +86,8 @@ class SlideExtra extends GetView<HomePageController> {
                     ),
                   )
               ],
-            ),
-          )
-        ]));
+            ),          
+        ]
+      ));
   }
 }

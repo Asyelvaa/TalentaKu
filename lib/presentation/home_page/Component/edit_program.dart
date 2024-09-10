@@ -25,13 +25,15 @@ class EditProgramPopup extends GetView<HomePageController> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
 
-  final TextEditingController categoryIdController = TextEditingController();
+  // final TextEditingController categoryIdController = TextEditingController();
+  final RxInt selectedCategoryId = RxInt(0);
 
   @override
   Widget build(BuildContext context) {
     nameController.text = initialName;
     descController.text = initialDesc;
-    categoryIdController.text = initialCategoryId.toString();
+    selectedCategoryId.value = initialCategoryId;
+    // categoryIdController.text = initialCategoryId.toString();
 
     return 
           SingleChildScrollView(
@@ -104,25 +106,63 @@ class EditProgramPopup extends GetView<HomePageController> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextFormField(
-                    controller: categoryIdController,
-                    decoration: InputDecoration(
-                      labelText: "Kategori",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColor.blue500),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.blue500),
+                  Obx(
+                    () => PopupMenuButton<int>(
+                      onSelected: (value) {
+                        selectedCategoryId.value = value;
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Text("Program Tambahan"),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          child: Text("Ekstrakurikuler"),
+                        ),
+                      ],
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColor.grey),
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              selectedCategoryId.value == 1
+                                  ? "Program Tambahan"
+                                  : selectedCategoryId.value == 2
+                                      ? "Ekstrakurikuler"
+                                      : "Pilih Kategori",
+                              style: AppTextStyle.tsNormal,
+                            ),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  // TextFormField(
+                  //   controller: categoryIdController,
+                  //   decoration: InputDecoration(
+                  //     labelText: "Kategori",
+                  //     contentPadding:
+                  //         EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: AppColor.grey),
+                  //       borderRadius: BorderRadius.all(Radius.circular(12)),
+                  //     ),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       borderSide: BorderSide(color: AppColor.blue500),
+                  //     ),
+                  //     border: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: AppColor.blue500),
+                  //     ),
+                  //   ),
+                  // ),
                   defaultHeightSpace,
                   GestureDetector(
                     onTap: () {
@@ -170,7 +210,8 @@ class EditProgramPopup extends GetView<HomePageController> {
                             nameController.text,
                             descController.text,
                             File(controller.selectedImages.value),
-                            int.parse(categoryIdController.text),
+                            selectedCategoryId.value,
+                            // int.parse(categoryIdController.text),
                           );
                         } catch (e) {
                           print('Error: $e');

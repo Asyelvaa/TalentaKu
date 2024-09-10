@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../infrastructure/theme/theme.dart';
 import '../common_widget/default_appbar.dart';
@@ -13,6 +14,7 @@ class ClassScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final RefreshController refreshController = RefreshController(initialRefresh: false);
     final controller = Get.put(ClassController());
     return Scaffold(
       backgroundColor: AppColor.background, 
@@ -25,43 +27,49 @@ class ClassScreen extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } 
         else if (controller.gradeList.isEmpty) {
-          return Container(
-            height: heightScreen,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                defaultHeightSpace,
-                Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
-                Text('Anda Belum Bergabung \nDalam Kelas', 
-                  style: AppTextStyle.tsTitleBold(AppColor.blue800),
-                  textAlign: TextAlign.center,
-                ),
-                defaultHeightSpace,
-                ButtonClassForm(),
-              ],
+          return SmartRefresher(
+            controller: refreshController,
+            onRefresh: () async {
+              await controller.showAllGrades();
+
+              refreshController.refreshCompleted();
+            },
+            child: Container(
+              height: heightScreen,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: 
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  defaultHeightSpace,
+                  Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
+                  Text('Anda Belum Bergabung \nDalam Kelas', 
+                    style: AppTextStyle.tsTitleBold(AppColor.blue800),
+                    textAlign: TextAlign.center,
+                  ),
+                  defaultHeightSpace,
+                  ButtonClassForm(),
+                ],
+              ),
             ),
           );
         } else{
-          return SingleChildScrollView(
-          child: Container(
-            height: double.maxFinite,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+          return SmartRefresher(
+            controller: refreshController,
+            onRefresh: () async {
+              await controller.showAllGrades();
+              refreshController.refreshCompleted();
+            },
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
                 spaceHeightNormal,
                 ButtonClassForm(),
                 spaceHeightNormal,
-                Expanded(
-                  child: ClassItem()
-                ),
+                ClassItem(), 
               ],
             ),
-          ),
-        );
+          );
         }
       }),
     );

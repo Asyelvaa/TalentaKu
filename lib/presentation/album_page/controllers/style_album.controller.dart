@@ -113,6 +113,7 @@ class AlbumController extends GetxController {
   }
 
   Future<void> delete() async {
+    final classctr = Get.put(ClassDetailController());
     final albumId = album.id.toString();
     try {
       isLoading.value = true;
@@ -128,6 +129,7 @@ class AlbumController extends GetxController {
       //     await classDetailController.fetchAlbums();
       //   });
       // }
+      // classctr.fetchAlbums();
       Get.back();
       dialogSuccess('Foto Berhasil dihapus');
     } catch (e) {

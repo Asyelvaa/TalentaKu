@@ -56,17 +56,21 @@ class StudentReportFormScreen extends GetView<StudentReportFormController> {
                           color: AppColor.blue500,
                         ),
                       ),
-                      Obx(() {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            controller.selectedDate.value != null
-                                ? '${DateFormat('dd - MM - yyyy', 'id_ID').format(controller.selectedDate.value!)}'
-                                : 'Pilih tanggal',
-                            style: AppTextStyle.tsNormal,
-                          ),
-                        );
-                      }),
+                      Expanded(
+                        child: Obx(() {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: AutoSizeText(
+                              controller.selectedDate.value != null
+                                  ? '${DateFormat('dd - MM - yyyy', 'id_ID').format(controller.selectedDate.value!)}'
+                                  : 'Pilih tanggal',
+                              style: AppTextStyle.tsNormal,
+                              minFontSize: 10,
+                              maxLines: 1,
+                            ),
+                          );
+                        }),
+                      ),
                     ],
                   ),
                 ),

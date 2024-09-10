@@ -23,7 +23,7 @@ class SubmissionPageStudentScreen extends StatelessWidget {
         if (controller.isLoadingTask.value || controller.isLoadingSubmission.value) {
           return Center(child: CircularProgressIndicator());
         } else if (submission == null || task == null) {
-          return Center(
+          return Center(  
             child: Text('Error loading data'),
           );
         }

@@ -29,13 +29,14 @@ class ClassButtonActionStudent extends StatelessWidget {
             decoration: BoxDecoration(
                 color: AppColor.blue50, borderRadius: defaultBorderRadius),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [                
                 AutoSizeText(
                   'Laporan Pembelajaran',
                   style: AppTextStyle.tsBodyBold(AppColor.black),
                   minFontSize: 12,
-                ),               
+                ),  
+                SizedBox(width: 15),             
               ],
             )),
         Positioned(

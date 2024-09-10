@@ -46,7 +46,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
           },
           child: Stack(clipBehavior: Clip.none, children: [
             Container(
-                // height: heightScreen * 0.075,
+                height: heightScreen * 0.07,
                 width: widthScreen,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -61,17 +61,24 @@ class ClassButtonActionTeacher extends StatelessWidget {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AutoSizeText(
+                          Flexible(
+                            child: AutoSizeText(
                             'Buat',
                             style:
                                 AppTextStyle.tsSmallRegular(AppColor.black),
                             minFontSize: 10,
+                            maxLines: 1,
                           ),
-                          AutoSizeText(
+                          ),                        
+                          Flexible(
+                            child: AutoSizeText(
                             'Laporan Pembelajaran',
                             style: AppTextStyle.tsBodyBold(AppColor.black),
-                            minFontSize: 10,
+                            minFontSize: 12,
+                            maxLines: 1
                           )
+                          )
+                          
                         ]),
                   ],
                 )),

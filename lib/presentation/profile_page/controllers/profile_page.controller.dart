@@ -53,6 +53,7 @@ class ProfilePageController extends GetxController {
 
     if (response.statusCode == 201) {
       dialogSuccess('Password berhasil diperbarui');
+      Get.offAllNamed(Routes.LoginScreen);
       // Get.snackbar(
       //   'Success',
       //   'Password updated successfully.',

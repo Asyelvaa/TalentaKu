@@ -35,7 +35,7 @@ class ContentAlbum extends GetView<ClassDetailController> {
                   itemBuilder: (context, index) => Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
+                      color: AppColor.grey,
                     ),
                   ),
                 ),

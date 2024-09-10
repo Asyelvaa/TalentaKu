@@ -206,8 +206,8 @@ class HomePageController extends GetxController {
       if (response.statusCode == 201) {
         final responseData = json.decode(response.body);
         print(" Success: ${responseData['message']}");
-        await fetchProgram();
-        Get.snackbar('Success', 'Berhasil membuat program baru' );
+        await fetchProgram();        
+        dialogSuccess('Berhasil membuat program baru');
         Get.back();
       } else {
         final responseData = json.decode(response.body);
@@ -215,6 +215,7 @@ class HomePageController extends GetxController {
       }
     } catch (e) {
       print('Error create: $e');
+      dialogError('Gagal membuat program baru');
       throw Exception('Error create program: $e');
     }
   }
@@ -236,16 +237,17 @@ class HomePageController extends GetxController {
       if (response.statusCode == 200) {
         fetchProgram();
         Get.back();
-        Get.snackbar('Success', 'Program berhasil dihapus');
+        dialogSuccess('Program berhasil dihapus');
       } else if (response.statusCode == 404) {
-        Get.snackbar('Success', 'Program gagal dihapus');
+        dialogError('Gagal menghapus program');
+
         throw Exception("Program not found");
       } else {
         throw Exception("Failed to delete program");
       }
     } catch (e) {
       print('Error deleting program: $e');
-      Get.snackbar('Error', 'Failed to delete program: $e');
+     dialogError('Gagal menghapus program');
       throw Exception('Error deleting program: $e');
     }
   }
@@ -309,6 +311,31 @@ class HomePageController extends GetxController {
     fetchInformationList();
     super.onInit();
     fetchCurrentUser();
+  }
+  void dialogSuccess(String message) {
+    Get.snackbar(
+      'Berhasil',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: AppColor.blue100,
+      colorText: AppColor.black,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
+  }
+
+  void dialogError(String message) {
+    Get.snackbar(
+      'Gagal',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red[600],
+      colorText: Colors.white,
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+      duration: Duration(seconds: 3),
+    );
   }
 
 

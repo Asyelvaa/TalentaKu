@@ -170,6 +170,10 @@ class AddExtra extends GetView<HomePageController> {
                         );
                       } catch (e) {
                         print('Error: $e');
+                      } finally {
+                        controller.nameController.clear();
+                        controller.descController.clear();
+                        controller.selectedImages.value = '';                        
                       }
                     },
                     style: ElevatedButton.styleFrom(

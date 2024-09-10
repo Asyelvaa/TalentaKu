@@ -137,12 +137,14 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
     try {
       await ApiServiceTask().deleteTask(gradeId, taskId);
       controller.fetchAllTask();
+      controller.fetchAlbums();
+      controller.fetchStream();
       Get.back();
       print('Task with id $taskId deleted');
-      dialogSuccess('Task successfuly deleted');
+      dialogSuccess('Tugas berhasil dihapus');
     } catch (e) {
-      print('Error deleting task: $e');
-      dialogError('Error deleting task: $e');
+      print('Error menghapus tugas: $e');
+      dialogError('Gagal menghapus tugas');
     }
   }
 
@@ -161,6 +163,7 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
       Get.back(); 
       dialogSuccess('Tugas Berhasil Dikumpulkan');
     } catch (e) {
+      dialogError('Gagal mengumpulkan tugas');
       Get.snackbar('Error', 'Failed to submit task');    }
   }
 

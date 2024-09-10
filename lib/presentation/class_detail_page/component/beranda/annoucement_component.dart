@@ -91,33 +91,34 @@ class AnnouncementComponent extends GetView<ClassDetailController> {
             ),
           ],
         ),
-        PopupMenuButton<int>(
-          icon: Icon(Icons.more_vert, color: AppColor.black),
-          onSelected: (value) {
-            if (value == 1) {
-              showDeleteConfirmationDialog(context, announcement['id'].toString());
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 1,
-              child: Row(
-                children: [
-                  Icon(Icons.delete_forever, color: AppColor.red),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Hapus Pengumuman',
-                    style: AppTextStyle.tsSmallRegular(AppColor.black),
-                  ),
-                ],
+        if (controller.userRole.any((role) => role.contains('Guru')))
+          PopupMenuButton<int>(
+            icon: Icon(Icons.more_vert, color: AppColor.black),
+            onSelected: (value) {
+              if (value == 1) {
+                showDeleteConfirmationDialog(context, announcement['id'].toString());
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.delete_forever, color: AppColor.red),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Hapus Pengumuman',
+                      style: AppTextStyle.tsSmallRegular(AppColor.black),
+                    ),
+                  ],
+                ),
               ),
+            ],
+            color: AppColor.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-          ],
-          color: AppColor.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
           ),
-        ),
       ],
     );
   }
@@ -140,7 +141,7 @@ class AnnouncementComponent extends GetView<ClassDetailController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: announcement['media'].map<Widget>((media) {
-        String fileName = media['file_name'];
+        String fileName = media['original_file_name'];
         String fileExtension = fileName.split('.').last.toLowerCase();
         String fileUrl = 'https://talentaku.site/image/announcement-media/$fileName';
 

@@ -181,6 +181,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
   }
 
   Future<void> fetchAlbums() async {
+    albums.clear();
     try {
       isLoading(true);
       var fetchedAlbums = await _apiServiceAlbum.getAllAlbum(classItem['id']);
@@ -195,6 +196,8 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
 
   Future<void> fetchAllTask() async {
     var taskList;
+    teacherTasks.clear();
+    studentTasks.clear();
     try {
       isLoading(true);
       if (userRole.any((role) => role.contains('Guru'))) {
@@ -211,6 +214,8 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
       }
     } catch (e) {
       print('failed fetch task: $e');
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -324,6 +329,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
         pickedFiles.toList(), 
         gradeId);
       announcement.value = newAnnouncement;
+      announcementsList.clear();
       await fetchStream();
       Get.back();
       dialogSuccess('Pengumuman berhasil dibuat');
@@ -345,10 +351,10 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
       await ApiServiceAnnouncements().deleteAnnouncement(gradeId, commentId);
       announcementsList.clear();
       await fetchStream();
-      Get.snackbar('Success', 'Announcement deleted successfully');
+      dialogSuccess('Pengumuman berhasil dihapus');
       print('berhasil hapus announcement ');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete announcement');
+      dialogError('Pengumuman gagal dihapus');
       print('Gagal hapus announcement ');
     } finally {
       isLoading(false);
@@ -416,7 +422,6 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
           anounces.value = announcementsList[0]['announcements'];
           // mediaAnnounce.value = announcementsList[0]['media'];
         }
-
         print("Announcements List: $announcementsList");
       }
     } catch (e) {

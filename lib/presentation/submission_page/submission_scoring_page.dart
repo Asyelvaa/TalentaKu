@@ -234,7 +234,7 @@ class SubmissionScoringPage extends StatelessWidget {
               spaceHeightNormal,
               ElevatedButton(
                 onPressed: () async {
-                  // await controller.scoringSubmission();
+                  await controller.scoringSubmission();
                 },
                 child: Center(
                   child: Text(

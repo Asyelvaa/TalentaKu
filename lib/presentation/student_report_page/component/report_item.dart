@@ -96,7 +96,7 @@ class ReportItem extends GetView<DailyReportController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          width: Get.width * 0.6,
+          // width: Get.width * 0.6,
           child: Text(
             fieldName,
             style: AppTextStyle.tsNormal,

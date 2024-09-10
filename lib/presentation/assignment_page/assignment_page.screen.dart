@@ -39,12 +39,19 @@ class AssignmentPageScreen extends StatelessWidget {
                 Column(
                   children: [
                     Text('Tugas Pembelajaran', style: AppTextStyle.tsTitleBold(AppColor.white)),
-                    Obx( () => controller.isLoading.value 
-                      ? Text('...', style: AppTextStyle.tsSmallRegular(AppColor.white))
-                      : Text( DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(controller.taskDetail.value!.startDate!) ?? '',
+                    Obx(
+                      () => controller.isLoading.value
+                          ? Text(
+                              '...',
                               style: AppTextStyle.tsSmallRegular(AppColor.white),
-                            ), 
-                      )                    
+                            )
+                          : Text(
+                              controller.taskDetail.value?.startDate != null
+                                  ? DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(controller.taskDetail.value!.startDate!)
+                                  : '-', 
+                              style: AppTextStyle.tsSmallRegular(AppColor.white),
+                            ),
+                    )            
                     
                   ],
                 )

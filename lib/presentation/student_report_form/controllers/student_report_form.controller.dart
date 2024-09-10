@@ -232,6 +232,7 @@ class StudentReportFormController extends GetxController {
       }
       print(request.fields);
       final response = await request.send();
+      print(response.statusCode);
       if (response.statusCode == 201) {
         Get.back();
         Get.snackbar('Sukses', 'Laporan telah dikirim',

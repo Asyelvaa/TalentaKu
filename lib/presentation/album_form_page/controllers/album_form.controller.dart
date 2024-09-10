@@ -74,7 +74,7 @@ class AlbumFormController extends GetxController {
     }
 
   Future<void> uploadAlbumPost(gradeId) async {
-    final controller = Get.put(ClassDetailController());
+    final classctr = Get.put(ClassDetailController());
     try {
       isLoading.value = true;
       print('Starting uploadAlbumPost');
@@ -91,7 +91,8 @@ class AlbumFormController extends GetxController {
       print(response);
 
       if (response['message'] == 'success') {
-        controller.fetchAlbums();
+        
+        // classctr.fetchAlbums();
         Get.back();
         Get.snackbar('success', 'uploaded successfully');
       } 

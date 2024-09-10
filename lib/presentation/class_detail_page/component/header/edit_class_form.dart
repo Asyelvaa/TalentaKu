@@ -279,54 +279,54 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                             ],
                           ),
                           spaceHeightNormal,
-                          ElevatedButton(
-                            onPressed: () {
-                              showCustomPopupDialog(
-                                'Peringatan!',
-                                'Apakah Anda yakin ingin menghapus kelas ini?',
-                                [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        backgroundColor: AppColor.white),
-                                    onPressed: () => Get.back(),
-                                    child: Text(
-                                      'Tidak',
-                                      style: AppTextStyle.tsBodyRegular(
-                                          AppColor.black),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        backgroundColor: AppColor.blue600),
-                                    onPressed: () {
-                                      // Get.back();
-                                      controller.deleteClass();
-                                    },
-                                    child: Text(
-                                      'Hapus Kelas',
-                                      style: AppTextStyle.tsBodyRegular(
-                                          AppColor.white),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Hapus Kelas',style: AppTextStyle.tsBodyBold( AppColor.black)),
-                                Icon(Icons.delete_forever, color: AppColor.red),
-                              ],
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(12),
-                                backgroundColor: AppColor.grey,
-                                shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-                                elevation: 0
-                                ),
-                          )
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     showCustomPopupDialog(
+                          //       'Peringatan!',
+                          //       'Apakah Anda yakin ingin menghapus kelas ini?',
+                          //       [
+                          //         ElevatedButton(
+                          //           style: ElevatedButton.styleFrom(
+                          //               elevation: 0,
+                          //               backgroundColor: AppColor.white),
+                          //           onPressed: () => Get.back(),
+                          //           child: Text(
+                          //             'Tidak',
+                          //             style: AppTextStyle.tsBodyRegular(
+                          //                 AppColor.black),
+                          //           ),
+                          //         ),
+                          //         ElevatedButton(
+                          //           style: ElevatedButton.styleFrom(
+                          //               elevation: 0,
+                          //               backgroundColor: AppColor.blue600),
+                          //           onPressed: () {
+                          //             // Get.back();
+                          //             controller.deleteClass();
+                          //           },
+                          //           child: Text(
+                          //             'Hapus Kelas',
+                          //             style: AppTextStyle.tsBodyRegular(
+                          //                 AppColor.white),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     );
+                          //   },
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text('Hapus Kelas',style: AppTextStyle.tsBodyBold( AppColor.black)),
+                          //       Icon(Icons.delete_forever, color: AppColor.red),
+                          //     ],
+                          //   ),
+                          //   style: ElevatedButton.styleFrom(
+                          //       padding: EdgeInsets.all(12),
+                          //       backgroundColor: AppColor.grey,
+                          //       shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
+                          //       elevation: 0
+                          //       ),
+                          // )
                         ],
                       ),
                     ),

@@ -57,8 +57,7 @@ class HomePageScreen extends GetView<HomePageController> {
                         duration: Duration(seconds: 2),
                         color: Colors.grey.shade300,
                         enabled: true,
-                        child: SlideInformation(
-                         
+                        child: SlideInformation(                         
                           headerContent: "Loading.... ",
                           image: "program_tambahan.png",
                           contentTitles: [
@@ -71,9 +70,8 @@ class HomePageScreen extends GetView<HomePageController> {
                           ],
                         ),
                       )
-                    : SlideInformation(
-                    
-                        headerContent: "Program Tambahan",
+                    : SlideInformation(                    
+                        headerContent: "Program",
                         image: "program_tambahan.png",
                         contentTitles: controller.contentTitles,
                       )),

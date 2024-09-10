@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../infrastructure/theme/theme.dart';
 
 class EditReportUserPageController extends GetxController {
-  late final String reportId;
+  late final reportId;
   late final gradeId;
   late final studentId;
   final box = GetStorage();
@@ -60,9 +60,12 @@ class EditReportUserPageController extends GetxController {
         final jsonData = json.decode(response.body);
         reportData.assignAll(jsonData['data']);
         if (reportData.isNotEmpty) {
-          var data = reportData.first;
-          kegiatan_awal_dihalamanTextController.text =
-              data['kegiatan_awal_dihalaman'][0] ?? '';
+          // var data = reportData[2];
+          var data = reportData.firstWhere(
+            (item) => item['id'] == reportId,
+            orElse: () => null, 
+          );
+          kegiatan_awal_dihalamanTextController.text = data['kegiatan_awal_dihalaman'][0] ?? '';
           selectedOptions['kegiatan_awal_dihalaman'] = data['dihalaman_hasil'];
           kegiatan_awal_berdoaTextController.text =
               data['kegiatan_awal_berdoa'][0] ?? '';
@@ -227,8 +230,8 @@ class EditReportUserPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        update();
-        Get.back();
+        fetchDataReport();
+        Get.back(result: 'success');
         Get.snackbar('Success', 'Report has been deleted',
             backgroundColor: AppColor.blue100);
       } else {
@@ -267,6 +270,7 @@ class EditReportUserPageController extends GetxController {
       reportUser.value = arguments[1];
       gradeId = arguments[1]['grade_id'];
       studentId = arguments[1]['student_id'];
+      reportId = arguments[1]['id'];
     }
     print(gradeId);
     fetchDataReport();

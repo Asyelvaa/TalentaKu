@@ -160,13 +160,16 @@ class AssignemntFormPageScreen extends StatelessWidget {
                         icon: Icon(Icons.calendar_today),
                       ),
                       Obx(() {
-                        return AutoSizeText(
-                          controller.selectedDate.value != null
-                              ? DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(controller.selectedDate.value!)
-                              : 'Tidak ada tanggal terpilih',
-                          style: AppTextStyle.tsBodyRegular(AppColor.black),
-                          minFontSize: 10,
-                          softWrap: true,
+                        return Flexible(
+                          child: AutoSizeText(
+                            controller.selectedDate.value != null
+                                ? DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(controller.selectedDate.value!)
+                                : 'Tidak ada tanggal terpilih',
+                            style: AppTextStyle.tsBodyRegular(AppColor.black),
+                            minFontSize: 10,
+                            softWrap: true,
+                            maxLines: 1,
+                          ),
                         );
                       }),
                     ],
