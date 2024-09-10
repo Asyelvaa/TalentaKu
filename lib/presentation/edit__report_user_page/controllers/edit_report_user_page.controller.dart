@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../infrastructure/theme/theme.dart';
 
 class EditReportUserPageController extends GetxController {
-  late final String reportId;
+  late final reportId;
   late final gradeId;
   late final studentId;
   final box = GetStorage();
@@ -36,65 +36,129 @@ class EditReportUserPageController extends GetxController {
   var selectedOptions = <String, String>{}.obs;
   var selectedImage = Rxn<File>();
 
-  Future<void> fetchDataReport() async {
-    isLoading.value = true;
-    final token = box.read('token');
-    print(studentId);
+  // Future<void> fetchDataReport() async {
+  //   isLoading.value = true;
+  //   final token = box.read('token');
+  //   print(studentId);
+  //   if (studentId == null || studentId.isEmpty) {
+  //     print("Error: studentId is null or empty");
+  //     isLoading.value = false;
+  //     return;
+  //   }
+  //   final url = '$baseUrl/grades/$gradeId/student-report/student/$studentId';
+  //   var headers = {
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   };
+  //   print(url);
+  //   try {
+  //     final response = await http.get(Uri.parse(url), headers: headers);
+  //     print(response.statusCode);
+  //     if (response.statusCode == 200) {
+  //       final jsonData = json.decode(response.body);
+  //       reportData.assignAll(jsonData['data']);
+  //       if (reportData.isNotEmpty) {
+  //         // var data = reportData[2];
+  //         var data = reportData.firstWhere(
+  //           (item) => item['id'] == reportId,
+  //           orElse: () => null,
+  //         );
+  //         kegiatan_awal_dihalamanTextController.text =
+  //             data['kegiatan_awal_dihalaman'][0] ?? '';
+  //         selectedOptions['kegiatan_awal_dihalaman'] = data['dihalaman_hasil'];
+  //         kegiatan_awal_berdoaTextController.text =
+  //             data['kegiatan_awal_berdoa'][0] ?? '';
+  //         selectedOptions['kegiatan_awal_berdoa'] = data['berdoa_hasil'];
+  //         kegiatan_inti_satuTextController.text =
+  //             data['kegiatan_inti_satu'][0] ?? '';
+  //         selectedOptions['kegiatan_inti_satu'] = data['inti_satu_hasil'];
+  //         kegiatan_inti_duaTextController.text =
+  //             data['kegiatan_inti_dua'][0] ?? '';
+  //         selectedOptions['kegiatan_inti_dua'] = data['inti_dua_hasil'];
+  //         kegiatan_inti_tigaTextController.text =
+  //             data['kegiatan_inti_tiga'][0] ?? '';
+  //         selectedOptions['kegiatan_inti_tiga'] = data['inti_tiga_hasil'];
+  //         SnackTextController.text = data['snack'][0] ?? '';
+  //         inklusiTextController.text = data['inklusi'][0] ?? '';
+  //         selectedOptions['inklusi'] = data['inklusi_hasil'];
+  //         inklusi_doaTextController.text = data['inklusi_doa'][0] ?? '';
+  //         selectedOptions['inklusi_doa'] = data['inklusi_doa_hasil'];
+  //         inklusi_penutupTextController.text = data['inklusi_penutup'][0] ?? '';
+  //         selectedOptions['inklusi_penutup'] = data['inklusi_penutup_hasil'];
+  //         catatanController.text = data['catatan'][0] ?? '';
+  //         print(data);
+  //       }
+  //     } else {
+  //       print("Error fetching student report data ");
+  //     }
+  //   } catch (e) {
+  //     print('Exception: $e');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+  void initializeReportData() {
+    var data = reportUser.value;
 
-    if (studentId == null || studentId.isEmpty) {
-      print("Error: studentId is null or empty");
-      isLoading.value = false;
-      return;
-    }
+    kegiatan_awal_dihalamanTextController.text =
+        data['kegiatan_awal_dihalaman']?.isNotEmpty == true
+            ? data['kegiatan_awal_dihalaman'][0]
+            : '';
+    selectedOptions['kegiatan_awal_dihalaman'] = data['dihalaman_hasil'] ?? '';
 
-    final url = '$baseUrl/grades/$gradeId/student-report/student/$studentId';
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
-    print(url);
+    kegiatan_awal_berdoaTextController.text =
+        data['kegiatan_awal_berdoa']?.isNotEmpty == true
+            ? data['kegiatan_awal_berdoa'][0]
+            : '';
+    selectedOptions['kegiatan_awal_berdoa'] = data['berdoa_hasil'] ?? '';
 
-    try {
-      final response = await http.get(Uri.parse(url), headers: headers);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        reportData.assignAll(jsonData['data']);
-        if (reportData.isNotEmpty) {
-          var data = reportData.first;
-          kegiatan_awal_dihalamanTextController.text =
-              data['kegiatan_awal_dihalaman'][0] ?? '';
-          selectedOptions['kegiatan_awal_dihalaman'] = data['dihalaman_hasil'];
-          kegiatan_awal_berdoaTextController.text =
-              data['kegiatan_awal_berdoa'][0] ?? '';
-          selectedOptions['kegiatan_awal_berdoa'] = data['berdoa_hasil'];
-          kegiatan_inti_satuTextController.text =
-              data['kegiatan_inti_satu'][0] ?? '';
-          selectedOptions['kegiatan_inti_satu'] = data['inti_satu_hasil'];
-          kegiatan_inti_duaTextController.text =
-              data['kegiatan_inti_dua'][0] ?? '';
-          selectedOptions['kegiatan_inti_dua'] = data['inti_dua_hasil'];
-          kegiatan_inti_tigaTextController.text =
-              data['kegiatan_inti_tiga'][0] ?? '';
-          selectedOptions['kegiatan_inti_tiga'] = data['inti_tiga_hasil'];
-          SnackTextController.text = data['snack'][0] ?? '';
-          inklusiTextController.text = data['inklusi'][0] ?? '';
-          selectedOptions['inklusi'] = data['inklusi_hasil'];
-          inklusi_doaTextController.text = data['inklusi_doa'][0] ?? '';
-          selectedOptions['inklusi_doa'] = data['inklusi_doa_hasil'];
-          inklusi_penutupTextController.text = data['inklusi_penutup'][0] ?? '';
-          selectedOptions['inklusi_penutup'] = data['inklusi_penutup_hasil'];
-          catatanController.text = data['catatan'][0] ?? '';
-          print(data);
-        }
-      } else {
-        print("Error fetching student report data ");
-      }
-    } catch (e) {
-      print('Exception: $e');
-    } finally {
-      isLoading.value = false;
-    }
+    kegiatan_inti_satuTextController.text =
+        data['kegiatan_inti_satu']?.isNotEmpty == true
+            ? data['kegiatan_inti_satu'][0]
+            : '';
+    selectedOptions['kegiatan_inti_satu'] = data['inti_satu_hasil'] ?? '';
+
+    kegiatan_inti_duaTextController.text =
+        data['kegiatan_inti_dua']?.isNotEmpty == true
+            ? data['kegiatan_inti_dua'][0]
+            : '';
+    selectedOptions['kegiatan_inti_dua'] = data['inti_dua_hasil'] ?? '';
+
+    kegiatan_inti_tigaTextController.text =
+        data['kegiatan_inti_tiga']?.isNotEmpty == true
+            ? data['kegiatan_inti_tiga'][0]
+            : '';
+    selectedOptions['kegiatan_inti_tiga'] = data['inti_tiga_hasil'] ?? '';
+
+    SnackTextController.text =
+        data['snack']?.isNotEmpty == true ? data['snack'][0] : '';
+    selectedOptions['snack'] = data['snack_hasil'] ?? '';
+
+    inklusiTextController.text =
+        data['inklusi']?.isNotEmpty == true ? data['inklusi'][0] : '';
+    selectedOptions['inklusi'] = data['inklusi_hasil'] ?? '';
+
+    inklusi_doaTextController.text =
+        data['inklusi_doa']?.isNotEmpty == true ? data['inklusi_doa'][0] : '';
+    selectedOptions['inklusi_doa'] = data['inklusi_doa_hasil'] ?? '';
+
+    inklusi_penutupTextController.text =
+        data['inklusi_penutup']?.isNotEmpty == true
+            ? data['inklusi_penutup'][0]
+            : '';
+    selectedOptions['inklusi_penutup'] = data['inklusi_penutup_hasil'] ?? '';
+
+    catatanController.text =
+        data['catatan']?.isNotEmpty == true ? data['catatan'][0] : '';
+
+    // Handle image if present
+    // var media = data['media'] as List<dynamic>? ?? [];
+    // if (media.isNotEmpty) {
+    //   var filePath = media.first['file_path'];
+    //   if (filePath != null) {
+    //     selectedImage.value = File(filePath);
+    //   }
+    // }
   }
 
   Future<void> editReport({
@@ -104,10 +168,10 @@ class EditReportUserPageController extends GetxController {
     required String berdoa_hasil,
     required String kegiatan_inti_satu,
     required String inti_satu_hasil,
-    required String kegiatan_inti_dua,
-    required String inti_dua_hasil,
-    required String kegiatan_inti_tiga,
-    required String inti_tiga_hasil,
+    String? kegiatan_inti_dua,
+    String? inti_dua_hasil,
+    String? kegiatan_inti_tiga,
+    String? inti_tiga_hasil,
     required String snack,
     required String inklusi,
     required String inklusi_hasil,
@@ -132,18 +196,25 @@ class EditReportUserPageController extends GetxController {
       };
 
       var formData = {
-        'created': reportData[0]['created'],
-        'semester_id': reportData[0]['semester_id'],
+        // 'created': reportUser.value[0]['created'],
+        // 'semester_id': reportUser.value[0]['semester_id'],
+        'created': reportUser.value != null
+            ? reportUser.value['created'] 
+            : '',
+        'semester_id': reportUser.value != null
+            ? reportUser.value['semester_id'] 
+            : '',
         'kegiatan_awal_dihalaman': kegiatan_awal_dihalaman,
         'dihalaman_hasil': dihalaman_hasil,
         'kegiatan_awal_berdoa': kegiatan_awal_berdoa,
         'berdoa_hasil': berdoa_hasil,
         'kegiatan_inti_satu': kegiatan_inti_satu,
         'inti_satu_hasil': inti_satu_hasil,
-        'kegiatan_inti_dua': kegiatan_inti_dua,
-        'inti_dua_hasil': inti_dua_hasil,
-        'kegiatan_inti_tiga': kegiatan_inti_tiga,
-        'inti_tiga_hasil': inti_tiga_hasil,
+        if (kegiatan_inti_dua != null) 'kegiatan_inti_dua': kegiatan_inti_dua,
+        if (inti_dua_hasil != null) 'inti_dua_hasil': inti_dua_hasil,
+        if (kegiatan_inti_tiga != null)
+          'kegiatan_inti_tiga': kegiatan_inti_tiga,
+        if (inti_tiga_hasil != null) 'inti_tiga_hasil': inti_tiga_hasil,
         'snack': snack,
         'inklusi': inklusi,
         'inklusi_hasil': inklusi_hasil,
@@ -198,7 +269,7 @@ class EditReportUserPageController extends GetxController {
     isLoading.value = false;
   }
 
-  void pickImage() async {  
+  void pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -228,8 +299,8 @@ class EditReportUserPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        update();
-        Get.back();
+        // fetchDataReport();
+        Get.back(result: 'success');
         Get.snackbar('Success', 'Report has been deleted',
             backgroundColor: AppColor.blue100);
       } else {
@@ -264,12 +335,17 @@ class EditReportUserPageController extends GetxController {
   void onInit() {
     super.onInit();
     final arguments = Get.arguments;
+    print(arguments[1]);
     if (arguments != null && arguments[0] == 'edit') {
       reportUser.value = arguments[1];
       gradeId = arguments[1]['grade_id'];
       studentId = arguments[1]['student_id'];
+      reportId = arguments[1]['id'];
     }
     print(gradeId);
-    fetchDataReport();
+    print(reportId);
+    print(studentId);
+    initializeReportData();
+    // fetchDataReport();
   }
 }
