@@ -12,12 +12,13 @@ class ContentAssignment extends GetView<ClassDetailController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
+      // child: Text('test'),
       child: Obx(() {
          if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
-        } else if (controller.userRole.any((role) => role.contains('Murid KB') || role.contains('Murid SD'))) {
+        } else if (controller.userRole.any((role) => role.contains('Murid') )) {
           return AssignmentListStudent();
-        } else if(controller.userRole.any((role) => role.contains('Guru KB') || role.contains('Guru SD'))) {
+        } else if(controller.userRole.any((role) => role.contains('Guru'))) {
           return AssignmentListTeacher();
         } else {
           return Text(controller.userRole.toString());

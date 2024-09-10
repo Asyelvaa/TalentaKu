@@ -12,11 +12,13 @@ import '../../common_widget/text_background.dart';
 import '../controllers/assignment_page.controller.dart';
 import 'circular_icon_button.dart';
 
-class ContentAssignment extends GetView<AssignmentPageController> {
+class ContentAssignment extends StatelessWidget {
   ContentAssignment({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AssignmentPageController());
+    
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: Get.height * 0.02),
@@ -127,59 +129,59 @@ class ContentAssignment extends GetView<AssignmentPageController> {
                       ),
 
                     // Links section
-                    spaceHeightExtraSmall,
-                    if (task.links!.isNotEmpty)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [                          
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: task.links!.length,
-                            itemBuilder: (context, index) {
-                              final link = task.links![index];
-                              return GestureDetector(
-                                onTap: () async {
-                                  final url = link.url!;
-                                  final uri = Uri.tryParse(url);
-                                  if (uri != null && await launchUrl(uri)) {
-                                    await launchUrl(uri);
-                                  } else {
-                                    throw 'Could not launch $url';
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(bottom: 8),
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppColor.white,
-                                    borderRadius: defaultBorderRadius,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.link,
-                                        size: 24,
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            link.url!,
-                                            style: AppTextStyle.tsSmallRegular(
-                                                AppColor.black),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                    // spaceHeightExtraSmall,
+                    // if (task.links!.isNotEmpty)
+                    //   Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [                          
+                    //       ListView.builder(
+                    //         shrinkWrap: true,
+                    //         physics: NeverScrollableScrollPhysics(),
+                    //         itemCount: task.links!.length,
+                    //         itemBuilder: (context, index) {
+                    //           final link = task.links![index];
+                    //           return GestureDetector(
+                    //             onTap: () async {
+                    //               final url = link.url!;
+                    //               final uri = Uri.tryParse(url);
+                    //               if (uri != null && await launchUrl(uri)) {
+                    //                 await launchUrl(uri);
+                    //               } else {
+                    //                 throw 'Could not launch $url';
+                    //               }
+                    //             },
+                    //             child: Container(
+                    //               margin: EdgeInsets.only(bottom: 8),
+                    //               padding: EdgeInsets.all(8),
+                    //               decoration: BoxDecoration(
+                    //                 color: AppColor.white,
+                    //                 borderRadius: defaultBorderRadius,
+                    //               ),
+                    //               child: Row(
+                    //                 children: [
+                    //                   Icon(
+                    //                     Icons.link,
+                    //                     size: 24,
+                    //                   ),
+                    //                   Expanded(
+                    //                     child: Padding(
+                    //                       padding: const EdgeInsets.all(8.0),
+                    //                       child: Text(
+                    //                         link.url!,
+                    //                         style: AppTextStyle.tsSmallRegular(
+                    //                             AppColor.black),
+                    //                         overflow: TextOverflow.ellipsis,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           );
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
                   ],
                 ),
                 spaceHeightNormal,

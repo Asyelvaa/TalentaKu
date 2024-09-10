@@ -14,7 +14,6 @@ class ReportListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DailyReportController());
-    // final data = controller.reportData[0];
     return Scaffold(
         backgroundColor: AppColor.background,
         appBar: PreferredSize(
@@ -27,35 +26,6 @@ class ReportListPage extends StatelessWidget {
           },
           trailing: Icon(Icons.arrow_forward_ios),
         )
-        // body: Obx((){
-        //   if(controller.reportData.isEmpty){
-        //     return Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Image.asset("assets/images/stiker_kelas.png", scale: 2.5,),
-        //           Text('Anda Belum Memiliki Laporan Pembelajaran',
-        //             style: AppTextStyle.tsTitle.copyWith(color: AppColor.blue800), textAlign: TextAlign.center,
-        //           ),
-        //       ],
-        //     );
-        //   } else if (controller.isLoading.value){
-        //     return Center(child: CircularProgressIndicator());
-        //   }
-        //   else {
-        //     return ListView.builder(
-        //       itemCount: controller.reportData.length,
-        //       itemBuilder: (context, index){
-        //         return ListTile(
-        //           title: Text(controller.reportData[0]['cretaed']),
-        //           // subtitle: Text(controller.reportData[index].description),
-        //           onTap: (){
-        //             Get.toNamed(Routes.DAILY_REPORT);
-        //           },
-        //         );
-        //       },
-        //     );
-        //   }
-        // }),
         );
   }
 }

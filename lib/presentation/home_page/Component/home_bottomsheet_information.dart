@@ -47,11 +47,11 @@ class HomeBottomsheetInformation extends StatelessWidget {
               SizedBox(height: 10),
               Text(
                 informationTitle,
-                style: AppTextStyle.tsTitle.copyWith(fontSize: 20),
+                style: AppTextStyle.tsTitleBold(AppColor.black)
               ),
               SizedBox(height: 20),
               Flexible(
-                child: Text(descriptionContent, style: AppTextStyle.tsNormal),
+                child: Text(descriptionContent, style: AppTextStyle.tsBodyRegular(AppColor.black)),
               ),
               SizedBox(height: 20),
               Container(
@@ -69,7 +69,7 @@ class HomeBottomsheetInformation extends StatelessWidget {
                         },
                         child: Container(
                           height: heightScreen,
-                          width: widthScreen * 0.5,
+                          width: widthScreen,
                           child: Padding(
                             padding: const EdgeInsets.all(1),
                             child: Image.network(
@@ -122,14 +122,15 @@ class HomeBottomsheetInformation extends StatelessWidget {
                       SizedBox(width: Get.width * 0.08),
                       GestureDetector(
                         onTap: () async {
-                          try {
-                            await _homePageController.deleteProgram(programId);
-                            Get.snackbar(
-                                'Success', 'Program deleted successfully');
-                          } catch (e) {
-                            Get.snackbar(
-                                'Error', 'Failed to delete program: $e');
-                          }
+                          await _homePageController.deleteProgram(programId);
+                          // try {
+                          //   await _homePageController.deleteProgram(programId);
+                          //   Get.snackbar(
+                          //       'Success', 'Program deleted successfully');
+                          // } catch (e) {
+                          //   Get.snackbar(
+                          //       'Error', 'Failed to delete program: $e');
+                          // }
                         },
                         child: Container(
                           height: 50,

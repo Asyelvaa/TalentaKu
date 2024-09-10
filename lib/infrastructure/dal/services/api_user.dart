@@ -34,7 +34,6 @@ class ApiServiceUser {
       return jsonDecode(response.body);
     } else {
       print(response.statusCode);
-      print(response.body);
       throw Exception('Failed to login with status code ${response.statusCode}');
     }
   }

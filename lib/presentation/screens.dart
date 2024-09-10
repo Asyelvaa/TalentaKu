@@ -4,6 +4,7 @@ export 'package:flutter_talentaku/presentation/class_detail_page/class_detail.sc
 export 'package:flutter_talentaku/presentation/class_page/class_page.screen.dart';
 export 'package:flutter_talentaku/presentation/edit__report_user_page/edit_report_user_page.screen.dart';
 export 'package:flutter_talentaku/presentation/home_page/home_page.screen.dart';
+export 'package:flutter_talentaku/presentation/list_siswa/list_siswa.screen.dart';
 export 'package:flutter_talentaku/presentation/login_page/login.screen.dart';
 export 'package:flutter_talentaku/presentation/login_pick_image/login_pick_image.screen.dart';
 export 'package:flutter_talentaku/presentation/profile_page/profile_page.screen.dart';

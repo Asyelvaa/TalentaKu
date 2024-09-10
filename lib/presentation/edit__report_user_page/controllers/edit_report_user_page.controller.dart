@@ -198,7 +198,7 @@ class EditReportUserPageController extends GetxController {
     isLoading.value = false;
   }
 
-  void pickImage() async {
+  void pickImage() async {  
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {

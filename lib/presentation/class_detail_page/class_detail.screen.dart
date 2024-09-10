@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 import 'component/header/class_button_action_student.dart';
 import 'component/header/class_button_action_teacher.dart';
@@ -79,9 +80,21 @@ class ClassDetailScreen extends GetView<ClassDetailController> {
                           HeaderClass(),
                           Obx(() {
                             if (controller.isLoading.value) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (controller.userRole
-                                .any((role) => role.contains('Guru'))) {
+                              return Shimmer(
+                                // duration: Duration(seconds: 2),
+                                // color: Colors.grey.shade300,
+                                enabled: true,
+                                child: Container(
+                                  width: widthScreen,
+                                  height: heightScreen * 0.07,
+                                  decoration: BoxDecoration(
+                                    // color: AppColor.blue200,
+                                    borderRadius: defaultBorderRadius
+                                  ),
+                                )
+                              );
+                            } else 
+                            if (controller.userRole.any((role) => role.contains('Guru'))) {
                               return ClassButtonActionTeacher();
                             } else {
                               return ClassButtonActionStudent();

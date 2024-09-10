@@ -60,10 +60,8 @@ class ContentScoring extends StatelessWidget {
                           Get.to(() => SubmissionScoringPage(), arguments: {
                             'taskId': Get.arguments['taskId'],
                             'gradeId': Get.arguments['gradeId'],
-                            'studentIdSubmitted':
-                                submission.studentSubmitted?.id ?? 0,
-                            'studentSubmitted':
-                                submission.studentSubmitted?.name ?? 'Unknown',
+                            'studentIdSubmitted':submission.studentSubmitted?.id ?? 0,
+                            'studentSubmitted':submission.studentSubmitted?.name ?? 'Unknown',
                             'completionsId': submission.submissionId,
                           });
                         },

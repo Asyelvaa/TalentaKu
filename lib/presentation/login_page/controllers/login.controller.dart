@@ -18,7 +18,7 @@ class LoginController extends GetxController {
   void onInit() {
     autoLogin();
     usernameController.text = 'ita';
-    passwordController.text = 'ita1234';
+    passwordController.text = 'ita12345';
     super.onInit();
   }
 
@@ -75,6 +75,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       print(e);
+      dialogError('Pastikan akun anda telah terdaftar');
     } finally {
       isLoading.value = false;
     }

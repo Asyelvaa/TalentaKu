@@ -20,7 +20,7 @@ class ContentBeranda extends GetView<ClassDetailController> {
       padding: const EdgeInsets.all(20),
       child: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: AppColor.blue200,));
         } else if (controller.userRole.any(
             (role) => role.contains('Murid KB') || role.contains('Murid SD'))) {
           return InformasiSiswa();

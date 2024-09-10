@@ -45,13 +45,13 @@ class HomePageScreen extends GetView<HomePageController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (controller.userRole
-                    .any((role) => role == 'Murid KB' || role == 'Murid SD'))
-                  ClassInformation(
-                    titleInfo: "Informasi",
-                    dateInfo:
-                        DateFormat('dd MMMM yyyy', 'id').format(DateTime.now()),
-                  ),
+                // if (controller.userRole
+                //     .any((role) => role == 'Murid KB' || role == 'Murid SD'))
+                //   ClassInformation(
+                //     titleInfo: "Informasi",
+                //     dateInfo:
+                //         DateFormat('dd MMMM yyyy', 'id').format(DateTime.now()),
+                //   ),
                 Obx(() => controller.isLoading.value
                     ? Shimmer(
                         duration: Duration(seconds: 2),

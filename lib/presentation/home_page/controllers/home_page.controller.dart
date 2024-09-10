@@ -208,6 +208,7 @@ class HomePageController extends GetxController {
         final responseData = json.decode(response.body);
         print(" Success: ${responseData['message']}");
         await fetchProgram();
+        Get.snackbar('Success', 'Berhasil membuat program baru' );
         Get.back();
       } else {
         final responseData = json.decode(response.body);
@@ -235,8 +236,10 @@ class HomePageController extends GetxController {
 
       if (response.statusCode == 200) {
         fetchProgram();
-        Get.snackbar('Success', 'Program deleted successfully');
+        Get.back();
+        Get.snackbar('Success', 'Program berhasil dihapus');
       } else if (response.statusCode == 404) {
+        Get.snackbar('Success', 'Program gagal dihapus');
         throw Exception("Program not found");
       } else {
         throw Exception("Failed to delete program");
@@ -308,6 +311,7 @@ class HomePageController extends GetxController {
     super.onInit();
     fetchCurrentUser();
   }
+
 
   void fetchCurrentUser() {
     final box = GetStorage();

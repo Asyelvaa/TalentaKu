@@ -301,7 +301,7 @@ class EditClassBottomSheet extends GetView<ClassDetailController> {
                                         elevation: 0,
                                         backgroundColor: AppColor.blue600),
                                     onPressed: () {
-                                      Get.back();
+                                      // Get.back();
                                       controller.deleteClass();
                                     },
                                     child: Text(

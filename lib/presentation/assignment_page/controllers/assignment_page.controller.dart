@@ -111,11 +111,16 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
     try {
       await ApiServiceTask().createTask(fields, selectedFiles, links, gradeId); 
       print('success');
+      
+      controller.fetchAllTask();
+      controller.fetchAlbums();
+      controller.fetchStream();
+      
       titleController.clear();
       descController.clear();
       selectedDate.value = null;
       Get.back();
-      controller.fetchAllTask();
+      update();     
       dialogSuccess('Berhasil membuat tugas');
     } catch(e) {
       print('failed');
@@ -153,7 +158,7 @@ class AssignmentPageController extends GetxController  with GetTickerProviderSta
       print('Task submitted successfully with ID: ${taskId}');
       submissionData.value = response;
       controller.fetchAllTask();
-      Get.back();
+      Get.back(); 
       dialogSuccess('Tugas Berhasil Dikumpulkan');
     } catch (e) {
       Get.snackbar('Error', 'Failed to submit task');    }

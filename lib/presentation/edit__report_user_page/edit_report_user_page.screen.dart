@@ -162,6 +162,7 @@ class EditReportUserPageScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: TextFormField(
                 controller: controller.catatanController,
+                maxLines: null,
                 decoration: InputDecoration(
                   hintText: "Masukkan Catatan",
                   hintStyle: AppTextStyle.tsLittle,

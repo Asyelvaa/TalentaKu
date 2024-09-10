@@ -77,7 +77,7 @@ class SlideExtra extends GetView<HomePageController> {
                               initialName: controller.nameController.text,
                               initialDesc: controller.descController.text,
                               initialPhoto: controller.selectedImages.value,
-                              initialCategoryId: 1.toString(),
+                              initialCategoryId: 2.toString(),
                             ),
                           );
                         },

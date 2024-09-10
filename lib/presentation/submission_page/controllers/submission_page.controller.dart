@@ -17,7 +17,7 @@ class SubmissionPageController extends GetxController {
   var completionsId = ''.obs;
   Rx<Task> task = Task().obs;
   RxBool isLoading = false.obs;
-  Rx<SubmissionDetailModel> submission = SubmissionDetailModel().obs;
+  // Rx<SubmissionDetailModel> submission = SubmissionDetailModel().obs;
   RxString selectedScore = 'A'.obs;
   TextEditingController scoreController = TextEditingController();
 
@@ -27,7 +27,7 @@ class SubmissionPageController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     taskId.value = arguments['taskId'].toString();
     gradeId.value = arguments['gradeId'].toString();
-    // studentIdSubmitted.value = arguments['studentIdSubmitted'].toString();
+    studentIdSubmitted.value = arguments['studentIdSubmitted'].toString();
     completionsId.value = arguments['completionsId'].toString();
     print('pass arg in submission: $taskId, $gradeId, $studentIdSubmitted, $completionsId');
     print(studentIdSubmitted);
@@ -52,32 +52,32 @@ class SubmissionPageController extends GetxController {
   //     isLoading.value = false;
   //   }
   // }
+  var submission = {}.obs;
   Future<void> fetchSubmissionsById() async {
     isLoading.value = true;
     try {
-      final response = await ApiServiceTask()
-          .getSubmissionWithNullScore(gradeId.value, taskId.value);
+      final response = await ApiServiceTask().getSubmissionWithNullScore(gradeId.value, taskId.value);
 
-      if (response.containsKey('data')) {
-        List<dynamic> submissionsData = response['data'];
+      if (response.containsKey('data')) {List<dynamic> submissionsData = response['data'];
 
         var filteredSubmissions = submissionsData.where((submission) {
           return submission['task_id'].toString() == taskId.value &&
-              submission['student_submitted']['id'].toString() ==
-                  studentIdSubmitted.value;
+                 submission['student_submitted']['id'].toString() == studentIdSubmitted.value;
         }).toList();
 
         print('filteredSubmissions $filteredSubmissions');
-
-        if (filteredSubmissions.isNotEmpty) {
-          submission.value =
-              SubmissionDetailModel.fromJson(filteredSubmissions.first);
-          print(
-              'Submission submitted: ${submission.value.studentSubmitted?.name}');
-        } else {
-          throw Exception(
-              'No submissions found for taskId: $taskId and studentSubmitted: $studentIdSubmitted');
-        }
+         if (filteredSubmissions.isNotEmpty) {
+            submission.value = filteredSubmissions.first as Map<String, dynamic>;
+          } else {
+            submission.value = {};
+            print('No matching submissions found');
+          }
+        // if (filteredSubmissions.isNotEmpty) {
+        //   submission.value == SubmissionDetailModel.fromJson(filteredSubmissions.first);
+        //   print('Submission submitted: ${submission.value.studentSubmitted?.name}, ${submission.value.studentSubmitted?.id}');
+        // } else {
+        //   throw Exception('No submissions found for taskId: ${taskId.value} and studentSubmitted: ${studentIdSubmitted.value}');
+        // }
       } else {
         throw Exception('Invalid response format: "data" key not found');
       }
@@ -94,6 +94,7 @@ class SubmissionPageController extends GetxController {
       final taskDetail =
           await ApiServiceTask().getDetailTask(gradeId.value, taskId.value);
       task.value = taskDetail;
+      print(task.value.title);
     } catch (e) {
       print('Error fetching task details: $e');
     } finally {
@@ -103,7 +104,8 @@ class SubmissionPageController extends GetxController {
 
   Future<void> scoringSubmission() async {
     var score = scoreController.text;
-    var submissionId = submission.value.submissionId.toString();
+    // var submissionId = submission.value.submissionId.toString();
+    var submissionId = completionsId.value;
     isLoading.value = true;
     try {
       final response = await ApiServiceTask().correctionTask(
@@ -112,7 +114,7 @@ class SubmissionPageController extends GetxController {
         submissionId,
         selectedScore.value,
       );
-      submission.value = SubmissionDetailModel.fromJson(response['data']);
+      // submission.value = SubmissionDetailModel.fromJson(response['data']);
       Get.back();
       // Get.to(SubmissionCompletePageScreem());
       dialogSuccess('Berhasil menilai tugas');
