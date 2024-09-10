@@ -81,7 +81,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.STUDENT_REPORT_FORM,
-      page: () => const StudentReportFormScreen(),
+      page: () => StudentReportFormScreen(),
       binding: StudentReportFormControllerBinding(),
     ),
     GetPage(

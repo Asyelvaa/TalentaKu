@@ -11,6 +11,7 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/theme.dart';
+import '../../class_detail_page/class_detail.screen.dart';
 import '../model/Student.dart';
 
 class StudentReportFormController extends GetxController {
@@ -117,10 +118,10 @@ class StudentReportFormController extends GetxController {
     required String berdoaHasil,
     required String kegiatanIntiSatu,
     required String intiSatuHasil,
-    required String kegiatanIntiDua,
-    required String intiDuaHasil,
-    required String kegiatanIntiTiga,
-    required String intiTigaHasil,
+    String? kegiatanIntiDua,
+    String? intiDuaHasil,
+    String? kegiatanIntiTiga,
+    String? intiTigaHasil,
     required String snack,
     required String inklusi,
     required String inklusiHasil,
@@ -133,34 +134,7 @@ class StudentReportFormController extends GetxController {
     required int studentId,
   }) async {
     studentId = this.studentId.value;
-    // if (created.isEmpty ||
-    //     semesterId == 0 ||
-    //     kegiatanAwalDihalaman.isEmpty ||
-    //     dihalamanHasil.isEmpty ||
-    //     kegiatanAwalBerdoa.isEmpty ||
-    //     berdoaHasil.isEmpty ||
-    //     kegiatanIntiSatu.isEmpty ||
-    //     intiSatuHasil.isEmpty ||
-    //     kegiatanIntiDua.isEmpty ||
-    //     intiDuaHasil.isEmpty ||
-    //     kegiatanIntiTiga.isEmpty ||
-    //     intiTigaHasil.isEmpty ||
-    //     snack.isEmpty ||
-    //     inklusi.isEmpty ||
-    //     inklusiHasil.isEmpty ||
-    //     inklusiPenutup.isEmpty ||
-    //     inklusiPenutupHasil.isEmpty ||
-    //     inklusiDoa.isEmpty ||
-    //     inklusiDoaHasil.isEmpty ||
-    //     catatan.isEmpty ||
-    //     studentId == 0) {
-    //   Get.snackbar(
-    //     'Peringatan',
-    //     'Harap isi semua kolom yang wajib diisi',
-    //     backgroundColor: AppColor.red,
-    //   );
-    //   return;
-    // }
+    isLoading.value = true;
 
     try {
       final url = 'https://talentaku.site/api/grades/$gradeId/student-report';
@@ -182,10 +156,10 @@ class StudentReportFormController extends GetxController {
         ..fields['berdoa_hasil'] = berdoaHasil
         ..fields['kegiatan_inti_satu'] = kegiatanIntiSatu
         ..fields['inti_satu_hasil'] = intiSatuHasil
-        ..fields['kegiatan_inti_dua'] = kegiatanIntiDua
-        ..fields['inti_dua_hasil'] = intiDuaHasil
-        ..fields['kegiatan_inti_tiga'] = kegiatanIntiTiga
-        ..fields['inti_tiga_hasil'] = intiTigaHasil
+        // ..fields['kegiatan_inti_dua'] = kegiatanIntiDua
+        // ..fields['inti_dua_hasil'] = intiDuaHasil
+        // ..fields['kegiatan_inti_tiga'] = kegiatanIntiTiga
+        // ..fields['inti_tiga_hasil'] = intiTigaHasil
         ..fields['snack'] = snack
         ..fields['inklusi'] = inklusi
         ..fields['inklusi_hasil'] = inklusiHasil
@@ -196,12 +170,21 @@ class StudentReportFormController extends GetxController {
         ..fields['catatan'] = catatan.join(',')
         ..fields['student_id'] = studentId.toString();
 
+        if (kegiatanIntiDua != null && kegiatanIntiDua.isNotEmpty) {
+          request.fields['kegiatan_inti_dua'] = kegiatanIntiDua;
+          request.fields['inti_dua_hasil'] = intiDuaHasil ?? '';
+        }
+        if (kegiatanIntiTiga != null && kegiatanIntiTiga.isNotEmpty) {
+          request.fields['kegiatan_inti_tiga'] = kegiatanIntiTiga;
+          request.fields['inti_tiga_hasil'] = intiTigaHasil ?? '';
+        }
+
       for (File file in media) {
         if (await file.exists()) {
           request.files.add(await http.MultipartFile.fromPath(
-            'media[]', // Ensure this matches the API's expected parameter name
+            'media[]', 
             file.path,
-            contentType: MediaType('image', 'jpeg'), // Adjust as necessary
+            contentType: MediaType('image', 'jpeg'), 
           ));
         }
       }
@@ -216,9 +199,9 @@ class StudentReportFormController extends GetxController {
         Get.snackbar('Error', 'Gagal mengirim laporan: ${response.statusCode}',
             backgroundColor: AppColor.red);
         print(await response.stream.bytesToString());
-      }
+      } 
     } catch (error) {
-      print('Error occurred during report submission: $error');
+      print('Gagal mengirim laporan: $error');
       Get.snackbar('Error', 'Terjadi kesalahan', backgroundColor: AppColor.red);
     }
 

@@ -68,6 +68,7 @@ class ClassDetailController extends GetxController with GetTickerProviderStateMi
     username.value = GetStorage().read('dataUser')?['username'];
     classItem = Get.arguments as Map<String, dynamic>;
     print({username, userRole.toString()});
+    print('class id : ${classItem['id'].toString()}');
     
     fetchAlbums();
     fetchGradeDetails();

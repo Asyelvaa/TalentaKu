@@ -43,7 +43,7 @@ class ClassButtonActionTeacher extends StatelessWidget {
             controller.box
                 .write('gradeId', controller.classItem["id"].toString());
             Get.toNamed('/list-siswa',
-                arguments: {"gradeId": controller.classItem["id"].toString()});
+                arguments: {"gradeId": controller.classItem['id'].toString()});
             //  arguments: {
             //   "gradeId": controller.classItem["id"].toString()
             // });

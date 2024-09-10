@@ -34,13 +34,10 @@ class ListSiswaScreen extends GetView<ListSiswaController> {
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: AppColor.blue200,
-                  ));
+                  return Center(child: CircularProgressIndicator(color: AppColor.blue200,));
                 }
                 if (controller.students.isEmpty) {
-                  return Center(child: Text("Tidak ada murid"));
+                  return Center(child: Text("Tidak ada murid", style: AppTextStyle.tsBodyRegular(AppColor.black),));
                 } else {
                   return ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
@@ -48,97 +45,129 @@ class ListSiswaScreen extends GetView<ListSiswaController> {
                       itemCount: controller.students.length,
                       itemBuilder: (context, index) {
                         final student = controller.students[index];
-                        final selected = controller.isSelected[index];
+                        return Obx(() {
+                        final isSelected = controller.selectedStudent.value == student;
                         return GestureDetector(
-                          onTap: () {
-                            controller.isSelected.value = List.generate(
-                                controller.students.length,
-                                (index) => false.obs);
-                            controller.studentId.value = student.id!;
-                            selected.toggle();
-                          },
-                          child: Obx(() => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: heightScreen * 0.11,
-                                  width: widthScreen,
-                                  decoration: BoxDecoration(
-                                      color: selected.value
-                                          ? AppColor.blue100
-                                          : AppColor.white,
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.7,
-                                        child: Row(children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: selected.value
-                                                      ? Border.all(
-                                                          width: 3,
-                                                          color:
-                                                              AppColor.blue600)
-                                                      : null),
-                                              child: CircleAvatar(
-                                                  radius: 30,
-                                                  child: Image.asset(
-                                                      'assets/images/student.png')),
-                                            ),
-                                          ),
-                                          defaultWidthtSpace,
-                                          AutoSizeText(
-                                            student.name!,
-                                            style: AppTextStyle.tsSmallRegular(
-                                                AppColor.black),
-                                            minFontSize: 12,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ]),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )),
-                        );
-                      });
+                      onTap: () => controller.toggleSelection(student),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: isSelected ? AppColor.blue200 : AppColor.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: isSelected
+                              ? Border.all(color: AppColor.blue600, width: 2)
+                              : null,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage('assets/images/student.png'),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                student.name ?? '',
+                                style: AppTextStyle.tsBodyRegular(AppColor.black),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                        });
+                        // final selected = controller.isSelected[index];
+                        // return GestureDetector(
+                        //   onTap: () {
+                        //     controller.isSelected.value = List.generate(
+                        //         controller.students.length,
+                        //         (index) => false.obs);
+                        //     controller.studentId.value = student.id!;
+                        //     selected.toggle();
+                        //   },
+                        //   child: Obx(() => Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           height: heightScreen * 0.11,
+                        //           width: widthScreen,
+                        //           decoration: BoxDecoration(
+                        //               color: selected.value
+                        //                   ? AppColor.blue100
+                        //                   : AppColor.white,
+                        //               borderRadius: BorderRadius.circular(12)),
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               Container(
+                        //                 width:
+                        //                     MediaQuery.of(context).size.width *
+                        //                         0.7,
+                        //                 child: Row(children: [
+                        //                   Padding(
+                        //                     padding: const EdgeInsets.all(10),
+                        //                     child: Container(
+                        //                       decoration: BoxDecoration(
+                        //                           shape: BoxShape.circle,
+                        //                           border: selected.value
+                        //                               ? Border.all(
+                        //                                   width: 3,
+                        //                                   color:
+                        //                                       AppColor.blue600)
+                        //                               : null),
+                        //                       child: CircleAvatar(
+                        //                           radius: 30,
+                        //                           child: Image.asset(
+                        //                               'assets/images/student.png')),
+                        //                     ),
+                        //                   ),
+                        //                   defaultWidthtSpace,
+                        //                   AutoSizeText(
+                        //                     student.name!,
+                        //                     style: AppTextStyle.tsSmallRegular(
+                        //                         AppColor.black),
+                        //                     minFontSize: 12,
+                        //                     overflow: TextOverflow.ellipsis,
+                        //                   ),
+                        //                 ]),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       )),
+                        // );
+                  });
                 }
               }),
             ),
             // Tambahkan tombol di sini
             Obx(() {
-              final selectedStudent = controller.students.firstWhereOrNull(
-                  (student) => student.id == controller.studentId.value);
+              final selectedStudent = controller.selectedStudent.value;
               return ElevatedButton(
                 onPressed: selectedStudent == null
                     ? null
                     : () {
                         Get.toNamed(Routes.STUDENT_REPORT_FORM, arguments: {
                           "studentId": selectedStudent.id,
-                          "gradeId": controller.classItem["id"].toString(),
+                          "gradeId": controller.gradeId
+
+                          
                         });
                       },
                 child: Text(
                   selectedStudent == null
                       ? "Pilih murid untuk mengirim laporan"
-                      : "Kirim Laporan untuk ${selectedStudent.name}",
-                  style: AppTextStyle.tsNormal.copyWith(
-                    color: AppColor.white,
-                  ),
+                      : "Buat Laporan untuk ${selectedStudent.name}",
+                  style: AppTextStyle.tsNormal.copyWith(color: AppColor.white),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                     selectedStudent == null ? AppColor.grey : AppColor.blue500,
                   ),
                   padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   ),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
@@ -147,7 +176,42 @@ class ListSiswaScreen extends GetView<ListSiswaController> {
                   ),
                 ),
               );
-            })
+            }),
+            // Obx(() {
+            //   final selectedStudent = controller.students.firstWhereOrNull(
+            //       (student) => student.id == controller.studentId.value);
+            //   return ElevatedButton(
+            //     onPressed: selectedStudent == null
+            //         ? null
+            //         : () {
+            //             Get.toNamed(Routes.STUDENT_REPORT_FORM, arguments: {
+            //               "studentId": selectedStudent.id,
+            //               "gradeId": controller.classItem["id"].toString(),
+            //             });
+            //           },
+            //     child: Text(
+            //       selectedStudent == null
+            //           ? "Pilih murid untuk mengirim laporan"
+            //           : "Buat Laporan untuk ${selectedStudent.name}",
+            //       style: AppTextStyle.tsNormal.copyWith(
+            //         color: AppColor.white,
+            //       ),
+            //     ),
+            //     style: ButtonStyle(
+            //       backgroundColor: MaterialStateProperty.all(
+            //         selectedStudent == null ? AppColor.grey : AppColor.blue500,
+            //       ),
+            //       padding: MaterialStateProperty.all(
+            //         EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            //       ),
+            //       shape: MaterialStateProperty.all(
+            //         RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(12),
+            //         ),
+            //       ),
+            //     ),
+            //   );
+            // })
           ],
         ),
       ),
