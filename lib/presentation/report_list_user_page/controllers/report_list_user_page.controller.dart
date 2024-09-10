@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,8 +13,11 @@ class ReportListUserPageController extends GetxController {
   late final int gradeId;
   late final arguments;
   final box = GetStorage();
+    var selectedMonth = ''.obs;
   var reportData = [].obs;
+    var filteredReportData = [].obs;
   final String baseUrl = 'https://talentaku.site/api';
+    final dropdownMonthController = SingleSelectController<String?>(null);
 
   Future<void> fetchUserReport() async {
     isLoading.value = true;
@@ -31,7 +35,7 @@ class ReportListUserPageController extends GetxController {
       if (response.statusCode == 200) {
         print(json.decode(response.body));
         final jsonData = json.decode(response.body);
-        reportData.assignAll(jsonData['data']);
+        reportData.assignAll(jsonData);
       } else {
         print(response.statusCode);
       }
@@ -40,6 +44,28 @@ class ReportListUserPageController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void filterReportData() {
+    print('Test Current Filter Report Data');
+    filteredReportData.assignAll(
+      reportData.where((report) {
+        final isMonthMatch = selectedMonth.value.isEmpty ||
+            report['month'].contains(selectedMonth.value.split(' ')[0]);
+        return isMonthMatch;
+      }).toList(),
+    );
+
+    final List<dynamic> allReports = filteredReportData.expand((monthData) => monthData['reports']).toList();
+
+    print(filteredReportData.length);
+    print(allReports.length);
+
+    print('Test After Filter Report Data');
+  }
+  void onMonthChanged(String? value) {
+    selectedMonth.value = value ?? '';
+    filterReportData();
   }
 
   final count = 0.obs;

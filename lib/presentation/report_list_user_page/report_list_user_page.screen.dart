@@ -5,185 +5,129 @@ import 'package:flutter_talentaku/infrastructure/theme/theme.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 
 import '../common_widget/back_appbar.dart';
 import 'controllers/report_list_user_page.controller.dart';
 
 class ReportListUserPageScreen extends GetView<ReportListUserPageController> {
   const ReportListUserPageScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final RefreshController refreshController =RefreshController(initialRefresh: false);
+    final RefreshController refreshController =
+        RefreshController(initialRefresh: false);
     final Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
+    final RxString selectedMonth = ''.obs;
+
     return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: BackAppbar(
-          titleAppbar: 'Laporan Pembelajaran',
-        ),
-      ),
-      body: Column(
-        children: [
-          // Date Picker Button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    selectedDate.value = pickedDate;
-                  }
-                },
-                child: Text( selectedDate.value != null
-                      ? 'Filter: ${DateFormat('dd MMM yyyy').format(selectedDate.value!)}'
-                      : 'Pilih Tanggal Laporan',
-                  style: AppTextStyle.tsBodyRegular(AppColor.black),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.blue50,
-                  elevation: 0
-                ),
-                ),
-              // Reset Filter Button
-              TextButton(
-                onPressed: () {
-                  selectedDate.value = null; // Reset the selected date
-                },
-                child: Text(
-                'Reset Filter',
-                style: AppTextStyle.tsBodyRegular(AppColor.black),
-              ),
-
-              )],
+        backgroundColor: AppColor.background,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: BackAppbar(
+            titleAppbar: 'Laporan Pembelajaran',
           ),
+        ),
+        body: Column(children: [
+          // Date Picker and Dropdown Button
+
           Expanded(
-            child: SmartRefresher(
-              controller: refreshController,
-              onRefresh: () async {
-                await controller.fetchUserReport();
-                refreshController.refreshCompleted();
-              },
-              child: Obx(() {
-                if (controller.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                }
+              child: SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: () async {
+                    await controller.fetchUserReport();
+                    refreshController.refreshCompleted();
+                  },
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-                if (controller.reportData.isEmpty) {
-                  return Center(
-                    child: Text(
-                      'Belum ada laporan harian.',
-                      style: AppTextStyle.tsNormal,
-                    ),
-                  );
-                }
-
-                // Filter and sort report data by the selected date
-                var filteredReportData = controller.reportData.where((report) {
-                  DateTime reportDate = DateTime.parse(report['created']);
-                  return selectedDate.value == null ||
-                      DateFormat('yyyy-MM-dd').format(reportDate) ==
-                          DateFormat('yyyy-MM-dd').format(selectedDate.value!);
-                }).toList();
-
-                filteredReportData.sort((a, b) {
-                  DateTime dateA = DateTime.parse(a['created']);
-                  DateTime dateB = DateTime.parse(b['created']);
-                  return dateB.compareTo(dateA); // Sort by descending date
-                });
-
-                if (filteredReportData.isEmpty) {
-                  return Center(
-                    child: Text(
-                      'Tidak ada laporan untuk tanggal yang dipilih.',
-                      style: AppTextStyle.tsNormal,
-                    ),
-                  );
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ListView.builder(
-                    itemCount: filteredReportData.length,
-                    itemBuilder: (context, index) {
-                      var report = filteredReportData[index];
-                      DateTime createdDate = DateTime.parse(report['created']);
-                      return ListTile(
-                        title: Text(
-                          DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
-                              .format(createdDate),
-                          style: AppTextStyle.tsBodyRegular(AppColor.black),
-                        ),
-                        onTap: () async {
-                          await Get.toNamed(Routes.EDIT_REPORT_USER_PAGE,
-                              arguments: ['edit', report])?.then((value) {
-                            if (value == 'success') {
-                              controller.fetchUserReport();
-                            }
-                          });
-                        },                        
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
+                    if (controller.reportData.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'Belum ada laporan harian.',
+                          style: AppTextStyle.tsNormal,
                         ),
                       );
-                    },
-                  ),
-                );
-              }),
-            ),
-          ),
-        ],
-      // body: SmartRefresher(
-      //   controller: refreshController,
-      //   onRefresh: () async {
-      //     await controller.fetchUserReport();
-      //     refreshController.refreshCompleted();
-      //   },
-      //   child: Obx(() {
-      //     if (controller.isLoading.value) {
-      //       return Center(child: CircularProgressIndicator());
-      //     }
-      //     if (controller.reportData.isEmpty) {
-      //       return Center(
-      //           child: Text(
-      //         'Belum ada laporan harian.',
-      //         style: AppTextStyle.tsNormal,
-      //       ));
-      //     }
-      //     return ListView.builder(
-      //       itemCount: controller.reportData.length,
-      //       itemBuilder: (context, index) {
-      //         var report = controller.reportData[index];
-      //         DateTime createdDate = DateTime.parse(report['created']);
-      //         return ListTile(
-      //           title: Text(
-      //             '${DateFormat('dd MMMM yyyy', 'id_ID').format(createdDate)}',
-      //             style: AppTextStyle.tsNormal,
-      //           ),
-      //           onTap: () async {
-      //             await Get.toNamed(Routes.EDIT_REPORT_USER_PAGE,
-      //                 arguments: ['edit', report])?.then((value) {
-      //               if (value == 'success') {
-      //                 controller.fetchUserReport();
-      //               }
-      //             });
-      //           },
-      //           trailing: Icon(
-      //             Icons.arrow_forward_ios,
-      //             size: 20,
-      //           ),
-      //         );
-      //       },
-      //     );
-      //   }),
-      ),
-    );
+                    }
+                    final List<dynamic> allReports = controller
+                        .filteredReportData
+                        .expand((monthData) => monthData['reports'])
+                        .toList();
+
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 16.0),
+                              CustomDropdown<String?>(
+                                hintText: 'Pilih Bulan',
+                                items: [
+                                  'September 2024',
+                                  'October 2024',
+                                  'November 2024'
+                                ],
+                                controller: controller.dropdownMonthController,
+                                onChanged: (value) {
+                                  controller.onMonthChanged(value);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Ada ${allReports.length} laporan",
+                              style: AppTextStyle.tsNormal,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: allReports.length,
+                            itemBuilder: (context, index) {
+                              var report = allReports[index];
+                              print(allReports.length);
+
+                              DateTime createdDate =
+                                  DateTime.parse(report['created']);
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  title: Text(
+                                    '${DateFormat('dd MMMM yyyy').format(createdDate)}',
+                                    style: AppTextStyle.tsBodyRegular(
+                                        AppColor.black),
+                                  ),
+                                  onTap: () async {
+                                    await Get.toNamed(
+                                            Routes.EDIT_REPORT_USER_PAGE,
+                                            arguments: ['edit', report])
+                                        ?.then((value) {
+                                      if (value == 'success') {
+                                        controller.fetchUserReport();
+                                      }
+                                    });
+                                  },
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 20,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  })))
+        ]));
   }
 }

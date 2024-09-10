@@ -29,7 +29,6 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
         controller: refreshController,
         onRefresh: () async {
           await controller.fetchDataReport();
-
           refreshController.refreshCompleted();
         },
         child: Obx(() {
@@ -45,63 +44,69 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
               ),
             );
           }
+          final List<dynamic> allReports = controller.filteredReportData
+              .expand((monthData) => monthData['reports'])
+              .toList();
 
           return Column(
             children: [
               Container(
                 padding: EdgeInsets.all(16.0),
-                child: CustomDropdown<String?>(
-                  hintText: 'Pilih Semester',
-                  items: ['Semester 1', 'Semester 2'],
-                  controller: controller.dropdownController,
-                  onChanged: (value) {
-                    controller.selectedSemester.value =
-                        value == 'Semester 1' ? '1' : '2';
-                    controller.filterReportData();
-                  },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 16.0),
+                    CustomDropdown<String?>(
+                      hintText: 'Pilih Bulan',
+                      items: [
+                        'September 2024',
+                        'October 2024',
+                        'November 2024'
+                      ],
+                      controller: controller.dropdownMonthController,
+                      onChanged: (value) {
+                        controller.onMonthChanged(value);
+                      },
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(left: 20),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("data"),
+                  child: Text(
+                    "Ada ${allReports.length} laporan",
+                    style: AppTextStyle.tsNormal,
+                  ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(12),
-                height: heightScreen * 0.1,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColor.blue400,
-                ),
-                child: Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.filteredReportData.length,
-                    itemBuilder: (context, index) {
-                      var report = controller.filteredReportData[index];
-                      DateTime createdDate = DateTime.parse(report['created']);
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          title: Text(
-                            '${DateFormat('dd MMMM yyyy').format(createdDate)}',
-                            style: AppTextStyle.tsTitle
-                                .copyWith(color: AppColor.white),
-                          ),
-                          onTap: () {
-                            print(report);
-                            Get.toNamed(Routes.DAILY_REPORT,
-                                arguments: [report]);
-                          },
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 20,
-                          ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: allReports.length,
+                  itemBuilder: (context, index) {
+                    var report = allReports[index];
+                    print(allReports.length);
+
+                    DateTime createdDate = DateTime.parse(report['created']);
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text(
+                          '${DateFormat('dd MMMM yyyy').format(createdDate)}',
+                          style: AppTextStyle.tsBodyRegular(AppColor.black),
                         ),
-                      );
-                    },
-                  ),
+                        onTap: () {
+                          print(report);
+                          Get.toNamed(Routes.DAILY_REPORT, arguments: [report]);
+                        },
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
