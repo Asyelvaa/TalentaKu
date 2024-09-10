@@ -15,7 +15,7 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
 
   @override
   Widget build(BuildContext context) {
-        final RefreshController refreshController =
+    final RefreshController refreshController =
         RefreshController(initialRefresh: false);
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -26,7 +26,7 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
         ),
       ),
       body: SmartRefresher(
-         controller: refreshController,
+        controller: refreshController,
         onRefresh: () async {
           await controller.fetchDataReport();
 
@@ -36,7 +36,7 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
           if (controller.isLoading.value) {
             return Center(child: CircularProgressIndicator());
           }
-        
+
           if (controller.filteredReportData.isEmpty) {
             return Center(
               child: Text(
@@ -45,7 +45,7 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
               ),
             );
           }
-        
+
           return Column(
             children: [
               Container(
@@ -61,27 +61,47 @@ class ReportListPageScreen extends GetView<ReportListPageController> {
                   },
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: controller.filteredReportData.length,
-                  itemBuilder: (context, index) {
-                    var report = controller.filteredReportData[index];
-                    DateTime createdDate = DateTime.parse(report['created']);
-                    return ListTile(
-                      title: Text(
-                        'Laporan Harian ${DateFormat('dd MMMM yyyy').format(createdDate)}',
-                        style: AppTextStyle.tsNormal,
-                      ),
-                      onTap: () {
-                        print(report);
-                        Get.toNamed(Routes.DAILY_REPORT, arguments: [report]);
-                      },
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                    );
-                  },
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("data"),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(12),
+                height: heightScreen * 0.1,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColor.blue400,
+                ),
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.filteredReportData.length,
+                    itemBuilder: (context, index) {
+                      var report = controller.filteredReportData[index];
+                      DateTime createdDate = DateTime.parse(report['created']);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text(
+                            '${DateFormat('dd MMMM yyyy').format(createdDate)}',
+                            style: AppTextStyle.tsTitle
+                                .copyWith(color: AppColor.white),
+                          ),
+                          onTap: () {
+                            print(report);
+                            Get.toNamed(Routes.DAILY_REPORT,
+                                arguments: [report]);
+                          },
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

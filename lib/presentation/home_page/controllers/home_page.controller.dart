@@ -155,6 +155,7 @@ class HomePageController extends GetxController {
       print(photo.path);
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+        
         print("Update Success: ${responseData['message']}");
         print(responseData);
         Get.back();
